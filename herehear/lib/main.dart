@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'home/home.dart';
+import 'mypage.dart';
+import 'upload.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -16,8 +20,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: MyHomePage(title: 'Flutter Demo Home Page'),
-      home: home(),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      getPages: [
+        GetPage(
+          name: '/',
+          page: () => myPage(),
+        ),
+        GetPage(
+          name: '/upload',
+          page: () => UploadPage(),
+        )
+      ],
     );
   }
 }
@@ -45,6 +58,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(
+                  UploadPage(),
+                );
+              },
+              icon: Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                Get.to(
+                  myPage(),
+                );
+              },
+              icon: Icon(Icons.add_box)),
+        ],
       ),
       body: Center(
         child: Column(
