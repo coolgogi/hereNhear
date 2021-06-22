@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'home/home.dart';
 
 void main() {
   runApp(MyApp());
@@ -8,12 +11,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: home(),
     );
   }
 }
@@ -62,17 +66,5 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-}
-
-class home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> _children = [
-      // list();
-      // write();
-      // myPage();
-    ];
-    return Materi
   }
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
-
 class myPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
@@ -11,7 +9,10 @@ class myPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text('마이페이지',),),
+          title: Text(
+            '마이페이지',
+          ),
+        ),
         body: Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
             child: ListView(
@@ -32,16 +33,16 @@ class myPage extends StatelessWidget {
                 ),
                 _divier(),
                 ListTile(
-                  title: Text('실험실',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey),),
+                  title: Text(
+                    '실험실',
+                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
                 ),
                 ListTile(
                   title: Text('현재 버전'),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignInPage()));
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) => SignInPage()));
                   },
                 ),
                 ListTile(
@@ -49,10 +50,10 @@ class myPage extends StatelessWidget {
                 ),
                 _divier(),
                 ListTile(
-                  title: Text('고객센터',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey),),
+                  title: Text(
+                    '고객센터',
+                    style: TextStyle(fontSize: 10, color: Colors.grey),
+                  ),
                 ),
                 ListTile(
                   title: Text('공지사항'),
@@ -62,15 +63,9 @@ class myPage extends StatelessWidget {
                 ),
                 _divier(),
                 _info(),
-
-
               ],
-
-            )
-        )
-    );
+            )));
   }
-
 
   Widget _divier() {
     return Divider(
@@ -91,16 +86,17 @@ class myPage extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(0, 10, 10, 10),
               child: Text(
                 '서비스 이용 약관',
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 10),)),
+                style: TextStyle(color: Colors.grey, fontSize: 10),
+              )),
           Container(
               padding: const EdgeInsets.fromLTRB(20, 10, 0, 10),
               child: Text(
                 '개인정보 처리방침',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 10,),)),
+                  fontSize: 10,
+                ),
+              )),
         ],
       ),
     );
@@ -108,12 +104,12 @@ class myPage extends StatelessWidget {
 
   Widget _profile() {
     return Column(
-       children: [
-      //   imageProfile(),
+      children: [
+        //   imageProfile(),
         Container(
-            padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(auth.currentUser.uid),
-
+          padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+          child: Text(auth.currentUser.uid),
+        )
       ],
     );
   }
@@ -148,7 +144,6 @@ class myPage extends StatelessWidget {
   //   );
   // }
 
-
   Widget nameTextField() {
     return TextFormField(
       decoration: InputDecoration(
@@ -168,8 +163,7 @@ class myPage extends StatelessWidget {
             color: Colors.black,
           ),
           labelText: 'Name',
-          hintText: 'Input your name'
-      ),
+          hintText: 'Input your name'),
     );
   }
 }
@@ -217,6 +211,3 @@ class myPage extends StatelessWidget {
   }
 
  */
-
-
-
