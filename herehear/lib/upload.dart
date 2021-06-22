@@ -52,10 +52,10 @@ class _UploadPageState extends State<UploadPage> {
               Navigator.pop(context);
             },
           ),
-        title: Center(child: Text('새 게시물', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),)),
+        title: Center(child: Text('새 게시물', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
         actions: [
         IconButton(
-                icon: Icon(Icons.done, color: Theme.of(context).colorScheme.primary, size: 25,),
+                icon: Icon(Icons.done, color: Colors.greenAccent[700], size: 25,),
                 onPressed: () {
                   uploadToFirebase().then((value) {
                     Navigator.push(
@@ -71,20 +71,23 @@ class _UploadPageState extends State<UploadPage> {
       ),
       body: ListView(
           children: <Widget>[
-            TextFormField(
-              autofocus: true,
-              controller: titleController,
-              keyboardType: TextInputType.text,
-              maxLines: 1,
-              decoration:
-              InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "제목을 입력하세요."
+            Padding(
+              padding: EdgeInsets.fromLTRB(24, 8, 24, 5),
+              child: TextFormField(
+                autofocus: true,
+                controller: titleController,
+                keyboardType: TextInputType.text,
+                maxLines: 1,
+                decoration:
+                InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "제목을 입력하세요."
+                ),
               ),
             ),
             Divider(height: 5, thickness: 1,),
             Padding(
-              padding: EdgeInsets.fromLTRB(24, 0, 24, 5),
+              padding: EdgeInsets.fromLTRB(24, 5, 24, 5),
               child: Column(
                 children: [
                   TextField(

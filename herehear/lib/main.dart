@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'upload.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -43,6 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UploadPage()),
+                );
+              },
+              icon: Icon(Icons.add)),
+        ],
       ),
       body: Center(
         child: Column(
@@ -67,14 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> _children = [
-      // list();
-      // write();
-      // myPage();
-    ];
-    return Materi
-  }
-}
+// class home extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Widget> _children = [
+//       // list();
+//       // write();
+//       // myPage();
+//     ];
+//     return Materi
+//   }
+// }
