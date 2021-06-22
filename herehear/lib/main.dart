@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'mypage.dart';
+import 'package:get/get.dart';
 
 import 'upload.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -13,12 +14,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      getPages: [
+        GetPage(name: '/', page: ()  => myPage(),)
+
+      ],
     );
   }
 }
@@ -49,12 +54,9 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadPage()),
-                );
+                Get.to(myPage(),);
               },
-              icon: Icon(Icons.add)),
+              icon: Icon(Icons.add_box)),
         ],
       ),
       body: Center(
