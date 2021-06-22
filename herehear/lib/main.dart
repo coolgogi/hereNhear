@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       getPages: [
-        GetPage(name: '/', page: ()  => myPage(),)
-
+        GetPage(name: '/', page: ()  => myPage(),),
+        GetPage(name: '/upload', page: ()  => UploadPage(),)
       ],
     );
   }
@@ -52,6 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(UploadPage(),);
+              },
+              icon: Icon(Icons.add)),
           IconButton(
               onPressed: () {
                 Get.to(myPage(),);
