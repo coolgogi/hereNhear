@@ -37,13 +37,7 @@ class myPage extends StatelessWidget {
                         fontSize: 10,
                         color: Colors.grey),),
                 ),
-                ListTile(
-                  title: Text('현재 버전'),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignInPage()));
-                  },
-                ),
+
                 ListTile(
                   title: Text('설정'),
                 ),
@@ -112,8 +106,8 @@ class myPage extends StatelessWidget {
       //   imageProfile(),
         Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: Text(auth.currentUser.uid),
-
+            child: Text('id'),
+        ),
       ],
     );
   }
