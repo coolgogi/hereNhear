@@ -1,6 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'mypage.dart';
+import 'package:get/get.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -8,12 +13,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      getPages: [
+        GetPage(name: '/', page: ()  => myPage(),)
+
+      ],
     );
   }
 }
@@ -41,6 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(myPage(),);
+              },
+              icon: Icon(Icons.add_box)),
+        ],
       ),
       body: Center(
         child: Column(
@@ -65,14 +81,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> _children = [
-      // list();
-      // write();
-      // myPage();
-    ];
-    return Materi
-  }
-}
+// class home extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     List<Widget> _children = [
+//       // list();
+//       // write();
+//       // myPage();
+//     ];
+//     return Materi
+//   }
+// }
