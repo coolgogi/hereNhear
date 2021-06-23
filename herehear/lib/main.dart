@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'home/home.dart';
 import 'myPage/mypage.dart';
 import 'upload.dart';
+import 'login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
-          page: () => MyApp(),
+          page: () => LandingPage(),
         ),
         GetPage(
           name: '/myPage',
@@ -48,6 +49,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/upload',
           page: () => UploadPage(),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => Login(),
         )
       ],
     );
