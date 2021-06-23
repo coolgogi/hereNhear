@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'home/home.dart';
-import 'mypage.dart';
+import 'myPage/mypage.dart';
 import 'upload.dart';
 
 void main() async {
@@ -148,5 +148,6 @@ class LandingPage extends StatelessWidget {
             ],
           )),
     ));
+
   }
 }

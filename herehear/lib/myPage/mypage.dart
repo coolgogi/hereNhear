@@ -108,7 +108,7 @@ class myPage extends StatelessWidget {
         //   imageProfile(),
         Container(
           padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-          child: Text(auth.currentUser.uid),
+          child: Text('id'),
         )
       ],
     );
