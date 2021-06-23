@@ -30,84 +30,89 @@ class _UploadPageState extends State<UploadPage> {
     final now = FieldValue.serverTimestamp();
 
     Map<String, dynamic> data = {
-      'title' : titleController.text,
-      'description' : descriptionController.text,
-      'uid' : uid,
-      'generatedTime' : now,
+      'title': titleController.text,
+      'description': descriptionController.text,
+      'uid': uid,
+      'generatedTime': now,
     };
 
-    await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(docID)
-        .set(data);
+    await FirebaseFirestore.instance.collection('posts').doc(docID).set(data);
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.close, color: Colors.redAccent, size: 25,),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+          icon: Icon(
+            Icons.close,
+            color: Colors.redAccent,
+            size: 25,
           ),
-        title: Center(child: Text('새 게시물', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Center(
+            child: Text(
+          '새 게시물',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        )),
         actions: [
-        IconButton(
-                icon: Icon(Icons.done, color: Colors.greenAccent[700], size: 25,),
-                onPressed: () {
-                  uploadToFirebase().then((value) {
-                    Get.to(MyHomePage(),);
-                  });
-                }
-            )
+          IconButton(
+              icon: Icon(
+                Icons.done,
+                color: Colors.greenAccent[700],
+                size: 25,
+              ),
+              onPressed: () {
+                uploadToFirebase().then((value) {
+                  Get.to(
+                    MyApp(),
+                  );
+                });
+              })
         ],
       ),
       body: ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(24, 8, 24, 5),
-              child: TextFormField(
-                autofocus: true,
-                controller: titleController,
-                keyboardType: TextInputType.text,
-                maxLines: 1,
-                decoration:
-                InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "제목을 입력하세요."
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(24, 8, 24, 5),
+            child: TextFormField(
+              autofocus: true,
+              controller: titleController,
+              keyboardType: TextInputType.text,
+              maxLines: 1,
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: "제목을 입력하세요."),
+            ),
+          ),
+          Divider(
+            height: 5,
+            thickness: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(24, 5, 24, 5),
+            child: Column(
+              children: [
+                TextField(
+                  autofocus: true,
+                  controller: descriptionController,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  minLines: 15,
+                  decoration: InputDecoration(
+                      border: InputBorder.none, hintText: "내용을 입력하세요."),
                 ),
-              ),
+                Divider(),
+              ],
             ),
-            Divider(height: 5, thickness: 1,),
-            Padding(
-              padding: EdgeInsets.fromLTRB(24, 5, 24, 5),
-              child: Column(
-                children: [
-                  TextField(
-                    autofocus: true,
-                    controller: descriptionController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    minLines: 15,
-                    decoration:
-                    InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "내용을 입력하세요."
-                    ),
-                  ),
-                  Divider(),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
