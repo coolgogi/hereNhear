@@ -8,7 +8,7 @@ class ListDataX extends GetxController {
 
   void httpCall() async {
     await Future.delayed(
-        Duration(seconds: 1), () => numbers.add(numbers.last + 1));
+        Duration(seconds: 0), () => numbers.add(numbers.last + 1));
     update();
   }
 
