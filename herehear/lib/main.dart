@@ -61,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
+
                 Get.to(
                   UploadPage(),
                 );
@@ -71,6 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Get.to(
                   myPage(),
                 );
+
               },
               icon: Icon(Icons.add_box)),
         ],
