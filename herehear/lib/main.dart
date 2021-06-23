@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'home/home.dart';
 import 'myPage/mypage.dart';
 import 'upload.dart';
+import 'login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,11 +40,19 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
+          page: () => MyApp(),
+        ),
+        GetPage(
+          name: '/myPage',
           page: () => myPage(),
         ),
         GetPage(
           name: '/upload',
           page: () => UploadPage(),
+        ),
+        GetPage(
+          name: '/login',
+          page: () => Login(),
         )
       ],
     );
@@ -54,7 +63,14 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    tabIndex.value = index;
+    print("=====index=====");
+    print(index);
+    print("=====index=====");
+    if (index == 1) {
+      Get.toNamed('/upload');
+    } else {
+      tabIndex.value = index;
+    }
   }
 
   @override
@@ -148,6 +164,5 @@ class LandingPage extends StatelessWidget {
             ],
           )),
     ));
-
   }
 }

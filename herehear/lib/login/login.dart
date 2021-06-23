@@ -1,74 +1,65 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
-class SignInPage extends StatefulWidget {
+class Login extends StatefulWidget {
   @override
-  _SignInPageState createState() => _SignInPageState();
+  _LoginState createState() => _LoginState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _LoginState extends State<Login> {
+
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size; // 휴대폰 화면 크기 가져오기
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(height: 100,),
-            _title(),
-            SizedBox(height: 40,),
-            _loginField(size, context),
+            _loginField(),
           ],
         ));
   }
 
 
-  Widget _title() {
-    return Text(
-      'CLODAY',
-      style: TextStyle(
-          color: Color(0xFF9D26F4), fontSize: 45, fontWeight: FontWeight.w500),
-    );
-  }
 
-  Widget _loginField(Size size, BuildContext context) {
+  Widget _loginField() {
     return Container(
       padding: EdgeInsets.only(top: 0, left: 20, right: 20, bottom: 20),
       child: Column(
         children: [
-          _snsLogin(context),
+          _snsLogin(),
         ],
       ),
     );
   }
 
 
-  Widget _snsLogin(BuildContext context) {
+  Widget _snsLogin() {
     return Row(
       children: [
-        _googleButton(context),
+        _googleButton(),
 
       ],
     );
   }
 
 
-
-
-  Widget _googleButton(BuildContext context) {
+  Widget _googleButton() {
     return IconButton(
       splashColor: Colors.grey,
       onPressed: () async {
         await signInWithGoogle();
-        await
+
       },
-      icon: new Image.asset("assets/login/google.png"),
+      icon: Icon(
+        Icons.home,
+        size: 20.0,
+      ),
     );
   }
 
@@ -90,58 +81,4 @@ class _SignInPageState extends State<SignInPage> {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
-  void _signInWithGoogle(BuildContext context) async {
-    String name;
-    String email;
-    String imageUrl;
-
-    try {
-      print("1");
-      final GoogleSignInAccount googleSignInAccount =
-      await googleSignIn.signIn();
-      final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
-
-      print("2");
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
-
-      print("3");
-      final UserCredential authResult =
-      await _auth.signInWithCredential(credential);
-      final User user = authResult.user;
-
-      print("4");
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-
-      print("5");
-      final User currentUser = await _auth.currentUser;
-      assert(user.uid == currentUser.uid);
-
-      print("6");
-      assert(user.email != null);
-      assert(user.displayName != null);
-      assert(user.photoURL != null);
-
-      name = user.displayName;
-      email = user.email;
-      imageUrl = user.photoURL;
-
-      print("7");
-      Navigator.pushNamed(context, '/');
-    } catch (err) {
-      print("@@@error: $err");
-      // final snackBar = SnackBar(content: Text('Error: Login failed.'));
-      // Scaffold(
-      //   body: Builder(
-      //     builder: (context) => Scaffold.of(context).showSnackBar(snackBar);,
-      //   ),
-      // );
-
-    }
-  }
 }
