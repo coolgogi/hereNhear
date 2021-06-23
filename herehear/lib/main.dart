@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(myPage(),);
+                Get.to(myPage(), );
               },
               icon: Icon(Icons.add_box)),
         ],
