@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'mypage.dart';
 import 'package:get/get.dart';
+import 'home/home.dart';
+import 'mypage.dart';
+import 'upload.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +22,14 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       getPages: [
-        GetPage(name: '/', page: ()  => myPage(),)
-
+        GetPage(
+          name: '/',
+          page: () => myPage(),
+        ),
+        GetPage(
+          name: '/upload',
+          page: () => UploadPage(),
+        )
       ],
     );
   }
@@ -53,7 +61,18 @@ class _MyHomePageState extends State<MyHomePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Get.to(myPage(), );
+
+                Get.to(
+                  UploadPage(),
+                );
+              },
+              icon: Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                Get.to(
+                  myPage(),
+                );
+
               },
               icon: Icon(Icons.add_box)),
         ],
@@ -72,23 +91,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        items: [],
+      ),
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
-
-// class home extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     List<Widget> _children = [
-//       // list();
-//       // write();
-//       // myPage();
-//     ];
-//     return Materi
-//   }
-// }
