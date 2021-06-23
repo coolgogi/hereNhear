@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:herehear/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,12 +59,7 @@ class _UploadPageState extends State<UploadPage> {
                 icon: Icon(Icons.done, color: Colors.greenAccent[700], size: 25,),
                 onPressed: () {
                   uploadToFirebase().then((value) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MyHomePage()
-                        )
-                    );
+                    Get.to(MyHomePage(),);
                   });
                 }
             )
