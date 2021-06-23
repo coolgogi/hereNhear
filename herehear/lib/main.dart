@@ -39,6 +39,10 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
+          page: () => MyApp(),
+        ),
+        GetPage(
+          name: '/myPage',
           page: () => myPage(),
         ),
         GetPage(
@@ -54,7 +58,14 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    tabIndex.value = index;
+    print("=====index=====");
+    print(index);
+    print("=====index=====");
+    if (index == 1) {
+      Get.toNamed('/upload');
+    } else {
+      tabIndex.value = index;
+    }
   }
 
   @override
@@ -148,6 +159,5 @@ class LandingPage extends StatelessWidget {
             ],
           )),
     ));
-
   }
 }
