@@ -41,7 +41,7 @@ class myPage extends StatelessWidget {
                 ListTile(
                   title: Text('현재 버전'),
                   onTap: () {
-          
+                    Get.to(Login());
                   },
                 ),
                 ListTile(
