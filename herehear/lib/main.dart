@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/chatting/chatList.dart';
 import 'home/home.dart';
 import 'myPage/mypage.dart';
 import 'upload.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
-          page: () => MyApp(),
+          page: () => LandingPage(),
         ),
         GetPage(
           name: '/myPage',
@@ -63,9 +64,6 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    print("=====index=====");
-    print(index);
-    print("=====index=====");
     if (index == 1) {
       Get.toNamed('/upload');
     } else {
@@ -135,6 +133,17 @@ class LandingPage extends StatelessWidget {
                 icon: Container(
                   margin: EdgeInsets.only(bottom: 7),
                   child: Icon(
+                    Icons.comment,
+                    size: 20.0,
+                  ),
+                ),
+                label: 'Chatting',
+                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+              ),
+              BottomNavigationBarItem(
+                icon: Container(
+                  margin: EdgeInsets.only(bottom: 7),
+                  child: Icon(
                     Icons.account_circle_sharp,
                     size: 20.0,
                   ),
@@ -159,7 +168,8 @@ class LandingPage extends StatelessWidget {
             index: landingPageController.tabIndex.value,
             children: [
               Home(),
-              UploadPage(),
+              Container(),
+              chatList(),
               myPage(),
             ],
           )),
