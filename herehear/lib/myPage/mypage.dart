@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../login/login.dart';
 class myPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
@@ -41,8 +41,7 @@ class myPage extends StatelessWidget {
                 ListTile(
                   title: Text('현재 버전'),
                   onTap: () {
-                    // Navigator.push(context,
-                    //     MaterialPageRoute(builder: (context) => SignInPage()));
+          
                   },
                 ),
                 ListTile(
