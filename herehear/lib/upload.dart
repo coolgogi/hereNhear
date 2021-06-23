@@ -68,7 +68,7 @@ class _UploadPageState extends State<UploadPage> {
               onPressed: () {
                 uploadToFirebase().then((value) {
                   Get.to(
-                    MyApp(),
+                    LandingPage(),
                   );
                 });
               })
