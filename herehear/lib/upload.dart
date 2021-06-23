@@ -50,7 +50,7 @@ class _UploadPageState extends State<UploadPage> {
             size: 25,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Get.back();
           },
         ),
         title: Center(
@@ -67,7 +67,7 @@ class _UploadPageState extends State<UploadPage> {
               ),
               onPressed: () {
                 uploadToFirebase().then((value) {
-                  Get.to(
+                  Get.offAll(
                     MyApp(),
                   );
                 });
