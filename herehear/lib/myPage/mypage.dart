@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../login/login.dart';
+
 class myPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
@@ -21,9 +22,6 @@ class myPage extends StatelessWidget {
                 _divier(),
                 ListTile(
                   title: Text('회원정보 수정'),
-                ),
-                ListTile(
-                  title: Text('성별, 신체 사이즈 정보'),
                 ),
                 ListTile(
                   title: Text('로그아웃'),
