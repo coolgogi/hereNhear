@@ -1,11 +1,9 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/myPage/mypage.dart';
-
 
 class Login extends StatefulWidget {
   @override
@@ -19,13 +17,11 @@ class _LoginState extends State<Login> {
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            _logOut(),
+
             _loginField(),
           ],
         ));
   }
-
-
 
   Widget _loginField() {
     return Container(
@@ -38,66 +34,48 @@ class _LoginState extends State<Login> {
     );
   }
 
-
   Widget _snsLogin() {
     return Row(
       children: [
         _googleButton(),
-
       ],
     );
   }
 
-  Widget _logOut() {
-    return IconButton(
-      splashColor: Colors.grey,
-      onPressed: () async {
-        await FirebaseAuth.instance.signOut();
 
-      },
-      icon: Icon(
-        Icons.outbox,
-        size: 20.0,
-      ),
-    );
-  }
+      Widget _googleButton() {
+        return IconButton(
+          splashColor: Colors.grey,
+          onPressed: () async {
+            await signInWithGoogle();
+          },
+          icon: new Image.asset("assets/login/google.png"),
+        );
+      }
 
 
+      void signInWithGoogle() async {
+        // Trigger the authentication flow
+        try {
+          final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
 
-  Widget _googleButton() {
-    return IconButton(
-      splashColor: Colors.grey,
-      onPressed: () async {
-        await signInWithGoogle();
+          // Obtain the auth details from the request
+          final GoogleSignInAuthentication googleAuth = await googleUser
+              .authentication;
 
-      },
-        icon: new Image.asset("assets/login/google.png"),
-    );
-  }
+          // Create a new credential
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth.accessToken,
+            idToken: googleAuth.idToken,
+          );
 
+          // Once signed in, return the UserCredential
+          await FirebaseAuth.instance.signInWithCredential(credential);
 
-  void signInWithGoogle() async {
-    // Trigger the authentication flow
-    try{
-      final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(credential);
-
-      Get.to(myPage());
-    }catch (e){
-      print("login error");
+          Get.to(myPage());
+        } catch (e) {
+          print("login error");
+        }
+      }
     }
 
-  }
-
-}
