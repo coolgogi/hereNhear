@@ -488,7 +488,6 @@ class _FeedPageState extends State<FeedPage> {
         print('dataList[i]: ${dataList[i].toString()}');
         print('uid: ${uid}');
         if ((keyList[i] == "uid") || (keyList[i].contains('like_user'))){
-          print('ooooooooooooooooooooooooooooooooooooooooooooooooooo');
           continue;
         }
         return Icon(Icons.star, color: Colors.yellow);
