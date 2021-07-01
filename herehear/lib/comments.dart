@@ -259,7 +259,6 @@ class _CommentPageState extends State<CommentPage> {
                             }
                           }
 
-                          // 변경가능.
                           if (flag == true){
                             print("변경가능");
 
