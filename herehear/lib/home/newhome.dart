@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:herehear/createRoom.dart';
 import 'package:herehear/help/search.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,8 +15,8 @@ class HomePage extends StatelessWidget {
         title: Text('Herehear'),
         actions: <Widget>[
           IconButton(
-              onPressed: null,
-              color: Colors.black87,
+              onPressed: _showMyDialog,
+              color: Colors.amber,
               icon: Icon(Icons.add_circle)),
           IconButton(
               onPressed: null,
@@ -115,6 +117,27 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+
+  Future<void> _showMyDialog() async {
+    return Get.defaultDialog(
+          title: '소리 시작하기',
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                TextButton(
+                  child: Text('개인 라이브', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                  onPressed: () => Get.off(CreateRoomPage()),
+                ),
+                TextButton(
+                  child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                  onPressed: () => Get.off(CreateRoomPage()),
+                ),
+              ],
+            ),
+          ),
     );
   }
 }
