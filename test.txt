@@ -4,11 +4,15 @@ hello world
 hello world
 hello world
 hello world2
-suhyun-from window
-휴 15학번 너무 힘들다... 깃도...ㅜㅜㅜ
-ggjuck.. ggjuck.. from Gyeongsu :)
+for webRTC
+
+webRTC example completed but ...
+
+flutter-webRTC-demo 예제를 했지만,,,
+host 만 두 화면 다 보이고 client는 본인 화면밖에 보이지 않는다.
 
 휴 정말 박수현학우님... 진짜 마스크 좀 써주세요!
 스미마셍 디스이즈 폴 캠프!
 sorry.....
 잘썼는디,,
+
