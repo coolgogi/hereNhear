@@ -7,4 +7,7 @@ hello world2
 for webRTC
 
 
-webRTC example not complete
+webRTC example completed but ...
+
+flutter-webRTC-demo 예제를 했지만,,,
+host 만 두 화면 다 보이고 client는 본인 화면밖에 보이지 않는다.
