@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'home/home.dart';
+import 'home/newhome.dart';
 import 'myPage/mypage.dart';
 import 'upload.dart';
 import 'login/login.dart';
@@ -167,7 +168,7 @@ class LandingPage extends StatelessWidget {
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
-              Home(),
+              HomePage(),
               Container(),
               chatList(),
               myPage(),
