@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
+import 'package:herehear/classification.dart';
+import 'package:herehear/savedChannel.dart';
 import 'home/home.dart';
 import 'home/newhome.dart';
 import 'myPage/mypage.dart';
@@ -65,11 +67,12 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    if (index == 1) {
-      Get.toNamed('/upload');
-    } else {
-      tabIndex.value = index;
-    }
+    // if (index == 1) {
+    //   Get.toNamed('/upload');
+    // } else {
+    //   tabIndex.value = index;
+    // }
+    tabIndex.value = index;
   }
 
   @override
@@ -123,11 +126,11 @@ class LandingPage extends StatelessWidget {
                 icon: Container(
                   margin: EdgeInsets.only(bottom: 7),
                   child: Icon(
-                    Icons.add_box_rounded,
+                    Icons.star,
                     size: 20.0,
                   ),
                 ),
-                label: 'Writing',
+                label: 'Subscribed',
                 backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
               ),
               BottomNavigationBarItem(
@@ -169,8 +172,9 @@ class LandingPage extends StatelessWidget {
             index: landingPageController.tabIndex.value,
             children: [
               HomePage(),
-              Container(),
-              chatList(),
+              SavedChannelPage(),
+              ClassificationPage(),
+              // chatList(),
               myPage(),
             ],
           )),

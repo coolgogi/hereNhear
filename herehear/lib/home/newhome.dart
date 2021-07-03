@@ -4,9 +4,9 @@ import 'package:herehear/createRoom.dart';
 import 'package:herehear/help/search.dart';
 
 class HomePage extends StatelessWidget {
-  String uid;
-
-  HomePage({this.uid});
+  // String uid;
+  //
+  // HomePage({this.uid});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
           Text(
-            'Live',
+            '실시간 소리',
             style: TextStyle(fontSize: 20),
           ),
           Padding(
@@ -116,6 +116,12 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
+        label: Text('새로 고침', style: TextStyle(color: Colors.black87,),),
+        backgroundColor: Colors.white,
       ),
     );
   }
