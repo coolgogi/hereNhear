@@ -36,6 +36,7 @@ dependencies:
   smart_select: ^4.3.2
   comment_box: ^0.0.16
   flutter_pagewise: ^2.0.1
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
