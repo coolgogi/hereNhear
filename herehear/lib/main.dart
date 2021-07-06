@@ -6,7 +6,7 @@ import 'package:herehear/chatting/chatList.dart';
 import 'home/home.dart';
 import 'myPage/mypage.dart';
 import 'upload.dart';
-import 'login/login.dart';
+import 'login/signIn.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/login',
-          page: () => Login(),
+          page: () => LoginPage(),
         )
       ],
     );
