@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../login/login.dart';
+import '../login/signIn.dart';
 
 class myPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -22,6 +22,9 @@ class myPage extends StatelessWidget {
                 _divier(),
                 ListTile(
                   title: Text('회원정보 수정'),
+                  onTap: () {
+                    Get.to(LoginPage());
+                  },
                 ),
                 ListTile(
                   title: Text('로그아웃'),
@@ -30,35 +33,7 @@ class myPage extends StatelessWidget {
                   },
                 ),
                 _divier(),
-                ListTile(
-                  title: Text(
-                    '실험실',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
-                  ),
-                ),
-                ListTile(
-                  title: Text('현재 버전'),
-                  onTap: () {
-                    Get.to(Login());
-                  },
-                ),
-                ListTile(
-                  title: Text('설정'),
-                ),
-                _divier(),
-                ListTile(
-                  title: Text(
-                    '고객센터',
-                    style: TextStyle(fontSize: 10, color: Colors.grey),
-                  ),
-                ),
-                ListTile(
-                  title: Text('공지사항'),
-                ),
-                ListTile(
-                  title: Text('앱 문의 건의'),
-                ),
-                _divier(),
+
                 _info(),
               ],
             )));
