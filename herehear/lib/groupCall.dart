@@ -7,24 +7,24 @@ import 'package:http/http.dart' as http;
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
-class CallPage extends StatefulWidget {
+class GroupCallPage extends StatefulWidget {
   final String channelName;
 
-  const CallPage({required this.channelName});
+  const GroupCallPage({this.channelName});
 
 
   @override
-  _CallPageState createState() => _CallPageState();
+  _GroupCallPageState createState() => _GroupCallPageState();
 }
 
-class _CallPageState extends State<CallPage> {
+class _GroupCallPageState extends State<GroupCallPage> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-  RtcEngine? _engine;
+  RtcEngine _engine;
   String baseUrl = 'http://10.0.2.2'; //Add the link to your deployed server here
   int uid = 0;
-  String? token;
+  String token;
 
   Future<void> getToken() async {
     final response = await http.get(
@@ -37,7 +37,7 @@ class _CallPageState extends State<CallPage> {
     if (response.statusCode == 200) {
       setState(() {
         token = response.body;
-        token = jsonDecode(token!)['rtcToken'];
+        token = jsonDecode(token)['rtcToken'];
         print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: $token');
       });
     } else {

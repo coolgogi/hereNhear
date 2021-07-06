@@ -37,6 +37,8 @@ dependencies:
   comment_box: ^0.0.16
   flutter_pagewise: ^2.0.1
   http: ^0.13.3
+  permission_handler: ^8.1.2
+  agora_rtc_engine: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,8 @@ flutter:
   assets:
     - assets/login/google.png
     - assets/suhyun.jpg
+    - assets/images/me.jpg
+    - assets/images/you.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

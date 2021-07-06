@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/createGroupCall.dart';
 import 'package:herehear/createRoom.dart';
 import 'package:herehear/help/search.dart';
+
 
 class HomePage extends StatelessWidget {
   // String uid;
@@ -139,7 +141,7 @@ class HomePage extends StatelessWidget {
                 ),
                 TextButton(
                   child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
-                  onPressed: () => Get.off(CreateRoomPage()),
+                  onPressed: () => Get.off(CreateGroupCallPage()),
                 ),
               ],
             ),
