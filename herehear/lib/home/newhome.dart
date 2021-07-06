@@ -38,14 +38,14 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(child: Container()),
-              IconButton(onPressed: null, icon: Icon(Icons.autorenew))
-            ],
-          ),
+          // Row(
+          //   children: <Widget>[
+          //     Expanded(child: Container()),
+          //     IconButton(onPressed: null, icon: Icon(Icons.autorenew))
+          //   ],
+          // ),
           Text(
             '실시간 소리',
             style: TextStyle(fontSize: 20),
