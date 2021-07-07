@@ -25,11 +25,13 @@ class AgoraEventController extends GetxController {
   @override
   void onClose() {
     // clear users
+    print('asdf');
     users.clear();
     // destroy sdk
-    _engine?.leaveChannel();
-    _engine?.destroy();
+    _engine?.leaveChannel().obs;
+    _engine?.destroy().obs;
     super.onClose();
+    print('dfghjkjhgfdfghjhgfd');
   }
 
   Future<void> initialize() async {
@@ -44,6 +46,7 @@ class AgoraEventController extends GetxController {
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
     await _engine.enableAudioVolumeIndication(250, 3, true);
+    print("ggggggggggggggggggggggggggggg");
 
     // await getToken();
     // print('token : $token');
@@ -101,7 +104,7 @@ class AgoraEventController extends GetxController {
   }
 
   void onToggleMute() {
-    muted = (!muted.value).obs;
+    muted.value = !muted.value;
     _engine?.muteLocalAudioStream(muted.value);
   }
 
