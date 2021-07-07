@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../utils/AppID.dart';
+import 'utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:http/http.dart' as http;
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -12,7 +12,6 @@ class GroupCallPage extends StatefulWidget {
 
   const GroupCallPage({this.channelName});
 
-
   @override
   _GroupCallPageState createState() => _GroupCallPageState();
 }
@@ -22,16 +21,21 @@ class _GroupCallPageState extends State<GroupCallPage> {
   final _infoStrings = <String>[];
   bool muted = false;
   RtcEngine _engine;
-  String baseUrl = 'http://10.0.2.2'; //Add the link to your deployed server here
+  String baseUrl =
+      'http://10.0.2.2'; //Add the link to your deployed server here
   int uid = 0;
   String token;
 
   Future<void> getToken() async {
     final response = await http.get(
-      Uri.parse(baseUrl + '/rtc/' + widget.channelName + '/publisher/uid/' + uid.toString()
+      Uri.parse(baseUrl +
+          '/rtc/' +
+          widget.channelName +
+          '/publisher/uid/' +
+          uid.toString()
           // To add expiry time uncomment the below given line with the time in seconds
-          + '?expiry=45'
-      ),
+          +
+          '?expiry=45'),
     );
 
     if (response.statusCode == 200) {
@@ -214,18 +218,30 @@ class _GroupCallPageState extends State<GroupCallPage> {
   // }
   List<Widget> _getRenderViews() {
     final List<Widget> list = [];
-    list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    list.add(Image(
+      image: AssetImage('assets/images/me.jpg'),
+      width: 150,
+      height: 150,
+    ));
     //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
     _users.forEach((int uid) {
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
-      list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
+      list.add(Image(
+        image: AssetImage('assets/images/you.png'),
+        width: 150,
+        height: 150,
+      ));
     });
     return list;
   }
 
   /// Video view wrapper
   Widget _videoView(view) {
-    return Expanded(child: Container(child: Center(child: view,)));
+    return Expanded(
+        child: Container(
+            child: Center(
+      child: view,
+    )));
   }
 
   /// Video view row wrapper
@@ -245,34 +261,34 @@ class _GroupCallPageState extends State<GroupCallPage> {
       case 1:
         return Container(
             child: Column(
-              children: <Widget>[_videoView(views[0])],
-            ));
+          children: <Widget>[_videoView(views[0])],
+        ));
       case 2:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow([views[0]]),
-                _expandedVideoRow([views[1]])
-                // views[0],
-                // views[1]
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow([views[0]]),
+            _expandedVideoRow([views[1]])
+            // views[0],
+            // views[1]
+          ],
+        ));
       case 3:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 3))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 3))
+          ],
+        ));
       case 4:
         return Container(
             child: Column(
-              children: <Widget>[
-                _expandedVideoRow(views.sublist(0, 2)),
-                _expandedVideoRow(views.sublist(2, 4))
-              ],
-            ));
+          children: <Widget>[
+            _expandedVideoRow(views.sublist(0, 2)),
+            _expandedVideoRow(views.sublist(2, 4))
+          ],
+        ));
       default:
     }
     return Container();
