@@ -150,7 +150,7 @@ class ClassificationPage extends StatelessWidget {
                               style: TextStyle(fontSize: 17),),
                             SizedBox(height: 5,),
                             Text(
-                              '같이 대화하면서 놀아요!!',
+                              '~~~~',
                               style: TextStyle(fontSize: 12),)
                           ],
                         ),
