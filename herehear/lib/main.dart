@@ -67,11 +67,6 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    // if (index == 1) {
-    //   Get.toNamed('/upload');
-    // } else {
-    //   tabIndex.value = index;
-    // }
     tabIndex.value = index;
   }
 

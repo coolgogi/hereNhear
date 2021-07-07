@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/createGroupCall.dart';
 import 'package:herehear/createRoom.dart';
 import 'package:herehear/help/search.dart';
+
 
 class HomePage extends StatelessWidget {
   // String uid;
@@ -38,14 +40,14 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(child: Container()),
-              IconButton(onPressed: null, icon: Icon(Icons.autorenew))
-            ],
-          ),
+          // Row(
+          //   children: <Widget>[
+          //     Expanded(child: Container()),
+          //     IconButton(onPressed: null, icon: Icon(Icons.autorenew))
+          //   ],
+          // ),
           Text(
             '실시간 소리',
             style: TextStyle(fontSize: 20),
@@ -139,7 +141,7 @@ class HomePage extends StatelessWidget {
                 ),
                 TextButton(
                   child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
-                  onPressed: () => Get.off(CreateRoomPage()),
+                  onPressed: () => Get.off(CreateGroupCallPage()),
                 ),
               ],
             ),
