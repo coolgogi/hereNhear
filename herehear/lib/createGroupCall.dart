@@ -121,7 +121,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     await _handleCameraAndMic(Permission.microphone);
 
 
-    Get.to(GroupCallPage(channelName: myController.text));
+    Get.to(GroupCallPage(), arguments: myController.text);
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
