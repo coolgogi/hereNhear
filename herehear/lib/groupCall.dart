@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class GroupCallPage extends StatefulWidget {
   final String channelName;
 
-  const GroupCallPage({this.channelName});
+  const GroupCallPage({required this.channelName});
 
   @override
   _GroupCallPageState createState() => _GroupCallPageState();
@@ -20,11 +20,11 @@ class _GroupCallPageState extends State<GroupCallPage> {
   static final _users = <int>[];
   final _infoStrings = <String>[];
   bool muted = false;
-  RtcEngine _engine;
+  late RtcEngine _engine;
   String baseUrl =
       'http://10.0.2.2'; //Add the link to your deployed server here
   int uid = 0;
-  String token;
+  late String token;
 
   Future<void> getToken() async {
     final response = await http.get(
