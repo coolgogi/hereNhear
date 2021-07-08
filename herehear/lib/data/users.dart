@@ -9,19 +9,16 @@ class UserModel {
   String number;
   List<dynamic> subscribe;
 
-
-
   UserModel(
-      {
-        this.uID,
-        this.ID,
-        this.password,
-        this.nickName,
-        this.name,
-        this.age,
-        this.profile,
-        this.number,
-        this.subscribe});
+      {required this.uID,
+      required this.ID,
+      required this.password,
+      required this.nickName,
+      required this.name,
+      required this.age,
+      required this.profile,
+      required this.number,
+      required this.subscribe});
 }
 
 List<UserModel> movies = [
@@ -35,7 +32,6 @@ List<UserModel> movies = [
     profile: 'assets/suheyon.jpg',
     number: '010-6333-5813',
     subscribe: ['2'],
-
   ),
   UserModel(
     uID: 'uid2',
@@ -46,5 +42,6 @@ List<UserModel> movies = [
     profile: 'assets/gyeongsu.jpg',
     number: '010-6467-1453',
     subscribe: ['1'],
+    nickName: 'Captain Jang',
   ),
 ];

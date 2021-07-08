@@ -10,7 +10,7 @@ var whiteText = Color(0xffF5F5F5);
 
 class PostSearchDelegate extends SearchDelegate {
   var suggestion = [];
-  List<String> searchResult = List();
+  List<String> searchResult = List.filled(0, '');
 
   Future getPostData() async {
     // allNames = await user_tag;
@@ -63,35 +63,33 @@ class PostSearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     return Expanded(
         child: StreamBuilder<QuerySnapshot>(
-          stream: (query == null || query.trim() == "")
-              ? FirebaseFirestore.instance.collection("posts")
-              .snapshots()
-              : FirebaseFirestore.instance.collection("posts")
+      stream: (query == null || query.trim() == "")
+          ? FirebaseFirestore.instance.collection("posts").snapshots()
+          : FirebaseFirestore.instance
+              .collection("posts")
               .where("searchIndex", arrayContains: query)
               .snapshots(),
-          builder: (context, snapshot){
-            if (snapshot.hasError)
-              return Text('Error: ${snapshot.error}');
-            switch (snapshot.connectionState){
-              case ConnectionState.waiting:
-                return Center(child: CircularProgressIndicator());
-              default:
-                return new ListView(
-                  // children: snapshot.data.docs.map((DocumentSnapshot document){
-                  //   return new ListTile(
-                  //     leading: CircleAvatar(
-                  //       backgroundImage: NetworkImage(
-                  //           document["imageURL"]
-                  //       ),
-                  //     ),
-                  //     title: new Text(document['description']),
-                  //     onTap: null,
-                  //   );
-                  // }).toList(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());
+          default:
+            return new ListView(
+                // children: snapshot.data.docs.map((DocumentSnapshot document){
+                //   return new ListTile(
+                //     leading: CircleAvatar(
+                //       backgroundImage: NetworkImage(
+                //           document["imageURL"]
+                //       ),
+                //     ),
+                //     title: new Text(document['description']),
+                //     onTap: null,
+                //   );
+                // }).toList(),
                 );
-            }
-          },
-        )
-    );
+        }
+      },
+    ));
   }
 }

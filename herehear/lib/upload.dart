@@ -12,9 +12,9 @@ class UploadPage extends StatefulWidget {
 class _UploadPageState extends State<UploadPage> {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  String _CategoryValue;
+  late String _CategoryValue;
   final FirebaseAuth auth = FirebaseAuth.instance;
-  String uid;
+  late String uid;
 
   @override
   initState() {
@@ -22,8 +22,8 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   Future input() async {
-    final User user = auth.currentUser;
-    uid = user.uid;
+    final User? user = auth.currentUser;
+    uid = user!.uid;
   }
 
   Future uploadToFirebase() async {
@@ -80,29 +80,31 @@ class _UploadPageState extends State<UploadPage> {
         children: <Widget>[
           Row(
             children: <Widget>[
-              SizedBox(width: MediaQuery.of(context).size.width * 0.65,),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.65,
+              ),
               DropdownButton(
                 hint: _CategoryValue == null
                     ? Text('카테고리')
                     : Text(
-                  _CategoryValue,
-                  style: TextStyle(color: Colors.black87),
-                ),
+                        _CategoryValue,
+                        style: TextStyle(color: Colors.black87),
+                      ),
                 // isExpanded: true,
                 iconSize: 30.0,
                 style: TextStyle(color: Colors.black87),
                 items: ['한동대학교 공지', '총학생회', '자치회', '동아리', '한동장터', '분실물'].map(
-                      (val) {
+                  (val) {
                     return DropdownMenuItem<String>(
                       value: val,
                       child: Text(val),
                     );
                   },
                 ).toList(),
-                  onChanged: (val) {
-                  setState(()
-                    {
-                      _CategoryValue = val;
+                onChanged: (val) {
+                  setState(
+                    () {
+                      _CategoryValue = val.toString();
                     },
                   );
                 },
