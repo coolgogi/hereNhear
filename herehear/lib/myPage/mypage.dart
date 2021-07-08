@@ -21,7 +21,7 @@ class myPage extends StatelessWidget {
                 _profile(),
                 _divier(),
                 ListTile(
-                  title: Text('회원정보 수정'),
+                  title: Text('로그인 페이지'),
                   onTap: () {
                     Get.to(LoginPage());
                   },
