@@ -4,12 +4,11 @@ import 'package:herehear/createGroupCall.dart';
 import 'package:herehear/createRoom.dart';
 import 'package:herehear/help/search.dart';
 
-
 class HomePage extends StatelessWidget {
   // String uid;
   //
   // HomePage({this.uid});
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +31,7 @@ class HomePage extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                PostSearchDelegate(),
+                delegate: PostSearchDelegate(),
               );
             },
           ),
@@ -57,17 +55,15 @@ class HomePage extends StatelessWidget {
             child: Container(
               height: 100.0,
               child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: List.generate(10, (int index) {
-                  return Card(
-                    child: Container(
+                  scrollDirection: Axis.horizontal,
+                  children: List.generate(10, (int index) {
+                    return Card(
+                        child: Container(
                       width: 110.0,
                       height: 80.0,
-                      child: Center(child: Text("${index+1} 라이브")),
-                    )
-                  );
-                })
-              ),
+                      child: Center(child: Text("${index + 1} 라이브")),
+                    ));
+                  })),
             ),
           ),
           Text(
@@ -78,56 +74,64 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
             child: Column(
               children: List.generate(15, (int index) {
-                    return Card(
+                return Card(
+                    child: Container(
+                  // width: MediaQuery.of(context).size.width,
+                  height: 80.0,
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 13.0, right: 13.0),
                         child: Container(
-                          // width: MediaQuery.of(context).size.width,
-                          height: 80.0,
-                          child: Row(
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.only(left: 13.0, right: 13.0),
-                                child: Container(
-                                  width: 50.0,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.amber,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      '${index+1} 번째 대화방입니다~',
-                                      style: TextStyle(fontSize: 17),),
-                                    SizedBox(height: 5,),
-                                    Text(
-                                      '같이 대화하면서 놀아요!!',
-                                      style: TextStyle(fontSize: 12),)
-                                  ],
-                                ),
-                              )
-                            ],
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            shape: BoxShape.circle,
                           ),
-                        )
-                    );
-                  }),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '${index + 1} 번째 대화방입니다~',
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              '같이 대화하면서 놀아요!!',
+                              style: TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ));
+              }),
             ),
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-        label: Text('새로 고침', style: TextStyle(color: Colors.black87,),),
+        label: Text(
+          '새로 고침',
+          style: TextStyle(
+            color: Colors.black87,
+          ),
+        ),
         backgroundColor: Colors.white,
       ),
     );
   }
-
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
@@ -145,7 +149,16 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+            TextButton(
+              child: Text(
+                '그룹 대화',
+                style: TextStyle(fontSize: 18, color: Colors.black87),
+              ),
+              onPressed: () => Get.off(CreateGroupCallPage()),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

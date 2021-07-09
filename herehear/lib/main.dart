@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -5,29 +6,25 @@ import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/classification.dart';
 import 'package:herehear/savedChannel.dart';
-import 'home/home.dart';
-import 'home/newhome.dart';
-import 'myPage/mypage.dart';
-import 'upload.dart';
-import 'login/signIn.dart';
+import 'package:herehear/home/newhome.dart';
+import 'package:herehear/myPage/mypage.dart';
+import 'package:herehear/upload.dart';
+import 'package:herehear/login/signIn.dart';
+import 'package:herehear/chatting/ChatPage.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  final FirebaseAuth fAuth = FirebaseAuth.instance;
-  try {
-    await fAuth.signInWithEmailAndPassword(
-        email: '21500614@handong.edu', password: '123456');
+void main() => runApp(App());
 
-    print("======email======");
-    print(fAuth.currentUser.email);
-    print("======email======");
-  } catch (e) {
-    print("============error============");
-    print(e);
-    print("============error============");
+class App extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      // Initialize FlutterFire
+      future: Firebase.initializeApp(),
+      builder: (context, snapshot) {
+        return MyApp();
+      },
+    );
   }
-  await runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -67,11 +64,6 @@ class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
 
   void changeTabIndex(int index) {
-    // if (index == 1) {
-    //   Get.toNamed('/upload');
-    // } else {
-    //   tabIndex.value = index;
-    // }
     tabIndex.value = index;
   }
 
@@ -173,11 +165,17 @@ class LandingPage extends StatelessWidget {
             children: [
               HomePage(),
               SavedChannelPage(),
-              ClassificationPage(),
+              ChatPage(),
+              // ClassificationPage(),
               // chatList(),
               myPage(),
             ],
           )),
     ));
+  }
+
+  Future<int> initialize() async {
+    await Firebase.initializeApp();
+    return 0;
   }
 }
