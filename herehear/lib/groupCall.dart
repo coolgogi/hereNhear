@@ -13,8 +13,8 @@ class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;
-  var speakingUser = <int>[].obs;
-  RtcEngine _engine;
+  RxList<int?> speakingUser = <int?>[].obs;
+  RtcEngine? _engine;
   var activeSpeaker = 10.obs;
 
   @override
@@ -44,7 +44,7 @@ class AgoraEventController extends GetxController {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
-    await _engine.enableAudioVolumeIndication(250, 2, true);
+    await _engine?.enableAudioVolumeIndication(250, 2, true);
     print("ggggggggggggggggggggggggggggg");
 
     // await getToken();
@@ -94,6 +94,7 @@ class AgoraEventController extends GetxController {
       audioVolumeIndication: (speakers, totalVolume) {
         speakingUser.clear();
         speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
+        // speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
         // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
 
         print('*************************: ${speakingUser.isEmpty? null : speakingUser}');
@@ -157,18 +158,18 @@ class GroupCallPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Obx(
-              () => RawMaterialButton(
-                onPressed: controller.onToggleMute,
-                child: Icon(
-                  controller.muted.value ? Icons.mic_off : Icons.mic,
-                  color: controller.muted.value ? Colors.white : Colors.blueAccent,
-                  size: 20.0,
-                ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: controller.muted.value ? Colors.blueAccent : Colors.white,
-                padding: const EdgeInsets.all(12.0),
+                () => RawMaterialButton(
+              onPressed: controller.onToggleMute,
+              child: Icon(
+                controller.muted.value ? Icons.mic_off : Icons.mic,
+                color: controller.muted.value ? Colors.white : Colors.blueAccent,
+                size: 20.0,
               ),
+              shape: CircleBorder(),
+              elevation: 2.0,
+              fillColor: controller.muted.value ? Colors.blueAccent : Colors.white,
+              padding: const EdgeInsets.all(12.0),
+            ),
           ),
           RawMaterialButton(
             onPressed: () => _onCallEnd(),
@@ -208,10 +209,10 @@ class GroupCallPage extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Center(
         child: Stack(
-            children: <Widget>[
+          children: <Widget>[
             Obx(() =>_viewRows()),
             _toolbar(),
-            ],
+          ],
         ),
       ),
     );
@@ -280,11 +281,11 @@ class GroupCallPage extends StatelessWidget {
       for(int i = 0; i < controller.speakingUser.length; i++) {
         if(uid == controller.speakingUser[i]) {
           list.add(Container( decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.lightGreen,
-                  width: 2,
-                ),
-              ),
+            border: Border.all(
+              color: Colors.lightGreen,
+              width: 2,
+            ),
+          ),
               child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
           flag = true;
           break;

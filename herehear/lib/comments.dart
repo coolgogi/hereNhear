@@ -7,13 +7,16 @@ import 'package:get/get.dart';
 class CommentPage extends StatefulWidget {
   var doc;
   String uid;
-  String docUserName;
-  String docUserPhotoURL;
-  String currentUserDisplayName = '';
-  String currentUserPhotoURL = '';
+  String? docUserName;
+  String? docUserPhotoURL;
+  String? currentUserDisplayName = '';
+  String? currentUserPhotoURL = '';
   var user_tag;
 
-  CommentPage({this.doc, this.uid,});
+  CommentPage({
+    this.doc,
+    required this.uid,
+  });
 
   @override
   _CommentPageState createState() => _CommentPageState(doc, uid);
@@ -22,13 +25,13 @@ class CommentPage extends StatefulWidget {
 class _CommentPageState extends State<CommentPage> {
   var doc;
   String uid;
-  String docUserName;
-  String docUserPhotoURL;
+  String? docUserName;
+  String? docUserPhotoURL;
   var user_tag;
 
   // final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
-  QueryDocumentSnapshot<Map<String, dynamic>> docComment;
+  QueryDocumentSnapshot<Map<String, dynamic>>? docComment;
   String displayName = '';
   String userPhotoURL = '';
   var userDoc;
@@ -39,7 +42,6 @@ class _CommentPageState extends State<CommentPage> {
 
   _CommentPageState(this.doc, this.uid);
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -47,38 +49,45 @@ class _CommentPageState extends State<CommentPage> {
     // getCurrentUserData();
   }
 
-  void deleteDoc(var commentDoc) async {
+  Future<int> deleteDoc(var commentDoc) async {
     try {
-      await FirebaseFirestore.instance.collection('posts').doc(doc['docID']).collection('comments').doc(commentDoc['docID']).delete();
+      await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(doc['docID'])
+          .collection('comments')
+          .doc(commentDoc['docID'])
+          .delete();
       print('댓글 삭제 완료!');
       setState(() {
         reloadFlag += 1;
       });
-    } catch(e) {
+    } catch (e) {
       print('권한 없음');
       print(e);
     }
+    return 0;
   }
-
 
   @override
   Widget build(BuildContext context) {
     print("????: $currentUserPhotoURL");
-    Future.delayed(Duration(milliseconds: 500),(){
-    });
+    Future.delayed(Duration(milliseconds: 500), () {});
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme
-              .of(context)
-              .colorScheme
-              .primary,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.primary,
+          ),
           onPressed: () {
             Get.back();
           },
         ),
         centerTitle: true,
-        title: Text('댓글', style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),),
+        title: Text(
+          '댓글',
+          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Container(
         child: CommentBox(
@@ -98,18 +107,18 @@ class _CommentPageState extends State<CommentPage> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: NetworkImage(docUserPhotoURL),
-                                fit: BoxFit.fill
-                            ),
+                                image: NetworkImage(docUserPhotoURL!),
+                                fit: BoxFit.fill),
                           ),
                         ),
                       ),
-                      Text('$docUserName',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
+                      Text(
+                        '$docUserName',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
                       Expanded(child: Container()),
-                      IconButton(
-                          icon: Icon(Icons.more_horiz),
-                          onPressed: null)
+                      IconButton(icon: Icon(Icons.more_horiz), onPressed: null)
                     ],
                   ),
                   Column(
@@ -126,21 +135,31 @@ class _CommentPageState extends State<CommentPage> {
                           style: TextStyle(fontSize: 15),
                         ),
                       ),
-                      SizedBox(height: 30,),
+                      SizedBox(
+                        height: 30,
+                      ),
                     ],
                   ),
                   Divider(),
                 ],
               ),
               StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection("posts")
-                      .doc(doc['docID']).collection('comments').snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  stream: FirebaseFirestore.instance
+                      .collection("posts")
+                      .doc(doc['docID'])
+                      .collection('comments')
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) return Text("There is no expense");
                     return FutureBuilder(
-                        future: FirebaseFirestore.instance.collection("users").get(),
-                        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot2) {
-                          if(!snapshot2.hasData) return Container();
+                        future: FirebaseFirestore.instance
+                            .collection("users")
+                            .get(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                                snapshot2) {
+                          if (!snapshot2.hasData) return Container();
                           print("댓글 다는 유저: ${currentUserDisplayName}");
 
                           return SingleChildScrollView(
@@ -149,15 +168,14 @@ class _CommentPageState extends State<CommentPage> {
                                 ListView(
                                   scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
-                                  children: commentList(context, snapshot, snapshot2),
+                                  children:
+                                      commentList(context, snapshot, snapshot2),
                                 ),
                               ],
                             ),
                           );
-                        }
-                    );
-                  }
-              ),
+                        });
+                  }),
             ],
           ),
           labelText: '댓글을 입력하세요..',
@@ -170,11 +188,11 @@ class _CommentPageState extends State<CommentPage> {
 
             Map<String, dynamic> data = {
               // 'type': _results.first["label"],
-              'message' : commentController.text,
-              'uid' : uid,
-              'displayname' : currentUserDisplayName,
-              'userPhotoURL' : currentUserPhotoURL,
-              'likeNum' : 0,
+              'message': commentController.text,
+              'uid': uid,
+              'displayname': currentUserDisplayName,
+              'userPhotoURL': currentUserPhotoURL,
+              'likeNum': 0,
               'docID': docID,
               'generatedTime': now,
               'updatedTime': '',
@@ -200,21 +218,26 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 
-  commentList(BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot1, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot2) {
-    try{
-      return snapshot1.data.docs
-          .map((doc2) {
+  commentList(BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot1,
+      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot2) {
+    try {
+      return snapshot1.data!.docs.map((doc2) {
         if (snapshot1.connectionState == ConnectionState.waiting) {
           return Center(
             child: Text("Loading..."),
           );
         } else {
-          userDoc = snapshot2.data.docs.toList().where((element) => element['uid'] == doc2['uid']).single.data();
+          userDoc = snapshot2.data!.docs
+              .toList()
+              .where((element) => element['uid'] == doc2['uid'])
+              .single
+              .data();
           print('userDoc!!!: ${userDoc['displayname']}');
           print('user포토!!: ${userDoc['displayname']}');
           displayName = userDoc['displayname'];
           userPhotoURL = userDoc['userPhotoURL'];
-          Map<String, dynamic> dataMap = doc2.data();
+          Map<String, dynamic> dataMap = Map();
+          // = doc2.data();
           return ListTile(
             leading: Container(
               width: 40,
@@ -222,16 +245,17 @@ class _CommentPageState extends State<CommentPage> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: NetworkImage(userPhotoURL),
-                    fit: BoxFit.fill
-                ),
+                    image: NetworkImage(userPhotoURL), fit: BoxFit.fill),
               ),
             ),
             title: Column(
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Text(displayName, style: TextStyle(fontWeight: FontWeight.bold),),
+                    Text(
+                      displayName,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text(' ${doc2['message']}'),
                   ],
                 ),
@@ -246,11 +270,11 @@ class _CommentPageState extends State<CommentPage> {
                           var dataList = dataMap.values.toList();
                           var keyList = dataMap.keys.toList();
                           int tempLength = dataMap.length;
-                          for (int i = 0; i < tempLength; i++){
+                          for (int i = 0; i < tempLength; i++) {
                             print(dataList[i]);
 
-                            if (uid == dataList[i].toString()){
-                              if (keyList[i] == "uid"){
+                            if (uid == dataList[i].toString()) {
+                              if (keyList[i] == "uid") {
                                 continue;
                               }
                               flag = false;
@@ -259,7 +283,7 @@ class _CommentPageState extends State<CommentPage> {
                             }
                           }
 
-                          if (flag == true){
+                          if (flag == true) {
                             print("변경가능");
 
                             likeData(doc2);
@@ -269,28 +293,29 @@ class _CommentPageState extends State<CommentPage> {
                             });
 
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content : Text("I Like it !!"),
+                              content: Text("I Like it !!"),
                               duration: const Duration(seconds: 2),
-                            )
-                            );
-                          }
-                          else{
+                            ));
+                          } else {
                             print("변경불가");
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content : Text("You can only do it once !!"),
+                              content: Text("You can only do it once !!"),
                               duration: const Duration(seconds: 2),
-                            )
-                            );
+                            ));
                           }
                         }),
-                    SizedBox(width: 20,),
+                    SizedBox(
+                      width: 20,
+                    ),
                     TextButton(
-                      child: Text('삭제', style: TextStyle(color: Colors.grey),),
+                      child: Text(
+                        '삭제',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       onPressed: () async {
-                        if(doc2['uid'] == uid) {
+                        if (doc2['uid'] == uid) {
                           _showMyDialog(doc2);
-                        }
-                        else {
+                        } else {
                           final snackBar = SnackBar(
                             content: Text('댓글 작성자만 삭제할 수 있습니다.'),
                             duration: Duration(seconds: 1),
@@ -306,42 +331,53 @@ class _CommentPageState extends State<CommentPage> {
           );
         }
       }).toList();
-    } catch(error) {
+    } catch (error) {
       print('commentlist error!!');
       print(error);
     }
   }
 
-  Widget likeText(Map<String, dynamic> data, QueryDocumentSnapshot<Object> doc){
+  Widget likeText(
+      Map<String, dynamic> data, QueryDocumentSnapshot<Object?> doc) {
     var dataList = data.values.toList();
     var keyList = data.keys.toList();
     int tempLength = data.length;
-    for (int i = 0; i < tempLength; i++){
-
-      if (uid == dataList[i].toString()){
-        if (keyList[i] == "uid"){
+    for (int i = 0; i < tempLength; i++) {
+      if (uid == dataList[i].toString()) {
+        if (keyList[i] == "uid") {
           continue;
         }
-        return Text('좋아요 ${doc['likeNum']}개', style: TextStyle(color: Theme.of(context).colorScheme.primary),);
+        return Text(
+          '좋아요 ${doc['likeNum']}개',
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        );
         return Icon(Icons.favorite, color: Colors.red);
       }
     }
-    return Text('좋아요 ${doc['likeNum']}개', style: TextStyle(color: Colors.grey),);
+    return Text(
+      '좋아요 ${doc['likeNum']}개',
+      style: TextStyle(color: Colors.grey),
+    );
   }
 
-  likeData(QueryDocumentSnapshot<Object> doc2) async {
+  likeData(QueryDocumentSnapshot<Object?> doc2) async {
     String field_name = "like_user" + (doc2['likeNum'] + 1).toString();
     print(field_name);
 
     int likeNum = doc2['likeNum'] + 1;
 
-    FirebaseFirestore.instance.collection('posts').doc(doc['docID']).collection('comments').doc(doc2['docID']).update({
-      field_name : uid,
-      'likeNum' : likeNum,
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(doc['docID'])
+        .collection('comments')
+        .doc(doc2['docID'])
+        .update({
+      field_name: uid,
+      'likeNum': likeNum,
     }).whenComplete(() => print('완료!!'));
   }
 
-  Future<void> _showMyDialog(QueryDocumentSnapshot<Object> doc) async {
+  Future<void> _showMyDialog(QueryDocumentSnapshot<Object?> doc) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -376,4 +412,3 @@ class _CommentPageState extends State<CommentPage> {
     );
   }
 }
-
