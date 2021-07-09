@@ -26,7 +26,7 @@ class TestPage extends StatefulWidget {
 }
 
 class _TestPageState extends State<TestPage> {
-  late GoogleSignInAccount? _currentUser;
+  GoogleSignInAccount? _currentUser;
   String _contactText = '';
 
   @override
