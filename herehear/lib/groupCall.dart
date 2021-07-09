@@ -13,8 +13,9 @@ class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;
-  RxList<dynamic> speakingUser = [].obs;
+  var speakingUser = <int>[].obs;
   RtcEngine _engine;
+  var activeSpeaker = 10.obs;
 
   @override
   void onInit() { // called immediately after the widget is allocated memory
@@ -25,13 +26,11 @@ class AgoraEventController extends GetxController {
   @override
   void onClose() {
     // clear users
-    print('asdf');
     users.clear();
     // destroy sdk
     _engine?.leaveChannel().obs;
     _engine?.destroy().obs;
     super.onClose();
-    print('dfghjkjhgfdfghjhgfd');
   }
 
   Future<void> initialize() async {
@@ -45,7 +44,7 @@ class AgoraEventController extends GetxController {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
-    await _engine.enableAudioVolumeIndication(250, 3, true);
+    await _engine.enableAudioVolumeIndication(250, 2, true);
     print("ggggggggggggggggggggggggggggg");
 
     // await getToken();
@@ -93,9 +92,15 @@ class AgoraEventController extends GetxController {
         infoStrings.add(info);
       },
       audioVolumeIndication: (speakers, totalVolume) {
-        speakingUser = speakers.obs;
-        print('*************************: ${speakingUser.isEmpty? null : speakingUser.first.uid}');
+        speakingUser.clear();
+        speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
+        // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
+
+        print('*************************: ${speakingUser.isEmpty? null : speakingUser}');
       },
+      // activeSpeaker: (uid) {
+      //   activeSpeaker = uid.obs;
+      // }
       // tokenPrivilegeWillExpire: (token) async {
       //   await getToken();
       //   await _engine?.renewToken(token);
@@ -223,11 +228,71 @@ class GroupCallPage extends StatelessWidget {
   // }
   List<Widget> _getRenderViews() {
     final List<Widget> list = [];
+    // if(controller.activeSpeaker == 0) {
+    //   list.add(Container( decoration: BoxDecoration(
+    //     border: Border.all(
+    //       color: Colors.lightGreen,
+    //       width: 2,
+    //     ),
+    //   ),
+    //       child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
+    // }
+    // else list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    //
+    // controller.users.forEach((int uid) {
+    //   print('!!!!!!: $uid');
+    //     if(uid == controller.activeSpeaker) {
+    //       list.add(Container( decoration: BoxDecoration(
+    //         border: Border.all(
+    //           color: Colors.lightGreen,
+    //           width: 2,
+    //         ),
+    //       ),
+    //           child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
+    //     }
+    //     else
+    //       list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // });
+
+    // bool flag1 = false;
+    // for(int i = 0; i < controller.speakingUser.length; i++) {
+    //   if(controller.speakingUser[i] == 0) {
+    //     list.add(Container( decoration: BoxDecoration(
+    //       border: Border.all(
+    //         color: Colors.lightGreen,
+    //         width: 2,
+    //       ),
+    //     ),
+    //         child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
+    //     flag1 = true;
+    //     break;
+    //   }
+    // }
+    // if(flag1 != true)
+    //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
     list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
-    //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
+
     controller.users.forEach((int uid) {
+      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+      bool flag = false;
+      for(int i = 0; i < controller.speakingUser.length; i++) {
+        if(uid == controller.speakingUser[i]) {
+          list.add(Container( decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightGreen,
+                  width: 2,
+                ),
+              ),
+              child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
+          flag = true;
+          break;
+        }
+      }
+      if(flag != true)
+        list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
-      list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
     });
     return list;
   }

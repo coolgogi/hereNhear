@@ -137,11 +137,11 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 TextButton(
                   child: Text('개인 라이브', style: TextStyle(fontSize: 18, color: Colors.black87),),
-                  onPressed: () => Get.off(CreateRoomPage()),
+                  onPressed: () => Get.off(() => CreateRoomPage()),
                 ),
                 TextButton(
                   child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
-                  onPressed: () => Get.off(CreateGroupCallPage()),
+                  onPressed: () => Get.off(() => CreateGroupCallPage()),
                 ),
               ],
             ),
