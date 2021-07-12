@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'create/create_broadcast.dart';
-import 'help/search.dart';
+import '../appBar/create_broadcast.dart';
+import '../appBar/searchBar.dart';
 
-class ClassificationPage extends StatelessWidget {
+class searchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
