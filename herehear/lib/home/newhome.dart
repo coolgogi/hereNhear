@@ -135,16 +135,19 @@ class HomePage extends StatelessWidget {
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
-      title: '소리 시작하기',
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TextButton(
-              child: Text(
-                '개인 라이브',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(CreateRoomPage()),
+          title: '소리 시작하기',
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                TextButton(
+                  child: Text('개인 라이브', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                  onPressed: () => Get.off(() => CreateRoomPage()),
+                ),
+                TextButton(
+                  child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
+                  onPressed: () => Get.off(() => CreateGroupCallPage()),
+                ),
+              ],
             ),
             TextButton(
               child: Text(

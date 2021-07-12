@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -7,82 +7,51 @@ import 'package:http/http.dart' as http;
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
-class GroupCallPage extends StatefulWidget {
-  final String channelName;
 
-  const GroupCallPage({required this.channelName});
+class AgoraEventController extends GetxController {
 
-  @override
-  _GroupCallPageState createState() => _GroupCallPageState();
-}
+  var infoStrings = <String>[].obs;
+  var users = <int>[].obs;
+  RxBool muted = false.obs;
+  var speakingUser = <int>[].obs;
+  RtcEngine _engine;
+  var activeSpeaker = 10.obs;
 
-class _GroupCallPageState extends State<GroupCallPage> {
-  static final _users = <int>[];
-  final _infoStrings = <String>[];
-  bool muted = false;
-  late RtcEngine _engine;
-  String baseUrl =
-      'http://10.0.2.2'; //Add the link to your deployed server here
-  int uid = 0;
-  late String token;
-
-  Future<void> getToken() async {
-    final response = await http.get(
-      Uri.parse(baseUrl +
-          '/rtc/' +
-          widget.channelName +
-          '/publisher/uid/' +
-          uid.toString()
-          // To add expiry time uncomment the below given line with the time in seconds
-          +
-          '?expiry=45'),
-    );
-
-    if (response.statusCode == 200) {
-      setState(() {
-        token = response.body;
-        token = jsonDecode(token)['rtcToken'];
-        print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: $token');
-      });
-    } else {
-      print('Failed to fetch the token');
-    }
-  }
 
   @override
-  void dispose() {
-    // clear users
-    _users.clear();
-    // destroy sdk
-    _engine?.leaveChannel();
-    _engine?.destroy();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // initialize agora sdk
+  void onInit() { // called immediately after the widget is allocated memory
     initialize();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // clear users
+    users.clear();
+    // destroy sdk
+    _engine?.leaveChannel().obs;
+    _engine?.destroy().obs;
+    super.onClose();
   }
 
   Future<void> initialize() async {
     if (appID.isEmpty) {
-      setState(() {
-        _infoStrings.add(
-          'APP_ID missing, please provide your APP_ID in settings.dart',
-        );
-        _infoStrings.add('Agora Engine is not starting');
-      });
+      infoStrings.add(
+        'APP_ID missing, please provide your APP_ID in settings.dart',
+      );
+      infoStrings.add('Agora Engine is not starting');
       return;
     }
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
+    await _engine.enableAudioVolumeIndication(250, 2, true);
+    print("ggggggggggggggggggggggggggggg");
+
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine?.joinChannel(null, widget.channelName, null, 0);
+    await _engine?.joinChannel(null, GroupCallPage().channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -92,53 +61,93 @@ class _GroupCallPageState extends State<GroupCallPage> {
     await _engine?.enableAudio();
   }
 
+
   /// Add agora event handlers
   void _addAgoraEventHandlers() {
+    print('################################################################');
     _engine?.setEventHandler(RtcEngineEventHandler(
       error: (code) {
-        setState(() {
-          final info = 'onError: $code';
-          _infoStrings.add(info);
-        });
+        final info = 'onError: $code';
+        infoStrings.add(info);
       },
       joinChannelSuccess: (channel, uid, elapsed) {
-        setState(() {
-          final info = 'onJoinChannel: $channel, uid: $uid';
-          _infoStrings.add(info);
-        });
+        final info = 'onJoinChannel: $channel, uid: $uid';
+        infoStrings.add(info);
       },
       leaveChannel: (stats) {
-        setState(() {
-          _infoStrings.add('onLeaveChannel');
-          _users.clear();
-        });
+        infoStrings.add('onLeaveChannel');
+        users.clear();
       },
       userJoined: (uid, elapsed) {
-        setState(() {
-          final info = 'userJoined: $uid';
-          _infoStrings.add(info);
-          _users.add(uid);
-        });
+        final info = 'userJoined: $uid';
+        infoStrings.add(info);
+        users.add(uid);
       },
       userOffline: (uid, reason) {
-        setState(() {
-          final info = 'userOffline: $uid , reason: $reason';
-          _infoStrings.add(info);
-          _users.remove(uid);
-        });
+        final info = 'userOffline: $uid , reason: $reason';
+        infoStrings.add(info);
+        users.remove(uid);
       },
       firstRemoteVideoFrame: (uid, width, height, elapsed) {
-        setState(() {
-          final info = 'firstRemoteVideoFrame: $uid';
-          _infoStrings.add(info);
-        });
+        final info = 'firstRemoteVideoFrame: $uid';
+        infoStrings.add(info);
       },
-      tokenPrivilegeWillExpire: (token) async {
-        await getToken();
-        await _engine?.renewToken(token);
+      audioVolumeIndication: (speakers, totalVolume) {
+        speakingUser.clear();
+        speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
+        // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
+
+        print('*************************: ${speakingUser.isEmpty? null : speakingUser}');
       },
+      // activeSpeaker: (uid) {
+      //   activeSpeaker = uid.obs;
+      // }
+      // tokenPrivilegeWillExpire: (token) async {
+      //   await getToken();
+      //   await _engine?.renewToken(token);
+      // },
     ));
   }
+
+  void onToggleMute() {
+    muted.value = !muted.value;
+    _engine?.muteLocalAudioStream(muted.value);
+  }
+
+  void onSwitchCamera() {
+    _engine?.switchCamera();
+  }
+}
+
+
+class GroupCallPage extends StatelessWidget {
+  final String channelName = Get.arguments;
+
+  final controller = Get.put(AgoraEventController());
+  // static final _users = <int>[];
+  // final _infoStrings = <String>[];
+  // String baseUrl = 'http://10.0.2.2'; //Add the link to your deployed server here
+  // int uid = 0;
+  // String token;
+
+  // Future<void> getToken() async {
+  //   final response = await http.get(
+  //     Uri.parse(baseUrl + '/rtc/' + widget.channelName + '/publisher/uid/' + uid.toString()
+  //         // To add expiry time uncomment the below given line with the time in seconds
+  //         + '?expiry=45'
+  //     ),
+  //   );
+
+  //   if (response.statusCode == 200) {
+  //     setState(() {
+  //       token = response.body;
+  //       token = jsonDecode(token)['rtcToken'];
+  //       print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: $token');
+  //     });
+  //   } else {
+  //     print('Failed to fetch the token');
+  //   }
+  // }
 
   /// Toolbar layout
   Widget _toolbar() {
@@ -148,20 +157,22 @@ class _GroupCallPageState extends State<GroupCallPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          RawMaterialButton(
-            onPressed: _onToggleMute,
-            child: Icon(
-              muted ? Icons.mic_off : Icons.mic,
-              color: muted ? Colors.white : Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: muted ? Colors.blueAccent : Colors.white,
-            padding: const EdgeInsets.all(12.0),
+          Obx(
+              () => RawMaterialButton(
+                onPressed: controller.onToggleMute,
+                child: Icon(
+                  controller.muted.value ? Icons.mic_off : Icons.mic,
+                  color: controller.muted.value ? Colors.white : Colors.blueAccent,
+                  size: 20.0,
+                ),
+                shape: CircleBorder(),
+                elevation: 2.0,
+                fillColor: controller.muted.value ? Colors.blueAccent : Colors.white,
+                padding: const EdgeInsets.all(12.0),
+              ),
           ),
           RawMaterialButton(
-            onPressed: () => _onCallEnd(context),
+            onPressed: () => _onCallEnd(),
             child: Icon(
               Icons.call_end,
               color: Colors.white,
@@ -173,7 +184,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
             padding: const EdgeInsets.all(15.0),
           ),
           RawMaterialButton(
-            onPressed: _onSwitchCamera,
+            onPressed: controller.onSwitchCamera,
             child: Icon(
               Icons.switch_camera,
               color: Colors.blueAccent,
@@ -198,10 +209,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
       backgroundColor: Colors.black,
       body: Center(
         child: Stack(
-          children: <Widget>[
-            _viewRows(),
+            children: <Widget>[
+            Obx(() =>_viewRows()),
             _toolbar(),
-          ],
+            ],
         ),
       ),
     );
@@ -218,19 +229,71 @@ class _GroupCallPageState extends State<GroupCallPage> {
   // }
   List<Widget> _getRenderViews() {
     final List<Widget> list = [];
-    list.add(Image(
-      image: AssetImage('assets/images/me.jpg'),
-      width: 150,
-      height: 150,
-    ));
-    //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
-    _users.forEach((int uid) {
+    // if(controller.activeSpeaker == 0) {
+    //   list.add(Container( decoration: BoxDecoration(
+    //     border: Border.all(
+    //       color: Colors.lightGreen,
+    //       width: 2,
+    //     ),
+    //   ),
+    //       child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
+    // }
+    // else list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    //
+    // controller.users.forEach((int uid) {
+    //   print('!!!!!!: $uid');
+    //     if(uid == controller.activeSpeaker) {
+    //       list.add(Container( decoration: BoxDecoration(
+    //         border: Border.all(
+    //           color: Colors.lightGreen,
+    //           width: 2,
+    //         ),
+    //       ),
+    //           child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
+    //     }
+    //     else
+    //       list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // });
+
+    // bool flag1 = false;
+    // for(int i = 0; i < controller.speakingUser.length; i++) {
+    //   if(controller.speakingUser[i] == 0) {
+    //     list.add(Container( decoration: BoxDecoration(
+    //       border: Border.all(
+    //         color: Colors.lightGreen,
+    //         width: 2,
+    //       ),
+    //     ),
+    //         child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
+    //     flag1 = true;
+    //     break;
+    //   }
+    // }
+    // if(flag1 != true)
+    //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
+    list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+
+    controller.users.forEach((int uid) {
+      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+      bool flag = false;
+      for(int i = 0; i < controller.speakingUser.length; i++) {
+        if(uid == controller.speakingUser[i]) {
+          list.add(Container( decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightGreen,
+                  width: 2,
+                ),
+              ),
+              child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
+          flag = true;
+          break;
+        }
+      }
+      if(flag != true)
+        list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
-      list.add(Image(
-        image: AssetImage('assets/images/you.png'),
-        width: 150,
-        height: 150,
-      ));
     });
     return list;
   }
@@ -294,18 +357,8 @@ class _GroupCallPageState extends State<GroupCallPage> {
     return Container();
   }
 
-  void _onCallEnd(BuildContext context) {
-    Navigator.pop(context);
-  }
-
-  void _onToggleMute() {
-    setState(() {
-      muted = !muted;
-    });
-    _engine?.muteLocalAudioStream(muted);
-  }
-
-  void _onSwitchCamera() {
-    _engine?.switchCamera();
+  void _onCallEnd() {
+    controller.onClose();
+    Get.back();
   }
 }
