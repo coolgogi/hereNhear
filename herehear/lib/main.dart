@@ -4,11 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
-import 'package:herehear/classification.dart';
-import 'package:herehear/SubscribedPage.dart';
+import 'package:herehear/search/search.dart';
+import 'package:herehear/subscribed/subscribed.dart';
 import 'package:herehear/home/HomePage.dart';
 import 'package:herehear/myPage/mypage.dart';
-import 'package:herehear/upload.dart';
+import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 
@@ -21,7 +21,6 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: Firebase.initializeApp(),
-
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -39,7 +38,6 @@ class App extends StatelessWidget {
     );
   }
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -72,8 +70,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
 
 //
 //
@@ -222,15 +218,15 @@ class LandingPage extends StatelessWidget {
         Get.put(LandingPageController(), permanent: false);
     return SafeArea(
         child: Scaffold(
-          bottomNavigationBar:
+      bottomNavigationBar:
           buildBottomNavigationMenu(context, landingPageController),
-          body: Obx(() => IndexedStack(
+      body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
               HomePage(),
               SubscribedPage(),
               // ChatPage(),
-              ClassificationPage(),
+              searchPage(),
               myPage(),
             ],
           )),

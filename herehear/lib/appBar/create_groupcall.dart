@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
-import '../groupCall.dart';
+import '../groupCall/groupCall.dart';
 
 class CreateGroupCallPage extends StatefulWidget {
   @override

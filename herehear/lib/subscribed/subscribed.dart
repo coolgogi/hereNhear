@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/create/create_broadcast.dart';
-import 'package:herehear/help/search.dart';
+import 'package:herehear/appBar/create_broadcast.dart';
+import 'package:herehear/appBar/searchBar.dart';
 
 class SubscribedPage extends StatelessWidget {
   // String uid;
