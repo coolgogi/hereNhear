@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/classification.dart';
-import 'package:herehear/savedChannel.dart';
-import 'package:herehear/home/Home.dart';
+import 'package:herehear/SubscribedPage.dart';
+import 'package:herehear/home/HomePage.dart';
 import 'package:herehear/myPage/mypage.dart';
 import 'package:herehear/upload.dart';
 import 'package:herehear/login/signIn.dart';
@@ -179,10 +179,9 @@ class LandingPage extends StatelessWidget {
             index: landingPageController.tabIndex.value,
             children: [
               HomePage(),
-              SavedChannelPage(),
-              ChatPage(),
-              // ClassificationPage(),
-              // chatList(),
+              SubscribedPage(),
+              // ChatPage(),
+              ClassificationPage(),
               myPage(),
             ],
           )),

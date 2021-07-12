@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'createRoom.dart';
+import 'create/create_broadcast.dart';
 import 'help/search.dart';
 
 class ClassificationPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,8 +27,7 @@ class ClassificationPage extends StatelessWidget {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate:
-                PostSearchDelegate(),
+                delegate: PostSearchDelegate(),
               );
             },
           ),
@@ -49,13 +47,10 @@ class ClassificationPage extends StatelessWidget {
                   onPressed: null,
                   child: Row(
                     children: <Widget>[
-                      Text(
-                          '더보기'
-                      ),
+                      Text('더보기'),
                       Icon(Icons.chevron_right),
                     ],
-                  )
-              )
+                  ))
             ],
           ),
           Padding(
@@ -67,13 +62,11 @@ class ClassificationPage extends StatelessWidget {
                   children: List.generate(10, (int index) {
                     return Card(
                         child: Container(
-                          width: 110.0,
-                          height: 80.0,
-                          child: Center(child: Text("${index+1} 라이브")),
-                        )
-                    );
-                  })
-              ),
+                      width: 110.0,
+                      height: 80.0,
+                      child: Center(child: Text("${index + 1} 라이브")),
+                    ));
+                  })),
             ),
           ),
           Row(
@@ -83,12 +76,7 @@ class ClassificationPage extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               Expanded(child: Container()),
-              TextButton(
-                  onPressed: null,
-                  child: Text(
-                      '편집'
-                  )
-              )
+              TextButton(onPressed: null, child: Text('편집'))
             ],
           ),
           Padding(
@@ -101,20 +89,17 @@ class ClassificationPage extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: TextButton(
-                          child: Text('카테고리 ${index+1}'),
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: Colors.red),
-                                )
-                            )
-                          ),
-                          onPressed: null,
+                        child: Text('카테고리 ${index + 1}'),
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.red),
+                        ))),
+                        onPressed: null,
                       ),
                     );
-                  })
-              ),
+                  })),
             ),
           ),
           Text(
@@ -146,12 +131,16 @@ class ClassificationPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '${index+1} 번째 카테고리',
-                              style: TextStyle(fontSize: 17),),
-                            SizedBox(height: 5,),
+                              '${index + 1} 번째 카테고리',
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
                             Text(
                               '~~~~',
-                              style: TextStyle(fontSize: 12),)
+                              style: TextStyle(fontSize: 12),
+                            )
                           ],
                         ),
                       )
@@ -166,7 +155,6 @@ class ClassificationPage extends StatelessWidget {
     );
   }
 
-
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
       title: '소리 시작하기',
@@ -174,12 +162,18 @@ class ClassificationPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             TextButton(
-              child: Text('개인 라이브', style: TextStyle(fontSize: 18, color: Colors.black87),),
-              onPressed: () => Get.off(CreateRoomPage()),
+              child: Text(
+                '개인 라이브',
+                style: TextStyle(fontSize: 18, color: Colors.black87),
+              ),
+              onPressed: () => Get.off(CreateBroadCastPage()),
             ),
             TextButton(
-              child: Text('그룹 대화', style: TextStyle(fontSize: 18, color: Colors.black87),),
-              onPressed: () => Get.off(CreateRoomPage()),
+              child: Text(
+                '그룹 대화',
+                style: TextStyle(fontSize: 18, color: Colors.black87),
+              ),
+              onPressed: () => Get.off(CreateBroadCastPage()),
             ),
           ],
         ),
