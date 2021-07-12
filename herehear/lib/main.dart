@@ -6,11 +6,13 @@ import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/classification.dart';
 import 'package:herehear/savedChannel.dart';
-import 'package:herehear/home/newhome.dart';
+import 'package:herehear/home/Home.dart';
 import 'package:herehear/myPage/mypage.dart';
 import 'package:herehear/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
+
+import 'home/listTest.dart';
 
 void main() => runApp(App());
 
