@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
-import 'groupCall.dart';
+import '../groupCall.dart';
 
 class CreateGroupCallPage extends StatefulWidget {
   @override
@@ -45,10 +45,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 20)),
                 Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.8,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: TextFormField(
                     controller: myController,
                     decoration: InputDecoration(
@@ -57,7 +54,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       hintText: 'test',
                       hintStyle: TextStyle(color: Colors.black45),
                       errorText:
-                      _validateError ? 'Channel name is mandatory' : null,
+                          _validateError ? 'Channel name is mandatory' : null,
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                         borderRadius: BorderRadius.circular(20),
@@ -79,10 +76,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 30)),
                 Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.25,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   child: MaterialButton(
                     onPressed: onJoin,
                     height: 40,
@@ -119,7 +113,6 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
     await _handleCameraAndMic(Permission.camera);
     await _handleCameraAndMic(Permission.microphone);
-
 
     Get.to(() => GroupCallPage(), arguments: myController.text);
   }

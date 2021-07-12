@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CreateRoomPage extends StatelessWidget {
+class CreateBroadCastPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

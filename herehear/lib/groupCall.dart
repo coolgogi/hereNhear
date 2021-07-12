@@ -9,16 +9,16 @@ import 'package:http/http.dart' as http;
 
 
 class AgoraEventController extends GetxController {
-
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;
-  RxList<int?> speakingUser = <int?>[].obs;
-  RtcEngine? _engine;
+  var speakingUser = <int?>[].obs;
+  late RtcEngine _engine;
   var activeSpeaker = 10.obs;
 
   @override
-  void onInit() { // called immediately after the widget is allocated memory
+  void onInit() {
+    // called immediately after the widget is allocated memory
     initialize();
     super.onInit();
   }
@@ -60,7 +60,6 @@ class AgoraEventController extends GetxController {
     await _engine?.enableAudio();
   }
 
-
   /// Add agora event handlers
   void _addAgoraEventHandlers() {
     print('################################################################');
@@ -94,10 +93,10 @@ class AgoraEventController extends GetxController {
       audioVolumeIndication: (speakers, totalVolume) {
         speakingUser.clear();
         speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
-        // speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
         // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
 
-        print('*************************: ${speakingUser.isEmpty? null : speakingUser}');
+        print(
+            '*************************: ${speakingUser.isEmpty ? null : speakingUser}');
       },
       // activeSpeaker: (uid) {
       //   activeSpeaker = uid.obs;
@@ -118,7 +117,6 @@ class AgoraEventController extends GetxController {
     _engine?.switchCamera();
   }
 }
-
 
 class GroupCallPage extends StatelessWidget {
   final String channelName = Get.arguments;
@@ -158,7 +156,7 @@ class GroupCallPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Obx(
-                () => RawMaterialButton(
+            () => RawMaterialButton(
               onPressed: controller.onToggleMute,
               child: Icon(
                 controller.muted.value ? Icons.mic_off : Icons.mic,
@@ -210,7 +208,7 @@ class GroupCallPage extends StatelessWidget {
       body: Center(
         child: Stack(
           children: <Widget>[
-            Obx(() =>_viewRows()),
+            Obx(() => _viewRows()),
             _toolbar(),
           ],
         ),
@@ -273,26 +271,39 @@ class GroupCallPage extends StatelessWidget {
     // if(flag1 != true)
     //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
     // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
-    list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
+    list.add(Image(
+      image: AssetImage('assets/images/me.jpg'),
+      width: 150,
+      height: 150,
+    ));
 
     controller.users.forEach((int uid) {
       print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
       bool flag = false;
-      for(int i = 0; i < controller.speakingUser.length; i++) {
-        if(uid == controller.speakingUser[i]) {
-          list.add(Container( decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.lightGreen,
-              width: 2,
-            ),
-          ),
-              child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
+      for (int i = 0; i < controller.speakingUser.length; i++) {
+        if (uid == controller.speakingUser[i]) {
+          list.add(Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.lightGreen,
+                  width: 2,
+                ),
+              ),
+              child: Image(
+                image: AssetImage('assets/images/you.png'),
+                width: 150,
+                height: 150,
+              )));
           flag = true;
           break;
         }
       }
-      if(flag != true)
-        list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
+      if (flag != true)
+        list.add(Image(
+          image: AssetImage('assets/images/you.png'),
+          width: 150,
+          height: 150,
+        ));
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
     });
     return list;
