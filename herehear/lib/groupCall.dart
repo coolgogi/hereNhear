@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
+
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
@@ -43,7 +44,7 @@ class AgoraEventController extends GetxController {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
-    await _engine.enableAudioVolumeIndication(250, 2, true);
+    await _engine?.enableAudioVolumeIndication(250, 2, true);
     print("ggggggggggggggggggggggggggggg");
 
     // await getToken();
@@ -91,8 +92,7 @@ class AgoraEventController extends GetxController {
       },
       audioVolumeIndication: (speakers, totalVolume) {
         speakingUser.clear();
-        speakingUser
-            .addAll(speakers.obs.map((element) => element.uid).toList());
+        speakingUser.addAll(speakers.obs.map((element) => element.uid).toList());
         // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
 
         print(
@@ -160,14 +160,12 @@ class GroupCallPage extends StatelessWidget {
               onPressed: controller.onToggleMute,
               child: Icon(
                 controller.muted.value ? Icons.mic_off : Icons.mic,
-                color:
-                    controller.muted.value ? Colors.white : Colors.blueAccent,
+                color: controller.muted.value ? Colors.white : Colors.blueAccent,
                 size: 20.0,
               ),
               shape: CircleBorder(),
               elevation: 2.0,
-              fillColor:
-                  controller.muted.value ? Colors.blueAccent : Colors.white,
+              fillColor: controller.muted.value ? Colors.blueAccent : Colors.white,
               padding: const EdgeInsets.all(12.0),
             ),
           ),
@@ -313,11 +311,7 @@ class GroupCallPage extends StatelessWidget {
 
   /// Video view wrapper
   Widget _videoView(view) {
-    return Expanded(
-        child: Container(
-            child: Center(
-      child: view,
-    )));
+    return Expanded(child: Container(child: Center(child: view,)));
   }
 
   /// Video view row wrapper
@@ -337,34 +331,34 @@ class GroupCallPage extends StatelessWidget {
       case 1:
         return Container(
             child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
+              children: <Widget>[_videoView(views[0])],
+            ));
       case 2:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-            // views[0],
-            // views[1]
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow([views[0]]),
+                _expandedVideoRow([views[1]])
+                // views[0],
+                // views[1]
+              ],
+            ));
       case 3:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 3))
+              ],
+            ));
       case 4:
         return Container(
             child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
+              children: <Widget>[
+                _expandedVideoRow(views.sublist(0, 2)),
+                _expandedVideoRow(views.sublist(2, 4))
+              ],
+            ));
       default:
     }
     return Container();
