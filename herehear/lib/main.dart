@@ -20,38 +20,36 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // Initialize FlutterFire
       future: Firebase.initializeApp(),
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          // return SomethingWentWrong();
-          return Container();
-        }
 
-        // Once complete, show your application
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Firebase load fail'), // 에러 대응
+          );
+        }
         if (snapshot.connectionState == ConnectionState.done) {
           return MyApp();
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        // return Loading();
-        return Container();
       },
     );
   }
 }
 
+
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // GetX 등록
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      // home: MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      // GetX Controller 등록
+      initialBinding: BindingsBuilder(() {}),
+      title: 'Flutter Basic',
       home: LandingPage(),
       getPages: [
         GetPage(
@@ -74,6 +72,57 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+//
+//
+//
+// class App extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return FutureBuilder(
+//       // Initialize FlutterFire
+//       future: Firebase.initializeApp(),
+//       builder: (context, snapshot) {
+//         return MyApp();
+//       },
+//     );
+//   }
+// }
+//
+// class MyApp extends StatelessWidget {
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetMaterialApp(
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       // home: MyHomePage(title: 'Flutter Demo Home Page'),
+//       home: LandingPage(),
+//       getPages: [
+//         GetPage(
+//           name: '/',
+//           page: () => LandingPage(),
+//         ),
+//         GetPage(
+//           name: '/myPage',
+//           page: () => myPage(),
+//         ),
+//         GetPage(
+//           name: '/upload',
+//           page: () => UploadPage(),
+//         ),
+//         GetPage(
+//           name: '/login',
+//           page: () => LoginPage(),
+//         )
+//       ],
+//     );
+//   }
+// }
 
 class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
@@ -173,9 +222,9 @@ class LandingPage extends StatelessWidget {
         Get.put(LandingPageController(), permanent: false);
     return SafeArea(
         child: Scaffold(
-      bottomNavigationBar:
+          bottomNavigationBar:
           buildBottomNavigationMenu(context, landingPageController),
-      body: Obx(() => IndexedStack(
+          body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
               HomePage(),

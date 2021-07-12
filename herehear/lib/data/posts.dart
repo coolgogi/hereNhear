@@ -1,46 +1,51 @@
-class PostModel {
+class StreamingModel {
+  String? hostUid;
+  String? streamingRoomId;
+  String? title;
+  String? notice;
+  String? category;
+  List<dynamic>? currentListener;
+
+  StreamingModel({
+    this.hostUid,
+    this.streamingRoomId,
+    this.title,
+    this.notice,
+    this.category,
+    this.currentListener,
+
+  });
+
+  // UserModel을 map으로 바꿔주는 함수.
+  Map<String, dynamic> toMap() {
+    return {
+      'hostUId': this.hostUid,
+      'streamingRoomId': this.streamingRoomId,
+      'title' : this.title,
+      'notice' : this.notice,
+      'category' : this.category,
+      'currentListener': this.currentListener
+    };
+  }
+
+}
+
+
+class GroupCallModel {
   String hostUId;
   String chatRoomId;
   List<dynamic> like;
   List<dynamic> currentListener;
-  ChatModel? chatRoom;
 
-  PostModel({
+
+  GroupCallModel({
     required this.hostUId,
     required this.chatRoomId,
     required this.like,
     required this.currentListener,
-    required this.chatRoom,
+
   });
 }
 
-List<PostModel> posts = [
-  PostModel(
-      hostUId: 'uid1',
-      chatRoomId: 'chat1',
-      like: ['장경수', '박수현'],
-      currentListener: ['장경수', '박수현'],
-      chatRoom: null),
-];
 
-class ChatModel {
-  String hostUid;
-  String chatRoomId;
-  List<dynamic> users;
-  List<dynamic> currentListener;
 
-  ChatModel({
-    required this.hostUid,
-    required this.chatRoomId,
-    required this.users,
-    required this.currentListener,
-  });
-}
-
-List<ChatModel> chatRooms = [
-  ChatModel(
-      hostUid: 'uid1',
-      chatRoomId: 'chat1',
-      users: ['장경수', '박수현'],
-      currentListener: ['장경수', '박수현']),
-];
