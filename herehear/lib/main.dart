@@ -23,7 +23,20 @@ class App extends StatelessWidget {
       // Initialize FlutterFire
       future: Firebase.initializeApp(),
       builder: (context, snapshot) {
-        return MyApp();
+        // Check for errors
+        if (snapshot.hasError) {
+          // return SomethingWentWrong();
+          return Container();
+        }
+
+        // Once complete, show your application
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MyApp();
+        }
+
+        // Otherwise, show something whilst waiting for initialization to complete
+        // return Loading();
+        return Container();
       },
     );
   }
