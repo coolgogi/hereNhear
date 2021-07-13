@@ -12,7 +12,7 @@ import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 
-import 'home/listTest.dart';
+import 'etc/listTest.dart';
 
 void main() => runApp(App());
 
