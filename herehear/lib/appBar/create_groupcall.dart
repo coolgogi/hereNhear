@@ -110,15 +110,15 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
           ? _validateError = true
           : _validateError = false;
     });
-
-    await _handleCameraAndMic(Permission.camera);
-    await _handleCameraAndMic(Permission.microphone);
+    // await _handleCameraAndMic(Permission.camera);
+    await Permission.microphone.request();
+    // await _handleCameraAndMic(Permission.microphone);
 
     Get.to(() => GroupCallPage(), arguments: myController.text);
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
     final status = await permission.request();
-    print(status);
+    print('################: $status');
   }
 }
