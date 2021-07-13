@@ -42,6 +42,7 @@ class InfiniteScrollView extends GetView<InfiniteScrollController> {
       ),
       body: Obx(
         () => ListView.separated(
+          shrinkWrap: false,
           controller: controller.scrollController.value,
           itemBuilder: (_, index) {
             print(controller.hasMore.value);
@@ -79,7 +80,9 @@ class InfiniteScrollView extends GetView<InfiniteScrollController> {
               ),
             );
           },
-          separatorBuilder: (_, index) => Divider(),
+          separatorBuilder: (_, index) => Divider(
+            height: 1,
+          ),
           itemCount: controller.data.length + 1,
         ),
       ),
