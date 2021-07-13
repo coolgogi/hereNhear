@@ -202,14 +202,14 @@ class SubscribedPage extends StatelessWidget {
                 '개인 라이브',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               ),
-              onPressed: () => Get.off(CreateBroadCastPage()),
+              onPressed: () => Get.off(CreateBroadcastPage()),
             ),
             TextButton(
               child: Text(
                 '그룹 대화',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               ),
-              onPressed: () => Get.off(CreateBroadCastPage()),
+              onPressed: () => Get.off(CreateBroadcastPage()),
             ),
           ],
         ),
