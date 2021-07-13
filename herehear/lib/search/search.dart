@@ -166,18 +166,36 @@ class searchPage extends StatelessWidget {
                 '개인 라이브',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               ),
-              onPressed: () => Get.off(CreateBroadCastPage()),
+              onPressed: () => Get.off(_createRoute()),
             ),
             TextButton(
               child: Text(
                 '그룹 대화',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               ),
-              onPressed: () => Get.off(CreateBroadCastPage()),
+              onPressed: () => Get.off(CreateBroadcastPage()),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => CreateBroadcastPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }

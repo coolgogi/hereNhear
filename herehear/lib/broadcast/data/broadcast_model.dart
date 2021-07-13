@@ -29,23 +29,3 @@ class BroadCastModel {
   }
 
 }
-
-
-class GroupCallModel {
-  String hostUId;
-  String chatRoomId;
-  List<dynamic> like;
-  List<dynamic> currentListener;
-
-
-  GroupCallModel({
-    required this.hostUId,
-    required this.chatRoomId,
-    required this.like,
-    required this.currentListener,
-
-  });
-}
-
-
-
