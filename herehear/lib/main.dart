@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // GetX Controller 등록
-      initialBinding: BindingsBuilder(() {}),
+      // initialBinding: BindingsBuilder(() {}),
+      initialBinding: AppBinding(),
       title: 'Flutter Basic',
       home: LandingPage(),
       getPages: [
@@ -71,54 +72,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//
-//
-//
-// class App extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//       // Initialize FlutterFire
-//       future: Firebase.initializeApp(),
-//       builder: (context, snapshot) {
-//         return MyApp();
-//       },
-//     );
-//   }
-// }
-//
-// class MyApp extends StatelessWidget {
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       // home: MyHomePage(title: 'Flutter Demo Home Page'),
-//       home: LandingPage(),
-//       getPages: [
-//         GetPage(
-//           name: '/',
-//           page: () => LandingPage(),
-//         ),
-//         GetPage(
-//           name: '/myPage',
-//           page: () => myPage(),
-//         ),
-//         GetPage(
-//           name: '/upload',
-//           page: () => UploadPage(),
-//         ),
-//         GetPage(
-//           name: '/login',
-//           page: () => LoginPage(),
-//         )
-//       ],
-//     );
-//   }
-// }
+class AppBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(InfiniteScrollController());
+  }
+}
 
 class LandingPageController extends GetxController {
   var tabIndex = 0.obs;
@@ -223,10 +182,11 @@ class LandingPage extends StatelessWidget {
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
+              InfiniteScrollView(),
               HomePage(),
-              SubscribedPage(),
-              // ChatPage(),
-              searchPage(),
+              // SubscribedPage(),
+              // searchPage(),
+              ChatPage(),
               myPage(),
             ],
           )),
