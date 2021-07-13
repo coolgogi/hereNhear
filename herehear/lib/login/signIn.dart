@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/login/siginIn_controller.dart';
-import 'package:herehear/login/login_test.dart';
+
 
 class LoginPage extends StatelessWidget {
   final controller = Get.put(LoginController());
@@ -20,17 +20,6 @@ class LoginPage extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () => controller.loginWithGoogle(),
-              child: Center(
-                  child: Text(
-                "Login with google",
-                style: TextStyle(color: Colors.black),
-              )),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TestPage()));
-              },
               child: Center(
                   child: Text(
                 "Login with google",
