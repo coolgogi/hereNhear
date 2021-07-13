@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:http/http.dart' as http;
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
@@ -27,8 +26,8 @@ class AgoraEventController extends GetxController {
     // clear users
     users.clear();
     // destroy sdk
-    _engine?.leaveChannel().obs;
-    _engine?.destroy().obs;
+    _engine.leaveChannel().obs;
+    _engine.destroy().obs;
     super.onClose();
   }
 
@@ -43,26 +42,26 @@ class AgoraEventController extends GetxController {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
-    await _engine?.enableAudioVolumeIndication(250, 2, true);
+    await _engine.enableAudioVolumeIndication(250, 2, true);
     print("ggggggggggggggggggggggggggggg");
 
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine?.joinChannel(null, GroupCallPage().channelName, null, 0);
+    await _engine.joinChannel(null, GroupCallPage().channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
   Future<void> _initAgoraRtcEngine() async {
     _engine = await RtcEngine.create(appID);
     // await _engine?.enableVideo();
-    await _engine?.enableAudio();
+    await _engine.enableAudio();
   }
 
   /// Add agora event handlers
   void _addAgoraEventHandlers() {
     print('################################################################');
-    _engine?.setEventHandler(RtcEngineEventHandler(
+    _engine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
         final info = 'onError: $code';
         infoStrings.add(info);
@@ -110,11 +109,11 @@ class AgoraEventController extends GetxController {
 
   void onToggleMute() {
     muted.value = !muted.value;
-    _engine?.muteLocalAudioStream(muted.value);
+    _engine.muteLocalAudioStream(muted.value);
   }
 
   void onSwitchCamera() {
-    _engine?.switchCamera();
+    _engine.switchCamera();
   }
 }
 
