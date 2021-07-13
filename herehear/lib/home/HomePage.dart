@@ -40,14 +40,8 @@ class HomePage extends StatelessWidget {
       body: ListView(
         padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         children: <Widget>[
-          // Row(
-          //   children: <Widget>[
-          //     Expanded(child: Container()),
-          //     IconButton(onPressed: null, icon: Icon(Icons.autorenew))
-          //   ],
-          // ),
           Text(
-            '실시간 소리',
+            'BroadCast',
             style: TextStyle(fontSize: 20),
           ),
           Padding(
@@ -67,7 +61,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Text(
-            'Talk',
+            'Group Call',
             style: TextStyle(fontSize: 20),
           ),
           Padding(
@@ -144,7 +138,7 @@ class HomePage extends StatelessWidget {
                 '개인 라이브',
                 style: TextStyle(fontSize: 18, color: Colors.black87),
               ),
-              onPressed: () => Get.off(() => CreateBroadCastPage()),
+              onPressed: () => Get.off(() => CreateBroadcastPage()),
             ),
             TextButton(
               child: Text(
@@ -156,6 +150,26 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Route _createRoute() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          CreateBroadcastPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0);
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
     );
   }
 }
