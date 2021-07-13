@@ -11,6 +11,7 @@ import 'package:herehear/myPage/mypage.dart';
 import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
+import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
 import 'etc/listTest.dart';
 
@@ -186,7 +187,8 @@ class LandingPage extends StatelessWidget {
               HomePage(),
               // SubscribedPage(),
               // searchPage(),
-              ChatPage(),
+              Subscribed22Page(),
+              // ChatPage(),
               myPage(),
             ],
           )),

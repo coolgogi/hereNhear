@@ -157,98 +157,60 @@ class Subscribed22Page extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
-            child: Column(
-              children: List.generate(15, (int index) {
-                return Card(
-                    child: Container(
-                  // width: MediaQuery.of(context).size.width,
-                  height: 80.0,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13.0, right: 13.0),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData)
+                  return Container(
+                    child: Center(child: Text('생성된 대화방이 없습니다.')),
+                  );
+                return Column(
+                  children: groupcallRoomList(snapshot),
+                );
+                return Column(
+                  children: List.generate(15, (int index) {
+                    return Card(
                         child: Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            shape: BoxShape.circle,
+                      // width: MediaQuery.of(context).size.width,
+                      height: 80.0,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left: 13.0, right: 13.0),
+                            child: Container(
+                              width: 50.0,
+                              height: 50.0,
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
                           ),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  '${index + 1} 번째 대화방입니다~',
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  '같이 대화하면서 놀아요!!',
+                                  style: TextStyle(fontSize: 12),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              '${index + 1} 번째 대화방입니다~',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              '같이 대화하면서 놀아요!!',
-                              style: TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ));
-              }),
-            ),
-          ),
-          Text(
-            'My Talk',
-            style: TextStyle(fontSize: 20),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
-            child: Column(
-              children: List.generate(15, (int index) {
-                return Card(
-                    child: Container(
-                  // width: MediaQuery.of(context).size.width,
-                  height: 80.0,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13.0, right: 13.0),
-                        child: Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              '${index + 1} 번째 대화방입니다~',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              '같이 대화하면서 놀아요!!',
-                              style: TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ));
-              }),
+                    ));
+                  }),
+                );
+              }
             ),
           ),
         ],
@@ -298,16 +260,51 @@ class Subscribed22Page extends StatelessWidget {
                 ),
               ),
           );
-          return Column(
-            children: <Widget>[
-              Container(
-                child: Text(room['title']),
-              ),
-              Container(
-                child: Text(room['notice']),
-              ),
-            ],
-          );
+    }).toList();
+  }
+
+  List<Widget> groupcallRoomList(AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs
+        .map((room) {
+      return Card(
+          child: Container(
+            // width: MediaQuery.of(context).size.width,
+            height: 80.0,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 13.0, right: 13.0),
+                  child: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        room['title'],
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        room['notice'],
+                        style: TextStyle(fontSize: 12),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ));
     }).toList();
   }
 }
