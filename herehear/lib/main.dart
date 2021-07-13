@@ -225,8 +225,8 @@ class LandingPage extends StatelessWidget {
             children: [
               HomePage(),
               SubscribedPage(),
-              // ChatPage(),
-              searchPage(),
+              // searchPage(),
+              ChatPage(),
               myPage(),
             ],
           )),
