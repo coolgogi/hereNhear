@@ -49,6 +49,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         ),
       ),
       body: SizedBox(
+
         key: _formKey,
         height: MediaQuery.of(context).size.height,
         child: Column(
