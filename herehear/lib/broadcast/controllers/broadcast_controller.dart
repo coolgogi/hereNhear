@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/repository/broadcast_repository.dart';
 import 'package:herehear/login/signIn.dart';
@@ -29,7 +30,7 @@ class BroadcastController extends GetxController {
           title: title,
           notice: notice,
           category: category,
-          docId: (10000000000-DateTime.now().millisecondsSinceEpoch).toString(),
+          docId: (10000000000000-DateTime.now().millisecondsSinceEpoch).toString(),
           createdTime: DateTime.now(),
         );
 
