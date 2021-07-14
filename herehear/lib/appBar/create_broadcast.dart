@@ -76,6 +76,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   for (int i = 0; i < _isSelected.length; i++) {
                     _isSelected[i] = i == index;
                   }
+
                 });
               },
               isSelected: _isSelected,
@@ -109,10 +110,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               children: <Widget>[
                 Center(
                   child: ElevatedButton(
-                    onPressed: () async{
-                      print('broadcast');
+                    onPressed: () {
                     controller.createBroadCastRoom(user,_title.text,_notice.text, '소통');
-                    print('write');
                     },
                     child: Text('방만들기'),
                   ),

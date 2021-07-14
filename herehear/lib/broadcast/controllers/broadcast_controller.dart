@@ -29,10 +29,11 @@ class BroadcastController extends GetxController {
           title: title,
           notice: notice,
           category: category,
+          docId: (10000000000-DateTime.now().millisecondsSinceEpoch).toString(),
           createdTime: DateTime.now(),
         );
 
-        await BroadcastRepository.saveUserToFirebase(newStreamingRoom.value);
+        await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
 
     }
     else{
