@@ -15,8 +15,8 @@ class CreateBroadcastPage extends StatefulWidget {
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', '잡담'];
+  int _index = 0;
   bool _validateError = false;
-
   List<bool> _isSelected = List.generate(3, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -75,6 +75,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   for (int i = 0; i < _isSelected.length; i++) {
                     _isSelected[i] = i == index;
                   }
+                  _index = index;
                 });
               },
               isSelected: _isSelected,
@@ -108,11 +109,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               children: <Widget>[
                 Center(
                   child: ElevatedButton(
-                    onPressed: () async {
-                      print('broadcast');
-                      controller.createBroadCastRoom(
-                          user, _title.text, _notice.text, '소통');
-                      print('write');
+                    onPressed: () {
+                      controller.createBroadCastRoom(user, _title.text,
+                          _notice.text, categoryList[_index]);
                       onJoin();
                     },
                     child: Text('방만들기'),
