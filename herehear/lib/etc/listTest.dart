@@ -15,78 +15,83 @@ class InfiniteScrollView extends GetView<InfiniteScrollController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Herehear'),
-        actions: <Widget>[
-          IconButton(
-              onPressed: _showMyDialog,
-              color: Colors.amber,
-              icon: Icon(Icons.add_circle)),
-          IconButton(
-              onPressed: null,
-              color: Colors.black87,
-              icon: Icon(Icons.notifications_none_outlined)),
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black87,
-            ),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PostSearchDelegate(),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Obx(
-        () => ListView.separated(
-          shrinkWrap: false,
-          controller: controller.scrollController.value,
-          itemBuilder: (_, index) {
-            print(controller.hasMore.value);
-            if (index < controller.data.length) {
-              var datum = controller.data[index];
-              return Material(
-                elevation: 10.0,
-                child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ListTile(
-                      leading: Icon(Icons.circle_rounded, color: Colors.amber),
-                      title: Text('$datum 번째 Group Call'),
-                      trailing: Icon(Icons.arrow_forward_outlined),
-                      onTap: _joinDialog,
-                    )),
-              );
-            }
-            if (controller.hasMore.value || controller.isLoading.value) {
-              return Center(child: RefreshProgressIndicator());
-            }
-            return Container(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-                child: Column(
-                  children: [
-                    Text('데이터의 마지막 입니다'),
-                    IconButton(
-                      onPressed: () {
-                        controller.reload();
-                      },
-                      icon: Icon(Icons.refresh_outlined),
-                    ),
-                  ],
-                ),
+        appBar: AppBar(
+          title: Text('Herehear'),
+          actions: <Widget>[
+            IconButton(
+                onPressed: _showMyDialog,
+                color: Colors.amber,
+                icon: Icon(Icons.add_circle)),
+            IconButton(
+                onPressed: null,
+                color: Colors.black87,
+                icon: Icon(Icons.notifications_none_outlined)),
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.black87,
               ),
-            );
-          },
-          separatorBuilder: (_, index) => Divider(
-            height: 1,
-          ),
-          itemCount: controller.data.length + 1,
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: PostSearchDelegate(),
+                );
+              },
+            ),
+          ],
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
+          child: Obx(
+            () => ListView.separated(
+              shrinkWrap: false,
+              controller: controller.scrollController.value,
+              itemBuilder: (_, index) {
+                print(controller.hasMore.value);
+                if (index < controller.data.length) {
+                  var datum = controller.data[index];
+                  return
+                      // Material(
+                      // elevation: 10.0,
+                      // child:
+                      Container(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ListTile(
+                            leading:
+                                Icon(Icons.circle_rounded, color: Colors.amber),
+                            title: Text('$datum 번째 Group Call'),
+                            trailing: Icon(Icons.arrow_forward_outlined),
+                            onTap: _joinDialog,
+                          ));
+                  // );
+                }
+                if (controller.hasMore.value || controller.isLoading.value) {
+                  return Center(child: RefreshProgressIndicator());
+                }
+                return Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Text('데이터의 마지막 입니다'),
+                        IconButton(
+                          onPressed: () {
+                            controller.reload();
+                          },
+                          icon: Icon(Icons.refresh_outlined),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              separatorBuilder: (_, index) => Divider(
+                height: 1,
+              ),
+              itemCount: controller.data.length + 1,
+            ),
+          ),
+        ));
   }
 
   Future<void> _showMyDialog() async {
