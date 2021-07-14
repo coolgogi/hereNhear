@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
 import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/location_data/location.dart';
 
 class HomePage extends StatelessWidget {
   // String uid;
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Herehear'),
+        title: Text('Herehear', style: TextStyle(color: Theme.of(context).primaryColor),),
         actions: <Widget>[
           IconButton(
               onPressed: _showMyDialog,

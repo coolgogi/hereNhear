@@ -11,8 +11,10 @@ import 'package:herehear/myPage/mypage.dart';
 import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
+import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
-import 'home/listTest.dart';
+import 'etc/listTest.dart';
+import 'theme/theme.dart';
 
 void main() => runApp(App());
 
@@ -40,34 +42,42 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  static ThemeController get to => Get.find();
+
   @override
   Widget build(BuildContext context) {
     // GetX 등록
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      // GetX Controller 등록
-      // initialBinding: BindingsBuilder(() {}),
-      initialBinding: AppBinding(),
-      title: 'Flutter Basic',
-      home: LandingPage(),
-      getPages: [
-        GetPage(
-          name: '/',
-          page: () => LandingPage(),
-        ),
-        GetPage(
-          name: '/myPage',
-          page: () => myPage(),
-        ),
-        GetPage(
-          name: '/upload',
-          page: () => UploadPage(),
-        ),
-        GetPage(
-          name: '/login',
-          page: () => LoginPage(),
-        )
-      ],
+    return GetBuilder<ThemeController>(
+      init: ThemeController(),
+      builder: (value) {
+        return GetMaterialApp(
+          theme: value.isDarkTheme.value ? dark_theme : light_theme,
+          debugShowCheckedModeBanner: false,
+          // GetX Controller 등록
+          // initialBinding: BindingsBuilder(() {}),
+          initialBinding: AppBinding(),
+          title: 'Flutter Basic',
+          home: LandingPage(),
+          getPages: [
+            GetPage(
+              name: '/',
+              page: () => LandingPage(),
+            ),
+            GetPage(
+              name: '/myPage',
+              page: () => myPage(),
+            ),
+            GetPage(
+              name: '/upload',
+              page: () => UploadPage(),
+            ),
+            GetPage(
+              name: '/login',
+              page: () => LoginPage(),
+            )
+          ],
+        );
+      }
     );
   }
 }
@@ -186,7 +196,8 @@ class LandingPage extends StatelessWidget {
               HomePage(),
               // SubscribedPage(),
               // searchPage(),
-              ChatPage(),
+              Subscribed22Page(),
+              // ChatPage(),
               myPage(),
             ],
           )),
