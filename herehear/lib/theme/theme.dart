@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'colors.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final ThemeData light_theme = _buildClosetTheme_light();
 final ThemeData dark_theme = _buildClosetTheme_dark();
@@ -27,8 +28,13 @@ ThemeData _buildClosetTheme_light() {
     ),
     appBarTheme: base.appBarTheme.copyWith(
       color: BackgroundLight,
-      titleTextStyle: TextStyle(color: OnBackgroundLight),
-
+      titleTextStyle: TextStyle(
+        color: PrimaryColorLight,
+        fontFamily: 'Baloo Bhai',
+        fontWeight: FontWeight.w400,
+        fontSize: 24.sp,
+        // height: 38.26,
+      ),
     ),
     bottomNavigationBarTheme: base.bottomNavigationBarTheme.copyWith(
 
@@ -148,19 +154,25 @@ class ThemeController extends GetxController {
 TextTheme _buildClosetTextTheme(TextTheme base) {
   return base
       .copyWith(
-    headline5: base.headline5!.copyWith(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-      fontFamily: 'Sansita',
+    headline2: base.headline2!.copyWith(
+      color: OnBackgroundLight,
+      fontSize: 17.sp,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w700,
     ),
-    headline6: base.headline6!.copyWith(fontSize: 18.0),
+    headline6: base.headline6!.copyWith(
+      fontSize: 14.0.sp,
+      fontFamily: 'Roboto',
+      fontWeight: FontWeight.w700,
+    ),
     caption: base.caption!.copyWith(
       fontWeight: FontWeight.w400,
       fontSize: 14.0,
     ),
-    bodyText1: base.bodyText1!.copyWith(
-      fontWeight: FontWeight.w500,
-      fontSize: 16.0,
+    subtitle1: base.subtitle1!.copyWith(
+      fontWeight: FontWeight.w400,
+      fontSize: 12.0.sp,
+      fontFamily: 'Roboto',
     ),
   );
   // .apply(

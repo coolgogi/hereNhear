@@ -158,7 +158,7 @@ class Subscribed22Page extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
+              stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData)
                   return Container(

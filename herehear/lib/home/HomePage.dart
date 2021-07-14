@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
 import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/location_data/location.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class HomePage extends StatelessWidget {
   // String uid;
@@ -13,102 +16,129 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Herehear', style: TextStyle(color: Theme.of(context).primaryColor),),
-        actions: <Widget>[
-          IconButton(
-              onPressed: _showMyDialog,
-              color: Colors.amber,
-              icon: Icon(Icons.add_circle)),
-          IconButton(
-              onPressed: null,
-              color: Colors.black87,
-              icon: Icon(Icons.notifications_none_outlined)),
-          IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black87,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(44.0.h),
+        child: AppBar(
+          title: Text(
+              'HERE & HEAR',
+              style: Theme.of(context).appBarTheme.titleTextStyle),
+          actions: <Widget>[
+            // IconButton(
+            //     onPressed: _showMyDialog,
+            //     color: Colors.amber,
+            //     icon: Icon(Icons.add_circle)),
+            IconButton(
+                onPressed: null,
+                color: Colors.black87,
+                icon: Icon(Icons.notifications_none_outlined)),
+            IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.black87,
+              ),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: PostSearchDelegate(),
+                );
+              },
             ),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PostSearchDelegate(),
-              );
-            },
-          ),
-        ],
+          ],
+        ),
       ),
       body: ListView(
-        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+        padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
         children: <Widget>[
-          Text(
-            'BroadCast',
-            style: TextStyle(fontSize: 20),
+          Row(
+            children: <Widget>[
+              Text(
+                '실시간 소리',
+                // style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.headline2,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 3.0),
+                child: Container(
+                  width: 41.w,
+                  height: 18.h,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.primaryVariant,
+                        width: 2.0.w
+                    ),
+                    borderRadius: BorderRadius.all(
+                        Radius.circular(9.0.r) //                 <--- border radius here
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                        'LIVE',
+                        style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12)),
+                  ),
+                  // child: Padding(
+                  //   padding: const EdgeInsets.only(left: 8.0),
+                  //   child: TextButton(
+                  //     child: Text(
+                  //         'LIVE',
+                  //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
+                  //     style: ButtonStyle(
+                  //         shape: MaterialStateProperty.all<
+                  //             RoundedRectangleBorder>(RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(9.0),
+                  //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                  //         ))),
+                  //     onPressed: null,
+                  //   ),
+                  // ),
+                ),
+              ),
+              Expanded(child: Container()),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
             child: Container(
-              height: 100.0,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(10, (int index) {
-                    return Card(
-                        child: Container(
-                      width: 110.0,
-                      height: 80.0,
-                      child: Center(child: Text("${index + 1} 라이브")),
-                    ));
-                  })),
+              height: 170.0.h,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Container(
+                      child: Text('라이브중인 방송이 없습니다.'),
+                    );
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: broadcastRoomList(context, snapshot),
+                  );
+                  // children: List.generate(10, (int index) {
+                  //   return Card(
+                  //       child: Container(
+                  //     width: 110.0,
+                  //     height: 80.0,
+                  //     child: Center(child: Text("${index + 1} 라이브")),
+                  //   ));
+                  // }));
+                },
+              ),
             ),
           ),
           Text(
-            'Group Call',
-            style: TextStyle(fontSize: 20),
+            '토크',
+            style: Theme.of(context).textTheme.headline2,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
-            child: Column(
-              children: List.generate(15, (int index) {
-                return Card(
-                    child: Container(
-                  // width: MediaQuery.of(context).size.width,
-                  height: 80.0,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 13.0, right: 13.0),
-                        child: Container(
-                          width: 50.0,
-                          height: 50.0,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              '${index + 1} 번째 대화방입니다~',
-                              style: TextStyle(fontSize: 17),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              '같이 대화하면서 놀아요!!',
-                              style: TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ));
-              }),
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Container(
+                      child: Center(child: Text('생성된 대화방이 없습니다.')),
+                    );
+                  return Column(
+                    children: groupcallRoomList(context, snapshot),
+                  );
+                }
             ),
           ),
         ],
@@ -172,5 +202,84 @@ class HomePage extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget> broadcastRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs
+        .map((room) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            child: Container(
+              width: 130.0.w,
+              height: 130.0.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                ],
+              ),
+            ),
+          ),
+          Text(
+            room['notice'],
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
+          Row(
+            children: <Widget>[
+              Icon(Icons.people),
+              Text('num'),
+              SizedBox(width: 8.sp),
+              Icon(Icons.favorite),
+              Text('num'),
+            ],
+          )
+        ],
+      );
+    }).toList();
+  }
+
+  List<Widget> groupcallRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs
+        .map((room) {
+      return Card(
+          child: Container(
+            // width: MediaQuery.of(context).size.width,
+            height: 80.0.h,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                  child: Container(
+                    width: 70.0.w,
+                    height: 70.0.w,
+                    decoration: BoxDecoration(
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(6.0.r) //                 <--- border radius here
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      room['title'],
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      room['notice'],
+                      style: Theme.of(context).textTheme.subtitle1,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ));
+    }).toList();
   }
 }

@@ -15,6 +15,7 @@ import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
 import 'etc/listTest.dart';
 import 'theme/theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(App());
 
@@ -50,32 +51,35 @@ class MyApp extends StatelessWidget {
     return GetBuilder<ThemeController>(
       init: ThemeController(),
       builder: (value) {
-        return GetMaterialApp(
-          theme: value.isDarkTheme.value ? dark_theme : light_theme,
-          debugShowCheckedModeBanner: false,
-          // GetX Controller 등록
-          // initialBinding: BindingsBuilder(() {}),
-          initialBinding: AppBinding(),
-          title: 'Flutter Basic',
-          home: LandingPage(),
-          getPages: [
-            GetPage(
-              name: '/',
-              page: () => LandingPage(),
-            ),
-            GetPage(
-              name: '/myPage',
-              page: () => myPage(),
-            ),
-            GetPage(
-              name: '/upload',
-              page: () => UploadPage(),
-            ),
-            GetPage(
-              name: '/login',
-              page: () => LoginPage(),
-            )
-          ],
+        return ScreenUtilInit(
+          designSize: Size(375, 667),
+          builder: () => GetMaterialApp(
+            theme: value.isDarkTheme.value ? dark_theme : light_theme,
+            debugShowCheckedModeBanner: false,
+            // GetX Controller 등록
+            // initialBinding: BindingsBuilder(() {}),
+            initialBinding: AppBinding(),
+            title: 'Flutter Basic',
+            home: LandingPage(),
+            getPages: [
+              GetPage(
+                name: '/',
+                page: () => LandingPage(),
+              ),
+              GetPage(
+                name: '/myPage',
+                page: () => myPage(),
+              ),
+              GetPage(
+                name: '/upload',
+                page: () => UploadPage(),
+              ),
+              GetPage(
+                name: '/login',
+                page: () => LoginPage(),
+              )
+            ],
+          ),
         );
       }
     );
@@ -126,9 +130,9 @@ class LandingPage extends StatelessWidget {
             showSelectedLabels: true,
             onTap: landingPageController.changeTabIndex,
             currentIndex: landingPageController.tabIndex.value,
-            backgroundColor: Color.fromRGBO(0, 0, 0, 1.0),
-            unselectedItemColor: Colors.white.withOpacity(0.5),
-            selectedItemColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            unselectedItemColor: Color(0xFFB8B8B8),
+            selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
             items: [
@@ -163,7 +167,7 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
                 label: 'Chatting',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                backgroundColor: Theme.of(context).colorScheme.background,
               ),
               BottomNavigationBarItem(
                 icon: Container(
@@ -192,12 +196,12 @@ class LandingPage extends StatelessWidget {
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
-              InfiniteScrollView(),
+              // InfiniteScrollView(),
               HomePage(),
               // SubscribedPage(),
               // searchPage(),
               Subscribed22Page(),
-              // ChatPage(),
+              ChatPage(),
               myPage(),
             ],
           )),
