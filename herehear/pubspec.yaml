@@ -55,6 +55,7 @@ dependencies:
 
   smart_select: ^4.3.2
   flutter_pagewise: ^2.0.1
+  sms_autofill: ^2.0.0
 
 
 

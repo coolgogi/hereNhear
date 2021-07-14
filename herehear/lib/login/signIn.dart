@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/login/siginIn_controller.dart';
+import 'package:herehear/login/sms.dart';
 
 
 class LoginPage extends StatelessWidget {
@@ -33,6 +34,18 @@ class LoginPage extends StatelessWidget {
                 "Login out",
                 style: TextStyle(color: Colors.black),
               )),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                builder: (context) =>Sms()
+                ));
+    },
+              child: Center(
+                  child: Text(
+                    "sms",
+                    style: TextStyle(color: Colors.black),
+                  )),
             ),
           ],
         ),
