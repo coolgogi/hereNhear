@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/data/posts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class CreateBroadcastPage extends StatefulWidget {
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', '잡담'];
+  bool _validateError = false;
 
   List<bool> _isSelected = List.generate(3, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -30,10 +33,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
   @override
   initState() {
-
     super.initState();
     // 이 클래스애 리스너 추가
-
   }
 
   @override
@@ -69,9 +70,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   child: Text('잡담'),
                 ),
               ],
-
-
-              onPressed: (int index){
+              onPressed: (int index) {
                 setState(() {
                   for (int i = 0; i < _isSelected.length; i++) {
                     _isSelected[i] = i == index;
@@ -109,10 +108,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               children: <Widget>[
                 Center(
                   child: ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       print('broadcast');
-                    controller.createBroadCastRoom(user,_title.text,_notice.text, '소통');
-                    print('write');
+                      controller.createBroadCastRoom(
+                          user, _title.text, _notice.text, '소통');
+                      print('write');
+                      onJoin();
                     },
                     child: Text('방만들기'),
                   ),
@@ -125,5 +126,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     );
   }
 
+  Future<void> onJoin() async {
+    setState(() {
+      _title.text.isEmpty ? _validateError = true : _validateError = false;
+    });
+    await Permission.microphone.request();
 
+    Get.to(() => BroadCastPage(), arguments: _title.text);
+  }
 }
