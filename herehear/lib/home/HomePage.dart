@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Herehear'),
+        title: Text('Herehear', style: TextStyle(color: Theme.of(context).primaryColor),),
         actions: <Widget>[
           IconButton(
               onPressed: _showMyDialog,
