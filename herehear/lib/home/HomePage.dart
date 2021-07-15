@@ -61,7 +61,7 @@ class HomePage extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 3.0),
+                  padding: EdgeInsets.only(left: 3.0.w),
                   child: Container(
                     width: 41.w,
                     height: 18.h,
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                     child: Center(
                       child: Text(
                           'LIVE',
-                          style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12)),
+                          style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12.sp)),
                     ),
                   ),
                 ),
@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 18.0),
+            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 18.0.h),
             child: Container(
               height: 170.0.h,
               child: StreamBuilder<QuerySnapshot>(
@@ -105,14 +105,14 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: EdgeInsets.only(left: 16.0.w),
             child: Text(
               '토크',
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
+            padding: EdgeInsets.only(top: 8.0.h, bottom: 18.0.h),
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -140,14 +140,14 @@ class HomePage extends StatelessWidget {
             TextButton(
               child: Text(
                 '개인 라이브',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
               ),
               onPressed: () => Get.off(() => CreateBroadcastPage()),
             ),
             TextButton(
               child: Text(
                 '그룹 대화',
-                style: TextStyle(fontSize: 18, color: Colors.black87),
+                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
               ),
               onPressed: () => Get.off(() => CreateGroupCallPage()),
             ),
@@ -180,34 +180,39 @@ class HomePage extends StatelessWidget {
   List<Widget> broadcastRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
     return broadcastSnapshot.data!.docs
         .map((room) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            child: Container(
-              width: 130.0.w,
-              height: 130.0.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                ],
+      return Padding(
+        padding: EdgeInsets.only(right: 12.0.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              child: Container(
+                width: 130.0.w,
+                height: 130.0.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  ],
+                ),
               ),
             ),
-          ),
-          Text(
-            room['notice'],
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          Row(
-            children: <Widget>[
-              Icon(Icons.people),
-              Text('num'),
-              SizedBox(width: 8.sp),
-              Icon(Icons.favorite),
-              Text('num'),
-            ],
-          )
-        ],
+            SizedBox(height: 6.h),
+            Text(
+              room['notice'],
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              children: <Widget>[
+                Icon(Icons.people, size: 14.w,),
+                Text(' num'),
+                SizedBox(width: 8.sp),
+                Icon(Icons.favorite, size: 12.w,),
+                Text(' num'),
+              ],
+            )
+          ],
+        ),
       );
     }).toList();
   }
@@ -229,7 +234,7 @@ class HomePage extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    padding: EdgeInsets.only(left: 16.0.w, right: 8.0.w),
                     child: Container(
                       width: 70.0.w,
                       height: 70.0.w,
@@ -249,7 +254,7 @@ class HomePage extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                       SizedBox(
-                        height: 5,
+                        height: 5.h,
                       ),
                       Text(
                         room['notice'],
