@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,12 +15,12 @@ class CreateBroadcastPage extends StatefulWidget {
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<String> categoryList = ['소통', '힐링', '잡담'];
+  List<String> categoryList = ['소통', '힐링', '잡담', '듣기'];
   int _index = 0;
   bool _validateError = false;
-  List<bool> _isSelected = List.generate(3, (_) => false);
+  List<bool> _isSelected = List.generate(4, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
 
@@ -69,6 +70,10 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text('잡담'),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('듣기'),
+                ),
               ],
               onPressed: (int index) {
                 setState(() {
@@ -76,6 +81,11 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     _isSelected[i] = i == index;
                   }
                   _index = index;
+                  if (index == 3) {
+                    _role = ClientRole.Audience;
+                  } else {
+                    _role = ClientRole.Broadcaster;
+                  }
                 });
               },
               isSelected: _isSelected,
@@ -131,6 +141,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
 
-    Get.to(() => BroadCastPage(), arguments: _title.text);
+    Get.to(
+      () => BroadCastPage(
+        channelName: '_title.text',
+        userName: '',
+        role: _role,
+      ),
+    );
   }
 }
