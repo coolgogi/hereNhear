@@ -1,9 +1,8 @@
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/broadcast/repository/broadcast_repository.dart';
+import 'package:herehear/groupCall/repository/group_call_repository.dart';
 import 'package:herehear/login/signIn.dart';
-import 'package:herehear/broadcast/data/broadcast_model.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart';
 
 import 'package:get/get.dart';
 
@@ -14,27 +13,28 @@ import 'package:get/get.dart';
 // 이를 Map으로 바꿔서 해줘야함.
 // 그래서 UserModle을 만든 다음에 toMap함수를 넣어서 이를 Map으로 바꿔준다음에 firebase DB에 업로드
 
-class BroadcastController extends GetxController {
+class GroupCallController extends GetxController {
 
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
-  static BroadcastController get to => Get.find();
-  Rx<BroadcastModel> newStreamingRoom = BroadcastModel().obs;
+  static GroupCallController get to => Get.find();
+  Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
 
-  Future<void> createBroadcastRoom(User? firebaseUser, String? title, String? notice, String? category) async {
+
+  Future<void> createGroupCallRoom(User? firebaseUser, String? title, String? notice, String? docId) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
-        newStreamingRoom.value = BroadcastModel(
-          hostUid: firebaseUser.uid,
-          title: title,
-          notice: notice,
-          category: category,
-          docId: (10000000000000-DateTime.now().millisecondsSinceEpoch).toString(),
-          createdTime: DateTime.now(),
-        );
+      newGroupCallRoom.value = GroupCallModel(
+        hostUid: firebaseUser.uid,
+        title: title,
+        notice: notice,
+        docId: docId,
+        channelName: docId,
+        createdTime: DateTime.now(),
+      );
 
-        await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
+      await GroupCallRepository.GroupCallToFirebase(newGroupCallRoom.value);
 
     }
     else{

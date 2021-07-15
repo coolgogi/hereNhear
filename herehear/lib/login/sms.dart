@@ -94,37 +94,71 @@ class _SmsPage extends State<Sms> {
   }
 
   void verifyPhoneNumber() async {
-    PhoneVerificationCompleted verificationCompleted =
-        (PhoneAuthCredential phoneAuthCredential) async {
-      await _auth.signInWithCredential(phoneAuthCredential);
-      showSnackbar("Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}");
-    };
-
-    PhoneVerificationFailed verificationFailed =
-        (FirebaseAuthException authException) {
-      showSnackbar('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
-    };
-
-    PhoneCodeSent codeSent =
-        (String verificationId, [int? forceResendingToken]) async {
-      showSnackbar('Please check your phone for the verification code.');
-      _verificationId = verificationId;
-    };
-
-    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      showSnackbar("verification code: " + verificationId);
-      _verificationId = verificationId;
-    };
+    // PhoneVerificationCompleted verificationCompleted =
+    //     (PhoneAuthCredential credential) async {
+    //   // ANDROID ONLY!
+    //
+    //   // Sign the user in (or link) with the auto-generated credential
+    //   await _auth.signInWithCredential(credential);
+    //   showSnackbar("Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}");
+    // };
+    //
+    // PhoneVerificationFailed verificationFailed =
+    //     (FirebaseAuthException e){
+    //       if (e.code == 'invalid-phone-number'){
+    //   showSnackbar('Phone number verification failed. Code: ${e.code}. Message: ${e.message}');}
+    // };
+    //
+    // PhoneCodeSent codeSent =
+    //
+    //     (String verificationId, int? resendToken) async {
+    //   // Update the UI - wait for the user to enter the SMS code
+    //   String smsCode = 'xxxx';
+    //
+    //   // Create a PhoneAuthCredential with the code
+    //   PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+    //   _verificationId = verificationId;
+    //   // Sign the user in (or link) with the credential
+    //   await _auth.signInWithCredential(credential);
+    // };
+    //
+    //
+    // PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+    //     (String verificationId) {
+    //   showSnackbar("verification code: " + verificationId);
+    //   _verificationId = verificationId;
+    // };
 
     try {
       await _auth.verifyPhoneNumber(
           phoneNumber: _phoneNumberController.text,
-          timeout: const Duration(seconds: 180),
-          verificationCompleted: verificationCompleted,
-          verificationFailed: verificationFailed,
-          codeSent: codeSent,
-          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            // ANDROID ONLY!
+
+            // Sign the user in (or link) with the auto-generated credential
+            await _auth.signInWithCredential(credential);
+          },
+          verificationFailed:(FirebaseAuthException e) {
+            if (e.code == 'invalid-phone-number') {
+              print('The provided phone number is not valid.');
+            }
+
+            // Handle other errors
+          },
+          codeSent: (String verificationId, int? resendToken) async {
+            // Update the UI - wait for the user to enter the SMS code
+            String smsCode = 'xxxx';
+
+            // Create a PhoneAuthCredential with the code
+            PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+
+            // Sign the user in (or link) with the credential
+            await _auth.signInWithCredential(credential);
+          },
+        timeout: const Duration(seconds: 60),
+        codeAutoRetrievalTimeout: (String verificationId) {
+          // Auto-resolution timed out...
+        },);
     } catch (e) {
       showSnackbar("Failed to Verify Phone Number: ${e}");
     }

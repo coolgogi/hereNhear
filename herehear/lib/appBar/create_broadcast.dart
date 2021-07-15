@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
-import 'package:herehear/login/signIn.dart';
-import 'package:herehear/data/posts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
@@ -120,7 +118,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.createBroadCastRoom(user, _title.text,
+                      controller.createBroadcastRoom(user, _title.text,
                           _notice.text, categoryList[_index]);
                       onJoin();
                     },

@@ -15,6 +15,7 @@ import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
 import 'etc/listTest.dart';
 import 'theme/theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(App());
 
@@ -50,32 +51,35 @@ class MyApp extends StatelessWidget {
     return GetBuilder<ThemeController>(
       init: ThemeController(),
       builder: (value) {
-        return GetMaterialApp(
-          theme: value.isDarkTheme.value ? dark_theme : light_theme,
-          debugShowCheckedModeBanner: false,
-          // GetX Controller 등록
-          // initialBinding: BindingsBuilder(() {}),
-          initialBinding: AppBinding(),
-          title: 'Flutter Basic',
-          home: LandingPage(),
-          getPages: [
-            GetPage(
-              name: '/',
-              page: () => LandingPage(),
-            ),
-            GetPage(
-              name: '/myPage',
-              page: () => myPage(),
-            ),
-            GetPage(
-              name: '/upload',
-              page: () => UploadPage(),
-            ),
-            GetPage(
-              name: '/login',
-              page: () => LoginPage(),
-            )
-          ],
+        return ScreenUtilInit(
+          designSize: Size(375, 667),
+          builder: () => GetMaterialApp(
+            theme: value.isDarkTheme.value ? dark_theme : light_theme,
+            debugShowCheckedModeBanner: false,
+            // GetX Controller 등록
+            // initialBinding: BindingsBuilder(() {}),
+            initialBinding: AppBinding(),
+            title: 'Flutter Basic',
+            home: LandingPage(),
+            getPages: [
+              GetPage(
+                name: '/',
+                page: () => LandingPage(),
+              ),
+              GetPage(
+                name: '/myPage',
+                page: () => myPage(),
+              ),
+              GetPage(
+                name: '/upload',
+                page: () => UploadPage(),
+              ),
+              GetPage(
+                name: '/login',
+                page: () => LoginPage(),
+              )
+            ],
+          ),
         );
       }
     );
@@ -110,11 +114,11 @@ class LandingPageController extends GetxController {
 class LandingPage extends StatelessWidget {
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w700,
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-      TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 12);
+      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
 
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
@@ -122,59 +126,40 @@ class LandingPage extends StatelessWidget {
         child: SizedBox(
           height: 54,
           child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
             showUnselectedLabels: true,
             showSelectedLabels: true,
             onTap: landingPageController.changeTabIndex,
             currentIndex: landingPageController.tabIndex.value,
-            backgroundColor: Color.fromRGBO(0, 0, 0, 1.0),
-            unselectedItemColor: Colors.white.withOpacity(0.5),
-            selectedItemColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            unselectedItemColor: Color(0xFFB8B8B8),
+            selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
             items: [
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Icon(
-                    Icons.home,
-                    size: 20.0,
-                  ),
-                ),
-                label: 'Home',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                icon: Image.asset('assets/icons/home_stroke.png', width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/home_active.png', width: 20.w, height: 20.w),
+                label: '홈',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Icon(
-                    Icons.star,
-                    size: 20.0,
-                  ),
-                ),
-                label: 'Subscribed',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                icon: Image.asset('assets/icons/favorite_stroke.png', width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/favorite_active.png', width: 20.w, height: 20.w),
+                label: '구독',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Icon(
-                    Icons.comment,
-                    size: 20.0,
-                  ),
-                ),
-                label: 'Chatting',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                icon: Icon(Icons.add, size: 5,),
+                label: '',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: EdgeInsets.only(bottom: 7),
-                  child: Icon(
-                    Icons.account_circle_sharp,
-                    size: 20.0,
-                  ),
-                ),
-                label: 'MyPage',
-                backgroundColor: Color.fromRGBO(36, 54, 101, 1.0),
+                icon: Image.asset('assets/icons/search_stroke.png', width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/search_active.png', width: 20.w, height: 20.w),
+                label: '탐색',
+              ),
+              BottomNavigationBarItem(
+                icon: Image.asset('assets/icons/profile_stroke.png', width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/profile_active.png', width: 20.w, height: 20.w  ),
+                label: '마이 페이지',
               ),
             ],
           ),
@@ -192,20 +177,47 @@ class LandingPage extends StatelessWidget {
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
-              InfiniteScrollView(),
+              // InfiniteScrollView(),
               HomePage(),
               // SubscribedPage(),
-              // searchPage(),
               Subscribed22Page(),
-              // ChatPage(),
+              searchPage(),
+              ChatPage(),
               myPage(),
             ],
           )),
+          floatingActionButtonLocation: CustomFloatingActionButtonLocation(FloatingActionButtonLocation.centerDocked, 0, 15),
+          floatingActionButton: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+            ),
+            child: FloatingActionButton(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                elevation: 0.0,
+                shape: CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
+                child: Icon(Icons.add),
+                onPressed: () {},
+            ),
+          ),
     ));
   }
 
   Future<int> initialize() async {
     await Firebase.initializeApp();
     return 0;
+  }
+}
+
+class CustomFloatingActionButtonLocation extends FloatingActionButtonLocation {
+  FloatingActionButtonLocation location;
+  double offsetX; // Offset in X direction
+  double offsetY; // Offset in Y direction
+  CustomFloatingActionButtonLocation(this.location, this.offsetX, this.offsetY);
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+    Offset offset = location.getOffset(scaffoldGeometry);
+    return Offset(offset.dx + offsetX, offset.dy + offsetY);
   }
 }
