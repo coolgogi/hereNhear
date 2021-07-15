@@ -47,56 +47,59 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+        // padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Text(
-                '실시간 소리',
-                // style: Theme.of(context).textTheme.headline1,
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 3.0),
-                child: Container(
-                  width: 41.w,
-                  height: 18.h,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).colorScheme.primaryVariant,
-                        width: 2.0.w
-                    ),
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(9.0.r) //                 <--- border radius here
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                        'LIVE',
-                        style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12)),
-                  ),
-                  // child: Padding(
-                  //   padding: const EdgeInsets.only(left: 8.0),
-                  //   child: TextButton(
-                  //     child: Text(
-                  //         'LIVE',
-                  //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
-                  //     style: ButtonStyle(
-                  //         shape: MaterialStateProperty.all<
-                  //             RoundedRectangleBorder>(RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(9.0),
-                  //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
-                  //         ))),
-                  //     onPressed: null,
-                  //   ),
-                  // ),
+          Padding(
+            padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  '실시간 소리',
+                  // style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context).textTheme.headline2,
                 ),
-              ),
-              Expanded(child: Container()),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 3.0),
+                  child: Container(
+                    width: 41.w,
+                    height: 18.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.primaryVariant,
+                          width: 2.0.w
+                      ),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(9.0.r) //                 <--- border radius here
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                          'LIVE',
+                          style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12)),
+                    ),
+                    // child: Padding(
+                    //   padding: const EdgeInsets.only(left: 8.0),
+                    //   child: TextButton(
+                    //     child: Text(
+                    //         'LIVE',
+                    //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
+                    //     style: ButtonStyle(
+                    //         shape: MaterialStateProperty.all<
+                    //             RoundedRectangleBorder>(RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(9.0),
+                    //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                    //         ))),
+                    //     onPressed: null,
+                    //   ),
+                    // ),
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
+            padding: const EdgeInsets.only(left: 16.0, top: 8.0, bottom: 18.0),
             child: Container(
               height: 170.0.h,
               child: StreamBuilder<QuerySnapshot>(
@@ -122,9 +125,12 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          Text(
-            '토크',
-            style: Theme.of(context).textTheme.headline2,
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: Text(
+              '토크',
+              style: Theme.of(context).textTheme.headline2,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
@@ -242,8 +248,10 @@ class HomePage extends StatelessWidget {
   List<Widget> groupcallRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
     return broadcastSnapshot.data!.docs
         .map((room) {
-      return Card(
-          child: Container(
+      return Column(
+        children: [
+          Divider(thickness: 2),
+          Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0.h,
             child: Row(
@@ -279,7 +287,9 @@ class HomePage extends StatelessWidget {
                 )
               ],
             ),
-          ));
+          ),
+        ],
+      );
     }).toList();
   }
 }
