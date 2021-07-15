@@ -170,7 +170,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 14.0.sp,
     ),
     subtitle1: base.subtitle1!.copyWith(
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.bold,
       fontSize: 12.0.sp,
       fontFamily: 'Roboto',
     ),

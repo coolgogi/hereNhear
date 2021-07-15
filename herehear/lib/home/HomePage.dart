@@ -100,7 +100,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 18.0.h),
+            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 18.0.h),
             child: Container(
               height: 170.0.h,
               child: StreamBuilder<QuerySnapshot>(
@@ -214,34 +214,39 @@ class HomePage extends StatelessWidget {
   List<Widget> broadcastRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
     return broadcastSnapshot.data!.docs
         .map((room) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Card(
-            child: Container(
-              width: 130.0.w,
-              height: 130.0.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                ],
+      return Padding(
+        padding: EdgeInsets.only(right: 12.0.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              child: Container(
+                width: 130.0.w,
+                height: 130.0.w,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  ],
+                ),
               ),
             ),
-          ),
-          Text(
-            room['notice'],
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          Row(
-            children: <Widget>[
-              Icon(Icons.people),
-              Text('num'),
-              SizedBox(width: 8.sp),
-              Icon(Icons.favorite),
-              Text('num'),
-            ],
-          )
-        ],
+            SizedBox(height: 6.h),
+            Text(
+              room['notice'],
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            SizedBox(height: 4.h),
+            Row(
+              children: <Widget>[
+                Icon(Icons.people, size: 14.w,),
+                Text(' num'),
+                SizedBox(width: 8.sp),
+                Icon(Icons.favorite, size: 12.w,),
+                Text(' num'),
+              ],
+            )
+          ],
+        ),
       );
     }).toList();
   }
