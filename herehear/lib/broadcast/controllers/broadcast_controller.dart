@@ -21,7 +21,7 @@ class BroadcastController extends GetxController {
   Rx<BroadcastModel> newStreamingRoom = BroadcastModel().obs;
 
 
-  Future<void> createBroadcastRoom(User? firebaseUser, String? title, String? notice, String? category) async {
+  Future<void> createBroadcastRoom(User? firebaseUser, String? title, String? notice, String? category, String? docId) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
@@ -30,7 +30,8 @@ class BroadcastController extends GetxController {
           title: title,
           notice: notice,
           category: category,
-          docId: (10000000000000-DateTime.now().millisecondsSinceEpoch).toString(),
+          docId: docId,
+          channelName: docId,
           createdTime: DateTime.now(),
         );
 
