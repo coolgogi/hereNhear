@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -13,6 +15,9 @@ class AgoraEventController extends GetxController {
   var speakingUser = <int?>[].obs;
   late RtcEngine _engine;
   var activeSpeaker = 10.obs;
+  final String channelName;
+  final ClientRole role;
+  AgoraEventController(this.channelName, this.role);
 
   @override
   void onInit() {
@@ -48,7 +53,8 @@ class AgoraEventController extends GetxController {
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine.joinChannel(null, BroadCastPage().channelName, null, 0);
+
+    await _engine.joinChannel(null, channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -56,6 +62,8 @@ class AgoraEventController extends GetxController {
     _engine = await RtcEngine.create(appID);
     await _engine.enableAudio();
     await _engine.disableVideo();
+    await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
+    await _engine.setClientRole(role);
   }
 
   /// Add agora event handlers
@@ -117,135 +125,226 @@ class AgoraEventController extends GetxController {
 }
 
 class BroadCastPage extends StatelessWidget {
-  final String channelName = Get.arguments;
+  static final _users = <int>[];
+  final _broadcaster = <String>[];
+  final _audience = <String>[];
+  final Map<int, String> _allUsers = {};
+  // final String channelName = Get.arguments;
+  final String channelName;
+  final String userName;
+  final ClientRole role;
+  late final controller;
+  bool muted = false;
+  late RtcEngine _engine;
+  final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
 
-  final controller = Get.put(AgoraEventController());
-
-  /// Toolbar layout
-  Widget _toolbar() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Obx(
-            () => RawMaterialButton(
-              onPressed: controller.onToggleMute,
-              child: Icon(
-                controller.muted.value ? Icons.mic_off : Icons.mic,
-                color:
-                    controller.muted.value ? Colors.white : Colors.blueAccent,
-                size: 20.0,
-              ),
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor:
-                  controller.muted.value ? Colors.blueAccent : Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-          ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(),
-            child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: controller.onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
-        ],
-      ),
-    );
+  BroadCastPage(
+      {required this.channelName, required this.userName, required this.role}) {
+    controller = Get.put(AgoraEventController(channelName, role));
   }
 
+  /// Toolbar layout
+  // Widget _toolbar() {
+  //   return Container(
+  //     alignment: Alignment.bottomCenter,
+  //     padding: const EdgeInsets.symmetric(vertical: 48),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: <Widget>[
+  //         Obx(
+  //           () => RawMaterialButton(
+  //             onPressed: controller.onToggleMute,
+  //             child: Icon(
+  //               controller.muted.value ? Icons.mic_off : Icons.mic,
+  //               color:
+  //                   controller.muted.value ? Colors.white : Colors.blueAccent,
+  //               size: 20.0,
+  //             ),
+  //             shape: CircleBorder(),
+  //             elevation: 2.0,
+  //             fillColor:
+  //                 controller.muted.value ? Colors.blueAccent : Colors.white,
+  //             padding: const EdgeInsets.all(12.0),
+  //           ),
+  //         ),
+  //         RawMaterialButton(
+  //           onPressed: () => _onCallEnd(),
+  //           child: Icon(
+  //             Icons.call_end,
+  //             color: Colors.white,
+  //             size: 35.0,
+  //           ),
+  //           shape: CircleBorder(),
+  //           elevation: 2.0,
+  //           fillColor: Colors.redAccent,
+  //           padding: const EdgeInsets.all(15.0),
+  //         ),
+  //         // RawMaterialButton(
+  //         //   onPressed: controller.onSwitchCamera,
+  //         //   child: Icon(
+  //         //     Icons.switch_camera,
+  //         //     color: Colors.blueAccent,
+  //         //     size: 20.0,
+  //         //   ),
+  //         //   shape: CircleBorder(),
+  //         //   elevation: 2.0,
+  //         //   fillColor: Colors.white,
+  //         //   padding: const EdgeInsets.all(12.0),
+  //         // )
+  //       ],
+  //     ),
+  //   );
+  // }
+  Widget _toolbar() {
+    return role == ClientRole.Audience
+        ? Container()
+        : Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                RawMaterialButton(
+                  onPressed: _onToggleMute,
+                  child: Row(
+                    children: [
+                      Icon(
+                        muted ? Icons.mic_off : Icons.mic,
+                        color: muted ? Colors.white : Colors.blueAccent,
+                        size: 20.0,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      muted
+                          ? Text(
+                              'Unmute',
+                              style: buttonStyle,
+                            )
+                          : Text(
+                              'Mute',
+                              style: buttonStyle.copyWith(color: Colors.black),
+                            )
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2.0,
+                  fillColor: muted ? Colors.blueAccent : Colors.white,
+                  padding: const EdgeInsets.all(15.0),
+                ),
+                RawMaterialButton(
+                  onPressed: () => _onCallEnd(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.call_end,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Disconnect',
+                        style: buttonStyle,
+                      )
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(15.0),
+                ),
+              ],
+            ),
+          );
+  }
+
+  void _onToggleMute() {
+    muted = !muted;
+    _engine.muteLocalAudioStream(muted);
+  }
+
+  //broad cast 방 화면
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text('Agora audio broadcasting'),
+  //     ),
+  //     backgroundColor: Colors.black,
+  //     body: Center(
+  //       child: Stack(
+  //         children: <Widget>[
+  //           Obx(() => _viewRows()),
+  //           _toolbar(),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Agora audio broadcasting'),
-      ),
-      backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            Obx(() => _viewRows()),
-            _toolbar(),
-          ],
-        ),
-      ),
+      body: SafeArea(
+          child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              'Broadcaster',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: double.infinity,
+              child: ListView.builder(
+                itemCount: _users.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _allUsers.containsKey(_users[index])
+                      ? UserView(
+                          userName: _allUsers[_users[index]]!,
+                          role: ClientRole.Broadcaster,
+                        )
+                      : Container();
+                },
+              )),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Text(
+              'Audience',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              width: double.infinity,
+              child: ListView.builder(
+                itemCount: _allUsers.length - _users.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return _users.contains(_allUsers.keys.toList()[index])
+                      ? Container()
+                      : UserView(
+                          role: ClientRole.Audience,
+                          userName: _allUsers.values.toList()[index],
+                        );
+                },
+              )),
+          _toolbar()
+        ],
+      )),
     );
   }
 
   /// Helper function to get list of native views
-  // List<Widget> _getRenderViews() {
-  //   final List<StatefulWidget> list = [];
-  //   list.add(RtcLocalView.SurfaceView());
-  //   _users.forEach((int uid) {
-  //     list.add(RtcRemoteView.SurfaceView(uid: uid));
-  //   });
-  //   return list;
-  // }
   List<Widget> _getRenderViews() {
     final List<Widget> list = [];
-    // if(controller.activeSpeaker == 0) {
-    //   list.add(Container( decoration: BoxDecoration(
-    //     border: Border.all(
-    //       color: Colors.lightGreen,
-    //       width: 2,
-    //     ),
-    //   ),
-    //       child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
-    // }
-    // else list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
-    //
-    // controller.users.forEach((int uid) {
-    //   print('!!!!!!: $uid');
-    //     if(uid == controller.activeSpeaker) {
-    //       list.add(Container( decoration: BoxDecoration(
-    //         border: Border.all(
-    //           color: Colors.lightGreen,
-    //           width: 2,
-    //         ),
-    //       ),
-    //           child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
-    //     }
-    //     else
-    //       list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
-    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    // });
-
-    // bool flag1 = false;
-    // for(int i = 0; i < controller.speakingUser.length; i++) {
-    //   if(controller.speakingUser[i] == 0) {
-    //     list.add(Container( decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: Colors.lightGreen,
-    //         width: 2,
-    //       ),
-    //     ),
-    //         child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
-    //     flag1 = true;
-    //     break;
-    //   }
-    // }
-    // if(flag1 != true)
-    //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
     // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
     list.add(Image(
       image: AssetImage('assets/images/me.jpg'),
@@ -280,7 +379,6 @@ class BroadCastPage extends StatelessWidget {
           width: 150,
           height: 150,
         ));
-      // list.add(RtcRemoteView.SurfaceView(uid: uid));
     });
     return list;
   }
