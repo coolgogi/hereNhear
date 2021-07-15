@@ -6,6 +6,7 @@ import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/groupCall/group_call.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -243,6 +244,10 @@ class HomePage extends StatelessWidget {
     return broadcastSnapshot.data!.docs
         .map((room) {
       return Card(
+        child: InkWell(
+          onTap: (){
+            Get.to(() => GroupCallPage(), arguments: room['channelName']);
+          },
           child: Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0.h,
@@ -279,7 +284,7 @@ class HomePage extends StatelessWidget {
                 )
               ],
             ),
-          ));
+          ),),);
     }).toList();
   }
 }
