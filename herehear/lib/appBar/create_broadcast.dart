@@ -1,9 +1,10 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
-
-
+import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   @override
@@ -12,11 +13,12 @@ class CreateBroadcastPage extends StatefulWidget {
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<String> categoryList = ['소통', '힐링', '잡담'];
+  List<String> categoryList = ['소통', '힐링', '잡담', '듣기'];
   int _index = 0;
-  List<bool> _isSelected = List.generate(3, (_) => false);
+  bool _validateError = false;
+  List<bool> _isSelected = List.generate(4, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
 
@@ -30,10 +32,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
   @override
   initState() {
-
     super.initState();
     // 이 클래스애 리스너 추가
-
   }
 
   @override
@@ -49,7 +49,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         ),
       ),
       body: SizedBox(
-
         key: _formKey,
         height: MediaQuery.of(context).size.height,
         child: Column(
@@ -69,15 +68,22 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text('잡담'),
                 ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Text('듣기'),
+                ),
               ],
-
-
-              onPressed: (int index){
+              onPressed: (int index) {
                 setState(() {
                   for (int i = 0; i < _isSelected.length; i++) {
                     _isSelected[i] = i == index;
                   }
                   _index = index;
+                  if (index == 3) {
+                    _role = ClientRole.Audience;
+                  } else {
+                    _role = ClientRole.Broadcaster;
+                  }
                 });
               },
               isSelected: _isSelected,
@@ -112,7 +118,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                    controller.createBroadcastRoom(user,_title.text,_notice.text, categoryList[_index]);
+                      controller.createBroadcastRoom(user, _title.text,
+                          _notice.text, categoryList[_index]);
+                      onJoin();
                     },
                     child: Text('방만들기'),
                   ),
@@ -125,5 +133,18 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     );
   }
 
+  Future<void> onJoin() async {
+    setState(() {
+      _title.text.isEmpty ? _validateError = true : _validateError = false;
+    });
+    await Permission.microphone.request();
 
+    Get.to(
+      () => BroadCastPage(
+        channelName: '_title.text',
+        userName: '',
+        role: _role,
+      ),
+    );
+  }
 }

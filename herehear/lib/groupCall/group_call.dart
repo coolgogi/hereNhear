@@ -121,30 +121,6 @@ class GroupCallPage extends StatelessWidget {
   final String channelName = Get.arguments;
 
   final controller = Get.put(AgoraEventController());
-  // static final _users = <int>[];
-  // final _infoStrings = <String>[];
-  // String baseUrl = 'http://10.0.2.2'; //Add the link to your deployed server here
-  // int uid = 0;
-  // String token;
-
-  // Future<void> getToken() async {
-  //   final response = await http.get(
-  //     Uri.parse(baseUrl + '/rtc/' + widget.channelName + '/publisher/uid/' + uid.toString()
-  //         // To add expiry time uncomment the below given line with the time in seconds
-  //         + '?expiry=45'
-  //     ),
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       token = response.body;
-  //       token = jsonDecode(token)['rtcToken'];
-  //       print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: $token');
-  //     });
-  //   } else {
-  //     print('Failed to fetch the token');
-  //   }
-  // }
 
   /// Toolbar layout
   Widget _toolbar() {
