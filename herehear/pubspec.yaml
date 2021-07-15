@@ -91,6 +91,8 @@ flutter:
     - assets/icons/search_active.png
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
+    - assets/icons/search.png
+    - assets/icons/notification.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

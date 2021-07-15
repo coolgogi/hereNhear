@@ -14,6 +14,7 @@ import 'package:herehear/chatting/ChatPage.dart';
 import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
 import 'etc/listTest.dart';
+import 'home/HomePage2.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -178,7 +179,7 @@ class LandingPage extends StatelessWidget {
             index: landingPageController.tabIndex.value,
             children: [
               // InfiniteScrollView(),
-              HomePage(),
+              HomePage2(),
               // SubscribedPage(),
               Subscribed22Page(),
               searchPage(),
