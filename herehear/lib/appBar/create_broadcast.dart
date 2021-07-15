@@ -13,10 +13,10 @@ class CreateBroadcastPage extends StatefulWidget {
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<String> categoryList = ['소통', '힐링', '잡담', '듣기'];
+  List<String> categoryList = ['소통', '힐링', '잡담'];
   int _index = 0;
   bool _validateError = false;
-  List<bool> _isSelected = List.generate(4, (_) => false);
+  List<bool> _isSelected = List.generate(3, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
@@ -68,10 +68,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text('잡담'),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('듣기'),
-                ),
               ],
               onPressed: (int index) {
                 setState(() {
@@ -79,11 +75,11 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     _isSelected[i] = i == index;
                   }
                   _index = index;
-                  if (index == 3) {
-                    _role = ClientRole.Audience;
-                  } else {
-                    _role = ClientRole.Broadcaster;
-                  }
+                  // if (index == 3) {
+                  //   _role = ClientRole.Audience;
+                  // } else {
+                  //   _role = ClientRole.Broadcaster;
+                  // }
                 });
               },
               isSelected: _isSelected,
@@ -118,8 +114,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      controller.createBroadcastRoom(user, _title.text,
-                          _notice.text, categoryList[_index]);
                       onJoin();
                     },
                     child: Text('방만들기'),
@@ -138,12 +132,14 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       _title.text.isEmpty ? _validateError = true : _validateError = false;
     });
     await Permission.microphone.request();
-
+    final docId = (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+    controller.createBroadcastRoom(user, _title.text,
+        _notice.text, categoryList[_index], docId);
     Get.to(
       () => BroadCastPage(
-        channelName: '_title.text',
+        channelName: docId,
         userName: '',
-        role: _role,
+        role: ClientRole.Broadcaster,
       ),
     );
   }
