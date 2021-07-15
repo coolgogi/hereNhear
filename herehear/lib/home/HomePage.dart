@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
 import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-
 
 class HomePage extends StatelessWidget {
   // String uid;
@@ -21,8 +21,7 @@ class HomePage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
-          title: Text(
-              'HERE & HEAR',
+          title: Text('HERE & HEAR',
               style: Theme.of(context).appBarTheme.titleTextStyle),
           actions: <Widget>[
             // IconButton(
@@ -68,16 +67,17 @@ class HomePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       border: Border.all(
                           color: Theme.of(context).colorScheme.primaryVariant,
-                          width: 2.0.w
-                      ),
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(9.0.r) //                 <--- border radius here
-                      ),
+                          width: 2.0.w),
+                      borderRadius: BorderRadius.all(Radius.circular(
+                              9.0.r) //                 <--- border radius here
+                          ),
                     ),
                     child: Center(
-                      child: Text(
-                          'LIVE',
-                          style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12.sp)),
+                      child: Text('LIVE',
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.primaryVariant,
+                              fontSize: 12.sp)),
                     ),
                   ),
                 ),
@@ -90,8 +90,11 @@ class HomePage extends StatelessWidget {
             child: Container(
               height: 170.0.h,
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection("broadcast")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(
                       child: Text('라이브중인 방송이 없습니다.'),
@@ -114,8 +117,11 @@ class HomePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 8.0.h, bottom: 18.0.h),
             child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection("groupcall")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(
                       child: Center(child: Text('생성된 대화방이 없습니다.')),
@@ -123,8 +129,7 @@ class HomePage extends StatelessWidget {
                   return Column(
                     children: groupcallRoomList(context, snapshot),
                   );
-                }
-            ),
+                }),
           ),
         ],
       ),
@@ -177,49 +182,66 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  List<Widget> broadcastRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
-      return Padding(
+  List<Widget> broadcastRoomList(
+      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
+      return Container(
         padding: EdgeInsets.only(right: 12.0.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              child: Container(
-                width: 130.0.w,
-                height: 130.0.w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                  ],
+        child: InkWell(
+          onTap: () {
+            Get.to(
+                  () => BroadCastPage(
+                channelName: room['channelName'],
+                userName: '',
+                role: ClientRole.Audience,
+              ),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                child: Container(
+                  width: 130.0.w,
+                  height: 130.0.w,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 6.h),
-            Text(
-              room['notice'],
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            SizedBox(height: 4.h),
-            Row(
-              children: <Widget>[
-                Icon(Icons.people, size: 14.w,),
-                Text(' num'),
-                SizedBox(width: 8.sp),
-                Icon(Icons.favorite, size: 12.w,),
-                Text(' num'),
-              ],
-            )
-          ],
+              SizedBox(height: 6.h),
+              Text(
+                room['notice'],
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              SizedBox(height: 4.h),
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.people,
+                    size: 14.w,
+                  ),
+                  Text(
+                      room['currentListener'] == null ? '0': room['currentListener'].length.toString(),),
+                  SizedBox(width: 8.sp),
+                  Icon(
+                    Icons.favorite,
+                    size: 12.w,
+                  ),
+                  Text(room['like'].toString()),
+                ],
+              )
+            ],
+          ),
         ),
       );
     }).toList();
   }
 
-  List<Widget> groupcallRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
+  List<Widget> groupcallRoomList(
+      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
       return Column(
         children: [
           Divider(thickness: 2),
@@ -227,9 +249,9 @@ class HomePage extends StatelessWidget {
             // width: MediaQuery.of(context).size.width,
             height: 80.0.h,
             child: InkWell(
-                    onTap: (){
-                      print('groupcall!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-              Get.to(() => GroupCallPage(), arguments: room['channelName']);
+              onTap: () {
+                Get.to(() => GroupCallPage(), arguments: room['channelName']);
+                
               },
               child: Row(
                 children: <Widget>[
@@ -240,9 +262,9 @@ class HomePage extends StatelessWidget {
                       height: 70.0.w,
                       decoration: BoxDecoration(
                         color: Colors.amber,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0.r) //                 <--- border radius here
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(6.0
+                                .r) //                 <--- border radius here
+                            ),
                       ),
                     ),
                   ),
