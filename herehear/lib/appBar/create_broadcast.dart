@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
-import 'package:herehear/login/signIn.dart';
-import 'package:herehear/data/posts.dart';
+
+
 
 class CreateBroadcastPage extends StatefulWidget {
   @override
@@ -112,7 +112,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
-                    controller.createBroadCastRoom(user,_title.text,_notice.text, categoryList[_index]);
+                    controller.createBroadcastRoom(user,_title.text,_notice.text, categoryList[_index]);
                     },
                     child: Text('방만들기'),
                   ),

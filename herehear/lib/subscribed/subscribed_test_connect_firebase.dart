@@ -158,7 +158,7 @@ class Subscribed22Page extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
+              stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
               builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData)
                   return Container(
@@ -248,6 +248,11 @@ class Subscribed22Page extends StatelessWidget {
     return broadcastSnapshot.data!.docs
         .map((room) {
           return Card(
+            child: InkWell(
+              onTap: (){
+
+              },
+
               child: Container(
                 width: 110.0,
                 height: 80.0,
@@ -259,6 +264,7 @@ class Subscribed22Page extends StatelessWidget {
                   ],
                 ),
               ),
+          ),
           );
     }).toList();
   }
@@ -267,6 +273,11 @@ class Subscribed22Page extends StatelessWidget {
     return broadcastSnapshot.data!.docs
         .map((room) {
       return Card(
+        child: InkWell(
+          onTap: (){
+
+          },
+
           child: Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0,
@@ -304,7 +315,8 @@ class Subscribed22Page extends StatelessWidget {
                 )
               ],
             ),
-          ));
+          ),),
+      );
     }).toList();
   }
 }
