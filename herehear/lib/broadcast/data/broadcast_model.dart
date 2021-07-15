@@ -1,20 +1,20 @@
 class BroadcastModel {
   String? hostUid;
-  String? streamingRoomId;
   String? title;
   String? notice;
   String? category;
   String? docId;
+  String? channelName;
   DateTime? createdTime;
   List<dynamic>? currentListener;
 
   BroadcastModel({
     this.hostUid,
-    this.streamingRoomId,
     this.title,
     this.notice,
     this.category,
     this.docId,
+    this.channelName,
     this.createdTime,
     this.currentListener,
 
@@ -28,6 +28,7 @@ class BroadcastModel {
       'notice' : this.notice,
       'category' : this.category,
       'docId' : this.docId,
+      'channelName' : this.channelName,
       'createdTime' : this.createdTime,
     };
   }
@@ -38,5 +39,6 @@ class BroadcastModel {
         notice = json['notice'] as String,
         category = json['category'] as String,
         docId = json['docId'] as String,
+        channelName = json['channelName'] as String,
         createdTime = json['createdTime'].toDate();
 }

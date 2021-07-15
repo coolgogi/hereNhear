@@ -7,6 +7,7 @@ import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -78,21 +79,6 @@ class HomePage extends StatelessWidget {
                           'LIVE',
                           style: TextStyle(color: Theme.of(context).colorScheme.primaryVariant, fontSize: 12.sp)),
                     ),
-                    // child: Padding(
-                    //   padding: const EdgeInsets.only(left: 8.0),
-                    //   child: TextButton(
-                    //     child: Text(
-                    //         'LIVE',
-                    //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
-                    //     style: ButtonStyle(
-                    //         shape: MaterialStateProperty.all<
-                    //             RoundedRectangleBorder>(RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(9.0),
-                    //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
-                    //         ))),
-                    //     onPressed: null,
-                    //   ),
-                    // ),
                   ),
                 ),
                 Expanded(child: Container()),
@@ -114,14 +100,6 @@ class HomePage extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     children: broadcastRoomList(context, snapshot),
                   );
-                  // children: List.generate(10, (int index) {
-                  //   return Card(
-                  //       child: Container(
-                  //     width: 110.0,
-                  //     height: 80.0,
-                  //     child: Center(child: Text("${index + 1} 라이브")),
-                  //   ));
-                  // }));
                 },
               ),
             ),
@@ -150,18 +128,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterFloat,
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-      //   label: Text(
-      //     '새로 고침',
-      //     style: TextStyle(
-      //       color: Colors.black87,
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.white,
-      // ),
     );
   }
 
@@ -262,6 +228,7 @@ class HomePage extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
                     onTap: (){
+                      print('groupcall!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
               Get.to(() => GroupCallPage(), arguments: room['channelName']);
               },
               child: Row(
