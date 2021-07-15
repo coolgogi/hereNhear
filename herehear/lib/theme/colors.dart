@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const PrimaryColorLight = Color(0xFF9FB792);
-const OnPrimaryLight = Color(0xFF000000);
+const OnPrimaryLight = Color(0xFFFFFFFF);
 const PrimaryVariantDeepLight = Color(0xFF618051);
 const PrimaryVariantLight = Color(0xFFC1E1B0);
 const SecondaryLight = Color(0xFFF1CA66);

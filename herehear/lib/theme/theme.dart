@@ -30,9 +30,9 @@ ThemeData _buildClosetTheme_light() {
       color: BackgroundLight,
       titleTextStyle: TextStyle(
         color: PrimaryVariantDeepLight,
-        fontFamily: 'Baloo Bhai',
-        fontWeight: FontWeight.w400,
-        fontSize: 24.sp,
+        fontFamily: 'Noto Sans CJK kr',
+        fontWeight: FontWeight.w900,
+        fontSize: 17.sp,
         // height: 38.26,
       ),
     ),

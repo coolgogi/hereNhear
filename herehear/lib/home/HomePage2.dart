@@ -107,7 +107,7 @@ class HomePage2 extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 25.0.h),
+            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
             child: Container(
               height: 173.0.h,
               child: StreamBuilder<QuerySnapshot>(
