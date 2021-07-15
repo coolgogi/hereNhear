@@ -55,6 +55,7 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   smart_select: ^4.3.2
   flutter_pagewise: ^2.0.1
+  sms_autofill: ^2.0.0
 
 
 

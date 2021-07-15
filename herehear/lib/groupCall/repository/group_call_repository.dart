@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/broadcast/data/broadcast_model.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart';
 
 
-class BroadcastRepository {
-  static Future<void> BroadcastToFirebase(BroadcastModel firebaseUser) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('broadcast');
+class GroupCallRepository {
+  static Future<void> GroupCallToFirebase(GroupCallModel newRoom) async {
+    CollectionReference users = FirebaseFirestore.instance.collection('groupcall');
 
-    await users.doc(firebaseUser.docId).set(firebaseUser.toMap());
+    await users.doc(newRoom.docId).set(newRoom.toMap());
 
   }
 

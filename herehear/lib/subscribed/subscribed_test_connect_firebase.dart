@@ -248,6 +248,11 @@ class Subscribed22Page extends StatelessWidget {
     return broadcastSnapshot.data!.docs
         .map((room) {
           return Card(
+            child: InkWell(
+              onTap: (){
+
+              },
+
               child: Container(
                 width: 110.0,
                 height: 80.0,
@@ -259,6 +264,7 @@ class Subscribed22Page extends StatelessWidget {
                   ],
                 ),
               ),
+          ),
           );
     }).toList();
   }
@@ -267,6 +273,11 @@ class Subscribed22Page extends StatelessWidget {
     return broadcastSnapshot.data!.docs
         .map((room) {
       return Card(
+        child: InkWell(
+          onTap: (){
+
+          },
+
           child: Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0,
@@ -304,7 +315,8 @@ class Subscribed22Page extends StatelessWidget {
                 )
               ],
             ),
-          ));
+          ),),
+      );
     }).toList();
   }
 }

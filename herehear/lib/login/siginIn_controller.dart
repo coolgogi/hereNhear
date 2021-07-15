@@ -10,7 +10,7 @@ class LoginController extends GetxController {
     try {
       print("check1");
       final googleUser = await GoogleSignIn().signIn();
-      final googleAuth = await googleUser!.authentication;
+      final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,

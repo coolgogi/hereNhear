@@ -1,42 +1,39 @@
-class BroadcastModel {
+class GroupCallModel {
   String? hostUid;
-  String? streamingRoomId;
   String? title;
   String? notice;
-  String? category;
+  String? channelName;
   String? docId;
   DateTime? createdTime;
   List<dynamic>? currentListener;
 
-  BroadcastModel({
+  GroupCallModel({
     this.hostUid,
-    this.streamingRoomId,
     this.title,
     this.notice,
-    this.category,
+    this.channelName,
     this.docId,
     this.createdTime,
     this.currentListener,
-
   });
 
-  // UserModel을 map으로 바꿔주는 함수.
   Map<String, dynamic> toMap() {
     return {
-      'hostUid': this.hostUid,
-      'title' : this.title,
-      'notice' : this.notice,
-      'category' : this.category,
-      'docId' : this.docId,
-      'createdTime' : this.createdTime,
+      'hostUId': this.hostUid,
+      'title': this.title,
+      'notice': this.notice,
+      'channelName': this.channelName,
+      'docId': this.docId,
+      'createTIme' : this.createdTime,
+      'currentListener': this.currentListener,
     };
   }
 
-  BroadcastModel.fromJson(Map<String, dynamic> json, String hostUid)
+  GroupCallModel.fromJson(Map<String, dynamic> json, String docId)
       : hostUid = json['uid'] as String,
         title = json['title'] as String,
         notice = json['notice'] as String,
-        category = json['category'] as String,
+        channelName = json['title'] as String,
         docId = json['docId'] as String,
         createdTime = json['createdTime'].toDate();
 }
