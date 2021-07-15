@@ -6,6 +6,7 @@ import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/groupCall/group_call.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -254,38 +255,43 @@ class HomePage extends StatelessWidget {
           Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0.h,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                  child: Container(
-                    width: 70.0.w,
-                    height: 70.0.w,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(6.0.r) //                 <--- border radius here
+            child: InkWell(
+                    onTap: (){
+              Get.to(() => GroupCallPage(), arguments: room['channelName']);
+              },
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                    child: Container(
+                      width: 70.0.w,
+                      height: 70.0.w,
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(6.0.r) //                 <--- border radius here
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      room['title'],
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      room['notice'],
-                      style: Theme.of(context).textTheme.subtitle1,
-                    )
-                  ],
-                )
-              ],
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        room['title'],
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        room['notice'],
+                        style: Theme.of(context).textTheme.subtitle1,
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],
