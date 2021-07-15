@@ -15,8 +15,7 @@ ThemeData _buildClosetTheme_light() {
       primary: PrimaryColorLight,
       primaryVariant: PrimaryVariantLight,
       secondary: SecondaryLight,
-      // secondaryVariant: SecondaryVariantLight,
-      secondaryVariant: PrimaryVariantLight,
+      secondaryVariant: SecondaryVariantLight,
       surface: SurfaceLight,
       background: BackgroundLight,
       error: ErrorLight,
@@ -30,7 +29,7 @@ ThemeData _buildClosetTheme_light() {
     appBarTheme: base.appBarTheme.copyWith(
       color: BackgroundLight,
       titleTextStyle: TextStyle(
-        color: PrimaryColorLight,
+        color: PrimaryVariantDeepLight,
         fontFamily: 'Baloo Bhai',
         fontWeight: FontWeight.w400,
         fontSize: 24.sp,
@@ -168,7 +167,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
     ),
     caption: base.caption!.copyWith(
       fontWeight: FontWeight.w400,
-      fontSize: 14.0,
+      fontSize: 14.0.sp,
     ),
     subtitle1: base.subtitle1!.copyWith(
       fontWeight: FontWeight.w400,
@@ -185,7 +184,7 @@ AppBarTheme _buildClosetAppBarTheme(AppBarTheme base) {
   return base.copyWith(
     centerTitle: false,
     titleTextStyle: base.titleTextStyle!.copyWith(
-      fontSize: 18,
+      fontSize: 18.sp,
       fontWeight: FontWeight.w600,
       fontFamily: 'Sansita',
     ),
