@@ -82,6 +82,14 @@ flutter:
     - assets/images/me.jpg
     - assets/images/you.png
     - assets/messages.json
+    - assets/icons/home_stroke.png
+    - assets/icons/home_active.png
+    - assets/icons/favorite_stroke.png
+    - assets/icons/favorite_active.png
+    - assets/icons/search_stroke.png
+    - assets/icons/search_active.png
+    - assets/icons/profile_stroke.png
+    - assets/icons/profile_active.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

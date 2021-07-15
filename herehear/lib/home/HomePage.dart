@@ -143,18 +143,18 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-        label: Text(
-          '새로 고침',
-          style: TextStyle(
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: Colors.white,
-      ),
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
+      //   label: Text(
+      //     '새로 고침',
+      //     style: TextStyle(
+      //       color: Colors.black87,
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.white,
+      // ),
     );
   }
 
