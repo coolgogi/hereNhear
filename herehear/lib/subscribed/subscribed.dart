@@ -96,15 +96,18 @@ class SubscribedPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline2,
                 ),
                 Expanded(child: Container()),
-                TextButton(
-                  onPressed: null,
-                  child: Text('편집', style: TextStyle(fontWeight: FontWeight.w700),),
+                Padding(
+                  padding: EdgeInsets.only(right: 17.0.w),
+                  child: InkWell(
+                    child: Text('편집', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w700),),
+                    onTap: null,
+                  ),
                 )
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 26.0.h),
+            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
             child: Container(
               height: 27.0.h,
               child: ListView(
@@ -135,7 +138,7 @@ class SubscribedPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 9.0.h),
+            padding: EdgeInsets.only(top: 5.h),
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

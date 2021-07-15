@@ -126,7 +126,7 @@ class searchPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 26.0.h),
+            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
             child: Container(
               height: 27.0.h,
               child: ListView(
@@ -152,12 +152,12 @@ class searchPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16.0.w),
             child: Text(
-              '카테고리',
+              '카테고리 ',
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 9.0.h),
+            padding: EdgeInsets.only(top: 5.0.h),
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
