@@ -218,11 +218,11 @@ class BroadCastPage extends StatelessWidget {
                       ),
                       muted
                           ? Text(
-                              'Unmute',
+                              '음소거 해제',
                               style: buttonStyle,
                             )
                           : Text(
-                              'Mute',
+                              '음소거',
                               style: buttonStyle.copyWith(color: Colors.black),
                             )
                     ],
@@ -246,7 +246,7 @@ class BroadCastPage extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        'Disconnect',
+                        '나가기',
                         style: buttonStyle,
                       )
                     ],
@@ -294,7 +294,7 @@ class BroadCastPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              'Broadcaster',
+              'Host',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
