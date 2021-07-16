@@ -80,6 +80,7 @@ flutter:
   assets:
     - assets/login/google.png
     - assets/suhyun.jpg
+    - assets/gyeongsu.jpg
     - assets/images/me.jpg
     - assets/images/you.png
     - assets/messages.json
