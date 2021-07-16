@@ -4,6 +4,7 @@ class BroadcastModel {
   String? notice;
   String? category;
   String? docId;
+  String? image;
   int? like;
   String? channelName;
   DateTime? createdTime;
@@ -15,6 +16,7 @@ class BroadcastModel {
     this.notice,
     this.category,
     this.docId,
+    this.image,
     this.like,
     this.channelName,
     this.createdTime,
@@ -30,6 +32,7 @@ class BroadcastModel {
       'notice' : this.notice,
       'category' : this.category,
       'docId' : this.docId,
+      'image' : this.image,
       'like' : this.like,
       'channelName' : this.channelName,
       'createdTime' : this.createdTime,

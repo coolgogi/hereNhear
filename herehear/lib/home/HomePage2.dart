@@ -250,7 +250,9 @@ class HomePage2 extends StatelessWidget {
                   margin: EdgeInsets.only(left: 0.0.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      Image.asset(room['image'])
+                    ],
                   ),
                 ),
               ),

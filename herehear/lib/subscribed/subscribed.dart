@@ -269,6 +269,12 @@ class SubscribedPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(
+                      width:50,
+                      height:50,
+                      child: Image.asset(room['image']),
+                    ),
+
                   ],
                 ),
               ),
@@ -282,10 +288,13 @@ class SubscribedPage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(Icons.people, size: 14.w,),
-                Text(' num'),
+                Text(
+                  room['currentListener'] == null
+                    ? '0'
+                    : room['currentListener'].length.toString(),),
                 SizedBox(width: 8.sp),
                 Icon(Icons.favorite, size: 12.w,),
-                Text(' num'),
+                Text( room['like'].toString()),
               ],
             )
           ],
