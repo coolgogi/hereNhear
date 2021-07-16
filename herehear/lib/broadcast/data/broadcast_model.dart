@@ -46,6 +46,7 @@ class BroadcastModel {
         notice = json['notice'] as String,
         category = json['category'] as String,
         docId = json['docId'] as String,
+        image = json['image'] as String,
         like = json['like'] as int,
         channelName = json['channelName'] as String,
         createdTime = json['createdTime'].toDate();

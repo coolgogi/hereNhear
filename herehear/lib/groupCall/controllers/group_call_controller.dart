@@ -30,6 +30,7 @@ class GroupCallController extends GetxController {
         title: title,
         notice: notice,
         docId: docId,
+        image :'assets/images/mic2.jpg',
         channelName: docId,
         createdTime: DateTime.now(),
       );

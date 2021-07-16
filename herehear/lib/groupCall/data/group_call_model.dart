@@ -4,6 +4,7 @@ class GroupCallModel {
   String? notice;
   String? channelName;
   String? docId;
+  String? image;
   DateTime? createdTime;
   List<dynamic>? currentListener;
 
@@ -13,6 +14,7 @@ class GroupCallModel {
     this.notice,
     this.channelName,
     this.docId,
+    this.image,
     this.createdTime,
     this.currentListener,
   });
@@ -24,6 +26,7 @@ class GroupCallModel {
       'notice': this.notice,
       'channelName': this.channelName,
       'docId': this.docId,
+      'image' : this.image,
       'createTIme' : this.createdTime,
       'currentListener': this.currentListener,
     };
@@ -35,5 +38,6 @@ class GroupCallModel {
         notice = json['notice'] as String,
         channelName = json['title'] as String,
         docId = json['docId'] as String,
+        image = json['image'] as String,
         createdTime = json['createdTime'].toDate();
 }
