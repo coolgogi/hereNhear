@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/repository/broadcast_repository.dart';
@@ -15,32 +14,29 @@ import 'package:get/get.dart';
 // 그래서 UserModle을 만든 다음에 toMap함수를 넣어서 이를 Map으로 바꿔준다음에 firebase DB에 업로드
 
 class BroadcastController extends GetxController {
-
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static BroadcastController get to => Get.find();
   Rx<BroadcastModel> newStreamingRoom = BroadcastModel().obs;
 
-
-  Future<void> createBroadcastRoom(User? firebaseUser, String? title, String? notice, String? category, String? docId) async {
+  Future<void> createBroadcastRoom(User? firebaseUser, String? title,
+      String? notice, String? category, String? docId) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
-        newStreamingRoom.value = BroadcastModel(
-          hostUid: firebaseUser.uid,
-          title: title,
-          notice: notice,
-          category: category,
-          docId: docId,
-          image: 'assets/images/mic1.jpg',
-          like: 0,
-          channelName: docId,
-          createdTime: DateTime.now(),
-        );
+      newStreamingRoom.value = BroadcastModel(
+        hostUid: firebaseUser.uid,
+        title: title,
+        notice: notice,
+        category: category,
+        docId: docId,
+        image: 'assets/images/HGU.jpg',
+        like: 0,
+        channelName: docId,
+        createdTime: DateTime.now(),
+      );
 
-        await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
-
-    }
-    else{
+      await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
+    } else {
       Get.to(LoginPage());
     }
   }

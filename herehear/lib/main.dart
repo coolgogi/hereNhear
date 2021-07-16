@@ -52,40 +52,39 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // GetX 등록
     return GetBuilder<ThemeController>(
-      init: ThemeController(),
-      builder: (value) {
-        return ScreenUtilInit(
-          designSize: Size(375, 667),
-          builder: () => GetMaterialApp(
-            theme: value.isDarkTheme.value ? dark_theme : light_theme,
-            debugShowCheckedModeBanner: false,
-            // GetX Controller 등록
-            // initialBinding: BindingsBuilder(() {}),
-            initialBinding: AppBinding(),
-            title: 'Flutter Basic',
-            home: LandingPage(),
-            getPages: [
-              GetPage(
-                name: '/',
-                page: () => LandingPage(),
-              ),
-              GetPage(
-                name: '/myPage',
-                page: () => myPage(),
-              ),
-              GetPage(
-                name: '/upload',
-                page: () => UploadPage(),
-              ),
-              GetPage(
-                name: '/login',
-                page: () => LoginPage(),
-              )
-            ],
-          ),
-        );
-      }
-    );
+        init: ThemeController(),
+        builder: (value) {
+          return ScreenUtilInit(
+            designSize: Size(375, 667),
+            builder: () => GetMaterialApp(
+              theme: value.isDarkTheme.value ? dark_theme : light_theme,
+              debugShowCheckedModeBanner: false,
+              // GetX Controller 등록
+              // initialBinding: BindingsBuilder(() {}),
+              initialBinding: AppBinding(),
+              title: 'Flutter Basic',
+              home: LandingPage(),
+              getPages: [
+                GetPage(
+                  name: '/',
+                  page: () => HomePage2(),
+                ),
+                GetPage(
+                  name: '/myPage',
+                  page: () => myPage(),
+                ),
+                GetPage(
+                  name: '/upload',
+                  page: () => UploadPage(),
+                ),
+                GetPage(
+                  name: '/login',
+                  page: () => LoginPage(),
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 
@@ -141,27 +140,38 @@ class LandingPage extends StatelessWidget {
             selectedLabelStyle: selectedLabelStyle,
             items: [
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/home_stroke.png', width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/home_active.png', width: 20.w, height: 20.w),
+                icon: Image.asset('assets/icons/home_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/home_active.png',
+                    width: 20.w, height: 20.w),
                 label: '홈',
               ),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/favorite_stroke.png', width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/favorite_active.png', width: 20.w, height: 20.w),
+                icon: Image.asset('assets/icons/favorite_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/favorite_active.png',
+                    width: 20.w, height: 20.w),
                 label: '구독',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add, size: 5,),
+                icon: Icon(
+                  Icons.add,
+                  size: 5,
+                ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/search_stroke.png', width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/search_active.png', width: 20.w, height: 20.w),
+                icon: Image.asset('assets/icons/search_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/search_active.png',
+                    width: 20.w, height: 20.w),
                 label: '탐색',
               ),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/profile_stroke.png', width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/profile_active.png', width: 20.w, height: 20.w  ),
+                icon: Image.asset('assets/icons/profile_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/profile_active.png',
+                    width: 20.w, height: 20.w),
                 label: '마이 페이지',
               ),
             ],
@@ -190,20 +200,23 @@ class LandingPage extends StatelessWidget {
               myPage(),
             ],
           )),
-          floatingActionButtonLocation: CustomFloatingActionButtonLocation(FloatingActionButtonLocation.centerDocked, 0, 15),
-          floatingActionButton: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
-            ),
-            child: FloatingActionButton(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                elevation: 0.0,
-                shape: CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-                child: Icon(Icons.add),
-                onPressed: _showMyDialog,
-            ),
-          ),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          elevation: 0.0,
+          shape:
+              CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
+          child: Icon(Icons.add),
+          onPressed: _showMyDialog,
+        ),
+      ),
     ));
   }
 

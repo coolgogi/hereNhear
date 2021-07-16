@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/groupCall/repository/group_call_repository.dart';
 import 'package:herehear/login/signIn.dart';
@@ -14,14 +13,12 @@ import 'package:get/get.dart';
 // 그래서 UserModle을 만든 다음에 toMap함수를 넣어서 이를 Map으로 바꿔준다음에 firebase DB에 업로드
 
 class GroupCallController extends GetxController {
-
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static GroupCallController get to => Get.find();
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
-
-
-  Future<void> createGroupCallRoom(User? firebaseUser, String? title, String? notice, String? docId) async {
+  Future<void> createGroupCallRoom(
+      User? firebaseUser, String? title, String? notice, String? docId) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
@@ -30,15 +27,13 @@ class GroupCallController extends GetxController {
         title: title,
         notice: notice,
         docId: docId,
-        image :'assets/images/mic2.jpg',
+        image: 'assets/images/HGU.jpg',
         channelName: docId,
         createdTime: DateTime.now(),
       );
 
       await GroupCallRepository.GroupCallToFirebase(newGroupCallRoom.value);
-
-    }
-    else{
+    } else {
       Get.to(LoginPage());
     }
   }

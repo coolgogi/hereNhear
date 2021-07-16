@@ -252,8 +252,8 @@ class HomePage2 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(
-                        width:120,
-                        height:120,
+                        width: 120,
+                        height: 120,
                         child: Image.asset(room['image']),
                       ),
                     ],
@@ -313,12 +313,7 @@ class HomePage2 extends StatelessWidget {
                       // margin: EdgeInsets.all(0.0.w),
                       width: 70.0.h,
                       height: 70.0.h,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(6.0
-                                .r) //                 <--- border radius here
-                            ),
-                      ),
+                      child: SizedBox(child: Image.asset(room['image'])),
                     ),
                   ),
                   Column(
