@@ -93,6 +93,7 @@ flutter:
     - assets/icons/profile_active.png
     - assets/icons/search.png
     - assets/icons/notification.png
+    - assets/iamge/moon.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
