@@ -250,6 +250,11 @@ class searchPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    SizedBox(
+                      width:120,
+                      height:120,
+                      child: Image.asset(room['image']),
+                    ),
                   ],
                 ),
               ),
@@ -263,10 +268,12 @@ class searchPage extends StatelessWidget {
             Row(
               children: <Widget>[
                 Icon(Icons.people, size: 14.w,),
-                Text(' num'),
+                Text(room['currentListener'] == null
+                    ? '0'
+                    : room['currentListener'].length.toString(),),
                 SizedBox(width: 8.sp),
                 Icon(Icons.favorite, size: 12.w,),
-                Text(' num'),
+                Text(room['like'].toString()),
               ],
             )
           ],
@@ -296,11 +303,8 @@ class searchPage extends StatelessWidget {
                       // margin: EdgeInsets.all(0.0.w),
                       width: 70.0.h,
                       height: 70.0.h,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0.r) //                 <--- border radius here
-                        ),
+                      child: SizedBox(
+                        child: Image.asset(room['image']),
                       ),
                     ),
                   ),
