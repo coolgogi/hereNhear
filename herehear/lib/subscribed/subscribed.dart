@@ -324,11 +324,8 @@ class SubscribedPage extends StatelessWidget {
                       // margin: EdgeInsets.all(0.0.w),
                       width: 70.0.h,
                       height: 70.0.h,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(6.0.r) //                 <--- border radius here
-                        ),
+                      child: SizedBox(
+                        child: Image.asset(room['image']),
                       ),
                     ),
                   ),
