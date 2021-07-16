@@ -270,8 +270,8 @@ class SubscribedPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
-                      width:50,
-                      height:50,
+                      width:120,
+                      height:120,
                       child: Image.asset(room['image']),
                     ),
 

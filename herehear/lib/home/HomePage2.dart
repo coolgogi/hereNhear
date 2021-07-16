@@ -251,7 +251,11 @@ class HomePage2 extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(room['image'])
+                      SizedBox(
+                        width:120,
+                        height:120,
+                        child: Image.asset(room['image']),
+                      ),
                     ],
                   ),
                 ),

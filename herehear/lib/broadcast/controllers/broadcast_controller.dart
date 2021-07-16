@@ -31,6 +31,7 @@ class BroadcastController extends GetxController {
           notice: notice,
           category: category,
           docId: docId,
+          image: 'assets/images/mic1.jpg',
           like: 0,
           channelName: docId,
           createdTime: DateTime.now(),
