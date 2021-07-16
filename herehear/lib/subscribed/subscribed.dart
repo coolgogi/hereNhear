@@ -29,7 +29,45 @@ class SubscribedPage extends StatelessWidget {
             //     color: Colors.amber,
             //     icon: Icon(Icons.add_circle)),
             IconButton(
-              onPressed: null,
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          ListTile(
+                            leading: new Icon(Icons.photo),
+                            title: new Text('Photo'),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.music_note),
+                            title: new Text('Music'),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.videocam),
+                            title: new Text('Video'),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ListTile(
+                            leading: new Icon(Icons.share),
+                            title: new Text('Share'),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      );
+                    });
+              },
               color: Colors.black87,
               icon: Image.asset('assets/icons/notification.png'),
               iconSize: 20.w,),
