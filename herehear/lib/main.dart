@@ -13,6 +13,8 @@ import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
 
+import 'appBar/create_broadcast.dart';
+import 'appBar/create_groupcall.dart';
 import 'etc/listTest.dart';
 import 'home/HomePage2.dart';
 import 'theme/theme.dart';
@@ -199,10 +201,36 @@ class LandingPage extends StatelessWidget {
                 elevation: 0.0,
                 shape: CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
                 child: Icon(Icons.add),
-                onPressed: () {},
+                onPressed: _showMyDialog,
             ),
           ),
     ));
+  }
+
+  Future<void> _showMyDialog() async {
+    return Get.defaultDialog(
+      title: '소리 시작하기',
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TextButton(
+              child: Text(
+                '개인 라이브',
+                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+              ),
+              onPressed: () => Get.off(() => CreateBroadcastPage()),
+            ),
+            TextButton(
+              child: Text(
+                '그룹 대화',
+                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+              ),
+              onPressed: () => Get.off(() => CreateGroupCallPage()),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future<int> initialize() async {
