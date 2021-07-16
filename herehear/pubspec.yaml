@@ -91,6 +91,8 @@ flutter:
     - assets/icons/search_active.png
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
+    - assets/icons/search.png
+    - assets/icons/notification.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -108,6 +110,9 @@ flutter:
     - family: Baloo Bhai
       fonts:
         - asset: fonts/BalooBhai-Regular.ttf
+    - family: Noto Sans CJK kr
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

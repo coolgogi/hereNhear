@@ -30,9 +30,9 @@ ThemeData _buildClosetTheme_light() {
       color: BackgroundLight,
       titleTextStyle: TextStyle(
         color: PrimaryVariantDeepLight,
-        fontFamily: 'Baloo Bhai',
-        fontWeight: FontWeight.w400,
-        fontSize: 24.sp,
+        fontFamily: 'Noto Sans CJK kr',
+        fontWeight: FontWeight.w900,
+        fontSize: 17.sp,
         // height: 38.26,
       ),
     ),
@@ -156,12 +156,12 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       .copyWith(
     headline2: base.headline2!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 17.sp,
+      fontSize: 19.sp,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w700,
     ),
     headline6: base.headline6!.copyWith(
-      fontSize: 14.0.sp,
+      fontSize: 16.0.sp,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w700,
     ),
@@ -170,8 +170,8 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 14.0.sp,
     ),
     subtitle1: base.subtitle1!.copyWith(
-      fontWeight: FontWeight.bold,
-      fontSize: 12.0.sp,
+      fontWeight: FontWeight.w500,
+      fontSize: 14.0.sp,
       fontFamily: 'Roboto',
     ),
   );
