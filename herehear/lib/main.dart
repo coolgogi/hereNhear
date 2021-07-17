@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:herehear/search/search.dart';
 import 'package:herehear/subscribed/subscribed.dart';
 import 'package:herehear/home/HomePage.dart';
@@ -34,7 +35,12 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
+          return GetBuilder<LocationController>(
+            init: LocationController(),
+            builder: (value) {
+              return MyApp();
+            }
+          );
         } else {
           return Center(
             child: CircularProgressIndicator(),
