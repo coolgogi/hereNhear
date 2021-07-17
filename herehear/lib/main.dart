@@ -214,7 +214,7 @@ class LandingPage extends StatelessWidget {
           shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
           child: Icon(Icons.add),
-          onPressed: _showMyDialog,
+          onPressed: () => showCreateOption(context),
         ),
       ),
     ));
@@ -249,6 +249,48 @@ class LandingPage extends StatelessWidget {
   Future<int> initialize() async {
     await Firebase.initializeApp();
     return 0;
+  }
+
+  Future<dynamic> showCreateOption(BuildContext context) {
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 35.h,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  InkWell(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.record_voice_over, size: 50.w, color: Theme.of(context).colorScheme.primary,),
+                        SizedBox(height: 20.h,),
+                        // podcasts
+                        Text('개인 라이브', style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    onTap: () => Get.off(() => CreateBroadcastPage()),
+                  ),
+                  InkWell(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.connect_without_contact, size: 50.w, color: Theme.of(context).colorScheme.primary,),
+                        SizedBox(height: 20.h,),
+                        Text('그룹 대화', style: TextStyle(fontSize: 18.sp, color: Colors.black87, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                    onTap: () => Get.off(() => CreateGroupCallPage()),
+                  )
+                ],
+              ),
+              SizedBox(height: 35.h,),
+            ],
+          );
+        });
   }
 }
 
