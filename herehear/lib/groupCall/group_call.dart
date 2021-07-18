@@ -12,6 +12,7 @@ class AgoraEventController extends GetxController {
   var users = <int>[].obs;
   RxBool muted = false.obs;
   var speakingUser = <int?>[].obs;
+  var participants = <int?>[].obs;
   late RtcEngine _engine;
   var activeSpeaker = 10.obs;
 
@@ -208,6 +209,12 @@ class GroupCallPage extends StatelessWidget {
               ],
             ),
           ),
+          Text('관전', style: Theme.of(context).textTheme.headline2,),
+          Row(
+            children: <Widget>[
+              Obx(() => _viewRows()),
+            ],
+          )
         ],
       ),
     );
@@ -268,10 +275,15 @@ class GroupCallPage extends StatelessWidget {
     // if(flag1 != true)
     //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
     // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
-    list.add(Image(
-      image: AssetImage('assets/images/me.jpg'),
-      width: 150,
-      height: 150,
+    list.add(Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ),
+      child: Image(
+        image: AssetImage('assets/images/me.jpg'),
+        width: 150,
+        height: 150,
+      ),
     ));
 
     controller.users.forEach((int uid) {
@@ -281,6 +293,7 @@ class GroupCallPage extends StatelessWidget {
         if (uid == controller.speakingUser[i]) {
           list.add(Container(
               decoration: BoxDecoration(
+                shape: BoxShape.circle,
                 border: Border.all(
                   color: Colors.lightGreen,
                   width: 2,
@@ -296,10 +309,89 @@ class GroupCallPage extends StatelessWidget {
         }
       }
       if (flag != true)
-        list.add(Image(
-          image: AssetImage('assets/images/you.png'),
-          width: 150,
-          height: 150,
+        list.add(Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+          ),
+          child: Image(
+            image: AssetImage('assets/images/you.png'),
+            width: 150,
+            height: 150,
+          ),
+        ));
+      // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    });
+    return list;
+  }
+
+  List<Widget> _getParticipantsImageList() {
+    final List<Widget> list = [];
+
+    list.add(Padding(
+      padding: EdgeInsets.all(16.0.h),
+      child: Container(
+        child: CircleAvatar(
+          radius: 35,
+          backgroundImage: AssetImage('assets/images/me.jpg'),
+        ),
+      ),
+    )
+    //     Container(
+    //   decoration: BoxDecoration(
+    //     shape: BoxShape.circle,
+    //     image: DecorationImage(
+    //       fit: BoxFit.fill,
+    //       image: AssetImage('assets/images/me.jpg'),
+    //     ),
+    //   ),
+    // )
+    );
+
+    controller.users.forEach((int uid) {
+      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+      bool flag = false;
+      for (int i = 0; i < controller.speakingUser.length; i++) {
+        if (uid == controller.speakingUser[i]) {
+          list.add(Padding(
+            padding: EdgeInsets.all(16.0.h),
+            child: Container(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.lightGreen,
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: AssetImage('assets/images/you.png'),
+                ),
+              ),
+            ),
+          )
+              // Container(
+              // decoration: BoxDecoration(
+              //   shape: BoxShape.circle,
+              //   border: Border.all(
+              //     color: Colors.lightGreen,
+              //     width: 2,
+              //   ),
+              // ),
+              // child: Image(
+              //   image: AssetImage('assets/images/you.png'),
+              //   width: 150,
+              //   height: 150,
+              // ))
+      );
+          flag = true;
+          break;
+        }
+      }
+      if (flag != true)
+        list.add(Padding(
+          padding: EdgeInsets.all(16.0.h),
+          child: Container(
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: AssetImage('assets/images/you.png'),
+            ),
+          ),
         ));
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
     });
@@ -308,26 +400,28 @@ class GroupCallPage extends StatelessWidget {
 
   /// Video view wrapper
   Widget _videoView(view) {
-    return Expanded(
-        child: Container(
-            child: Center(
+    return Container(
+        child: Center(
       child: view,
-    )));
+    ));
   }
 
   /// Video view row wrapper
   Widget _expandedVideoRow(List<Widget> views) {
     final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
-      ),
+    return Row(
+      children: wrappedViews,
     );
   }
 
+  // Widget _viewWatcher() {
+  //   return
+  // }
+
   /// Video layout wrapper
   Widget _viewRows() {
-    final views = _getRenderViews();
+    // final views = _getRenderViews();
+    var views = _getParticipantsImageList();
     switch (views.length) {
       case 1:
         return Container(
