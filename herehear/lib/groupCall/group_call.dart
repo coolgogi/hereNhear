@@ -348,5 +348,7 @@ class GroupCallPage extends StatelessWidget {
   void _onCallEnd() {
     controller.onClose();
     Get.back();
+    Get.back();
+    Get.back();
   }
 }
