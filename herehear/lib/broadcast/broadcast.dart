@@ -443,6 +443,7 @@ class BroadCastPage extends StatelessWidget {
   }
 
   void _onCallEnd() {
+    // 조치 취하기
     controller.onClose();
     Get.back();
     Get.back();
