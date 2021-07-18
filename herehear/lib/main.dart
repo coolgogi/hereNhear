@@ -13,7 +13,6 @@ import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
-
 import 'appBar/create_broadcast.dart';
 import 'appBar/create_groupcall.dart';
 import 'etc/listTest.dart';
@@ -38,7 +37,13 @@ class App extends StatelessWidget {
           return GetBuilder<LocationController>(
             init: LocationController(),
             builder: (value) {
-              return MyApp();
+              print('위치: ${value.location.obs}');
+              return FutureBuilder(
+                future: LocationController().getLocation(),
+                builder: (context, snapshot) {
+                  return MyApp();
+                }
+              );
             }
           );
         } else {

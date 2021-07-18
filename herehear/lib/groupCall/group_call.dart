@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
@@ -182,13 +183,32 @@ class GroupCallPage extends StatelessWidget {
         title: Text('Agora Group Video Calling'),
       ),
       backgroundColor: Colors.black,
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            Obx(() => _viewRows()),
-            _toolbar(),
-          ],
-        ),
+      body: Column(
+        children: [
+          Container(
+            height: 288.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            child: Column(
+              children: [
+                Text('참여', style: Theme.of(context).textTheme.headline2,),
+                Center(
+                  child: Stack(
+                    children: <Widget>[
+                      Obx(() => _viewRows()),
+                      _toolbar(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
