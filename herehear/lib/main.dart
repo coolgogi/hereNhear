@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/chatting/chatList.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:herehear/search/search.dart';
 import 'package:herehear/subscribed/subscribed.dart';
 import 'package:herehear/home/HomePage.dart';
@@ -12,7 +13,6 @@ import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:herehear/subscribed/subscribed_test_connect_firebase.dart';
-
 import 'appBar/create_broadcast.dart';
 import 'appBar/create_groupcall.dart';
 import 'etc/listTest.dart';
@@ -34,7 +34,18 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
+          return GetBuilder<LocationController>(
+            init: LocationController(),
+            builder: (value) {
+              print('위치: ${value.location.obs}');
+              return FutureBuilder(
+                future: LocationController().getLocation(),
+                builder: (context, snapshot) {
+                  return MyApp();
+                }
+              );
+            }
+          );
         } else {
           return Center(
             child: CircularProgressIndicator(),

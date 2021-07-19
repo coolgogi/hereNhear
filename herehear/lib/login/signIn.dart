@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:herehear/login/siginIn_controller.dart';
 import 'package:herehear/login/sms.dart';
 import 'package:herehear/login/sms_test.dart';
+import 'package:herehear/scroll/test.dart';
 
 
 class LoginPage extends StatelessWidget {
@@ -39,7 +40,7 @@ class LoginPage extends StatelessWidget {
             TextButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
-                builder: (context) =>LoginScreen()
+                builder: (context) =>InfiniteScrollView()
                 ));
     },
               child: Center(
