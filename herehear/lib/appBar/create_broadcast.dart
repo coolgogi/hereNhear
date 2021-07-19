@@ -133,9 +133,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
     final docId = (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createBroadcastRoom(user, _title.text,
-        _notice.text, categoryList[_index], docId);
-    Get.to(
+    await controller.createBroadcastRoom(user, _title.text, _notice.text, categoryList[_index], docId);
+    await Get.to(
       () => BroadCastPage(
         channelName: docId,
         userName: '',
