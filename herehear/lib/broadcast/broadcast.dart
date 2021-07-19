@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-// import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
-// import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -145,7 +144,7 @@ class BroadCastPage extends StatelessWidget {
 
   /// Toolbar layout
   // Widget _toolbar() {
-  //   return Container(
+  //   return ConBroadCastPagetainer(
   //     alignment: Alignment.bottomCenter,
   //     padding: const EdgeInsets.symmetric(vertical: 48),
   //     child: Row(
@@ -444,10 +443,27 @@ class BroadCastPage extends StatelessWidget {
 
   void _onCallEnd() {
     // 조치 취하기
+    chagneState(channelName);
     controller.onClose();
     Get.back();
     Get.back();
     Get.back();
     // Get.offAll('/');
+  }
+
+  void chagneState(String docID) async {
+    var things = await FirebaseFirestore.instance
+        .collection('broadcast')
+        .doc(docID)
+        .get();
+
+    print("============================");
+    print(things.data());
+    print("============================");
+    FirebaseFirestore.instance
+        .collection('closed')
+        .doc(docID)
+        .set(things.data()!);
+    FirebaseFirestore.instance.collection('broadcast').doc(docID).delete();
   }
 }
