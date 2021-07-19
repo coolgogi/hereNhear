@@ -1,18 +1,22 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
 import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
-
 
 class SubscribedPage extends StatelessWidget {
   // String uid;
   //
   // HomePage({this.uid});
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +24,8 @@ class SubscribedPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
-          title: Text(
-              '구독',
-              style: Theme.of(context).appBarTheme.titleTextStyle),
+          title:
+              Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
           actions: <Widget>[
             // IconButton(
             //     onPressed: _showMyDialog,
@@ -70,7 +73,8 @@ class SubscribedPage extends StatelessWidget {
               },
               color: Colors.black87,
               icon: Image.asset('assets/icons/notification.png'),
-              iconSize: 20.w,),
+              iconSize: 20.w,
+            ),
             Padding(
               padding: EdgeInsets.only(right: 8.0.w),
               child: IconButton(
@@ -103,8 +107,11 @@ class SubscribedPage extends StatelessWidget {
             child: Container(
               height: 173.0.h,
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: firestore
+                    .collection("broadcast")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(
                       child: Text('라이브중인 방송이 없습니다.'),
@@ -137,7 +144,11 @@ class SubscribedPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 17.0.w),
                   child: InkWell(
-                    child: Text('편집', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w700),),
+                    child: Text(
+                      '편집',
+                      style: TextStyle(
+                          color: Colors.grey, fontWeight: FontWeight.w700),
+                    ),
                     onTap: null,
                   ),
                 )
@@ -154,9 +165,15 @@ class SubscribedPage extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(right: 8.0.w),
                       child: TextButton(
-                        child: Text('카테고리 ${index + 1}', style: TextStyle(fontSize: 13.13.sp, color: Theme.of(context).colorScheme.onPrimary),),
+                        child: Text(
+                          '카테고리 ${index + 1}',
+                          style: TextStyle(
+                              fontSize: 13.13.sp,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.primary),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).colorScheme.primary),
                             shape: MaterialStateProperty.all<
                                 RoundedRectangleBorder>(RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.r),
@@ -178,8 +195,11 @@ class SubscribedPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 5.h),
             child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: firestore
+                    .collection("groupcall")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(
                       child: Center(child: Text('생성된 대화방이 없습니다.')),
@@ -187,8 +207,7 @@ class SubscribedPage extends StatelessWidget {
                   return Column(
                     children: groupcallRoomList(context, snapshot),
                   );
-                }
-            ),
+                }),
           ),
         ],
       ),
@@ -243,7 +262,7 @@ class SubscribedPage extends StatelessWidget {
         var curve = Curves.ease;
 
         var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -253,59 +272,82 @@ class SubscribedPage extends StatelessWidget {
     );
   }
 
-  List<Widget> broadcastRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
+  List<Widget> broadcastRoomList(
+      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
       return Padding(
         padding: EdgeInsets.only(right: 12.0.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 125.0.w,
-              height: 125.0.h,
-              child: Card(
-                margin: EdgeInsets.only(left: 0.0.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width:120,
-                      height:120,
-                      child: Image.asset(room['image']),
-                    ),
+        child: InkWell(
+          onTap: () {
 
-                  ],
+            firestore
+                .collection('broadcast')
+                .doc(room['docId'])
+                .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
+
+            Get.to(
+              () => BroadCastPage(
+                channelName: room['channelName'],
+                userName: '',
+                role: ClientRole.Audience,
+              ),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 125.0.w,
+                height: 125.0.h,
+                child: Card(
+                  margin: EdgeInsets.only(left: 0.0.w),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: 120,
+                        height: 120,
+                        child: Image.asset(room['image']),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 5.h),
-            Text(
-              room['notice'],
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-            SizedBox(height: 4.h),
-            Row(
-              children: <Widget>[
-                Icon(Icons.people, size: 14.w,),
-                Text(
-                  room['currentListener'] == null
-                    ? '0'
-                    : room['currentListener'].length.toString(),),
-                SizedBox(width: 8.sp),
-                Icon(Icons.favorite, size: 12.w,),
-                Text( room['like'].toString()),
-              ],
-            )
-          ],
+              SizedBox(height: 5.h),
+              Text(
+                room['notice'],
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+              SizedBox(height: 4.h),
+              Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.people,
+                    size: 14.w,
+                  ),
+                  Text(
+                    room['currentListener'] == null
+                        ? '0'
+                        : room['currentListener'].length.toString(),
+                  ),
+                  SizedBox(width: 8.sp),
+                  Icon(
+                    Icons.favorite,
+                    size: 12.w,
+                  ),
+                  Text(room['like'].toString()),
+                ],
+              )
+            ],
+          ),
         ),
       );
     }).toList();
   }
 
-  List<Widget> groupcallRoomList(BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
+  List<Widget> groupcallRoomList(
+      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
       return Column(
         children: [
           Divider(thickness: 2),
@@ -313,7 +355,11 @@ class SubscribedPage extends StatelessWidget {
             // width: MediaQuery.of(context).size.width,
             height: 80.0.h,
             child: InkWell(
-              onTap: (){
+              onTap: () {
+                firestore
+                    .collection('groupcall')
+                    .doc(room['docId'])
+                    .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
                 Get.to(() => GroupCallPage(), arguments: room['channelName']);
               },
               child: Row(

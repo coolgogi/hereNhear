@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
@@ -11,6 +12,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
 
 class HomePage2 extends StatelessWidget {
+  // String uid;
+  //
+  // HomePage({this.uid});
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
 
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final controller = Get.put(LocationController());
@@ -144,6 +151,7 @@ class HomePage2 extends StatelessWidget {
                         },
                       ),
                     ),
+
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 16.0.w),
@@ -172,6 +180,7 @@ class HomePage2 extends StatelessWidget {
                         }),
                   ),
                 ],
+
               ),
       ),
       // floatingActionButtonLocation:
@@ -248,6 +257,10 @@ class HomePage2 extends StatelessWidget {
         padding: EdgeInsets.only(right: 12.0.w),
         child: InkWell(
           onTap: () {
+            firestore
+                .collection('broadcast')
+                .doc(room['docId'])
+                .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
             Get.to(
               () => BroadCastPage(
                 channelName: room['channelName'],
@@ -319,6 +332,10 @@ class HomePage2 extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
               onTap: () {
+                firestore
+                    .collection('groupcall')
+                    .doc(room['docId'])
+                    .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
                 Get.to(() => GroupCallPage(), arguments: room['channelName']);
               },
               child: Row(
@@ -356,4 +373,5 @@ class HomePage2 extends StatelessWidget {
       );
     }).toList();
   }
+
 }
