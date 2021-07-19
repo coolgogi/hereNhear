@@ -12,9 +12,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
 
 class SubscribedPage extends StatelessWidget {
-  // String uid;
-  //
-  // HomePage({this.uid});
+
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -25,7 +25,7 @@ class SubscribedPage extends StatelessWidget {
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
           title:
-              Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
+          Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
           actions: <Widget>[
             // IconButton(
             //     onPressed: _showMyDialog,
@@ -91,125 +91,129 @@ class SubscribedPage extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView(
-        // padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
-            child: Text(
-              '팔로잉 라이브',
-              // style: Theme.of(context).textTheme.headline1,
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
-            child: Container(
-              height: 173.0.h,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore
-                    .collection("broadcast")
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(
-                      child: Text('라이브중인 방송이 없습니다.'),
-                    );
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(context, snapshot),
-                  );
-                  // children: List.generate(10, (int index) {
-                  //   return Card(
-                  //       child: Container(
-                  //     width: 110.0,
-                  //     height: 80.0,
-                  //     child: Center(child: Text("${index + 1} 라이브")),
-                  //   ));
-                  // }));
-                },
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh: refreshList,
+        child: ListView(
+          // padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+              child: Text(
+                '팔로잉 라이브',
+                // style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.headline2,
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w),
-            child: Row(
-              children: [
-                Text(
-                  '팔로우 중인 카테고리',
-                  style: Theme.of(context).textTheme.headline2,
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
+              child: Container(
+                height: 173.0.h,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection("broadcast")
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData)
+                      return Container(
+                        child: Text('라이브중인 방송이 없습니다.'),
+                      );
+                    return ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: broadcastRoomList(context, snapshot),
+                    );
+                    // children: List.generate(10, (int index) {
+                    //   return Card(
+                    //       child: Container(
+                    //     width: 110.0,
+                    //     height: 80.0,
+                    //     child: Center(child: Text("${index + 1} 라이브")),
+                    //   ));
+                    // }));
+                  },
                 ),
-                Expanded(child: Container()),
-                Padding(
-                  padding: EdgeInsets.only(right: 17.0.w),
-                  child: InkWell(
-                    child: Text(
-                      '편집',
-                      style: TextStyle(
-                          color: Colors.grey, fontWeight: FontWeight.w700),
-                    ),
-                    onTap: null,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
+              child: Row(
+                children: [
+                  Text(
+                    '팔로우 중인 카테고리',
+                    style: Theme.of(context).textTheme.headline2,
                   ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
-            child: Container(
-              height: 27.0.h,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(3, (int index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8.0.w),
-                      child: TextButton(
-                        child: Text(
-                          '카테고리 ${index + 1}',
-                          style: TextStyle(
-                              fontSize: 13.13.sp,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).colorScheme.primary),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.r),
-                              // side: BorderSide(color: Colors.red),
-                            ))),
-                        onPressed: null,
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 17.0.w),
+                    child: InkWell(
+                      child: Text(
+                        '편집',
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.w700),
                       ),
-                    );
-                  })),
+                      onTap: null,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w),
-            child: Text(
-              '마이 토크',
-              style: Theme.of(context).textTheme.headline2,
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
+              child: Container(
+                height: 27.0.h,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: List.generate(3, (int index) {
+                      return Padding(
+                        padding: EdgeInsets.only(right: 8.0.w),
+                        child: TextButton(
+                          child: Text(
+                            '카테고리 ${index + 1}',
+                            style: TextStyle(
+                                fontSize: 13.13.sp,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.r),
+                                // side: BorderSide(color: Colors.red),
+                              ))),
+                          onPressed: null,
+                        ),
+                      );
+                    })),
+              ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5.h),
-            child: StreamBuilder<QuerySnapshot>(
-                stream: firestore
-                    .collection("groupcall")
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(
-                      child: Center(child: Text('생성된 대화방이 없습니다.')),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
+              child: Text(
+                '마이 토크',
+                style: Theme.of(context).textTheme.headline2,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 5.h),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: firestore
+                      .collection("groupcall")
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData)
+                      return Container(
+                        child: Center(child: Text('생성된 대화방이 없습니다.')),
+                      );
+                    return Column(
+                      children: groupcallRoomList(context, snapshot),
                     );
-                  return Column(
-                    children: groupcallRoomList(context, snapshot),
-                  );
-                }),
-          ),
-        ],
+                  }),
+            ),
+          ],
+        ),
       ),
       // floatingActionButtonLocation:
       //     FloatingActionButtonLocation.miniCenterFloat,
@@ -225,6 +229,16 @@ class SubscribedPage extends StatelessWidget {
       // ),
     );
   }
+
+
+  Future<void> refreshList() async {
+    refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
+    ///////////////////////////////////////////////////////////////////////////////////
+    // await controller.getLocation().obs; <-- 이거 대신 적절한 로드 로직 넣으면 됩니다!//
+    //////////////////////////////////////////////////////////////////////////////////
+  }
+
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
@@ -262,7 +276,7 @@ class SubscribedPage extends StatelessWidget {
         var curve = Curves.ease;
 
         var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -286,7 +300,7 @@ class SubscribedPage extends StatelessWidget {
                 .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
 
             Get.to(
-              () => BroadCastPage(
+                  () => BroadCastPage(
                 channelName: room['channelName'],
                 userName: '',
                 role: ClientRole.Audience,

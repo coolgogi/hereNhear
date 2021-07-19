@@ -181,9 +181,18 @@ class GroupCallPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agora Group Video Calling'),
+        backgroundColor: Colors.black,
+        title: Text('Here&Hear'),
+        actions: <Widget>[
+          Column(
+            children: <Widget>[
+              Icon(Icons.people),
+              Text('999+'),
+            ],
+          )
+        ],
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Container(
@@ -195,26 +204,40 @@ class GroupCallPage extends StatelessWidget {
               ),
               color: Theme.of(context).colorScheme.primary,
             ),
+            child: Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 30.0.h),
+                    child: Text('참여', style: Theme.of(context).textTheme.headline2,),
+                  ),
+                  Center(
+                    child: Stack(
+                      children: <Widget>[
+                        Obx(() => _viewRows(_getParticipantsImageList())),
+                        _toolbar(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
             child: Column(
               children: [
-                Text('참여', style: Theme.of(context).textTheme.headline2,),
-                Center(
-                  child: Stack(
-                    children: <Widget>[
-                      Obx(() => _viewRows()),
-                      _toolbar(),
-                    ],
-                  ),
-                ),
+                Text('관전', style: Theme.of(context).textTheme.headline2,),
+                Row(
+                  children: <Widget>[
+                    Obx(() => _viewRows(_getWatcherImageList())),
+                  ],
+                )
               ],
             ),
           ),
-          Text('관전', style: Theme.of(context).textTheme.headline2,),
-          Row(
-            children: <Widget>[
-              Obx(() => _viewRows()),
-            ],
-          )
         ],
       ),
     );
@@ -229,7 +252,7 @@ class GroupCallPage extends StatelessWidget {
   //   });
   //   return list;
   // }
-  List<Widget> _getRenderViews() {
+  List<Widget> _getParticipantsImageList() {
     final List<Widget> list = [];
     // if(controller.activeSpeaker == 0) {
     //   list.add(Container( decoration: BoxDecoration(
@@ -324,7 +347,8 @@ class GroupCallPage extends StatelessWidget {
     return list;
   }
 
-  List<Widget> _getParticipantsImageList() {
+
+  List<Widget> _getWatcherImageList() {
     final List<Widget> list = [];
 
     list.add(Padding(
@@ -419,42 +443,43 @@ class GroupCallPage extends StatelessWidget {
   // }
 
   /// Video layout wrapper
-  Widget _viewRows() {
+  Widget _viewRows(List<Widget> UserImageList) {
     // final views = _getRenderViews();
-    var views = _getParticipantsImageList();
-    switch (views.length) {
-      case 1:
-        return Container(
-            child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-            // views[0],
-            // views[1]
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
-      default:
+    var views = UserImageList;
+    if(views.length <= 5) {
+      return Container(
+          child: Column(
+            children: <Widget>[_videoView(views[0])],
+          ));
+    } else if(views.length <= 10) {
+      return Container(
+          child: Column(
+            children: <Widget>[
+              _expandedVideoRow(views.sublist(0, 5)),
+              _expandedVideoRow(views.sublist(5, views.length-1))
+            ],
+          ));
+    }
+    else if(views.length <= 15) {
+      return Container(
+          child: Column(
+            children: <Widget>[
+              _expandedVideoRow(views.sublist(0, 5)),
+              _expandedVideoRow(views.sublist(5, 10)),
+              _expandedVideoRow(views.sublist(15, views.length-1))
+            ],
+          ));
+    }
+    else if(views.length <= 20) {
+      return Container(
+          child: Column(
+            children: <Widget>[
+              _expandedVideoRow(views.sublist(0, 5)),
+              _expandedVideoRow(views.sublist(5, 10)),
+              _expandedVideoRow(views.sublist(10, 15)),
+              _expandedVideoRow(views.sublist(15, views.length-1))
+            ],
+          ));
     }
     return Container();
   }
