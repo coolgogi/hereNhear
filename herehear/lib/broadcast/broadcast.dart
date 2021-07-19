@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -136,64 +137,27 @@ class BroadCastPage extends StatelessWidget {
   bool muted = false;
   late RtcEngine _engine;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
+  String host_uid = '';
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
     controller = Get.put(AgoraEventController(channelName, role));
+    setHostuid();
+  }
+
+  void setHostuid() async {
+    var temp = await FirebaseFirestore.instance
+        .collection('broadcast')
+        .doc(channelName)
+        .get();
+
+    host_uid = temp.data()!['hostUid'];
+    print("==================");
+    print(host_uid);
+    print("==================");
   }
 
   /// Toolbar layout
-  // Widget _toolbar() {
-  //   return ConBroadCastPagetainer(
-  //     alignment: Alignment.bottomCenter,
-  //     padding: const EdgeInsets.symmetric(vertical: 48),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: <Widget>[
-  //         Obx(
-  //           () => RawMaterialButton(
-  //             onPressed: controller.onToggleMute,
-  //             child: Icon(
-  //               controller.muted.value ? Icons.mic_off : Icons.mic,
-  //               color:
-  //                   controller.muted.value ? Colors.white : Colors.blueAccent,
-  //               size: 20.0,
-  //             ),
-  //             shape: CircleBorder(),
-  //             elevation: 2.0,
-  //             fillColor:
-  //                 controller.muted.value ? Colors.blueAccent : Colors.white,
-  //             padding: const EdgeInsets.all(12.0),
-  //           ),
-  //         ),
-  //         RawMaterialButton(
-  //           onPressed: () => _onCallEnd(),
-  //           child: Icon(
-  //             Icons.call_end,
-  //             color: Colors.white,
-  //             size: 35.0,
-  //           ),
-  //           shape: CircleBorder(),
-  //           elevation: 2.0,
-  //           fillColor: Colors.redAccent,
-  //           padding: const EdgeInsets.all(15.0),
-  //         ),
-  //         // RawMaterialButton(
-  //         //   onPressed: controller.onSwitchCamera,
-  //         //   child: Icon(
-  //         //     Icons.switch_camera,
-  //         //     color: Colors.blueAccent,
-  //         //     size: 20.0,
-  //         //   ),
-  //         //   shape: CircleBorder(),
-  //         //   elevation: 2.0,
-  //         //   fillColor: Colors.white,
-  //         //   padding: const EdgeInsets.all(12.0),
-  //         // )
-  //       ],
-  //     ),
-  //   );
-  // }
   Widget _toolbar() {
     return role == ClientRole.Audience
         ? Container()
@@ -293,7 +257,7 @@ class BroadCastPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              'Host',
+              'Host\nMy : $host_uid',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
