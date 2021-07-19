@@ -1,3 +1,4 @@
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,16 +9,16 @@ import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
-import 'package:agora_rtc_engine/rtc_engine.dart';
 
 class HomePage extends StatelessWidget {
-  // String uid;
-  //
-  // HomePage({this.uid});
+
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+  final controller = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return Obx(() => Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
@@ -29,111 +30,169 @@ class HomePage extends StatelessWidget {
             //     color: Colors.amber,
             //     icon: Icon(Icons.add_circle)),
             IconButton(
-                onPressed: null,
-                color: Colors.black87,
-                icon: Icon(Icons.notifications_none_outlined)),
-            IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.black87,
-              ),
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: PostSearchDelegate(),
-                );
-              },
+              onPressed: null,
+              color: Colors.black87,
+              icon: Image.asset('assets/icons/notification.png'),
+              iconSize: 20.w,
             ),
-          ],
-        ),
-      ),
-      body: ListView(
-        // padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  '실시간 소리',
-                  // style: Theme.of(context).textTheme.headline1,
-                  style: Theme.of(context).textTheme.headline2,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 3.0.w),
-                  child: Container(
-                    width: 41.w,
-                    height: 18.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.primaryVariant,
-                          width: 2.0.w),
-                      borderRadius: BorderRadius.all(Radius.circular(
-                              9.0.r) //                 <--- border radius here
-                          ),
-                    ),
-                    child: Center(
-                      child: Text('LIVE',
-                          style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.primaryVariant,
-                              fontSize: 12.sp)),
-                    ),
-                  ),
-                ),
-                Expanded(child: Container()),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 18.0.h),
-            child: Container(
-              height: 170.0.h,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("broadcast")
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(
-                      child: Text('라이브중인 방송이 없습니다.'),
-                    );
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(context, snapshot),
+            Padding(
+              padding: EdgeInsets.only(right: 8.0.w),
+              child: IconButton(
+                icon: Image.asset('assets/icons/search.png'),
+                iconSize: 20.w,
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: PostSearchDelegate(),
                   );
                 },
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w),
-            child: Text(
-              '토크',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0.h, bottom: 18.0.h),
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("groupcall")
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(
-                      child: Center(child: Text('생성된 대화방이 없습니다.')),
-                    );
-                  return Column(
-                    children: groupcallRoomList(context, snapshot),
-                  );
-                }),
-          ),
-        ],
+          ],
+        ),
       ),
-    );
+      body: RefreshIndicator(
+        key: refreshKey,
+        onRefresh: refreshList,
+        child: ListView(
+          // padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    '실시간 소리',
+                    // style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 3.0.w),
+                    child: Container(
+                      width: 41.w,
+                      height: 17.h,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Theme.of(context).colorScheme.primaryVariant,
+                            width: 2.0.w),
+                        borderRadius: BorderRadius.all(Radius.circular(
+                            9.0.r) //                 <--- border radius here
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'LIVE',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primaryVariant,
+                            fontSize:
+                            Theme.of(context).textTheme.headline6!.fontSize,
+                            fontWeight:
+                            Theme.of(context).textTheme.headline6!.fontWeight,
+                          ),
+                        ),
+                      ),
+                      // child: Padding(
+                      //   padding: const EdgeInsets.only(left: 8.0),
+                      //   child: TextButton(
+                      //     child: Text(
+                      //         'LIVE',
+                      //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
+                      //     style: ButtonStyle(
+                      //         shape: MaterialStateProperty.all<
+                      //             RoundedRectangleBorder>(RoundedRectangleBorder(
+                      //           borderRadius: BorderRadius.circular(9.0),
+                      //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
+                      //         ))),
+                      //     onPressed: null,
+                      //   ),
+                      // ),
+                    ),
+                  ),
+                  Expanded(child: Container()),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
+              child: Container(
+                height: 173.0.h,
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("broadcast")
+                      .where('location', isEqualTo: controller.location.value)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    print('done!!');
+                    if(!snapshot.hasData) return Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary,));
+                    if (snapshot.data!.docs.length == 0 && controller.location.value != '')
+                      return Container(
+                        child: Text('라이브중인 방송이 없습니다.'),
+                      );
+                    return ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: broadcastRoomList(context, snapshot),
+                    );
+                    // children: List.generate(10, (int index) {
+                    //   return Card(
+                    //       child: Container(
+                    //     width: 110.0,
+                    //     height: 80.0,
+                    //     child: Center(child: Text("${index + 1} 라이브")),
+                    //   ));
+                    // }));
+                  },
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
+              child: Text(
+                '토크',
+                style: Theme.of(context).textTheme.headline2,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 9.0.h),
+              child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("groupcall")
+                      .where('location', isEqualTo: controller.location.value)
+                      .snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if(!snapshot.hasData) return Center(child: CircularProgressIndicator(color: Theme.of(context).colorScheme.primary,));
+                    if (snapshot.data!.docs.length == 0 && controller.location.value != '')
+                      return Container(
+                        child: Center(child: Text('생성된 대화방이 없습니다.')),
+                      );
+                    return Column(
+                      children: groupcallRoomList(context, snapshot),
+                    );
+                  }),
+            ),
+          ],
+        ),
+      ),
+      // floatingActionButtonLocation:
+      //     FloatingActionButtonLocation.miniCenterFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
+      //   label: Text(
+      //     '새로 고침',
+      //     style: TextStyle(
+      //       color: Colors.black87,
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.white,
+      // ),
+    ));
+  }
+
+  Future<void> refreshList() async {
+    refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
+    await controller.getLocation().obs;
   }
 
   Future<void> _showMyDialog() async {
@@ -172,7 +231,7 @@ class HomePage extends StatelessWidget {
         var curve = Curves.ease;
 
         var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -185,7 +244,7 @@ class HomePage extends StatelessWidget {
   List<Widget> broadcastRoomList(
       BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
     return broadcastSnapshot.data!.docs.map((room) {
-      return Container(
+      return Padding(
         padding: EdgeInsets.only(right: 12.0.w),
         child: InkWell(
           onTap: () {
@@ -200,17 +259,24 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Card(
-                child: Container(
-                  width: 130.0.w,
-                  height: 130.0.w,
+              Container(
+                width: 125.0.w,
+                height: 125.0.h,
+                child: Card(
+                  margin: EdgeInsets.only(left: 0.0.w),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[],
+                    children: <Widget>[
+                      SizedBox(
+                        width: 120,
+                        height: 120,
+                        child: Image.asset(room['image']),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              SizedBox(height: 6.h),
+              SizedBox(height: 5.h),
               Text(
                 room['notice'],
                 style: Theme.of(context).textTheme.subtitle1,
@@ -223,7 +289,10 @@ class HomePage extends StatelessWidget {
                     size: 14.w,
                   ),
                   Text(
-                      room['currentListener'] == null ? '0': room['currentListener'].length.toString(),),
+                    room['currentListener'] == null
+                        ? '0'
+                        : room['currentListener'].length.toString(),
+                  ),
                   SizedBox(width: 8.sp),
                   Icon(
                     Icons.favorite,
@@ -251,21 +320,16 @@ class HomePage extends StatelessWidget {
             child: InkWell(
               onTap: () {
                 Get.to(() => GroupCallPage(), arguments: room['channelName']);
-                
               },
               child: Row(
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(left: 16.0.w, right: 8.0.w),
                     child: Container(
-                      width: 70.0.w,
-                      height: 70.0.w,
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(6.0
-                                .r) //                 <--- border radius here
-                            ),
-                      ),
+                      // margin: EdgeInsets.all(0.0.w),
+                      width: 70.0.h,
+                      height: 70.0.h,
+                      child: SizedBox(child: Image.asset(room['image'])),
                     ),
                   ),
                   Column(
