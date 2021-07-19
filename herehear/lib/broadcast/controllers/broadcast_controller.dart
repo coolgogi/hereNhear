@@ -22,6 +22,7 @@ class BroadcastController extends GetxController {
       String? notice, String? category, String? docId) async {
     print('createbroadcast');
     if (firebaseUser != null) {
+      print('ok good');
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
       newStreamingRoom.value = BroadcastModel(
         hostUid: firebaseUser.uid,
@@ -37,6 +38,7 @@ class BroadcastController extends GetxController {
 
       await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
     } else {
+      print("no user, please sign in");
       Get.to(LoginPage());
     }
   }

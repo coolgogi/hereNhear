@@ -132,10 +132,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       _title.text.isEmpty ? _validateError = true : _validateError = false;
     });
     await Permission.microphone.request();
-    final docId = (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createBroadcastRoom(user, _title.text,
-        _notice.text, categoryList[_index], docId);
-    Get.to(
+
+    final docId =
+        (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+    await controller.createBroadcastRoom(
+        user, _title.text, _notice.text, categoryList[_index], docId);
+    await Get.to(
       () => BroadCastPage(
         channelName: docId,
         userName: '',
