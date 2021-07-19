@@ -36,10 +36,10 @@ class LocationController extends GetxController {
   // }
 
   @override
-  void onInit() {
+  void onInit() async {
     // called immediately after the widget is allocated memory
-    getLocation();
     locationPermission();
+    await getLocation();
     super.onInit();
   }
 
