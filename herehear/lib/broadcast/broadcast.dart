@@ -452,18 +452,18 @@ class BroadCastPage extends StatelessWidget {
   }
 
   void chagneState(String docID) async {
-    var things = await FirebaseFirestore.instance
+    var fields = await FirebaseFirestore.instance
         .collection('broadcast')
         .doc(docID)
         .get();
 
     print("============================");
-    print(things.data());
+    print(fields.data());
     print("============================");
     FirebaseFirestore.instance
         .collection('closed')
         .doc(docID)
-        .set(things.data()!);
+        .set(fields.data()!);
     FirebaseFirestore.instance.collection('broadcast').doc(docID).delete();
   }
 }
