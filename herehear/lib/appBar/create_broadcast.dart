@@ -1,4 +1,5 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +22,19 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
+  var _data;
+  _CreateBroadcastPageState() {
+    _data = getUserData();
+  }
+
+  dynamic getUserData() async {
+    var userdata = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get();
+
+    return userdata.data();
+  }
 
   final controller = Get.put(BroadcastController());
   @override
@@ -136,11 +150,18 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     final docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
     await controller.createBroadcastRoom(
-        user, _title.text, _notice.text, categoryList[_index], docId);
+        user,
+        _title.text,
+        _notice.text,
+        categoryList[_index],
+        docId,
+        _data,
+        _data['nickName'],
+        List<String>.filled(0, '', growable: true));
     await Get.to(
       () => BroadCastPage(
         channelName: docId,
-        userName: '',
+        userName: user!.uid,
         role: ClientRole.Broadcaster,
       ),
     );
