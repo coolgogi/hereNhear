@@ -8,11 +8,11 @@ hereNhear
 # 유리한 녀석들
 
 
-### 대표: 장경수(Front-End)
+### 대표: 장경수(Front, Back-End)
 
 ### 1. 박수현(개발자, Front, Back-End)
 
-### 2. 이유리(개발자, Back-End)
+### 2. 이유리(개발자, Front, Back-End)
 
 ### 3. 김예일(디자이너, UX/UI)
 --------------------------
