@@ -16,6 +16,7 @@ class CreateBroadcastPage extends StatefulWidget {
     // print(userData['profile']);
     // print("==========page=========");
   }
+
   CreateBroadcastPage();
 
   @override
@@ -35,6 +36,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   var _data;
 
   final controller = Get.put(BroadcastController());
+
   @override
   void dispose() {
     _title.dispose();
@@ -52,7 +54,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Broadcast 방 만들기'),
+        title:
+            Text('개인 라이브', style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
@@ -65,7 +68,24 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-            Text('카테고리'),
+            Text('제목'),
+            TextFormField(
+              controller: _title,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return '제목을 입력해주세요.';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: '제목을 입력해주세요(15자 이내)',
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(padding: EdgeInsets.all(10), child: Text('카테고리')),
             ToggleButtons(
               children: <Widget>[
                 Padding(
@@ -95,23 +115,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 });
               },
               isSelected: _isSelected,
-            ),
-            Text('제목'),
-            TextFormField(
-              controller: _title,
-              validator: (value) {
-                if (value!.trim().isEmpty) {
-                  return '제목을 입력해주세요.';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '제목을 입력해주세요(15자 이내)',
-              ),
-            ),
-            SizedBox(
-              height: 16.0,
             ),
             Text('공지사항'),
             TextFormField(
