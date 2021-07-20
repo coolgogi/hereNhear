@@ -239,7 +239,7 @@ class LandingPage extends StatelessWidget {
               elevation: 0.0,
               shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-              child: Image.asset('assets/icons/mic_fill.png'),
+              child: Image.asset('assets/icons/mic_fill.png', height: 32.h,),
               onPressed: () => showCreateOption(context),
             ),
           ),

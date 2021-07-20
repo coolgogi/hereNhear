@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
@@ -19,6 +20,8 @@ class AgoraEventController extends GetxController {
   var activeSpeaker = 10.obs;
   int currentUid = 0;
   RxBool is_participate = false.obs;
+  final String? currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+  var docID = Get.arguments;
 
   @override
   void onInit() {
@@ -77,15 +80,23 @@ class AgoraEventController extends GetxController {
         currentUid = uid;
         infoStrings.add(info);
       },
-      leaveChannel: (stats) {
+      leaveChannel: (stats) async {
         infoStrings.add('onLeaveChannel');
         users.clear();
         participants.clear();
+        await FirebaseFirestore.instance
+            .collection("groupcall")
+            .doc(docID)
+            .update({"currentListener": FieldValue.arrayRemove([currentUserUID])});
       },
-      userJoined: (uid, elapsed) {
+      userJoined: (uid, elapsed) async {
         final info = 'userJoined: $uid';
         currentUid = uid;
         infoStrings.add(info);
+        await FirebaseFirestore.instance
+            .collection("groupcall")
+            .doc(docID)
+            .update({"currentListener": FieldValue.arrayUnion([currentUserUID])});
         users.add(uid);
         // FirebaseFirestore.instance.collection('groupcall').
       },
@@ -118,8 +129,10 @@ class AgoraEventController extends GetxController {
   }
 
   void move_watcher_to_participant() {
-    users.removeWhere((element) => element == currentUid);
-    participants.add(currentUid);
+    // users.removeWhere((element) => element == currentUid);
+    // participants.add(currentUid);
+    FirebaseFirestore.instance.collection('groupcall').doc(docID).update({"currentListener": FieldValue.arrayRemove([currentUserUID])});
+    FirebaseFirestore.instance.collection('groupcall').doc(docID).update({"participants": FieldValue.arrayUnion([currentUserUID])});
     is_participate = true.obs;
     print('?!?!?: ${participants.length}');
   }
@@ -216,56 +229,62 @@ class GroupCallPage extends StatelessWidget {
         ],
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Container(
-            height: 288.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
-              ),
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.0.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 30.0.h),
-                    child: Text(
-                      '참여',
-                      style: Theme.of(context).textTheme.headline2,
-                    ),
+      body: StreamBuilder<DocumentSnapshot<Object>>(
+        stream: FirebaseFirestore.instance.collection('groupcall').doc(channelName).snapshots(),
+        builder: (context, snapshot) {
+          String hostUID = snapshot.data?['hostUId'];
+          return Column(
+            children: [
+              Container(
+                height: 288.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
                   ),
-                  Row(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 16.0.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => _viewRows(_getParticipantsImageList())),
+                      Padding(
+                        padding: EdgeInsets.only(top: 30.0.h),
+                        child: Text(
+                          '참여',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Obx(() => _viewRows(_getParticipantsImageList(snapshot.data!['participants'], hostUID))),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '관전',
-                  style: Theme.of(context).textTheme.headline2,
                 ),
-                Row(
-                  children: <Widget>[
-                    Obx(() => _viewRows(_getWatcherImageList())),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '관전',
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Obx(() => _viewRows(_getWatcherImageList(snapshot.data!['currentListener']))),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
-          ),
-        ],
+                ),
+              ),
+            ],
+          );
+        }
       ),
       bottomNavigationBar: bottomBar(context),
     );
@@ -280,133 +299,216 @@ class GroupCallPage extends StatelessWidget {
   //   });
   //   return list;
   // }
-  List<Widget> _getParticipantsImageList() {
+  List<Widget> _getParticipantsImageList(List participants, String hostUID) {
     final List<Widget> list = [];
+    List? participantsData;
 
-    if(!controller.participants.isEmpty) {
-      list.add(Padding(
-        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-        child: Container(
-          child: CircleAvatar(
-            radius: 35,
-            backgroundImage: AssetImage('assets/images/me.jpg'),
-          ),
-        ),
-      ));
-    }
-
-    controller.participants.forEach((int uid) {
-      // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-      bool flag = false;
-      for (int i = 0; i < controller.speakingUser.length; i++) {
-        if (uid == controller.speakingUser[i]) {
-          list.add(Padding(
-            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-            child: Container(
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.lightGreen,
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/images/you.png'),
+    participants.forEach((uid) {
+      StreamBuilder<DocumentSnapshot<Object>>(
+          stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object>> snapshot) {
+            participantsData!.add(snapshot.data);
+            bool flag = false;
+            for (int i = 0; i < controller.speakingUser.length; i++) {
+              if ((participantsData.length <= 2) && (controller.speakingUser[i] != 0)) {
+                list.add(Padding(
+                  padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          CircleAvatar(
+                            radius: 40,
+                            backgroundColor: Colors.lightGreen,
+                          ),
+                          CircleAvatar(
+                            radius: 35,
+                            backgroundImage: AssetImage(snapshot.data!['profile']),
+                          ),
+                        ],
+                      ),
+                      Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
+                    ],
+                  ),
+                ));
+                flag = true;
+                break;
+              }
+            }
+            if (flag != true)
+              list.add(Padding(
+                padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+                child: Column(
+                  children: [
+                    Container(
+                      child: CircleAvatar(
+                        radius: 35,
+                        backgroundImage: AssetImage(snapshot.data!['profile']),
+                      ),
+                    ),
+                    Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
+                  ],
                 ),
-              ),
-            ),
-          ));
-          flag = true;
-          break;
-        }
+              ));
+            return Container();
+          }
+        );
       }
-      if (flag != true)
-        list.add(Padding(
-          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-          child: Container(
-            child: CircleAvatar(
-              radius: 35,
-              backgroundImage: AssetImage('assets/images/you.png'),
-            ),
-          ),
-        ));
-      // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    });
+    );
+
     return list;
+
+
+    // if(!participants.isEmpty) {
+    //   list.add(Padding(
+    //     padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //     child: Container(
+    //       child: CircleAvatar(
+    //         radius: 35,
+    //         backgroundImage: AssetImage('assets/images/me.jpg'),
+    //       ),
+    //     ),
+    //   ));
+    // }
+    //
+    // controller.participants.forEach((int uid) {
+    //   // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+    //   bool flag = false;
+    //   for (int i = 0; i < controller.speakingUser.length; i++) {
+    //     if (uid == controller.speakingUser[i]) {
+    //       list.add(Padding(
+    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //         child: Container(
+    //           child: CircleAvatar(
+    //             radius: 40,
+    //             backgroundColor: Colors.lightGreen,
+    //             child: CircleAvatar(
+    //               radius: 35,
+    //               backgroundImage: AssetImage('assets/images/you.png'),
+    //             ),
+    //           ),
+    //         ),
+    //       ));
+    //       flag = true;
+    //       break;
+    //     }
+    //   }
+    //   if (flag != true)
+    //     list.add(Padding(
+    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //       child: Container(
+    //         child: CircleAvatar(
+    //           radius: 35,
+    //           backgroundImage: AssetImage('assets/images/you.png'),
+    //         ),
+    //       ),
+    //     ));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // });
+    // return list;
   }
 
-  List<Widget> _getWatcherImageList() {
+  List<Widget> _getWatcherImageList(List currentListener) {
     final List<Widget> list = [];
 
-    if(!controller.is_participate.value){
-      list.add(Padding(
-          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-          child: Container(
-            child: CircleAvatar(
-              radius: 35,
-              backgroundImage: AssetImage('assets/images/me.jpg'),
-            ),
-          ),
-        )
-        //     Container(
-        //   decoration: BoxDecoration(
-        //     shape: BoxShape.circle,
-        //     image: DecorationImage(
-        //       fit: BoxFit.fill,
-        //       image: AssetImage('assets/images/me.jpg'),
-        //     ),
-        //   ),
-        // )
+    currentListener.forEach((uid) {
+      StreamBuilder<DocumentSnapshot<Object>>(
+          stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object>> snapshot) {
+            list.add(Padding(
+              padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+              child: Column(
+                children: [
+                  Container(
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: AssetImage(snapshot.data!['profile']),
+                    ),
+                  ),
+                  Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.black),),
+                ],
+              ),
+            ));
+            return Container();
+          }
       );
     }
-
-
-    controller.users.forEach((int uid) {
-      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-      bool flag = false;
-      for (int i = 0; i < controller.speakingUser.length; i++) {
-        if (uid == controller.speakingUser[i]) {
-          list.add(Padding(
-            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-            child: Container(
-              child: CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.lightGreen,
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage('assets/images/you.png'),
-                ),
-              ),
-            ),
-          )
-              // Container(
-              // decoration: BoxDecoration(
-              //   shape: BoxShape.circle,
-              //   border: Border.all(
-              //     color: Colors.lightGreen,
-              //     width: 2,
-              //   ),
-              // ),
-              // child: Image(
-              //   image: AssetImage('assets/images/you.png'),
-              //   width: 150,
-              //   height: 150,
-              // ))
-              );
-          flag = true;
-          break;
-        }
-      }
-      if (flag != true)
-        list.add(Padding(
-          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-          child: Container(
-            child: CircleAvatar(
-              radius: 35,
-              backgroundImage: AssetImage('assets/images/you.png'),
-            ),
-          ),
-        ));
-      // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    });
+    );
     return list;
+
+    // if(!controller.is_participate.value){
+    //   list.add(Padding(
+    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //       child: Container(
+    //         child: CircleAvatar(
+    //           radius: 35,
+    //           backgroundImage: AssetImage('assets/images/me.jpg'),
+    //         ),
+    //       ),
+    //     )
+    //     //     Container(
+    //     //   decoration: BoxDecoration(
+    //     //     shape: BoxShape.circle,
+    //     //     image: DecorationImage(
+    //     //       fit: BoxFit.fill,
+    //     //       image: AssetImage('assets/images/me.jpg'),
+    //     //     ),
+    //     //   ),
+    //     // )
+    //   );
+    // }
+    //
+    //
+    // controller.users.forEach((int uid) {
+    //   print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+    //   bool flag = false;
+    //   for (int i = 0; i < controller.speakingUser.length; i++) {
+    //     if (uid == controller.speakingUser[i]) {
+    //       list.add(Padding(
+    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //         child: Container(
+    //           child: CircleAvatar(
+    //             radius: 40,
+    //             backgroundColor: Colors.lightGreen,
+    //             child: CircleAvatar(
+    //               radius: 35,
+    //               backgroundImage: AssetImage('assets/images/you.png'),
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //           // Container(
+    //           // decoration: BoxDecoration(
+    //           //   shape: BoxShape.circle,
+    //           //   border: Border.all(
+    //           //     color: Colors.lightGreen,
+    //           //     width: 2,
+    //           //   ),
+    //           // ),
+    //           // child: Image(
+    //           //   image: AssetImage('assets/images/you.png'),
+    //           //   width: 150,
+    //           //   height: 150,
+    //           // ))
+    //           );
+    //       flag = true;
+    //       break;
+    //     }
+    //   }
+    //   if (flag != true)
+    //     list.add(Padding(
+    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //       child: Container(
+    //         child: CircleAvatar(
+    //           radius: 35,
+    //           backgroundImage: AssetImage('assets/images/you.png'),
+    //         ),
+    //       ),
+    //     ));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // });
+    // return list;
   }
 
   /// Video view wrapper
@@ -498,6 +600,7 @@ class GroupCallPage extends StatelessWidget {
     // final views = _getRenderViews();
     var views = userImageList;
     print('asdfasdf: $views');
+
     if (views.length == 1) {
       return Container(
           child: Column(

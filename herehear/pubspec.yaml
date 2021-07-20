@@ -83,6 +83,7 @@ flutter:
     - assets/gyeongsu.jpg
     - assets/images/me.jpg
     - assets/images/you.png
+    - assets/images/he.jpg
     - assets/messages.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
