@@ -25,7 +25,6 @@ class BroadcastController extends GetxController {
       String? category,
       String? docId,
       dynamic _data,
-      String? hNickname,
       List<String> uNickname) async {
     print('createbroadcast');
     if (firebaseUser != null) {
@@ -41,9 +40,10 @@ class BroadcastController extends GetxController {
         like: 0,
         channelName: docId,
         createdTime: DateTime.now(),
-        hostProfile: '',
+        hostProfile: _data['profile'],
         userProfile: List<String>.filled(0, '', growable: true),
-        hostNickname: '',
+        hostNickname: _data['nickName'],
+        userNickname: uNickname,
       );
 
       await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);

@@ -44,10 +44,8 @@ class App extends StatelessWidget {
                     future: LocationController().getLocation(),
                     builder: (context, snapshot) {
                       return MyApp();
-                    }
-                );
-              }
-          );
+                    });
+              });
         } else {
           return Center(
             child: CircularProgressIndicator(),
@@ -60,6 +58,7 @@ class App extends StatelessWidget {
 
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
+  var data;
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +99,7 @@ class MyApp extends StatelessWidget {
                       page: () => NotificationPage(),
                     )
                   ],
-                ),
+            ),
           );
         });
   }
@@ -132,146 +131,147 @@ class LandingPageController extends GetxController {
 }
 
 class LandingPage extends StatelessWidget {
+  String uid = '';
+  User? _user = FirebaseAuth.instance.currentUser;
+  var _data;
+  LandingPage() {
+    if (_user != null) {
+      uid = _user!.uid;
+    } else if (_user == null) {
+      uid = 'Guest';
+    }
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData(String uid) async {
+    DocumentSnapshot<Map<String, dynamic>> _data =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    print("===========================");
+    print(_data.data()!['nickName']);
+    print("===========================");
+
+    return _data;
+  }
+
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),
       fontWeight: FontWeight.w700,
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-  TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
+      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
 
   buildBottomNavigationMenu(context, landingPageController) {
-    return Obx(() =>
-        MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-            child: SizedBox(
-              height: 54,
-              child: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                showUnselectedLabels: true,
-                showSelectedLabels: true,
-                onTap: landingPageController.changeTabIndex,
-                currentIndex: landingPageController.tabIndex.value,
-                backgroundColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .background,
-                unselectedItemColor: Color(0xFFB8B8B8),
-                selectedItemColor: Theme
-                    .of(context)
-                    .colorScheme
-                    .primaryVariant,
-                unselectedLabelStyle: unselectedLabelStyle,
-                selectedLabelStyle: selectedLabelStyle,
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Image.asset('assets/icons/home_stroke.png',
-                        width: 20.w, height: 20.w),
-                    activeIcon: Image.asset('assets/icons/home_active.png',
-                        width: 20.w, height: 20.w),
-                    label: '홈',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Image.asset('assets/icons/favorite_stroke.png',
-                        width: 20.w, height: 20.w),
-                    activeIcon: Image.asset('assets/icons/favorite_active.png',
-                        width: 20.w, height: 20.w),
-                    label: '구독',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.add,
-                      size: 5,
-                    ),
-                    label: '',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Image.asset('assets/icons/search_stroke.png',
-                        width: 20.w, height: 20.w),
-                    activeIcon: Image.asset('assets/icons/search_active.png',
-                        width: 20.w, height: 20.w),
-                    label: '탐색',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Image.asset('assets/icons/profile_stroke.png',
-                        width: 20.w, height: 20.w),
-                    activeIcon: Image.asset('assets/icons/profile_active.png',
-                        width: 20.w, height: 20.w),
-                    label: '마이 페이지',
-                  ),
-                ],
+    return Obx(() => MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: SizedBox(
+          height: 54,
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            showUnselectedLabels: true,
+            showSelectedLabels: true,
+            onTap: landingPageController.changeTabIndex,
+            currentIndex: landingPageController.tabIndex.value,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            unselectedItemColor: Color(0xFFB8B8B8),
+            selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
+            unselectedLabelStyle: unselectedLabelStyle,
+            selectedLabelStyle: selectedLabelStyle,
+            items: [
+              BottomNavigationBarItem(
+                icon: Image.asset('assets/icons/home_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/home_active.png',
+                    width: 20.w, height: 20.w),
+                label: '홈',
               ),
-            )));
+              BottomNavigationBarItem(
+                icon: Image.asset('assets/icons/favorite_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/favorite_active.png',
+                    width: 20.w, height: 20.w),
+                label: '구독',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.add,
+                  size: 5,
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Image.asset('assets/icons/search_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/search_active.png',
+                    width: 20.w, height: 20.w),
+                label: '탐색',
+              ),
+              BottomNavigationBarItem(
+                icon: Image.asset('assets/icons/profile_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/profile_active.png',
+                    width: 20.w, height: 20.w),
+                label: '마이 페이지',
+              ),
+            ],
+          ),
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
     final LandingPageController landingPageController =
-    Get.put(LandingPageController(), permanent: false);
+        Get.put(LandingPageController(), permanent: false);
     return SafeArea(
         child: Scaffold(
-          bottomNavigationBar:
+      bottomNavigationBar:
           buildBottomNavigationMenu(context, landingPageController),
-          body: Obx(() =>
-              IndexedStack(
-                index: landingPageController.tabIndex.value,
-                children: [
-                  // InfiniteScrollView(),
-                  HomePage(),
-                  SubscribedPage(),
-                  // Subscribed22Page(),
-                  ChatPage(),
-                  searchPage(),
-                  // ChatPage(),
-                  myPage(),
-                ],
-              )),
-          floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-              FloatingActionButtonLocation.centerDocked, 0, 15),
-          floatingActionButton: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .secondary, width: 2.0.w),
-            ),
-            child: FloatingActionButton(
-              backgroundColor: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
-              elevation: 0.0,
-              shape:
+      body: Obx(() => IndexedStack(
+            index: landingPageController.tabIndex.value,
+            children: [
+              // InfiniteScrollView(),
+              HomePage(),
+              SubscribedPage(),
+              // Subscribed22Page(),
+              ChatPage(),
+              searchPage(),
+              // ChatPage(),
+              myPage(),
+            ],
+          )),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          elevation: 0.0,
+          shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
               child: Image.asset('assets/icons/mic_fill.png', height: 32.h,),
-              onPressed: () => showCreateOption(context),
+              onPressed: () => _user == null ? _showMyDialog() : showCreateOption(context),
             ),
           ),
         ));
+
   }
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
-      title: '소리 시작하기',
+      title: '로그인이 필요합니다!',
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             TextButton(
-              child: Text(
-                '개인 라이브',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateBroadcastPage()),
-            ),
-            TextButton(
-              child: Text(
-                '그룹 대화',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateGroupCallPage()),
-            ),
+                child: Text(
+                  '확인',
+                  style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+                ),
+                onPressed: () => Get.back()),
           ],
         ),
       ),
@@ -283,14 +283,17 @@ class LandingPage extends StatelessWidget {
     return 0;
   }
 
-  Future<dynamic> showCreateOption(BuildContext context) {
+  Future<dynamic> showCreateOption(BuildContext context) async {
+    DocumentSnapshot<Map<String, dynamic>> _data = await getUserData(uid);
     return showModalBottomSheet(
         context: context,
         builder: (context) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(height: 35.h,),
+              SizedBox(
+                height: 35.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -298,38 +301,49 @@ class LandingPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.record_voice_over, size: 50.w, color: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,),
-                        SizedBox(height: 20.h,),
+                        Icon(
+                          Icons.record_voice_over,
+                          size: 50.w,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
                         // podcasts
-                        Text('개인 라이브', style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                        Text('개인 라이브',
+                            style: TextStyle(
+                                fontSize: 18.sp, fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    onTap: () => Get.off(() => CreateBroadcastPage()),
+                    onTap: () =>
+                        Get.off(() => CreateBroadcastPage.withData(_data)),
                   ),
                   InkWell(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.connect_without_contact, size: 50.w,
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,),
-                        SizedBox(height: 20.h,),
-                        Text('그룹 대화', style: TextStyle(fontSize: 18.sp,
-                            color: Colors.black87,
-                            fontWeight: FontWeight.bold)),
+                        Icon(
+                          Icons.connect_without_contact,
+                          size: 50.w,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        Text('그룹 대화',
+                            style: TextStyle(
+                                fontSize: 18.sp,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                     onTap: () => Get.off(() => CreateGroupCallPage()),
                   )
                 ],
               ),
-              SizedBox(height: 35.h,),
+              SizedBox(
+                height: 35.h,
+              ),
             ],
           );
         });
