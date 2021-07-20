@@ -23,6 +23,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   var _data;
+
   _CreateBroadcastPageState() {
     _data = getUserData();
   }
@@ -156,7 +157,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         categoryList[_index],
         docId,
         _data,
-        _data['nickName'],
+        '',
         List<String>.filled(0, '', growable: true));
     await Get.to(
       () => BroadCastPage(
