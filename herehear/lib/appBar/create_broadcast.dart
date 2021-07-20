@@ -8,6 +8,16 @@ import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
+  late Map<String, dynamic> userData;
+
+  CreateBroadcastPage.withData(DocumentSnapshot<Map<String, dynamic>> uData) {
+    this.userData = uData.data()!;
+    // print("==========page=========");
+    // print(userData['profile']);
+    // print("==========page=========");
+  }
+  CreateBroadcastPage();
+
   @override
   _CreateBroadcastPageState createState() => _CreateBroadcastPageState();
 }
@@ -143,8 +153,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         _notice.text,
         categoryList[_index],
         docId,
-        _data,
-        '',
+        widget.userData,
         List<String>.filled(0, '', growable: true));
     await Get.to(
       () => BroadCastPage(
