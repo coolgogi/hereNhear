@@ -87,7 +87,7 @@ class AgoraEventController extends GetxController {
         currentUid = uid;
         infoStrings.add(info);
         users.add(uid);
-        FirebaseFirestore.instance.collection('groupcall').
+        // FirebaseFirestore.instance.collection('groupcall').
       },
       userOffline: (uid, reason) {
         final info = 'userOffline: $uid , reason: $reason';
