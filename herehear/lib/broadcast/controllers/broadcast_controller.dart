@@ -18,8 +18,14 @@ class BroadcastController extends GetxController {
   static BroadcastController get to => Get.find();
   Rx<BroadcastModel> newStreamingRoom = BroadcastModel().obs;
 
-  Future<void> createBroadcastRoom(User? firebaseUser, String? title,
-      String? notice, String? category, String? docId) async {
+  Future<void> createBroadcastRoom(
+      User? firebaseUser,
+      String? title,
+      String? notice,
+      String? category,
+      String? docId,
+      dynamic _data,
+      List<String> uNickname) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       print('ok good');
@@ -34,6 +40,10 @@ class BroadcastController extends GetxController {
         like: 0,
         channelName: docId,
         createdTime: DateTime.now(),
+        hostProfile: _data['profile'],
+        userProfile: List<String>.filled(0, '', growable: true),
+        hostNickname: _data['nickName'],
+        userNickname: uNickname,
       );
 
       await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);

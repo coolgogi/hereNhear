@@ -56,6 +56,7 @@ dependencies:
   smart_select: ^4.3.2
   flutter_pagewise: ^2.0.1
   sms_autofill: ^2.0.0
+  badges: ^2.0.1
 
 
 
@@ -94,6 +95,8 @@ flutter:
     - assets/icons/profile_active.png
     - assets/icons/search.png
     - assets/icons/notification.png
+    - assets/icons/exit.png
+    - assets/icons/mic_fill.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg

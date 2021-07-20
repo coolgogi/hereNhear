@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
@@ -12,9 +14,11 @@ class AgoraEventController extends GetxController {
   var users = <int>[].obs;
   RxBool muted = false.obs;
   var speakingUser = <int?>[].obs;
-  var participants = <int?>[].obs;
+  var participants = <int>[].obs;
   late RtcEngine _engine;
   var activeSpeaker = 10.obs;
+  int currentUid = 0;
+  RxBool is_participate = false.obs;
 
   @override
   void onInit() {
@@ -70,16 +74,20 @@ class AgoraEventController extends GetxController {
       },
       joinChannelSuccess: (channel, uid, elapsed) {
         final info = 'onJoinChannel: $channel, uid: $uid';
+        currentUid = uid;
         infoStrings.add(info);
       },
       leaveChannel: (stats) {
         infoStrings.add('onLeaveChannel');
         users.clear();
+        participants.clear();
       },
       userJoined: (uid, elapsed) {
         final info = 'userJoined: $uid';
+        currentUid = uid;
         infoStrings.add(info);
         users.add(uid);
+        // FirebaseFirestore.instance.collection('groupcall').
       },
       userOffline: (uid, reason) {
         final info = 'userOffline: $uid , reason: $reason';
@@ -96,8 +104,8 @@ class AgoraEventController extends GetxController {
             .addAll(speakers.obs.map((element) => element.uid).toList());
         // print('!!!!!!!!!!!!!!: ${speakingUser.value.asMap().entries.}');
 
-        print(
-            '*************************: ${speakingUser.isEmpty ? null : speakingUser}');
+        // print(
+        //     '*************************: ${speakingUser.isEmpty ? null : speakingUser}');
       },
       // activeSpeaker: (uid) {
       //   activeSpeaker = uid.obs;
@@ -107,6 +115,13 @@ class AgoraEventController extends GetxController {
       //   await _engine?.renewToken(token);
       // },
     ));
+  }
+
+  void move_watcher_to_participant() {
+    users.removeWhere((element) => element == currentUid);
+    participants.add(currentUid);
+    is_participate = true.obs;
+    print('?!?!?: ${participants.length}');
   }
 
   void onToggleMute() {
@@ -121,61 +136,62 @@ class AgoraEventController extends GetxController {
 
 class GroupCallPage extends StatelessWidget {
   final String channelName = Get.arguments;
+  bool already_join = false;
 
   final controller = Get.put(AgoraEventController());
 
   /// Toolbar layout
-  Widget _toolbar() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.symmetric(vertical: 48),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Obx(
-            () => RawMaterialButton(
-              onPressed: controller.onToggleMute,
-              child: Icon(
-                controller.muted.value ? Icons.mic_off : Icons.mic,
-                color:
-                    controller.muted.value ? Colors.white : Colors.blueAccent,
-                size: 20.0,
-              ),
-              shape: CircleBorder(),
-              elevation: 2.0,
-              fillColor:
-                  controller.muted.value ? Colors.blueAccent : Colors.white,
-              padding: const EdgeInsets.all(12.0),
-            ),
-          ),
-          RawMaterialButton(
-            onPressed: () => _onCallEnd(),
-            child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: controller.onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _toolbar() {
+  //   return Container(
+  //     alignment: Alignment.bottomCenter,
+  //     padding: const EdgeInsets.symmetric(vertical: 48),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: <Widget>[
+  //         Obx(
+  //           () => RawMaterialButton(
+  //             onPressed: controller.onToggleMute,
+  //             child: Icon(
+  //               controller.muted.value ? Icons.mic_off : Icons.mic,
+  //               color:
+  //                   controller.muted.value ? Colors.white : Colors.blueAccent,
+  //               size: 20.0,
+  //             ),
+  //             shape: CircleBorder(),
+  //             elevation: 2.0,
+  //             fillColor:
+  //                 controller.muted.value ? Colors.blueAccent : Colors.white,
+  //             padding: const EdgeInsets.all(12.0),
+  //           ),
+  //         ),
+  //         RawMaterialButton(
+  //           onPressed: () => _onCallEnd(),
+  //           child: Icon(
+  //             Icons.call_end,
+  //             color: Colors.white,
+  //             size: 35.0,
+  //           ),
+  //           shape: CircleBorder(),
+  //           elevation: 2.0,
+  //           fillColor: Colors.redAccent,
+  //           padding: const EdgeInsets.all(15.0),
+  //         ),
+  //         RawMaterialButton(
+  //           onPressed: controller.onSwitchCamera,
+  //           child: Icon(
+  //             Icons.switch_camera,
+  //             color: Colors.blueAccent,
+  //             size: 20.0,
+  //           ),
+  //           shape: CircleBorder(),
+  //           elevation: 2.0,
+  //           fillColor: Colors.white,
+  //           padding: const EdgeInsets.all(12.0),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -184,12 +200,19 @@ class GroupCallPage extends StatelessWidget {
         backgroundColor: Colors.black,
         title: Text('Here&Hear'),
         actions: <Widget>[
-          Column(
-            children: <Widget>[
-              Icon(Icons.people),
-              Text('999+'),
-            ],
-          )
+          Padding(
+            padding: EdgeInsets.only(top: 10.0.h, right: 8.0.w),
+            child: Column(
+              children: <Widget>[
+                Icon(Icons.people),
+                Text('999+', style: TextStyle(fontSize: 10),),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: Image.asset('assets/icons/exit.png', width: 23.w, color: Colors.white,),
+            onPressed: () => _onCallEnd(),
+          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -211,15 +234,15 @@ class GroupCallPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 30.0.h),
-                    child: Text('참여', style: Theme.of(context).textTheme.headline2,),
-                  ),
-                  Center(
-                    child: Stack(
-                      children: <Widget>[
-                        Obx(() => _viewRows(_getParticipantsImageList())),
-                        _toolbar(),
-                      ],
+                    child: Text(
+                      '참여',
+                      style: Theme.of(context).textTheme.headline2,
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Obx(() => _viewRows(_getParticipantsImageList())),
+                    ],
                   ),
                 ],
               ),
@@ -228,8 +251,12 @@ class GroupCallPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('관전', style: Theme.of(context).textTheme.headline2,),
+                Text(
+                  '관전',
+                  style: Theme.of(context).textTheme.headline2,
+                ),
                 Row(
                   children: <Widget>[
                     Obx(() => _viewRows(_getWatcherImageList())),
@@ -240,6 +267,7 @@ class GroupCallPage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: bottomBar(context),
     );
   }
 
@@ -254,92 +282,49 @@ class GroupCallPage extends StatelessWidget {
   // }
   List<Widget> _getParticipantsImageList() {
     final List<Widget> list = [];
-    // if(controller.activeSpeaker == 0) {
-    //   list.add(Container( decoration: BoxDecoration(
-    //     border: Border.all(
-    //       color: Colors.lightGreen,
-    //       width: 2,
-    //     ),
-    //   ),
-    //       child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
-    // }
-    // else list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
-    //
-    // controller.users.forEach((int uid) {
-    //   print('!!!!!!: $uid');
-    //     if(uid == controller.activeSpeaker) {
-    //       list.add(Container( decoration: BoxDecoration(
-    //         border: Border.all(
-    //           color: Colors.lightGreen,
-    //           width: 2,
-    //         ),
-    //       ),
-    //           child: Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150, )));
-    //     }
-    //     else
-    //       list.add(Image(image: AssetImage('assets/images/you.png'), width: 150, height: 150,));
-    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    // });
 
-    // bool flag1 = false;
-    // for(int i = 0; i < controller.speakingUser.length; i++) {
-    //   if(controller.speakingUser[i] == 0) {
-    //     list.add(Container( decoration: BoxDecoration(
-    //       border: Border.all(
-    //         color: Colors.lightGreen,
-    //         width: 2,
-    //       ),
-    //     ),
-    //         child: Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150, )));
-    //     flag1 = true;
-    //     break;
-    //   }
-    // }
-    // if(flag1 != true)
-    //   list.add(Image(image: AssetImage('assets/images/me.jpg'), width: 150, height: 150,));
-    // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
-    list.add(Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ),
-      child: Image(
-        image: AssetImage('assets/images/me.jpg'),
-        width: 150,
-        height: 150,
-      ),
-    ));
+    if(!controller.participants.isEmpty) {
+      list.add(Padding(
+        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+        child: Container(
+          child: CircleAvatar(
+            radius: 35,
+            backgroundImage: AssetImage('assets/images/me.jpg'),
+          ),
+        ),
+      ));
+    }
 
-    controller.users.forEach((int uid) {
-      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+    controller.participants.forEach((int uid) {
+      // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
       bool flag = false;
       for (int i = 0; i < controller.speakingUser.length; i++) {
         if (uid == controller.speakingUser[i]) {
-          list.add(Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.lightGreen,
-                  width: 2,
+          list.add(Padding(
+            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+            child: Container(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.lightGreen,
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: AssetImage('assets/images/you.png'),
                 ),
               ),
-              child: Image(
-                image: AssetImage('assets/images/you.png'),
-                width: 150,
-                height: 150,
-              )));
+            ),
+          ));
           flag = true;
           break;
         }
       }
       if (flag != true)
-        list.add(Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-          ),
-          child: Image(
-            image: AssetImage('assets/images/you.png'),
-            width: 150,
-            height: 150,
+        list.add(Padding(
+          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+          child: Container(
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: AssetImage('assets/images/you.png'),
+            ),
           ),
         ));
       // list.add(RtcRemoteView.SurfaceView(uid: uid));
@@ -347,29 +332,31 @@ class GroupCallPage extends StatelessWidget {
     return list;
   }
 
-
   List<Widget> _getWatcherImageList() {
     final List<Widget> list = [];
 
-    list.add(Padding(
-      padding: EdgeInsets.all(16.0.h),
-      child: Container(
-        child: CircleAvatar(
-          radius: 35,
-          backgroundImage: AssetImage('assets/images/me.jpg'),
-        ),
-      ),
-    )
-    //     Container(
-    //   decoration: BoxDecoration(
-    //     shape: BoxShape.circle,
-    //     image: DecorationImage(
-    //       fit: BoxFit.fill,
-    //       image: AssetImage('assets/images/me.jpg'),
-    //     ),
-    //   ),
-    // )
-    );
+    if(!controller.is_participate.value){
+      list.add(Padding(
+          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+          child: Container(
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: AssetImage('assets/images/me.jpg'),
+            ),
+          ),
+        )
+        //     Container(
+        //   decoration: BoxDecoration(
+        //     shape: BoxShape.circle,
+        //     image: DecorationImage(
+        //       fit: BoxFit.fill,
+        //       image: AssetImage('assets/images/me.jpg'),
+        //     ),
+        //   ),
+        // )
+      );
+    }
+
 
     controller.users.forEach((int uid) {
       print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
@@ -377,7 +364,7 @@ class GroupCallPage extends StatelessWidget {
       for (int i = 0; i < controller.speakingUser.length; i++) {
         if (uid == controller.speakingUser[i]) {
           list.add(Padding(
-            padding: EdgeInsets.all(16.0.h),
+            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
             child: Container(
               child: CircleAvatar(
                 radius: 40,
@@ -402,14 +389,14 @@ class GroupCallPage extends StatelessWidget {
               //   width: 150,
               //   height: 150,
               // ))
-      );
+              );
           flag = true;
           break;
         }
       }
       if (flag != true)
         list.add(Padding(
-          padding: EdgeInsets.all(16.0.h),
+          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
           child: Container(
             child: CircleAvatar(
               radius: 35,
@@ -442,44 +429,112 @@ class GroupCallPage extends StatelessWidget {
   //   return
   // }
 
+  Widget bottomBar(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.black,
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0.w, 10.0.w, 10.0.w, 10.0.w),
+            child: InkWell(
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.chat, color: Colors.black),
+              ),
+              onTap: null,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 50.h,
+            ),
+          ),
+          Obx(
+              () => Padding(
+                padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
+                child: InkWell(
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: controller.muted.value ? Theme.of(context).colorScheme.primary : Colors.white,
+                    child: Icon(
+                      controller.muted.value ? Icons.mic_off : Icons.mic,
+                      color:
+                      !already_join ? Colors.grey
+                          : controller.muted.value ? Colors.white : Colors.black,
+                      size: 30,
+                    ),
+                  ),
+                  onTap: (() {
+                    if (already_join == true)
+                      controller.onToggleMute();
+                  }),
+                ),
+              )
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
+            child: InkWell(
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.pan_tool_outlined, color: Colors.black, size: 28,),
+              ),
+              onTap: (() {
+                if (already_join == false)
+                  controller.move_watcher_to_participant();
+
+                already_join = true;
+              }),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   /// Video layout wrapper
-  Widget _viewRows(List<Widget> UserImageList) {
+  Widget _viewRows(List<Widget> userImageList) {
     // final views = _getRenderViews();
-    var views = UserImageList;
-    if(views.length <= 5) {
+    var views = userImageList;
+    print('asdfasdf: $views');
+    if (views.length == 1) {
       return Container(
           child: Column(
-            children: <Widget>[_videoView(views[0])],
-          ));
-    } else if(views.length <= 10) {
+        children: <Widget>[_videoView(views[0])],
+      ));
+    } else if (views.length <= 5) {
       return Container(
           child: Column(
-            children: <Widget>[
-              _expandedVideoRow(views.sublist(0, 5)),
-              _expandedVideoRow(views.sublist(5, views.length-1))
-            ],
+            children: <Widget>[_expandedVideoRow(views.sublist(0, views.length)),],
           ));
-    }
-    else if(views.length <= 15) {
+    } else if (views.length <= 10) {
       return Container(
           child: Column(
-            children: <Widget>[
-              _expandedVideoRow(views.sublist(0, 5)),
-              _expandedVideoRow(views.sublist(5, 10)),
-              _expandedVideoRow(views.sublist(15, views.length-1))
-            ],
-          ));
-    }
-    else if(views.length <= 20) {
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, views.length - 1))
+        ],
+      ));
+    } else if (views.length <= 15) {
       return Container(
           child: Column(
-            children: <Widget>[
-              _expandedVideoRow(views.sublist(0, 5)),
-              _expandedVideoRow(views.sublist(5, 10)),
-              _expandedVideoRow(views.sublist(10, 15)),
-              _expandedVideoRow(views.sublist(15, views.length-1))
-            ],
-          ));
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, 10)),
+          _expandedVideoRow(views.sublist(15, views.length - 1))
+        ],
+      ));
+    } else if (views.length <= 20) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, 10)),
+          _expandedVideoRow(views.sublist(10, 15)),
+          _expandedVideoRow(views.sublist(15, views.length - 1))
+        ],
+      ));
     }
     return Container();
   }

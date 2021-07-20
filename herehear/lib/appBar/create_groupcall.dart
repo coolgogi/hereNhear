@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -132,6 +133,8 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
     _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
     controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
+    // FirebaseFirestore.instance
+    //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
     Get.to(() => GroupCallPage(), arguments: _docId);
   }
 

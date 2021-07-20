@@ -7,6 +7,7 @@ class GroupCallModel {
   String? image;
   DateTime? createdTime;
   List<dynamic>? currentListener;
+  List<dynamic>? participants;
 
   GroupCallModel({
     this.hostUid,
@@ -17,6 +18,7 @@ class GroupCallModel {
     this.image,
     this.createdTime,
     this.currentListener,
+    this.participants,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class GroupCallModel {
       'image' : this.image,
       'createTIme' : this.createdTime,
       'currentListener': this.currentListener,
+      'participants' : this.participants,
     };
   }
 
