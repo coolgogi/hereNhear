@@ -160,7 +160,38 @@ class BroadCastPage extends StatelessWidget {
   /// Toolbar layout
   Widget _toolbar() {
     return role == ClientRole.Audience
-        ? Container()
+        ? Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                RawMaterialButton(
+                  onPressed: () => _onCallEnd(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.call_end,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '나가기',
+                        style: buttonStyle,
+                      )
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(15.0),
+                ),
+              ],
+            ))
         : Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.symmetric(vertical: 48),
@@ -407,7 +438,9 @@ class BroadCastPage extends StatelessWidget {
 
   void _onCallEnd() {
     // 조치 취하기
-    chagneState(channelName);
+    if (role == ClientRole.Broadcaster) {
+      chagneState(channelName);
+    }
     controller.onClose();
     Get.back();
     Get.back();

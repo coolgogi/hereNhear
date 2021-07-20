@@ -9,6 +9,10 @@ class BroadcastModel {
   String? channelName;
   DateTime? createdTime;
   List<dynamic>? currentListener;
+  String? hostProfile;
+  List<String>? userProfile;
+  String? hostNickname;
+  List<String>? userNickname;
 
   BroadcastModel({
     this.hostUid,
@@ -21,22 +25,25 @@ class BroadcastModel {
     this.channelName,
     this.createdTime,
     this.currentListener,
-
+    this.hostProfile,
+    this.userProfile,
+    this.hostNickname,
+    this.userNickname,
   });
 
   // UserModel을 map으로 바꿔주는 함수.
   Map<String, dynamic> toMap() {
     return {
       'hostUid': this.hostUid,
-      'title' : this.title,
-      'notice' : this.notice,
-      'category' : this.category,
-      'docId' : this.docId,
-      'image' : this.image,
-      'like' : this.like,
-      'channelName' : this.channelName,
-      'createdTime' : this.createdTime,
-      'currentListener' : currentListener,
+      'title': this.title,
+      'notice': this.notice,
+      'category': this.category,
+      'docId': this.docId,
+      'image': this.image,
+      'like': this.like,
+      'channelName': this.channelName,
+      'createdTime': this.createdTime,
+      'currentListener': currentListener,
     };
   }
 
