@@ -24,19 +24,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _notice = TextEditingController();
   var _data;
 
-  _CreateBroadcastPageState() {
-    _data = getUserData();
-  }
-
-  dynamic getUserData() async {
-    var userdata = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user!.uid)
-        .get();
-
-    return userdata.data();
-  }
-
   final controller = Get.put(BroadcastController());
   @override
   void dispose() {
