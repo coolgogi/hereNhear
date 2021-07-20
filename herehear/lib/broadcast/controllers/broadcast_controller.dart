@@ -41,9 +41,9 @@ class BroadcastController extends GetxController {
         like: 0,
         channelName: docId,
         createdTime: DateTime.now(),
-        hostProfile: _data['profile'],
+        hostProfile: '',
         userProfile: List<String>.filled(0, '', growable: true),
-        hostNickname: _data['nickName'],
+        hostNickname: '',
       );
 
       await BroadcastRepository.BroadcastToFirebase(newStreamingRoom.value);
