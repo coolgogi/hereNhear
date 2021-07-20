@@ -5,16 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/create_broadcast.dart';
 import 'package:herehear/appBar/create_groupcall.dart';
+import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
+import 'package:badges/badges.dart';
 
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final controller = Get.put(LocationController());
   String current_uid = '';
+  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   HomePage() {
     if (FirebaseAuth.instance.currentUser != null) {
@@ -37,12 +41,25 @@ class HomePage extends StatelessWidget {
                 //     onPressed: _showMyDialog,
                 //     color: Colors.amber,
                 //     icon: Icon(Icons.add_circle)),
-                IconButton(
-                  onPressed: null,
-                  color: Colors.black87,
-                  icon: Image.asset('assets/icons/notification.png'),
-                  iconSize: 20.w,
-                ),
+               controller.count > 0 ?
+                Badge(
+                  badgeContent: Text(controller.count.toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 11)),
+                  position: BadgePosition.topEnd(top: 0, end: 5),
+                  child: IconButton(
+                    onPressed: () => Get.to(() => NotificationPage()),
+                    color: Colors.black87,
+                    icon: Image.asset('assets/icons/notification.png'),
+                    iconSize: 20.w,
+                  ),
+                )
+                : IconButton(
+                 onPressed: () => Get.to(() => NotificationPage()),
+                 // => Get.off(() => Notification()),
+                 color: Colors.black87,
+                 icon: Image.asset('assets/icons/notification.png'),
+                 iconSize: 20.w,
+               ),
                 Padding(
                   padding: EdgeInsets.only(right: 8.0.w),
                   child: IconButton(
@@ -134,7 +151,7 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     height: 173.0.h,
                     child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
+                      stream: firestore
                           .collection("broadcast")
                           .where('location',
                               isEqualTo: controller.location.value)
@@ -178,7 +195,7 @@ class HomePage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 9.0.h),
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance
+                      stream: firestore
                           .collection("groupcall")
                           .where('location',
                               isEqualTo: controller.location.value)
@@ -277,6 +294,9 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.only(right: 12.0.w),
         child: InkWell(
           onTap: () {
+            firestore.collection('broadcast').doc(room['docId']).update({
+              'currentListener': FieldValue.arrayUnion([auth.currentUser!.uid])
+            });
             Get.to(
               () => BroadCastPage(
                 channelName: room['channelName'],
@@ -348,6 +368,10 @@ class HomePage extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
               onTap: () {
+                firestore.collection('groupcall').doc(room['docId']).update({
+                  'currentListener':
+                      FieldValue.arrayUnion([auth.currentUser!.uid])
+                });
                 Get.to(() => GroupCallPage(), arguments: room['channelName']);
               },
               child: Row(

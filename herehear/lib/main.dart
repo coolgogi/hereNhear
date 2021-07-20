@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:herehear/search/search.dart';
@@ -19,6 +20,7 @@ import 'etc/listTest.dart';
 import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() => runApp(App());
 
@@ -92,6 +94,10 @@ class MyApp extends StatelessWidget {
                     GetPage(
                       name: '/login',
                       page: () => LoginPage(),
+                    ),
+                    GetPage(
+                      name: '/notification',
+                      page: () => NotificationPage(),
                     )
                   ],
                 ),
@@ -239,7 +245,7 @@ class LandingPage extends StatelessWidget {
               elevation: 0.0,
               shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-              child: Image.asset('assets/icons/mic_fill.png'),
+              child: Image.asset('assets/icons/mic_fill.png', height: 32.h,),
               onPressed: () => showCreateOption(context),
             ),
           ),

@@ -16,7 +16,6 @@ class SubscribedPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   FirebaseAuth auth = FirebaseAuth.instance;
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
