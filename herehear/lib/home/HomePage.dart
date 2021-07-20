@@ -14,7 +14,15 @@ import 'package:herehear/groupCall/group_call.dart';
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final controller = Get.put(LocationController());
-  String current_uid = FirebaseAuth.instance.currentUser!.uid;
+  String current_uid = '';
+
+  HomePage() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      current_uid = FirebaseAuth.instance.currentUser!.uid;
+    } else {
+      current_uid = '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
