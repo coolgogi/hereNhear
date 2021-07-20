@@ -245,7 +245,7 @@ class LandingPage extends StatelessWidget {
           elevation: 0.0,
           shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-          child: Icon(Icons.add),
+          child: Image.asset('assets/icons/mic_fill.png'),
           onPressed: () =>
               _user == null ? _showMyDialog() : showCreateOption(context),
         ),

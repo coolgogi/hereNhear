@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
@@ -86,6 +87,7 @@ class AgoraEventController extends GetxController {
         currentUid = uid;
         infoStrings.add(info);
         users.add(uid);
+        // FirebaseFirestore.instance.collection('groupcall').
       },
       userOffline: (uid, reason) {
         final info = 'userOffline: $uid , reason: $reason';
