@@ -44,6 +44,10 @@ class BroadcastModel {
       'channelName': this.channelName,
       'createdTime': this.createdTime,
       'currentListener': currentListener,
+      'hostProfile': this.hostProfile,
+      'hostNickName': this.hostNickname,
+      'userProfile': this.userProfile,
+      'userNickName': this.userNickname,
     };
   }
 

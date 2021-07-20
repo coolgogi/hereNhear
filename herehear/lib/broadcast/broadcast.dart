@@ -7,6 +7,7 @@ import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -104,13 +105,6 @@ class AgoraEventController extends GetxController {
         print(
             '*************************: ${speakingUser.isEmpty ? null : speakingUser}');
       },
-      // activeSpeaker: (uid) {
-      //   activeSpeaker = uid.obs;
-      // }
-      // tokenPrivilegeWillExpire: (token) async {
-      //   await getToken();
-      //   await _engine?.renewToken(token);
-      // },
     ));
   }
 
@@ -126,8 +120,11 @@ class AgoraEventController extends GetxController {
 
 class BroadCastPage extends StatelessWidget {
   static final _users = <int>[];
-  final _broadcaster = <String>[];
-  final _audience = <String>[];
+  String nickName_broadcaster = '';
+  String profile_broadcaster = '';
+
+  final nickName_audience = <String>[];
+  final profile_audience = <String>[];
   final Map<int, String> _allUsers = {};
   // final String channelName = Get.arguments;
   final String channelName;
@@ -138,6 +135,7 @@ class BroadCastPage extends StatelessWidget {
   late RtcEngine _engine;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
+  late Map<String, dynamic> dbData = new Map();
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
@@ -151,10 +149,19 @@ class BroadCastPage extends StatelessWidget {
         .doc(channelName)
         .get();
 
-    host_uid = temp.data()!['hostUid'];
-    print("==================");
-    print(host_uid);
-    print("==================");
+    dbData = temp.data()!;
+    host_uid = dbData['hostUid'];
+    nickName_broadcaster = dbData['hostNickName'];
+    profile_broadcaster = dbData['hostProfile'];
+
+    if (role == ClientRole.Broadcaster) {
+      // profile_broadcaster =
+      // nickName_broadcaster =
+
+    } else if (role == ClientRole.Audience) {
+      // profile_audience.add();
+      // nickName_audience.add();
+    }
   }
 
   /// Toolbar layout
@@ -261,24 +268,6 @@ class BroadCastPage extends StatelessWidget {
     _engine.muteLocalAudioStream(muted);
   }
 
-  //broad cast 방 화면
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text('Agora audio broadcasting'),
-  //     ),
-  //     backgroundColor: Colors.black,
-  //     body: Center(
-  //       child: Stack(
-  //         children: <Widget>[
-  //           Obx(() => _viewRows()),
-  //           _toolbar(),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -287,10 +276,42 @@ class BroadCastPage extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(12),
-            child: Text(
-              'Host\nMy : $host_uid',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Host',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Container(
+                  width: 35.0.w,
+                  height: 35.0.h,
+                  child: Card(
+                    margin: EdgeInsets.only(left: 0.0.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: Image.asset(profile_broadcaster),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5.h),
+                Text(
+                  nickName_broadcaster,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                SizedBox(height: 4.h),
+              ],
             ),
+            // Text(
+            //   'Host\nMy : $host_uid',
+            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            // ),
           ),
           Container(
               height: MediaQuery.of(context).size.height * 0.2,
@@ -439,7 +460,7 @@ class BroadCastPage extends StatelessWidget {
   void _onCallEnd() {
     // 조치 취하기
     if (role == ClientRole.Broadcaster) {
-      chagneState(channelName);
+      changeState(channelName);
     }
     controller.onClose();
     Get.back();
@@ -448,15 +469,12 @@ class BroadCastPage extends StatelessWidget {
     // Get.offAll('/');
   }
 
-  void chagneState(String docID) async {
+  void changeState(String docID) async {
     var fields = await FirebaseFirestore.instance
         .collection('broadcast')
         .doc(docID)
         .get();
 
-    print("============================");
-    print(fields.data());
-    print("============================");
     FirebaseFirestore.instance
         .collection('closed')
         .doc(docID)

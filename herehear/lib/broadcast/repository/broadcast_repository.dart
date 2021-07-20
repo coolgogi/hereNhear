@@ -2,13 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/data/broadcast_model.dart';
 
-
 class BroadcastRepository {
   static Future<void> BroadcastToFirebase(BroadcastModel firebaseUser) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('broadcast');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('broadcast');
 
     await users.doc(firebaseUser.docId).set(firebaseUser.toMap());
-
   }
 
   static void updateLoginTime(String docId) {
