@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:herehear/search/search.dart';
@@ -19,6 +20,7 @@ import 'etc/listTest.dart';
 import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 void main() => runApp(App());
 
@@ -66,32 +68,37 @@ class MyApp extends StatelessWidget {
         builder: (value) {
           return ScreenUtilInit(
             designSize: Size(375, 667),
-            builder: () => GetMaterialApp(
-              theme: value.isDarkTheme.value ? dark_theme : light_theme,
-              debugShowCheckedModeBanner: false,
-              // GetX Controller 등록
-              // initialBinding: BindingsBuilder(() {}),
-              initialBinding: AppBinding(),
-              title: 'Flutter Basic',
-              home: LandingPage(),
-              getPages: [
-                GetPage(
-                  name: '/',
-                  page: () => HomePage(),
-                ),
-                GetPage(
-                  name: '/myPage',
-                  page: () => myPage(),
-                ),
-                GetPage(
-                  name: '/upload',
-                  page: () => UploadPage(),
-                ),
-                GetPage(
-                  name: '/login',
-                  page: () => LoginPage(),
-                )
-              ],
+            builder: () =>
+                GetMaterialApp(
+                  theme: value.isDarkTheme.value ? dark_theme : light_theme,
+                  debugShowCheckedModeBanner: false,
+                  // GetX Controller 등록
+                  // initialBinding: BindingsBuilder(() {}),
+                  initialBinding: AppBinding(),
+                  title: 'Flutter Basic',
+                  home: LandingPage(),
+                  getPages: [
+                    GetPage(
+                      name: '/',
+                      page: () => HomePage(),
+                    ),
+                    GetPage(
+                      name: '/myPage',
+                      page: () => myPage(),
+                    ),
+                    GetPage(
+                      name: '/upload',
+                      page: () => UploadPage(),
+                    ),
+                    GetPage(
+                      name: '/login',
+                      page: () => LoginPage(),
+                    ),
+                    GetPage(
+                      name: '/notification',
+                      page: () => NotificationPage(),
+                    )
+                  ],
             ),
           );
         });
@@ -245,12 +252,12 @@ class LandingPage extends StatelessWidget {
           elevation: 0.0,
           shape:
               CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-          child: Image.asset('assets/icons/mic_fill.png'),
-          onPressed: () =>
-              _user == null ? _showMyDialog() : showCreateOption(context),
-        ),
-      ),
-    ));
+              child: Image.asset('assets/icons/mic_fill.png', height: 32.h,),
+              onPressed: () => _user == null ? _showMyDialog() : showCreateOption(context),
+            ),
+          ),
+        ));
+
   }
 
   Future<void> _showMyDialog() async {

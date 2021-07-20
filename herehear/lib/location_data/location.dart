@@ -8,6 +8,22 @@ import 'package:flutter/material.dart';
 
 
 class LocationController extends GetxController {
+  //yr controller
+  bool check = true;
+  int count=1;
+
+  void read(){
+    check = false;
+  }
+
+  void decrement(){
+    if(count != 0){
+      count--;
+      update();
+    }
+  }
+
+  ///////////////////////////////////////////////for YR
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static LocationController get to => Get.find();
   RxString location = ''.obs;
@@ -63,4 +79,6 @@ class LocationController extends GetxController {
     location = '${first.locality} ${first.subLocality}'.obs;
     print('location: $location');
   }
+
+
 }
