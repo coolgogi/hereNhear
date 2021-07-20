@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -136,67 +137,61 @@ class BroadCastPage extends StatelessWidget {
   bool muted = false;
   late RtcEngine _engine;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
+  String host_uid = '';
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
     controller = Get.put(AgoraEventController(channelName, role));
+    setHostuid();
+  }
+
+  void setHostuid() async {
+    var temp = await FirebaseFirestore.instance
+        .collection('broadcast')
+        .doc(channelName)
+        .get();
+
+    host_uid = temp.data()!['hostUid'];
+    print("==================");
+    print(host_uid);
+    print("==================");
   }
 
   /// Toolbar layout
-  // Widget _toolbar() {
-  //   return ConBroadCastPagetainer(
-  //     alignment: Alignment.bottomCenter,
-  //     padding: const EdgeInsets.symmetric(vertical: 48),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: <Widget>[
-  //         Obx(
-  //           () => RawMaterialButton(
-  //             onPressed: controller.onToggleMute,
-  //             child: Icon(
-  //               controller.muted.value ? Icons.mic_off : Icons.mic,
-  //               color:
-  //                   controller.muted.value ? Colors.white : Colors.blueAccent,
-  //               size: 20.0,
-  //             ),
-  //             shape: CircleBorder(),
-  //             elevation: 2.0,
-  //             fillColor:
-  //                 controller.muted.value ? Colors.blueAccent : Colors.white,
-  //             padding: const EdgeInsets.all(12.0),
-  //           ),
-  //         ),
-  //         RawMaterialButton(
-  //           onPressed: () => _onCallEnd(),
-  //           child: Icon(
-  //             Icons.call_end,
-  //             color: Colors.white,
-  //             size: 35.0,
-  //           ),
-  //           shape: CircleBorder(),
-  //           elevation: 2.0,
-  //           fillColor: Colors.redAccent,
-  //           padding: const EdgeInsets.all(15.0),
-  //         ),
-  //         // RawMaterialButton(
-  //         //   onPressed: controller.onSwitchCamera,
-  //         //   child: Icon(
-  //         //     Icons.switch_camera,
-  //         //     color: Colors.blueAccent,
-  //         //     size: 20.0,
-  //         //   ),
-  //         //   shape: CircleBorder(),
-  //         //   elevation: 2.0,
-  //         //   fillColor: Colors.white,
-  //         //   padding: const EdgeInsets.all(12.0),
-  //         // )
-  //       ],
-  //     ),
-  //   );
-  // }
   Widget _toolbar() {
     return role == ClientRole.Audience
-        ? Container()
+        ? Container(
+            alignment: Alignment.bottomCenter,
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                RawMaterialButton(
+                  onPressed: () => _onCallEnd(),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.call_end,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '나가기',
+                        style: buttonStyle,
+                      )
+                    ],
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(15.0),
+                ),
+              ],
+            ))
         : Container(
             alignment: Alignment.bottomCenter,
             padding: const EdgeInsets.symmetric(vertical: 48),
@@ -293,7 +288,7 @@ class BroadCastPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              'Host',
+              'Host\nMy : $host_uid',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -443,7 +438,9 @@ class BroadCastPage extends StatelessWidget {
 
   void _onCallEnd() {
     // 조치 취하기
-    chagneState(channelName);
+    if (role == ClientRole.Broadcaster) {
+      chagneState(channelName);
+    }
     controller.onClose();
     Get.back();
     Get.back();
@@ -452,18 +449,18 @@ class BroadCastPage extends StatelessWidget {
   }
 
   void chagneState(String docID) async {
-    var things = await FirebaseFirestore.instance
+    var fields = await FirebaseFirestore.instance
         .collection('broadcast')
         .doc(docID)
         .get();
 
     print("============================");
-    print(things.data());
+    print(fields.data());
     print("============================");
     FirebaseFirestore.instance
         .collection('closed')
         .doc(docID)
-        .set(things.data()!);
+        .set(fields.data()!);
     FirebaseFirestore.instance.collection('broadcast').doc(docID).delete();
   }
 }
