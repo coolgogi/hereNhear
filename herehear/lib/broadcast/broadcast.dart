@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/broadcast/user_view.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AgoraEventController extends GetxController {
@@ -142,10 +139,9 @@ class BroadCastPage extends StatelessWidget {
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
     controller = Get.put(AgoraEventController(channelName, role));
-    setHostuid();
   }
 
-  void setHostuid() async {
+  void getData() async {
     var temp = await FirebaseFirestore.instance
         .collection('broadcast')
         .doc(channelName)
@@ -157,7 +153,10 @@ class BroadCastPage extends StatelessWidget {
     profile_broadcaster = dbData['hostProfile'];
     nickName_audience = dbData['userNickName'];
     profile_audience = dbData['userProfile'];
-
+    print("===========dbData===========");
+    print(dbData['hostUid']);
+    print(dbData['hostProfile']);
+    print("============================");
     if (role == ClientRole.Broadcaster) {
       // profile_broadcaster =
       // nickName_broadcaster =
@@ -274,6 +273,7 @@ class BroadCastPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
       body: SafeArea(
           child: Column(
@@ -340,110 +340,9 @@ class BroadCastPage extends StatelessWidget {
     );
   }
 
-  /// Helper function to get list of native views
-  List<Widget> _getRenderViews() {
-    final List<Widget> list = [];
-    // //프로필 이미지 받아오는 거 어떻게 할지 고민중이었음. 비디오 기능 없애고 오디오 기능으로ㅇㅇ
-    list.add(Image(
-      image: AssetImage('assets/images/me.jpg'),
-      width: 150,
-      height: 150,
-    ));
-
-    controller.users.forEach((int uid) {
-      print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-      bool flag = false;
-      for (int i = 0; i < controller.speakingUser.length; i++) {
-        if (uid == controller.speakingUser[i]) {
-          list.add(Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.lightGreen,
-                  width: 2,
-                ),
-              ),
-              child: Image(
-                image: AssetImage('assets/images/you.png'),
-                width: 150,
-                height: 150,
-              )));
-          flag = true;
-          break;
-        }
-      }
-      if (flag != true)
-        list.add(Image(
-          image: AssetImage('assets/images/you.png'),
-          width: 150,
-          height: 150,
-        ));
-    });
-    return list;
-  }
-
-  /// Video view wrapper
-  Widget _videoView(view) {
-    return Expanded(
-        child: Container(
-            child: Center(
-      child: view,
-    )));
-  }
-
-  /// Video view row wrapper
-  Widget _expandedVideoRow(List<Widget> views) {
-    final wrappedViews = views.map<Widget>(_videoView).toList();
-    return Expanded(
-      child: Row(
-        children: wrappedViews,
-      ),
-    );
-  }
-
-  /// Video layout wrapper
-  Widget _viewRows() {
-    final views = _getRenderViews();
-    switch (views.length) {
-      case 1:
-        return Container(
-            child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-      case 2:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow([views[0]]),
-            _expandedVideoRow([views[1]])
-            // views[0],
-            // views[1]
-          ],
-        ));
-      case 3:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 3))
-          ],
-        ));
-      case 4:
-        return Container(
-            child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 2)),
-            _expandedVideoRow(views.sublist(2, 4))
-          ],
-        ));
-      default:
-    }
-    return Container();
-  }
-
-  void _onCallEnd() {
-    // 조치 취하기
+  void _onCallEnd() async {
     if (role == ClientRole.Broadcaster) {
-      changeState(channelName);
+      await changeState(channelName);
     }
     controller.onClose();
     Get.back();
@@ -452,7 +351,7 @@ class BroadCastPage extends StatelessWidget {
     // Get.offAll('/');
   }
 
-  void changeState(String docID) async {
+  Future<void> changeState(String docID) async {
     var fields = await FirebaseFirestore.instance
         .collection('broadcast')
         .doc(docID)
