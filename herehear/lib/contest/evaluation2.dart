@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+
 class StopController extends GetxController {
   RxBool stopFlag = true.obs;
   RxBool goodFlag = false.obs;
@@ -29,6 +31,7 @@ class StopController extends GetxController {
 }
 
 class EvaluationPage2 extends StatelessWidget {
+  final player = AudioPlayer();
   final controller = Get.put(StopController());
 
   @override
@@ -54,7 +57,7 @@ class EvaluationPage2 extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 40.0.h, bottom: 60.0.h),
-              child: Text('까마귀 우는 소리', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
+              child: Text('여자 목소리', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 60.0.h),
@@ -63,14 +66,19 @@ class EvaluationPage2 extends StatelessWidget {
                 height: 300.0.w,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/it2.jpg'),
+                    image: AssetImage('assets/images/she2.jpeg'),
                   ),
                 ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     GestureDetector(
-                      onTap: controller.toggleStopFlag,
+                      onTap: (() async {
+              controller.toggleStopFlag();
+              await player.setAsset('assets/audio/girlVoice.mp3');
+              controller.stopFlag.value == false ? player.play() : player.pause();
+
+              }),
                       child: Container(
                           child: Obx(() => Center(
                             child: controller.stopFlag.value ? Image.asset('assets/images/playButton2.png', width: 150,) : Image.asset('assets/images/stopButton.png', width: 140,),
