@@ -77,7 +77,6 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
             SizedBox(
               height: 16.0,
             ),
-
             Container(
               padding: EdgeInsets.only(bottom: 10),
               child: Text(
@@ -178,7 +177,8 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId, controller2.location.value);
+    controller.createGroupCallRoom(
+        user, _title.text, _notice.text, _docId, controller2.location.value);
     // FirebaseFirestore.instance
     //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
     // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
