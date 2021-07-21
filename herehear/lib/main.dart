@@ -16,6 +16,7 @@ import 'package:herehear/chatting/ChatPage.dart';
 import 'package:herehear/test_folder/subscribed_test_connect_firebase.dart';
 import 'appBar/create_broadcast.dart';
 import 'appBar/create_groupcall.dart';
+import 'contest/contest.dart';
 import 'etc/listTest.dart';
 import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
@@ -231,7 +232,7 @@ class LandingPage extends StatelessWidget {
             children: [
               // InfiniteScrollView(),
               HomePage(),
-              SubscribedPage(),
+              ContestPage(),
               // Subscribed22Page(),
               ChatPage(),
               searchPage(),

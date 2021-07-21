@@ -174,6 +174,12 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 14.0.sp,
       fontFamily: 'Roboto',
     ),
+    bodyText2: base.bodyText2!.copyWith(
+      fontWeight: FontWeight.w500,
+      color: Colors.grey,
+      fontSize: 12.0.sp,
+      fontFamily: 'Roboto',
+    ),
   );
   // .apply(
   //   displayColor: OnSecondaryLight,

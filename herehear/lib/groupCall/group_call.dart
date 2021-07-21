@@ -22,21 +22,39 @@ class AgoraEventController extends GetxController {
   RxBool is_participate = false.obs;
   final String? currentUserUID = FirebaseAuth.instance.currentUser!.uid;
   var docID = Get.arguments;
+  // var groupcallStream = Stream<DocumentSnapshot<Map<String, dynamic>>>().obs;
+  var participantsList = <Widget>[].obs;
+  var currentListenerList = <Widget>[].obs;
+
+
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getGroupcallStream(String docID) {
+    return FirebaseFirestore.instance.collection('groupcall').doc(docID).snapshots();
+  }
+
 
   @override
-  void onInit() {
+  void onInit() async {
     // called immediately after the widget is allocated memory
-    initialize();
+    await initialize();
     super.onInit();
   }
 
   @override
-  void onClose() {
+  void onClose() async {
     // clear users
     users.clear();
     // destroy sdk
     _engine.leaveChannel().obs;
     _engine.destroy().obs;
+    await FirebaseFirestore.instance
+        .collection("groupcall")
+        .doc(docID)
+        .update({"currentListener": FieldValue.arrayRemove([currentUserUID])});
+    await FirebaseFirestore.instance
+        .collection("groupcall")
+        .doc(docID)
+        .update({"participants": FieldValue.arrayRemove([currentUserUID])});
     super.onClose();
   }
 
@@ -68,7 +86,7 @@ class AgoraEventController extends GetxController {
   }
 
   /// Add agora event handlers
-  void _addAgoraEventHandlers() {
+  Future<void> _addAgoraEventHandlers() async {
     print('################################################################');
     _engine.setEventHandler(RtcEngineEventHandler(
       error: (code) {
@@ -88,6 +106,10 @@ class AgoraEventController extends GetxController {
             .collection("groupcall")
             .doc(docID)
             .update({"currentListener": FieldValue.arrayRemove([currentUserUID])});
+        await FirebaseFirestore.instance
+            .collection("groupcall")
+            .doc(docID)
+            .update({"participants": FieldValue.arrayRemove([currentUserUID])});
       },
       userJoined: (uid, elapsed) async {
         final info = 'userJoined: $uid';
@@ -232,58 +254,62 @@ class GroupCallPage extends StatelessWidget {
       body: StreamBuilder<DocumentSnapshot<Object>>(
         stream: FirebaseFirestore.instance.collection('groupcall').doc(channelName).snapshots(),
         builder: (context, snapshot) {
+          if(!snapshot.hasData) return Text('loading..');
+
           String hostUID = snapshot.data?['hostUId'];
+          controller.participantsList = _getParticipantsImageList(snapshot.data!['participants'], hostUID).obs;
+          controller.currentListenerList = _getWatcherImageList(snapshot.data!['currentListener']).obs;
           return Column(
-            children: [
-              Container(
-                height: 288.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(12),
-                    bottomRight: Radius.circular(12),
-                  ),
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16.0.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 30.0.h),
-                        child: Text(
-                          '참여',
-                          style: Theme.of(context).textTheme.headline2,
-                        ),
+                children: [
+                  Container(
+                    height: 288.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
                       ),
-                      Row(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16.0.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Obx(() => _viewRows(_getParticipantsImageList(snapshot.data!['participants'], hostUID))),
+                          Padding(
+                            padding: EdgeInsets.only(top: 30.0.h),
+                            child: Text(
+                              '참여',
+                              style: Theme.of(context).textTheme.headline2,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Obx(() => _viewRows(controller.participantsList)),
+                            ],
+                          ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '관전',
-                      style: Theme.of(context).textTheme.headline2,
                     ),
-                    Row(
-                      children: <Widget>[
-                        Obx(() => _viewRows(_getWatcherImageList(snapshot.data!['currentListener']))),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '관전',
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Obx(() => _viewRows(controller.currentListenerList)),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
+                    ),
+                  ),
+                ],
+              );
         }
       ),
       bottomNavigationBar: bottomBar(context),
@@ -303,10 +329,33 @@ class GroupCallPage extends StatelessWidget {
     final List<Widget> list = [];
     List? participantsData;
 
+    var userList = FirebaseFirestore.instance.collection("users");
+
+    print('^_______________________^');
+    participants.forEach((uid) {
+      userList.where('uid', isEqualTo: uid.toString())
+          .get().then((user) => list.add(Padding(
+        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+        child: Column(
+          children: [
+            Container(
+              child: CircleAvatar(
+                radius: 35,
+                backgroundImage: AssetImage(user.docs.first.data()['profile']),
+              ),
+            ),
+            Text(user.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
+          ],
+        ),
+      )));
+    });
+    print('^_______________________^');
+
     participants.forEach((uid) {
       StreamBuilder<DocumentSnapshot<Object>>(
-          stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object>> snapshot) {
+          stream: FirebaseFirestore.instance.collection("users").doc(uid.toString()).snapshots(),
+          builder: (context, snapshot) {
+            print('!!!!!!!!!!!!!!: ${snapshot.data}');
             participantsData!.add(snapshot.data);
             bool flag = false;
             for (int i = 0; i < controller.speakingUser.length; i++) {
@@ -411,30 +460,58 @@ class GroupCallPage extends StatelessWidget {
 
   List<Widget> _getWatcherImageList(List currentListener) {
     final List<Widget> list = [];
+    var userList = FirebaseFirestore.instance.collection("users");
 
-    currentListener.forEach((uid) {
-      StreamBuilder<DocumentSnapshot<Object>>(
-          stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot<Object>> snapshot) {
-            list.add(Padding(
-              padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-              child: Column(
-                children: [
-                  Container(
-                    child: CircleAvatar(
-                      radius: 35,
-                      backgroundImage: AssetImage(snapshot.data!['profile']),
-                    ),
-                  ),
-                  Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.black),),
-                ],
+    print('^_______________________^');
+    currentListener.forEach((uid) { 
+      userList.where('uid', isEqualTo: uid.toString())
+          .get().then((user) => list.add(Padding(
+        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+        child: Column(
+          children: [
+            Container(
+              child: CircleAvatar(
+                radius: 35,
+                backgroundImage: AssetImage(user.docs.first.data()['profile']),
               ),
-            ));
-            return Container();
-          }
-      );
-    }
-    );
+            ),
+            Text(user.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
+          ],
+        ),
+      )));
+    });
+    print('^_______________________^');
+
+
+    // currentListener.forEach((uid) {
+    //   print('uuuuid: ${uid.toString()}');
+    //   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+    //       stream: FirebaseFirestore.instance.collection("users").where('uid',
+    //           isEqualTo: uid.toString())
+    //           .snapshots(),
+    //       builder: (context, snapshot) {
+    //         if(!snapshot.hasData) return Text('no');
+    //         print('!!!!!!!!!!!!!!: ${snapshot.data}');
+    //         print('????????@?????: ${snapshot.data}');
+    //         list.add(Padding(
+    //           padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //           child: Column(
+    //             children: [
+    //               Container(
+    //                 child: CircleAvatar(
+    //                   radius: 35,
+    //                   backgroundImage: AssetImage(snapshot.data!.docs.first.data()['profile']),
+    //                 ),
+    //               ),
+    //               Text(snapshot.data!.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
+    //             ],
+    //           ),
+    //         ));
+    //         return CircularProgressIndicator(color: Colors.black,);
+    //       }
+    //   );
+    // }
+    // );
     return list;
 
     // if(!controller.is_participate.value){
