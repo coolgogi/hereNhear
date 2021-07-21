@@ -234,7 +234,7 @@ class GreenChatTheme extends ChatTheme {
       height: 1.5,
     ),
     double messageBorderRadius = 20.0,
-    Color primaryColor = PrimaryColorLight,
+    Color primaryColor = SecondaryLight,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
       color: BackgroundLight,
       fontFamily: 'Avenir',
@@ -264,7 +264,7 @@ class GreenChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    Color secondaryColor = SecondaryLight,
+    Color secondaryColor = PrimaryColorLight,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
