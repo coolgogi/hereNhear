@@ -104,6 +104,7 @@ flutter:
     - assets/images/it2.jpg
     - assets/images/she2.jpeg
     - assets/messages.json
+    - assets/messages2.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
     - assets/icons/favorite_stroke.png
@@ -116,6 +117,8 @@ flutter:
     - assets/icons/notification.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
+    - assets/icons/groupBlack.png
+    - assets/icons/groupWhite.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg

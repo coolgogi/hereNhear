@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class CreateBroadcastPage extends StatefulWidget {
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<String> categoryList = ['소통', '힐링', 'ASMR','연애','음악'];
+  List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
   bool _validateError = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -32,6 +33,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   var _data;
 
   final controller = Get.put(BroadcastController());
+  final locationController = Get.put(LocationController());
 
   @override
   void dispose() {
@@ -49,7 +51,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
             Text('개인 라이브', style: Theme.of(context).appBarTheme.titleTextStyle),
@@ -131,10 +133,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-
             Row(
-              children:
-              List.generate(categoryList.length, (index) {
+              children: List.generate(categoryList.length, (index) {
                 return Center(
                   child: Container(
                     padding: EdgeInsets.all(3),
@@ -142,9 +142,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                       label: Text(
                         categoryList[index],
                       ),
-                      labelStyle:
-                      TextStyle(color: Colors.black),
-                      shape: StadiumBorder(side: BorderSide(color: Colors.grey, width: 0.5)),
+                      labelStyle: TextStyle(color: Colors.black),
+                      shape: StadiumBorder(
+                          side: BorderSide(color: Colors.grey, width: 0.5)),
                       backgroundColor: Colors.white,
                       selected: _index == index,
                       selectedColor: Colors.grey[500],
@@ -157,8 +157,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     ),
                   ),
                 );
-              }
-              ),),
+              }),
+            ),
             SizedBox(
               height: 32.0,
             ),
@@ -186,18 +186,21 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     final docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
     await controller.createBroadcastRoom(
-        user,
-        _title.text,
-        _notice.text,
-        categoryList[_index],
-        docId,
-        widget.userData,
-        List<String>.filled(0, '', growable: true));
+      user,
+      _title.text,
+      _notice.text,
+      categoryList[_index],
+      docId,
+      widget.userData,
+      List<String>.filled(0, '', growable: true),
+      locationController.location.value,
+    );
     await Get.to(
-      () => BroadCastPage(
+      () => BroadCastPage.broadcaster(
         channelName: docId,
         userName: user!.uid,
         role: ClientRole.Broadcaster,
+        userData: widget.userData,
       ),
     );
   }

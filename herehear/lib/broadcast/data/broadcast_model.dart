@@ -13,6 +13,7 @@ class BroadcastModel {
   List<String>? userProfile;
   String? hostNickname;
   List<String>? userNickname;
+  String? location;
 
   BroadcastModel({
     this.hostUid,
@@ -29,6 +30,7 @@ class BroadcastModel {
     this.userProfile,
     this.hostNickname,
     this.userNickname,
+    this.location,
   });
 
   // UserModel을 map으로 바꿔주는 함수.
@@ -48,6 +50,7 @@ class BroadcastModel {
       'hostNickName': this.hostNickname,
       'userProfile': this.userProfile,
       'userNickName': this.userNickname,
+      'location': this.location,
     };
   }
 
