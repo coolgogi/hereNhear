@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
@@ -32,6 +33,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   var _data;
 
   final controller = Get.put(BroadcastController());
+  final locationController = Get.put(LocationController());
 
   @override
   void dispose() {
@@ -49,7 +51,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
             Text('개인 라이브', style: Theme.of(context).appBarTheme.titleTextStyle),
@@ -184,13 +186,15 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     final docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
     await controller.createBroadcastRoom(
-        user,
-        _title.text,
-        _notice.text,
-        categoryList[_index],
-        docId,
-        widget.userData,
-        List<String>.filled(0, '', growable: true));
+      user,
+      _title.text,
+      _notice.text,
+      categoryList[_index],
+      docId,
+      widget.userData,
+      List<String>.filled(0, '', growable: true),
+      locationController.location.value,
+    );
     await Get.to(
       () => BroadCastPage.broadcaster(
         channelName: docId,

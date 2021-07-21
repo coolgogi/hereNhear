@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:herehear/theme/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
@@ -24,7 +25,8 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  // final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  final _user = const types.User(id: 'guest');
 
   @override
   void initState() {
@@ -220,11 +222,11 @@ class GreenChatTheme extends ChatTheme {
     ),
     Color errorColor = ERROR,
     Widget? errorIcon,
-    Color inputBackgroundColor = SECONDARY_DARK,
+    Color inputBackgroundColor = PrimaryColorLight,
     BorderRadius inputBorderRadius = const BorderRadius.vertical(
       top: Radius.circular(20),
     ),
-    Color inputTextColor = const Color(0x00ffffff),
+    Color inputTextColor = const Color(0xffffffff),
     TextStyle inputTextStyle = const TextStyle(
       fontFamily: 'Avenir',
       fontSize: 16,
@@ -232,9 +234,9 @@ class GreenChatTheme extends ChatTheme {
       height: 1.5,
     ),
     double messageBorderRadius = 20.0,
-    Color primaryColor = const Color(0x00ffffff),
+    Color primaryColor = PrimaryColorLight,
     TextStyle receivedMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: BackgroundLight,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
@@ -249,7 +251,7 @@ class GreenChatTheme extends ChatTheme {
     ),
     Color receivedMessageDocumentIconColor = const Color(0x00ffffff),
     TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: BackgroundLight,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
@@ -262,11 +264,11 @@ class GreenChatTheme extends ChatTheme {
       fontWeight: FontWeight.w800,
       height: 1.375,
     ),
-    Color secondaryColor = const Color(0x00ffffff),
+    Color secondaryColor = SecondaryLight,
     Widget? seenIcon,
     Widget? sendButtonIcon,
     TextStyle sentMessageBodyTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: BackgroundLight,
       fontFamily: 'Avenir',
       fontSize: 16,
       fontWeight: FontWeight.w500,
@@ -281,7 +283,7 @@ class GreenChatTheme extends ChatTheme {
     ),
     Color sentMessageDocumentIconColor = const Color(0x00ffffff),
     TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
-      color: NEUTRAL_7,
+      color: BackgroundLight,
       fontFamily: 'Avenir',
       fontSize: 14,
       fontWeight: FontWeight.w400,
