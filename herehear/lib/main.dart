@@ -104,7 +104,7 @@ class MyApp extends StatelessWidget {
               // initialBinding: BindingsBuilder(() {}),
               initialBinding: AppBinding(),
               title: 'Here & Hear',
-              home:  InvitationPage.withData(_data!),
+              home: InvitationPage.withData(_data!),
               //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
@@ -253,7 +253,8 @@ class LandingPage extends StatelessWidget {
               HomePage.withData(_data),
               ContestPage(),
               // SubscribedPage.withData(_data),
-              ChatPage(),
+              // ChatPage(),
+              Container(),
               searchPage.withData(_data),
               // ChatPage(),
               myPage.withData(_data),
@@ -306,6 +307,9 @@ class LandingPage extends StatelessWidget {
   }
 
   Future<void> _showMyDialog2() async {
+    print("======uid======");
+    print(_data['uid']);
+    print("===============");
     return Get.defaultDialog(
       title: '정보를 불러오고 있습니다!',
       content: SingleChildScrollView(
@@ -356,7 +360,9 @@ class LandingPage extends StatelessWidget {
                         // podcasts
                         Text('개인 라이브',
                             style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold)),
+                                fontSize: 18.sp,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold)),
                       ],
                     ),
                     onTap: () =>
@@ -382,7 +388,7 @@ class LandingPage extends StatelessWidget {
                       ],
                     ),
                     onTap: () => Get.off(() => CreateGroupCallPage()),
-                  )
+                  ),
                 ],
               ),
               SizedBox(
