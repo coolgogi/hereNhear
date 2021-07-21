@@ -253,6 +253,9 @@ class BroadCastPage extends StatelessWidget {
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            //hard coding
+            profileCard(context, '캡틴장', 'assets/gyeongsu.jpg'),
+            profileCard(context, 'coolgogi', 'assets/suhyun.jpg'),
             TextButton(
                 child: Text(
                   '확인',
