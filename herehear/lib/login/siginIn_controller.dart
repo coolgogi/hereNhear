@@ -24,7 +24,7 @@ class LoginController extends GetxController {
       assert(user!.uid == currentUser!.uid);
       update();
       print("login");
-      Get.toNamed('/myPage'); // navigate to your wanted page
+      Get.toNamed('/'); // navigate to your wanted page
       return;
     } catch (e) {
       print("error");

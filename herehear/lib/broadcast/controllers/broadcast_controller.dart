@@ -40,6 +40,7 @@ class BroadcastController extends GetxController {
         like: 0,
         channelName: docId,
         createdTime: DateTime.now(),
+        currentListener: List<String>.filled(0, '', growable: true),
         hostProfile: _data['profile'],
         userProfile: List<String>.filled(0, '', growable: true),
         hostNickname: _data['nickName'],

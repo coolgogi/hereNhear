@@ -22,10 +22,11 @@ import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 void main() => runApp(App());
 
 class App extends StatelessWidget {
+  Map<String, dynamic> _data = new Map();
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -42,9 +43,17 @@ class App extends StatelessWidget {
               builder: (value) {
                 print('위치: ${value.location.obs}');
                 return FutureBuilder(
-                    future: LocationController().getLocation(),
+                    future: LocationController()
+                        .getLocation()
+                        .whenComplete(() => getData().whenComplete(() => {
+                              print("===============Complete==============="),
+                              print(_data['uid']),
+                              print(_data['nickName']),
+                              print(_data['profile']),
+                              print("======================================"),
+                            })),
                     builder: (context, snapshot) {
-                      return MyApp();
+                      return MyApp(_data);
                     });
               });
         } else {
@@ -55,11 +64,29 @@ class App extends StatelessWidget {
       },
     );
   }
+
+  Future<void> getData() async {
+    String uid = '';
+    User? _user = FirebaseAuth.instance.currentUser;
+
+    if (_user != null)
+      uid = _user.uid;
+    else if (_user == null) uid = 'Guest';
+
+    var _data =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    this._data = _data.data()!;
+  }
 }
 
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
-  var data;
+  Map<String, dynamic>? _data;
+
+  MyApp(Map<String, dynamic> data) {
+    this._data = data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,37 +96,40 @@ class MyApp extends StatelessWidget {
         builder: (value) {
           return ScreenUtilInit(
             designSize: Size(375, 667),
-            builder: () =>
-                GetMaterialApp(
-                  theme: value.isDarkTheme.value ? dark_theme : light_theme,
-                  debugShowCheckedModeBanner: false,
-                  // GetX Controller 등록
-                  // initialBinding: BindingsBuilder(() {}),
-                  initialBinding: AppBinding(),
-                  title: 'Flutter Basic',
-                  home: LandingPage(),
-                  getPages: [
-                    GetPage(
-                      name: '/',
-                      page: () => HomePage(),
-                    ),
-                    GetPage(
-                      name: '/myPage',
-                      page: () => myPage(),
-                    ),
-                    GetPage(
-                      name: '/upload',
-                      page: () => UploadPage(),
-                    ),
-                    GetPage(
-                      name: '/login',
-                      page: () => LoginPage(),
-                    ),
-                    GetPage(
-                      name: '/notification',
-                      page: () => NotificationPage(),
-                    )
-                  ],
+            builder: () => GetMaterialApp(
+              theme: value.isDarkTheme.value ? dark_theme : light_theme,
+              debugShowCheckedModeBanner: false,
+              // GetX Controller 등록
+              // initialBinding: BindingsBuilder(() {}),
+              initialBinding: AppBinding(),
+              title: 'Here & Hear',
+              home: LandingPage.withData(_data!),
+              getPages: [
+                GetPage(
+                  name: '/',
+                  page: () => HomePage.withData(_data!),
+                ),
+                GetPage(
+                  name: '/myPage',
+                  page: () => myPage.withData(_data!),
+                ),
+                GetPage(
+                  name: '/upload',
+                  page: () => UploadPage(),
+                ),
+                GetPage(
+                  name: '/login',
+                  page: () => LoginPage(),
+                ),
+                GetPage(
+                  name: '/notification',
+                  page: () => NotificationPage(),
+                ),
+                GetPage(
+                  name: '/search',
+                  page: () => searchPage.withData(_data!),
+                )
+              ],
             ),
           );
         });
@@ -132,27 +162,13 @@ class LandingPageController extends GetxController {
 }
 
 class LandingPage extends StatelessWidget {
-  String uid = '';
-  User? _user = FirebaseAuth.instance.currentUser;
-  var _data;
-  LandingPage() {
-    if (_user != null) {
-      uid = _user!.uid;
-    } else if (_user == null) {
-      uid = 'Guest';
-    }
+  late Map<String, dynamic> _data;
+
+  LandingPage.withData(Map<String, dynamic> data) {
+    _data = data;
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserData(String uid) async {
-    DocumentSnapshot<Map<String, dynamic>> _data =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-    print("===========================");
-    print(_data.data()!['nickName']);
-    print("===========================");
-
-    return _data;
-  }
+  LandingPage();
 
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),
@@ -231,13 +247,15 @@ class LandingPage extends StatelessWidget {
             index: landingPageController.tabIndex.value,
             children: [
               // InfiniteScrollView(),
-              HomePage(),
-              ContestPage(),
               // Subscribed22Page(),
+              HomePage.withData(_data),
+              ContestPage(),
+              searchPage.withData(_data),
+              // SubscribedPage.withData(_data),
               ChatPage(),
               searchPage(),
               // ChatPage(),
-              myPage(),
+              myPage.withData(_data),
             ],
           )),
       floatingActionButtonLocation: CustomFloatingActionButtonLocation(
@@ -249,21 +267,46 @@ class LandingPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
         ),
         child: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          elevation: 0.0,
-          shape:
-              CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-              child: Image.asset('assets/icons/mic_fill.png', height: 32.h,),
-              onPressed: () => _user == null ? _showMyDialog() : showCreateOption(context),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            elevation: 0.0,
+            shape: CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2.5.w)),
+            child: Image.asset(
+              'assets/icons/mic_fill.png',
+              height: 32.h,
             ),
-          ),
-        ));
-
+            onPressed: () => {
+                  _data['uid'] == null
+                      ? _showMyDialog2()
+                      : _data['uid'] != 'guest'
+                          ? showCreateOption(context)
+                          : _showMyDialog(),
+                }),
+      ),
+    ));
   }
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
       title: '로그인이 필요합니다!',
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TextButton(
+                child: Text(
+                  '확인',
+                  style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+                ),
+                onPressed: () => Get.back()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showMyDialog2() async {
+    return Get.defaultDialog(
+      title: '정보를 불러오고 있습니다!',
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -285,7 +328,6 @@ class LandingPage extends StatelessWidget {
   }
 
   Future<dynamic> showCreateOption(BuildContext context) async {
-    DocumentSnapshot<Map<String, dynamic>> _data = await getUserData(uid);
     return showModalBottomSheet(
         context: context,
         builder: (context) {
