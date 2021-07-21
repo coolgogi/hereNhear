@@ -7,6 +7,7 @@ import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'invitation.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   late Map<String, dynamic> userData;
@@ -31,6 +32,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   var _data;
+  bool _value = false;
 
   final controller = Get.put(BroadcastController());
   final locationController = Get.put(LocationController());
@@ -171,9 +173,114 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 child: Text('방만들기'),
               ),
             ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 32.0,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      invitationDialog(context);
+                    },
+                    child: Text('친구 초대'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> invitationDialog(BuildContext context) {
+    List<bool> isChecked = List.filled(5, false);
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("친구 초대"),
+          content: Column(
+            children: [
+              Row(
+                children: [
+                  Text('김한동'),
+                  Checkbox(
+                    value: isChecked[0],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked[0] = value!;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text('박한동'),
+                  Checkbox(
+                    value: isChecked[1],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked[1] = value!;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text('최한동'),
+                  Checkbox(
+                    value: isChecked[2],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked[2] = value!;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text('이한동'),
+                  Checkbox(
+                    value: isChecked[3],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked[3] = value!;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text('한동이'),
+                  Checkbox(
+                    value: isChecked[4],
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked[4] = value!;
+                      });
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
+          actions: <Widget>[
+            new TextButton(
+              child: Text("보내기"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
