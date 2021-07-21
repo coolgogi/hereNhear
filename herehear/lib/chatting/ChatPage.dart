@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:herehear/theme/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
@@ -11,15 +13,20 @@ import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  ChatPage({Key? key}) : super(key: key);
 
+  late final Map<String, dynamic> _data;
+  ChatPage.withData(Map<String, dynamic> data) {
+    _data = data;
+  }
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-  final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  // final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  final _user = const types.User(id: 'guest');
 
   @override
   void initState() {
@@ -87,7 +94,7 @@ class _ChatPageState extends State<ChatPage> {
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         name: result.files.single.name,
-        id: const Uuid().v4(),
+        id: Uuid().v4(),
         mimeType: lookupMimeType(result.files.single.path ?? ''),
         size: result.files.single.size,
         uri: result.files.single.path ?? '',
@@ -115,7 +122,7 @@ class _ChatPageState extends State<ChatPage> {
         author: _user,
         createdAt: DateTime.now().millisecondsSinceEpoch,
         height: image.height.toDouble(),
-        id: const Uuid().v4(),
+        id: Uuid().v4(),
         name: name,
         size: bytes.length,
         uri: result.path,
@@ -152,7 +159,7 @@ class _ChatPageState extends State<ChatPage> {
     final textMessage = types.TextMessage(
       author: _user,
       createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
+      id: Uuid().v4(),
       text: message.text,
     );
 
@@ -161,6 +168,8 @@ class _ChatPageState extends State<ChatPage> {
 
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
+    // FirebaseFirestore.instance.collection('broadcast').doc()
+
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -180,7 +189,159 @@ class _ChatPageState extends State<ChatPage> {
         onPreviewDataFetched: _handlePreviewDataFetched,
         onSendPressed: _handleSendPressed,
         user: _user,
+        theme: GreenChatTheme(),
+        // theme :
       ),
     );
   }
+}
+
+@immutable
+class GreenChatTheme extends ChatTheme {
+  /// Creates a dark chat theme. Use this constructor if you want to
+  /// override only a couple of variables, otherwise create a new class
+  /// which extends [ChatTheme]
+  const GreenChatTheme({
+    Widget? attachmentButtonIcon,
+    Color backgroundColor = const Color(0xff000000),
+    TextStyle dateDividerTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w800,
+      height: 1.333,
+    ),
+    Widget? deliveredIcon,
+    Widget? documentIcon,
+    TextStyle emptyChatPlaceholderTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.5,
+    ),
+    Color errorColor = ERROR,
+    Widget? errorIcon,
+    Color inputBackgroundColor = PrimaryColorLight,
+    BorderRadius inputBorderRadius = const BorderRadius.vertical(
+      top: Radius.circular(20),
+    ),
+    Color inputTextColor = const Color(0xffffffff),
+    TextStyle inputTextStyle = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.5,
+    ),
+    double messageBorderRadius = 20.0,
+    Color primaryColor = PrimaryColorLight,
+    TextStyle receivedMessageBodyTextStyle = const TextStyle(
+      color: BackgroundLight,
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.5,
+    ),
+    TextStyle receivedMessageCaptionTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 1.333,
+    ),
+    Color receivedMessageDocumentIconColor = const Color(0x00ffffff),
+    TextStyle receivedMessageLinkDescriptionTextStyle = const TextStyle(
+      color: BackgroundLight,
+      fontFamily: 'Avenir',
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 1.428,
+    ),
+    TextStyle receivedMessageLinkTitleTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.375,
+    ),
+    Color secondaryColor = SecondaryLight,
+    Widget? seenIcon,
+    Widget? sendButtonIcon,
+    TextStyle sentMessageBodyTextStyle = const TextStyle(
+      color: BackgroundLight,
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      height: 1.5,
+    ),
+    TextStyle sentMessageCaptionTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      height: 1.333,
+    ),
+    Color sentMessageDocumentIconColor = const Color(0x00ffffff),
+    TextStyle sentMessageLinkDescriptionTextStyle = const TextStyle(
+      color: BackgroundLight,
+      fontFamily: 'Avenir',
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 1.428,
+    ),
+    TextStyle sentMessageLinkTitleTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 16,
+      fontWeight: FontWeight.w800,
+      height: 1.375,
+    ),
+    List<Color> userAvatarNameColors = COLORS,
+    TextStyle userAvatarTextStyle = const TextStyle(
+      color: Color(0x00ffffff),
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w800,
+      height: 1.333,
+    ),
+    TextStyle userNameTextStyle = const TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: 12,
+      fontWeight: FontWeight.w800,
+      height: 1.333,
+    ),
+  }) : super(
+          attachmentButtonIcon: attachmentButtonIcon,
+          backgroundColor: backgroundColor,
+          dateDividerTextStyle: dateDividerTextStyle,
+          deliveredIcon: deliveredIcon,
+          documentIcon: documentIcon,
+          emptyChatPlaceholderTextStyle: emptyChatPlaceholderTextStyle,
+          errorColor: errorColor,
+          errorIcon: errorIcon,
+          inputBackgroundColor: inputBackgroundColor,
+          inputBorderRadius: inputBorderRadius,
+          inputTextColor: inputTextColor,
+          inputTextStyle: inputTextStyle,
+          messageBorderRadius: messageBorderRadius,
+          primaryColor: primaryColor,
+          receivedMessageBodyTextStyle: receivedMessageBodyTextStyle,
+          receivedMessageCaptionTextStyle: receivedMessageCaptionTextStyle,
+          receivedMessageDocumentIconColor: receivedMessageDocumentIconColor,
+          receivedMessageLinkDescriptionTextStyle:
+              receivedMessageLinkDescriptionTextStyle,
+          receivedMessageLinkTitleTextStyle: receivedMessageLinkTitleTextStyle,
+          secondaryColor: secondaryColor,
+          seenIcon: seenIcon,
+          sendButtonIcon: sendButtonIcon,
+          sentMessageBodyTextStyle: sentMessageBodyTextStyle,
+          sentMessageCaptionTextStyle: sentMessageCaptionTextStyle,
+          sentMessageDocumentIconColor: sentMessageDocumentIconColor,
+          sentMessageLinkDescriptionTextStyle:
+              sentMessageLinkDescriptionTextStyle,
+          sentMessageLinkTitleTextStyle: sentMessageLinkTitleTextStyle,
+          userAvatarNameColors: userAvatarNameColors,
+          userAvatarTextStyle: userAvatarTextStyle,
+          userNameTextStyle: userNameTextStyle,
+        );
 }

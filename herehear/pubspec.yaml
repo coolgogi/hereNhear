@@ -57,6 +57,16 @@ dependencies:
   flutter_pagewise: ^2.0.1
   sms_autofill: ^2.0.0
   badges: ^2.0.1
+  just_audio: ^0.9.2
+
+
+
+
+
+
+
+
+
 #  audioplayers: ^0.18.2
 #  assets_audio_player: ^3.0.2
 #  just_audio: ^0.9.2
@@ -94,6 +104,7 @@ flutter:
     - assets/images/it2.jpg
     - assets/images/she2.jpeg
     - assets/messages.json
+    - assets/messages2.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
     - assets/icons/favorite_stroke.png
@@ -106,6 +117,8 @@ flutter:
     - assets/icons/notification.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
+    - assets/icons/groupBlack.png
+    - assets/icons/groupWhite.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg

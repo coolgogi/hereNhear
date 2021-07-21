@@ -8,11 +8,12 @@ class BroadcastModel {
   int? like;
   String? channelName;
   DateTime? createdTime;
-  List<dynamic>? currentListener;
+  List<String>? currentListener;
   String? hostProfile;
   List<String>? userProfile;
   String? hostNickname;
   List<String>? userNickname;
+  String? location;
 
   BroadcastModel({
     this.hostUid,
@@ -29,6 +30,7 @@ class BroadcastModel {
     this.userProfile,
     this.hostNickname,
     this.userNickname,
+    this.location,
   });
 
   // UserModel을 map으로 바꿔주는 함수.
@@ -43,11 +45,12 @@ class BroadcastModel {
       'like': this.like,
       'channelName': this.channelName,
       'createdTime': this.createdTime,
-      'currentListener': currentListener,
+      'currentListener': this.currentListener,
       'hostProfile': this.hostProfile,
       'hostNickName': this.hostNickname,
       'userProfile': this.userProfile,
       'userNickName': this.userNickname,
+      'location': this.location,
     };
   }
 

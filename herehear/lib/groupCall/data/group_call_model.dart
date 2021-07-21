@@ -5,6 +5,7 @@ class GroupCallModel {
   String? channelName;
   String? docId;
   String? image;
+  String? location;
   DateTime? createdTime;
   List<dynamic>? currentListener;
   List<dynamic>? participants;
@@ -16,6 +17,7 @@ class GroupCallModel {
     this.channelName,
     this.docId,
     this.image,
+    this.location,
     this.createdTime,
     this.currentListener,
     this.participants,
@@ -29,6 +31,7 @@ class GroupCallModel {
       'channelName': this.channelName,
       'docId': this.docId,
       'image' : this.image,
+      'location' : this.location,
       'createTIme' : this.createdTime,
       'currentListener': this.currentListener,
       'participants' : this.participants,

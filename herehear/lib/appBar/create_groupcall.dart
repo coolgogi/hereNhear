@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/groupCall/controllers/group_call_controller.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
@@ -17,126 +18,176 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final _title = TextEditingController();
   final _notice = TextEditingController();
-  String? _docId ;
+  String? _docId;
+  String? _selectedTime;
+
+  DateTime selectedDate = DateTime.now();
   bool _validateError = false;
   final controller = Get.put(GroupCallController());
+  final controller2 = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        centerTitle: true,
-        title: Text('Agora Group Video Calling'),
-        elevation: 0,
+        title:
+            Text('그룹 대화', style: Theme.of(context).appBarTheme.titleTextStyle),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => {
+            Get.back(),
+          },
+        ),
       ),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            physics: BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // Container(
-                //   child: Image.asset('assets/agora-logo.png'),
-                //   height: MediaQuery.of(context).size.height * 0.1,
-                // ),
-                Padding(padding: EdgeInsets.only(top: 20)),
-                Text(
-                  'Agora Group Video Call Demo',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 20)),
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: _textFieldCustom(_title,'방 제목' , '제목 힌트', '텍스트 에러'),
-                ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 20)),
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: _textFieldCustom(_notice,'방 공지' , '공지 힌트', '텍스트 에러'),
-                ),
-                Padding(padding: EdgeInsets.symmetric(vertical: 30)),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.25,
-                  child: MaterialButton(
-                    onPressed: onJoin,
-                    height: 40,
-                    color: Colors.blueAccent,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Join',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
+      body: Container(
+        padding: EdgeInsets.all(20),
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '방 예약하기',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
-          ),
+            Container(
+                padding: EdgeInsets.only(bottom: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                    child: Icon(Icons.calendar_today, size: 30))),
+            Container(
+                padding: EdgeInsets.only(bottom: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      Future<TimeOfDay?> selectedTime = showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
+                      selectedTime.then((timeOfDay) {
+                        setState(() {
+                          _selectedTime =
+                              '${timeOfDay!.hour}: ${timeOfDay.minute}';
+                        });
+                      });
+                    },
+                    child: Icon(Icons.access_time, size: 30))),
+            SizedBox(
+              height: 16.0,
+            ),
+
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '제목',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            TextFormField(
+              controller: _title,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return '제목을 입력해주세요.';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
+                hintText: '제목을 입력해주세요(15자 이내)',
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '공지사항',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 0.7,
+                ),
+              ),
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.newline,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: _notice,
+                textAlign: TextAlign.left,
+                decoration: InputDecoration(
+                  hintText: '공지를 입력해주세요(100자 이내)',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 32.0,
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    onJoin();
+                  },
+                  child: Text('방만들기'),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _textFieldCustom(TextEditingController controller, String title, String hint, String? errorText){
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: title,
-        labelStyle: TextStyle(color: Colors.blue),
-        hintText: hint,
-        hintStyle: TextStyle(color: Colors.black45),
-        errorText:
-        _validateError ? errorText : null,
-        border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.blue),
-          borderRadius: BorderRadius.circular(20),
-        ),
-      ),
-    );
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
   }
 
   Future<void> onJoin() async {
     setState(() {
-      _title.text.isEmpty
-          ? _validateError = true
-          : _validateError = false;
-
+      _title.text.isEmpty ? _validateError = true : _validateError = false;
     });
     // await _handleCameraAndMic(Permission.camera);
     await Permission.microphone.request();
     // await _handleCameraAndMic(Permission.microphone);
 
-    _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
-    // await FirebaseFirestore.instance
+    _docId =
+        (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId, controller2.location.value);
+    // FirebaseFirestore.instance
+    //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
+    // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
+    // controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
+    // // await FirebaseFirestore.instance
     //     .collection("groupcall")
     //     .doc('_docId')
     //     .update({"participants": FieldValue.arrayUnion([user!.uid])});
+
     Get.to(() => GroupCallPage(), arguments: _docId);
   }
 
