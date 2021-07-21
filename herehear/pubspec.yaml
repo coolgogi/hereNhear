@@ -57,6 +57,19 @@ dependencies:
   flutter_pagewise: ^2.0.1
   sms_autofill: ^2.0.0
   badges: ^2.0.1
+  just_audio: ^0.9.2
+
+
+
+
+
+
+
+
+
+#  audioplayers: ^0.18.2
+#  assets_audio_player: ^3.0.2
+#  just_audio: ^0.9.2
 
 
 
@@ -84,6 +97,12 @@ flutter:
     - assets/gyeongsu.jpg
     - assets/images/me.jpg
     - assets/images/you.png
+    - assets/images/he.jpg
+    - assets/images/she.jpg
+    - assets/images/it.jpg
+    - assets/images/you2.jpg
+    - assets/images/it2.jpg
+    - assets/images/she2.jpeg
     - assets/messages.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
@@ -107,6 +126,18 @@ flutter:
     - assets/images/dog.jpg
     - assets/images/hamster.jpg
     - assets/images/HGU.jpg
+    - assets/images/goldCrown.png
+    - assets/images/silverCrown.png
+    - assets/images/bronzeCrown.png
+    - assets/images/playButton.png
+    - assets/images/playButton2.png
+    - assets/images/playButton3.png
+    - assets/images/stopButton.png
+    - assets/audio/girlVoice.mp3
+    - assets/audio/vj.mp3
+    - assets/audio/loveRain.mp3
+    - assets/audio/yuan.mp3
+    - assets/audio/politician.mp3
 
 
 
