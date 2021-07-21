@@ -8,7 +8,7 @@ class BroadcastModel {
   int? like;
   String? channelName;
   DateTime? createdTime;
-  List<dynamic>? currentListener;
+  List<String>? currentListener;
   String? hostProfile;
   List<String>? userProfile;
   String? hostNickname;
@@ -43,7 +43,7 @@ class BroadcastModel {
       'like': this.like,
       'channelName': this.channelName,
       'createdTime': this.createdTime,
-      'currentListener': currentListener,
+      'currentListener': this.currentListener,
       'hostProfile': this.hostProfile,
       'hostNickName': this.hostNickname,
       'userProfile': this.userProfile,
