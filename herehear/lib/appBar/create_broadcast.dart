@@ -23,7 +23,7 @@ class CreateBroadcastPage extends StatefulWidget {
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', 'ASMR','연애','음악','잡담'];
-  int _index = 0;
+  int _index = -1;
   bool _validateError = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClientRole _role = ClientRole.Broadcaster;
@@ -165,7 +165,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  print('만들기~~~~~~~~~~');
+                  onJoin();
                 },
                 child: Text('방만들기'),
               ),
