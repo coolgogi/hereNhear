@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:just_audio/just_audio.dart';
+
 // import 'package:audioplayers/audioplayers.dart';
 // import 'package:assets_audio_player/assets_audio_player.dart';
 // import 'package:just_audio/just_audio.dart';
@@ -49,7 +51,7 @@ class StopoController extends GetxController {
 
 class EvaluationPage extends StatelessWidget {
   final controller = Get.put(StopoController());
-
+  final player = AudioPlayer();
   // AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
   String audioPath = "assets/audio/vj.mp3";
 
@@ -94,7 +96,7 @@ class EvaluationPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 40.0.h, bottom: 60.0.h),
-              child: Text('까마귀 우는 소리', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
+              child: Text('한화 이글스를 찾아간 VJ특공대', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 60.0.h),
@@ -113,6 +115,8 @@ class EvaluationPage extends StatelessWidget {
                   GestureDetector(
                       onTap: (() async {
                         controller.toggleStopFlag();
+                        await player.setAsset('assets/audio/vj.mp3');
+                        player.play();
                         // controller.stopFlag.value == false ? controller.audioPlayer.play()
                         //     : controller.audioPlayer.pause();
                         // controller.stopFlag.value == false? player.play(audioPath)

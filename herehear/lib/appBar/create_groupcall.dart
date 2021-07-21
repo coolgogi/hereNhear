@@ -17,16 +17,20 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   User? user = FirebaseAuth.instance.currentUser;
   final _title = TextEditingController();
   final _notice = TextEditingController();
-  String? _docId ;
+  String? _docId;
+  String? _selectedTime;
+
+  DateTime selectedDate = DateTime.now();
   bool _validateError = false;
   final controller = Get.put(GroupCallController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
-        Text('그룹 대화', style: Theme.of(context).appBarTheme.titleTextStyle),
+            Text('그룹 대화', style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
@@ -40,6 +44,38 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '방 예약하기',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.only(bottom: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      _selectDate(context);
+                    },
+                    child: Icon(Icons.calendar_today, size: 30))),
+            Container(
+                padding: EdgeInsets.only(bottom: 10),
+                child: GestureDetector(
+                    onTap: () {
+                      Future<TimeOfDay?> selectedTime = showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
+                      selectedTime.then((timeOfDay) {
+                        setState(() {
+                          _selectedTime =
+                              '${timeOfDay!.hour}: ${timeOfDay.minute}';
+                        });
+                      });
+                    },
+                    child: Icon(Icons.access_time, size: 30))),
+            SizedBox(
+              height: 16.0,
+            ),
+
             Container(
               padding: EdgeInsets.only(bottom: 10),
               child: Text(
@@ -60,6 +96,9 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
                 hintText: '제목을 입력해주세요(15자 이내)',
               ),
+            ),
+            SizedBox(
+              height: 16.0,
             ),
             SizedBox(
               height: 16.0,
@@ -94,7 +133,6 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
               ),
             ),
-
             SizedBox(
               height: 32.0,
             ),
@@ -116,24 +154,38 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     );
   }
 
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
 
   Future<void> onJoin() async {
     setState(() {
-      _title.text.isEmpty
-          ? _validateError = true
-          : _validateError = false;
-
+      _title.text.isEmpty ? _validateError = true : _validateError = false;
     });
     // await _handleCameraAndMic(Permission.camera);
     await Permission.microphone.request();
     // await _handleCameraAndMic(Permission.microphone);
 
-    _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
-    // await FirebaseFirestore.instance
+    _docId =
+        (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId);
+    // FirebaseFirestore.instance
+    //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
+    // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
+    // controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
+    // // await FirebaseFirestore.instance
     //     .collection("groupcall")
     //     .doc('_docId')
     //     .update({"participants": FieldValue.arrayUnion([user!.uid])});
+
     Get.to(() => GroupCallPage(), arguments: _docId);
   }
 

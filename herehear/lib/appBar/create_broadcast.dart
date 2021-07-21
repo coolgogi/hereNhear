@@ -49,6 +49,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
         title:
             Text('개인 라이브', style: Theme.of(context).appBarTheme.titleTextStyle),
