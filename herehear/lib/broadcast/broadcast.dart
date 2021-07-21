@@ -120,7 +120,9 @@ class AgoraEventController extends GetxController {
 
 class BroadCastPage extends StatelessWidget {
   static final _users = <int>[];
-  final _broadcaster = <String>[];
+
+  String nickName_broadcaster = '';
+  String profile_broadcaster = '';
 
   final nickName_audience = <String>[];
   final profile_audience = <String>[];
@@ -134,14 +136,12 @@ class BroadCastPage extends StatelessWidget {
   late RtcEngine _engine;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
-  // late Map<String, dynamic> dbData = new Map<String, dynamic>().obs;
+
+  late Map<String, dynamic> dbData = new Map();
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
     controller = Get.put(AgoraEventController(channelName, role));
-    if (role == ClientRole.Broadcaster) {
-      // _broadcaster.add()
-    } else if (role == ClientRole.Audience) {}
     setHostuid();
   }
 
@@ -151,11 +151,19 @@ class BroadCastPage extends StatelessWidget {
         .doc(channelName)
         .get();
 
-    // dbData = temp.data()!;
-    host_uid = temp.data()!['hostUid'];
-    print("=========host_uid=========");
-    print(host_uid);
-    print("=========host_uid=========");
+    dbData = temp.data()!;
+    host_uid = dbData['hostUid'];
+    nickName_broadcaster = dbData['hostNickName'];
+    profile_broadcaster = dbData['hostProfile'];
+
+    if (role == ClientRole.Broadcaster) {
+      // profile_broadcaster =
+      // nickName_broadcaster =
+
+    } else if (role == ClientRole.Audience) {
+      // profile_audience.add();
+      // nickName_audience.add();
+    }
   }
 
   /// Toolbar layout
@@ -273,18 +281,22 @@ class BroadCastPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(
+                  'Host',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
                 Container(
-                  width: 125.0.w,
-                  height: 125.0.h,
+                  width: 35.0.w,
+                  height: 35.0.h,
                   child: Card(
                     margin: EdgeInsets.only(left: 0.0.w),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         SizedBox(
-                          width: 120,
-                          height: 120,
-                          child: Image.asset('assets/suhyun.jpg'),
+                          width: 30,
+                          height: 30,
+                          child: Image.asset(profile_broadcaster),
                         ),
                       ],
                     ),
@@ -292,25 +304,10 @@ class BroadCastPage extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 Text(
-                  'hello',
+                  nickName_broadcaster,
                   style: Theme.of(context).textTheme.subtitle1,
                 ),
                 SizedBox(height: 4.h),
-                Row(
-                  children: <Widget>[
-                    Icon(
-                      Icons.people,
-                      size: 14.w,
-                    ),
-                    Text('hello2'),
-                    SizedBox(width: 8.sp),
-                    Icon(
-                      Icons.favorite,
-                      size: 12.w,
-                    ),
-                    Text('hello3'),
-                  ],
-                )
               ],
             ),
             // Text(
