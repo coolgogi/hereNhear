@@ -53,7 +53,7 @@ class AgoraEventController extends GetxController {
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine.joinChannel(null, GroupCallPage().channelName, null, 0);
+    await _engine.joinChannel(null, GroupCallPage2().channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -130,13 +130,13 @@ class AgoraEventController extends GetxController {
   }
 }
 
-class GroupCallPage extends StatefulWidget {
+class GroupCallPage2 extends StatefulWidget {
   final String channelName = Get.arguments;
   @override
-  _GroupCallPageState createState() => _GroupCallPageState();
+  _GroupCallPage2State createState() => _GroupCallPage2State();
 }
 
-class _GroupCallPageState extends State<GroupCallPage> {
+class _GroupCallPage2State extends State<GroupCallPage2> {
   final String channelName = Get.arguments;
 
   bool already_join = false;
@@ -257,7 +257,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
           child: Container(
             child: CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage('assets/images/hamster.jpg'),
+              backgroundImage: AssetImage('assets/images/me.jpg'),
             ),
           ),
         ),

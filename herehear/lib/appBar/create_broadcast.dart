@@ -55,8 +55,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        centerTitle: true,
         title:
-            Text('개인 라이브', style: Theme.of(context).appBarTheme.titleTextStyle),
+            Text('새 라이브 방송', style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
