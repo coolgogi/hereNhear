@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/create_broadcast.dart';
-import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcast.dart';
@@ -19,15 +17,14 @@ class HomePage extends StatelessWidget {
   String current_uid = '';
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  HomePage() {
-    if (FirebaseAuth.instance.currentUser != null) {
-      current_uid = FirebaseAuth.instance.currentUser!.uid;
-    } else {
-      current_uid = '';
-    }
+  late Map<String, dynamic> _data;
+  HomePage.withData(Map<String, dynamic> data) {
+    _data = data;
+    print(_data['nickName']);
+    print(_data['uid']);
+    print(_data['profile']);
   }
-
+  HomePage();
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
@@ -37,29 +34,26 @@ class HomePage extends StatelessWidget {
               title: Text('HERE & HEAR',
                   style: Theme.of(context).appBarTheme.titleTextStyle),
               actions: <Widget>[
-                // IconButton(
-                //     onPressed: _showMyDialog,
-                //     color: Colors.amber,
-                //     icon: Icon(Icons.add_circle)),
-               controller.count > 0 ?
-                Badge(
-                  badgeContent: Text(controller.count.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 11)),
-                  position: BadgePosition.topEnd(top: 0, end: 5),
-                  child: IconButton(
-                    onPressed: () => Get.to(() => NotificationPage()),
-                    color: Colors.black87,
-                    icon: Image.asset('assets/icons/notification.png'),
-                    iconSize: 20.w,
-                  ),
-                )
-                : IconButton(
-                 onPressed: () => Get.to(() => NotificationPage()),
-                 // => Get.off(() => Notification()),
-                 color: Colors.black87,
-                 icon: Image.asset('assets/icons/notification.png'),
-                 iconSize: 20.w,
-               ),
+                controller.count > 0
+                    ? Badge(
+                        badgeContent: Text(controller.count.toString(),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 11)),
+                        position: BadgePosition.topEnd(top: 0, end: 5),
+                        child: IconButton(
+                          onPressed: () => Get.to(() => NotificationPage()),
+                          color: Colors.black87,
+                          icon: Image.asset('assets/icons/notification.png'),
+                          iconSize: 20.w,
+                        ),
+                      )
+                    : IconButton(
+                        onPressed: () => Get.to(() => NotificationPage()),
+                        // => Get.off(() => Notification()),
+                        color: Colors.black87,
+                        icon: Image.asset('assets/icons/notification.png'),
+                        iconSize: 20.w,
+                      ),
                 Padding(
                   padding: EdgeInsets.only(right: 8.0.w),
                   child: IconButton(
@@ -238,54 +232,28 @@ class HomePage extends StatelessWidget {
   Future<void> refreshList() async {
     refreshKey.currentState?.show(atTop: false);
     await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
-    await controller.getLocation().obs;
+    controller.getLocation().obs;
   }
 
-  Future<void> _showMyDialog() async {
-    return Get.defaultDialog(
-      title: '소리 시작하기',
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TextButton(
-              child: Text(
-                '개인 라이브',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateBroadcastPage()),
-            ),
-            TextButton(
-              child: Text(
-                '그룹 대화',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateGroupCallPage()),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          CreateBroadcastPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
+  // Route _createRoute() {
+  //   return PageRouteBuilder(
+  //     pageBuilder: (context, animation, secondaryAnimation) =>
+  //         CreateBroadcastPage(),
+  //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  //       var begin = Offset(0.0, 1.0);
+  //       var end = Offset.zero;
+  //       var curve = Curves.ease;
+  //
+  //       var tween =
+  //           Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  //
+  //       return SlideTransition(
+  //         position: animation.drive(tween),
+  //         child: child,
+  //       );
+  //     },
+  //   );
+  // }
 
   List<Widget> broadcastRoomList(
       BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
@@ -294,8 +262,11 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.only(right: 12.0.w),
         child: InkWell(
           onTap: () {
+            print("===============hello===============");
             firestore.collection('broadcast').doc(room['docId']).update({
-              'currentListener': FieldValue.arrayUnion([auth.currentUser!.uid])
+              'currentListener': FieldValue.arrayUnion(_data['uid']),
+              'userNickName': FieldValue.arrayUnion(_data['nickName']),
+              'userProfile': FieldValue.arrayUnion([_data['profile']]),
             });
             Get.to(
               () => BroadCastPage(

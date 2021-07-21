@@ -124,8 +124,8 @@ class BroadCastPage extends StatelessWidget {
   String nickName_broadcaster = '';
   String profile_broadcaster = '';
 
-  final nickName_audience = <String>[];
-  final profile_audience = <String>[];
+  late List<dynamic> nickName_audience;
+  late List<dynamic> profile_audience;
   final Map<int, String> _allUsers = {};
   // final String channelName = Get.arguments;
   final String channelName;
@@ -155,6 +155,8 @@ class BroadCastPage extends StatelessWidget {
     host_uid = dbData['hostUid'];
     nickName_broadcaster = dbData['hostNickName'];
     profile_broadcaster = dbData['hostProfile'];
+    nickName_audience = dbData['userNickName'];
+    profile_audience = dbData['userProfile'];
 
     if (role == ClientRole.Broadcaster) {
       // profile_broadcaster =
@@ -310,27 +312,6 @@ class BroadCastPage extends StatelessWidget {
                 SizedBox(height: 4.h),
               ],
             ),
-            // Text(
-            //   'Host\nMy : $host_uid',
-            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            // ),
-          ),
-          Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              width: double.infinity,
-              child: ListView.builder(
-                itemCount: _users.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return _allUsers.containsKey(_users[index])
-                      ? UserView(
-                          userName: _allUsers[_users[index]]!,
-                          role: ClientRole.Broadcaster,
-                        )
-                      : Container();
-                },
-              )),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
           ),
           Padding(
             padding: const EdgeInsets.all(12),

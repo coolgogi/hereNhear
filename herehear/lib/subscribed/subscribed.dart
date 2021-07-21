@@ -12,12 +12,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
 
 class SubscribedPage extends StatelessWidget {
-
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  late Map<String, dynamic> _data;
+  SubscribedPage.withData(Map<String, dynamic> data) {
+    _data = data;
+    print("====================");
+    print(_data['nickName'].toString());
+    print(_data['uid'].toString());
+    print(_data['profile'].toString());
+    print("====================");
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +32,7 @@ class SubscribedPage extends StatelessWidget {
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
           title:
-          Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
+              Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
           actions: <Widget>[
             // IconButton(
             //     onPressed: _showMyDialog,
@@ -106,13 +113,12 @@ class SubscribedPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
+              padding:
+                  EdgeInsets.only(left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
               child: Container(
                 height: 173.0.h,
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: firestore
-                      .collection("broadcast")
-                      .snapshots(),
+                  stream: firestore.collection("broadcast").snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData)
@@ -159,7 +165,8 @@ class SubscribedPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
+              padding:
+                  EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
               child: Container(
                 height: 27.0.h,
                 child: ListView(
@@ -178,7 +185,8 @@ class SubscribedPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Theme.of(context).colorScheme.primary),
                               shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14.r),
                                 // side: BorderSide(color: Colors.red),
                               ))),
@@ -198,9 +206,7 @@ class SubscribedPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 5.h),
               child: StreamBuilder<QuerySnapshot>(
-                  stream: firestore
-                      .collection("groupcall")
-                      .snapshots(),
+                  stream: firestore.collection("groupcall").snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData)
@@ -230,7 +236,6 @@ class SubscribedPage extends StatelessWidget {
     );
   }
 
-
   Future<void> refreshList() async {
     refreshKey.currentState?.show(atTop: false);
     await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
@@ -239,32 +244,31 @@ class SubscribedPage extends StatelessWidget {
     //////////////////////////////////////////////////////////////////////////////////
   }
 
-
-  Future<void> _showMyDialog() async {
-    return Get.defaultDialog(
-      title: '소리 시작하기',
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TextButton(
-              child: Text(
-                '개인 라이브',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateBroadcastPage()),
-            ),
-            TextButton(
-              child: Text(
-                '그룹 대화',
-                style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-              ),
-              onPressed: () => Get.off(() => CreateGroupCallPage()),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Future<void> _showMyDialog() async {
+  //   return Get.defaultDialog(
+  //     title: '소리 시작하기',
+  //     content: SingleChildScrollView(
+  //       child: Column(
+  //         children: <Widget>[
+  //           TextButton(
+  //             child: Text(
+  //               '개인 라이브',
+  //               style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+  //             ),
+  //             onPressed: () => Get.off(() => CreateBroadcastPage()),
+  //           ),
+  //           TextButton(
+  //             child: Text(
+  //               '그룹 대화',
+  //               style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+  //             ),
+  //             onPressed: () => Get.off(() => CreateGroupCallPage()),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Route _createRoute() {
     return PageRouteBuilder(
@@ -276,7 +280,7 @@ class SubscribedPage extends StatelessWidget {
         var curve = Curves.ease;
 
         var tween =
-        Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
         return SlideTransition(
           position: animation.drive(tween),
@@ -293,14 +297,14 @@ class SubscribedPage extends StatelessWidget {
         padding: EdgeInsets.only(right: 12.0.w),
         child: InkWell(
           onTap: () {
-
-            firestore
-                .collection('broadcast')
-                .doc(room['docId'])
-                .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
+            firestore.collection('broadcast').doc(room['docId']).update({
+              'currentListener': FieldValue.arrayUnion([_data['uid']]),
+              'userNickName': FieldValue.arrayUnion([_data['nickName']]),
+              'userProfile': FieldValue.arrayUnion([_data['profile']]),
+            });
 
             Get.to(
-                  () => BroadCastPage(
+              () => BroadCastPage(
                 channelName: room['channelName'],
                 userName: '',
                 role: ClientRole.Audience,
@@ -370,10 +374,10 @@ class SubscribedPage extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
               onTap: () {
-                firestore
-                    .collection('groupcall')
-                    .doc(room['docId'])
-                    .update({'currentListener':FieldValue.arrayUnion([auth.currentUser!.uid])});
+                firestore.collection('groupcall').doc(room['docId']).update({
+                  'currentListener':
+                      FieldValue.arrayUnion([auth.currentUser!.uid])
+                });
                 Get.to(() => GroupCallPage(), arguments: room['channelName']);
               },
               child: Row(

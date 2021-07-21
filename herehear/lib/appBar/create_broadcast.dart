@@ -10,11 +10,8 @@ import 'package:permission_handler/permission_handler.dart';
 class CreateBroadcastPage extends StatefulWidget {
   late Map<String, dynamic> userData;
 
-  CreateBroadcastPage.withData(DocumentSnapshot<Map<String, dynamic>> uData) {
-    this.userData = uData.data()!;
-    // print("==========page=========");
-    // print(userData['profile']);
-    // print("==========page=========");
+  CreateBroadcastPage.withData(Map<String, dynamic> uData) {
+    this.userData = uData;
   }
 
   CreateBroadcastPage();
