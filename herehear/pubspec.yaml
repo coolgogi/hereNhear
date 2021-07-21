@@ -142,6 +142,18 @@ flutter:
     - assets/images/testUser.png
     - assets/audio/broadcast/sea.mp3
     - assets/images/broadcast/sea.jpg
+    - assets/images/broadcast/bread.jpg
+    - assets/images/broadcast/asmr.jpg
+    - assets/images/broadcast/food.jpg
+    - assets/images/broadcast/gs.png
+    - assets/images/broadcast/talk.jpg
+    - assets/images/groupcall/apart.jpg
+    - assets/images/groupcall/black.jpg
+    - assets/images/groupcall/church.jpg
+    - assets/images/groupcall/drama.jpg
+    - assets/images/groupcall/english.jpg
+    - assets/images/groupcall/talk.jpg
+    - assets/images/groupcall/voice.jpg
 
 
 
