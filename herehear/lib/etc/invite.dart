@@ -1,9 +1,25 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/main.dart';
 
 class InvitationPage extends StatelessWidget {
+  Map<String, dynamic> _data = new Map();
+  Future<void> getData() async {
+    String uid = '';
+    User? _user = FirebaseAuth.instance.currentUser;
+
+    if (_user != null)
+      uid = _user.uid;
+    else if (_user == null) uid = 'Guest';
+
+    var _data =
+    await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+    this._data = _data.data()!;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +36,7 @@ class InvitationPage extends StatelessWidget {
             Container(
               child: ElevatedButton(
                 onPressed: () => Get.off(
-                  () => LandingPage(),
+                  () => LandingPage.withData(_data!),
                 ),
                 child: Text(
                   "네",
