@@ -186,13 +186,7 @@
 //       userOffline: (uid, reason) {
 //         final info = 'userOffline: $uid , reason: $reason';
 //         infoStrings.add(info);
-//         users.remove(uid);
-//       },
-//       firstRemoteVideoFrame: (uid, width, height, elapsed) {
-//         final info = 'firstRemoteVideoFrame: $uid';
-//         infoStrings.add(info);
-//       },
-//       audioVolumeIndication: (speakers, totalVolume) {
+//         users.remoers, totalVolume) {
 //         speakingUser.clear();
 //         speakingUser
 //             .addAll(speakers.obs.map((element) => element.uid).toList());
@@ -207,6 +201,14 @@
 //       // tokenPrivilegeWillExpire: (token) async {
 //       //   await getToken();
 //       //   await _engine?.renewToken(token);
+// activeSpeaker: (uid) {
+//   activeSpeaker = uid.obs;
+// }
+// tokenPrivilegeWillExpire: (token) async {
+//   await getToken();
+//   await _engine?.renewToken(token);
+// },
+// ));
 //       // },
 //     ));
 //   }
