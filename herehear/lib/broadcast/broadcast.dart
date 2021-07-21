@@ -6,6 +6,7 @@ import 'package:herehear/chatting/ChatPage.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio/just_audio.dart';
 
 class AgoraBroadCastController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -185,7 +186,12 @@ class BroadCastPage extends StatelessWidget {
       // profile_audience.add();
       // nickName_audience.add();
     }
+    if(dbData['title'] == '바다 ASMR'){
+      await player.setAsset('assets/audio/broadcast/sea.mp3');
+      player.play();
+    }
   }
+  final player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -267,10 +273,14 @@ class BroadCastPage extends StatelessWidget {
     if (role == ClientRole.Broadcaster) {
       await changeState(channelName);
     }
+    if(dbData['title'] == '바다 ASMR'){
+      player.pause();
+    }
     controller.onClose();
     Get.back();
     Get.back();
     Get.back();
+
     // Get.offAll('/');
   }
 

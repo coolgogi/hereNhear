@@ -139,6 +139,9 @@ flutter:
     - assets/audio/loveRain.mp3
     - assets/audio/yuan.mp3
     - assets/audio/politician.mp3
+    - assets/images/testUser.png
+    - assets/audio/broadcast/sea.mp3
+    - assets/images/broadcast/sea.jpg
 
 
 
