@@ -198,7 +198,11 @@ class BroadCastPage extends StatelessWidget {
     getData();
     return Scaffold(
       appBar: profileAppBar(context),
-      body: ChatPage.withData(dbData),
+      body: WillPopScope(child: ChatPage.withData(dbData),onWillPop: () {
+        player.pause();
+        Get.back();
+        return Future(() => false);
+      },),
     );
   }
 
