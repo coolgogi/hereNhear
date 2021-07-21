@@ -97,6 +97,8 @@ flutter:
     - assets/icons/notification.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
+    - assets/icons/groupBlack.png
+    - assets/icons/groupWhite.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg
