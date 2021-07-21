@@ -1,13 +1,9 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/create_broadcast.dart';
-import 'package:herehear/appBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
-import 'package:herehear/broadcast/broadcast.dart';
-import 'package:herehear/location_data/location.dart';
+import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
 
@@ -19,11 +15,6 @@ class SubscribedPage extends StatelessWidget {
   late Map<String, dynamic> _data;
   SubscribedPage.withData(Map<String, dynamic> data) {
     _data = data;
-    print("====================");
-    print(_data['nickName'].toString());
-    print(_data['uid'].toString());
-    print(_data['profile'].toString());
-    print("====================");
   }
   @override
   Widget build(BuildContext context) {
@@ -34,10 +25,6 @@ class SubscribedPage extends StatelessWidget {
           title:
               Text('구독', style: Theme.of(context).appBarTheme.titleTextStyle),
           actions: <Widget>[
-            // IconButton(
-            //     onPressed: _showMyDialog,
-            //     color: Colors.amber,
-            //     icon: Icon(Icons.add_circle)),
             IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -127,16 +114,8 @@ class SubscribedPage extends StatelessWidget {
                       );
                     return ListView(
                       scrollDirection: Axis.horizontal,
-                      children: broadcastRoomList(context, snapshot),
+                      children: broadcastRoomList(context, snapshot, _data),
                     );
-                    // children: List.generate(10, (int index) {
-                    //   return Card(
-                    //       child: Container(
-                    //     width: 110.0,
-                    //     height: 80.0,
-                    //     child: Center(child: Text("${index + 1} 라이브")),
-                    //   ));
-                    // }));
                   },
                 ),
               ),
@@ -221,18 +200,6 @@ class SubscribedPage extends StatelessWidget {
           ],
         ),
       ),
-      // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterFloat,
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-      //   label: Text(
-      //     '새로 고침',
-      //     style: TextStyle(
-      //       color: Colors.black87,
-      //     ),
-      //   ),
-      //   backgroundColor: Colors.white,
-      // ),
     );
   }
 
@@ -242,125 +209,6 @@ class SubscribedPage extends StatelessWidget {
     ///////////////////////////////////////////////////////////////////////////////////
     // await controller.getLocation().obs; <-- 이거 대신 적절한 로드 로직 넣으면 됩니다!//
     //////////////////////////////////////////////////////////////////////////////////
-  }
-
-  // Future<void> _showMyDialog() async {
-  //   return Get.defaultDialog(
-  //     title: '소리 시작하기',
-  //     content: SingleChildScrollView(
-  //       child: Column(
-  //         children: <Widget>[
-  //           TextButton(
-  //             child: Text(
-  //               '개인 라이브',
-  //               style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-  //             ),
-  //             onPressed: () => Get.off(() => CreateBroadcastPage()),
-  //           ),
-  //           TextButton(
-  //             child: Text(
-  //               '그룹 대화',
-  //               style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-  //             ),
-  //             onPressed: () => Get.off(() => CreateGroupCallPage()),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  Route _createRoute() {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) =>
-          CreateBroadcastPage(),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(0.0, 1.0);
-        var end = Offset.zero;
-        var curve = Curves.ease;
-
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-        return SlideTransition(
-          position: animation.drive(tween),
-          child: child,
-        );
-      },
-    );
-  }
-
-  List<Widget> broadcastRoomList(
-      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs.map((room) {
-      return Padding(
-        padding: EdgeInsets.only(right: 12.0.w),
-        child: InkWell(
-          onTap: () {
-            firestore.collection('broadcast').doc(room['docId']).update({
-              'currentListener': FieldValue.arrayUnion([_data['uid']]),
-              'userNickName': FieldValue.arrayUnion([_data['nickName']]),
-              'userProfile': FieldValue.arrayUnion([_data['profile']]),
-            });
-
-            Get.to(
-              () => BroadCastPage(
-                channelName: room['channelName'],
-                userName: '',
-                role: ClientRole.Audience,
-              ),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 125.0.w,
-                height: 125.0.h,
-                child: Card(
-                  margin: EdgeInsets.only(left: 0.0.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: Image.asset(room['image']),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 5.h),
-              Text(
-                room['notice'],
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              SizedBox(height: 4.h),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.people,
-                    size: 14.w,
-                  ),
-                  Text(
-                    room['currentListener'] == null
-                        ? '0'
-                        : room['currentListener'].length.toString(),
-                  ),
-                  SizedBox(width: 8.sp),
-                  Icon(
-                    Icons.favorite,
-                    size: 12.w,
-                  ),
-                  Text(room['like'].toString()),
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-    }).toList();
   }
 
   List<Widget> groupcallRoomList(
