@@ -67,7 +67,7 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('한화 이글스를 찾아간 VJ특공대', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Center(child: Text('한화 이글스를 찾아간 \n VJ특공대', style: Theme.of(context).textTheme.subtitle1,)),
                       ),
                     ],
                   ),
