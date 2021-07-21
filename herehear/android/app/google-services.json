@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1078465612496-3pm2ge2m19cs9autnlnhvoq45fsd1pga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hgu.herehear",
+            "certificate_hash": "19b3b43019c15255139e96873596e8875fe18949"
+          }
+        },
+        {
+          "client_id": "1078465612496-8fmsoj5jib2km5741hc8vbtkmkk32e67.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hgu.herehear",
+            "certificate_hash": "c72dbb2bf382610fbaa9f6b44f171ca2e3643a24"
+          }
+        },
+        {
+          "client_id": "1078465612496-vgt08d2to0b68jnt8cm6sfj1ojbbrf8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hgu.herehear",
+            "certificate_hash": "48b35e6daf23ecfc04692a012ccae500f85261c2"
+          }
+        },
+        {
           "client_id": "1078465612496-7a3of08hipiq71biqb48pma34i5fm85g.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +53,13 @@
             {
               "client_id": "1078465612496-7a3of08hipiq71biqb48pma34i5fm85g.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1078465612496-88imos9tedq5lrq9ng0o0hhahgdm9t7p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hgu.herehear"
+              }
             }
           ]
         }
