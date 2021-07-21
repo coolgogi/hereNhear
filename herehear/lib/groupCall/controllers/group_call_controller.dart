@@ -18,7 +18,7 @@ class GroupCallController extends GetxController {
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
   Future<void> createGroupCallRoom(
-      User? firebaseUser, String? title, String? notice, String? docId) async {
+      User? firebaseUser, String? title, String? notice, String? docId, String? location) async {
     print('createbroadcast');
     if (firebaseUser != null) {
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
@@ -29,6 +29,7 @@ class GroupCallController extends GetxController {
         docId: docId,
         image: 'assets/images/HGU.jpg',
         channelName: docId,
+        location: location,
         createdTime: DateTime.now(),
       );
 

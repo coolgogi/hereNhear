@@ -1,25 +1,13 @@
-// import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
-// import 'package:audioplayers/audioplayers.dart';
-// import 'package:assets_audio_player/assets_audio_player.dart';
-// import 'package:just_audio/just_audio.dart';
-
-class StopoController extends GetxController {
+class StopController extends GetxController {
   RxBool stopFlag = true.obs;
   RxBool goodFlag = false.obs;
   RxBool funFlag = false.obs;
-
-  // final player = AudioPlayer();
-
-  // Future<void> setPlayer() async {
-  //   var duration = await player.setAsset('assets/audio/vj.mp3');
-  // }
-
 
   void toggleStopFlag() {
     stopFlag.value = !stopFlag.value;
@@ -35,13 +23,6 @@ class StopoController extends GetxController {
   }
 
   @override
-  void onInit() async {
-    // TODO: implement onInit
-    // await playAudio();
-    super.onInit();
-  }
-
-  @override
   void onClose() {
     // TODO: implement onClose
 
@@ -49,29 +30,9 @@ class StopoController extends GetxController {
   }
 }
 
-class EvaluationPage extends StatelessWidget {
-  final controller = Get.put(StopoController());
+class EvaluationPage4 extends StatelessWidget {
   final player = AudioPlayer();
-  // AssetsAudioPlayer audioPlayer = AssetsAudioPlayer();
-  String audioPath = "assets/audio/vj.mp3";
-
-  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-
-  // final player = AudioCache();
-
-  // Future<void> playAudio() async{
-  //   try{
-  //     await audioPlayer.open(
-  //       // Audio(audioPath),
-  //         autoStart: false,
-  //         showNotification: true
-  //     );
-  //     print('^________________^');
-  //   }catch(t){
-  //     print(t);
-  //   }
-  // }
-
+  final controller = Get.put(StopController());
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +46,7 @@ class EvaluationPage extends StatelessWidget {
                 controller.goodFlag.value = false;
                 controller.funFlag.value = false;
                 Get.back();
-                },
+              },
               icon: Icon(Icons.close, size: 30, color: Colors.black,)),
         ],
       ),
@@ -96,7 +57,7 @@ class EvaluationPage extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 40.0.h, bottom: 60.0.h),
-              child: Text('한화 이글스를 찾아간 VJ특공대', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
+              child: Text('연', style: TextStyle(fontFamily:'Roboto', fontSize: 27, color: Colors.black),),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 60.0.h),
@@ -105,26 +66,25 @@ class EvaluationPage extends StatelessWidget {
                 height: 300.0.w,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/images/it2.jpg'),
+                    image: AssetImage('assets/images/me.jpg'),
                   ),
                 ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    Obx(() =>
-                  GestureDetector(
+                    GestureDetector(
                       onTap: (() async {
                         controller.toggleStopFlag();
-                        await player.setAsset('assets/audio/vj.mp3');
+                        await player.setAsset('assets/audio/yuan.mp3');
                         controller.stopFlag.value == false ? player.play() : player.pause();
 
                       }),
                       child: Container(
-                          child: Center(
+                          child: Obx(() => Center(
                             child: controller.stopFlag.value ? Image.asset('assets/images/playButton2.png', width: 150,) : Image.asset('assets/images/stopButton.png', width: 140,),
-                          ),
+                          ),)
                       ),
-                    ),)
+                    ),
                   ],
                 ),
               ),
@@ -136,16 +96,16 @@ class EvaluationPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   CircleAvatar(
-                    radius: 50.r,
-                    backgroundColor: Color(0xFF618051),
-                    child: Obx(() => GestureDetector(
-                      onTap: controller.toggleGoodFlag,
-                      child: CircleAvatar(
-                        radius: 45.r,
-                        backgroundColor: controller.goodFlag.value? Color(0xFF618051) : Colors.white,
-                        child: Text('잘해요', style: TextStyle(fontSize: 27, color: controller.goodFlag.value? Colors.white : Color(0xFF618051), fontWeight: FontWeight.bold),),
-                      ),
-                    ),)
+                      radius: 50.r,
+                      backgroundColor: Color(0xFF618051),
+                      child: Obx(() => GestureDetector(
+                        onTap: controller.toggleGoodFlag,
+                        child: CircleAvatar(
+                          radius: 45.r,
+                          backgroundColor: controller.goodFlag.value? Color(0xFF618051) : Colors.white,
+                          child: Text('잘해요', style: TextStyle(fontSize: 27, color: controller.goodFlag.value? Colors.white : Color(0xFF618051), fontWeight: FontWeight.bold),),
+                        ),
+                      ),)
                   ),
                   CircleAvatar(
                       radius: 50.r,

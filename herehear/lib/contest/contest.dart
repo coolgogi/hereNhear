@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:herehear/contest/evaluation2.dart';
 
 import 'evaluation.dart';
+import 'evaluation3.dart';
+import 'evaluation4.dart';
 
 class controller extends GetxController {
   RxBool flag1 = false.obs;
@@ -65,7 +67,7 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('까마귀 우는 소리', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text('한화 이글스를 찾아간 VJ특공대', style: Theme.of(context).textTheme.subtitle1,),
                       ),
                     ],
                   ),
@@ -79,7 +81,7 @@ class ContestPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
                           onTap: (){
-                            Get.to(() => EvaluationPage());
+                            Get.to(() => EvaluationPage2());
                           },
                           child: Container(
                             width: 120.0.w,
@@ -100,7 +102,7 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('물 따르는 소리', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text('여자 목소리', style: Theme.of(context).textTheme.subtitle1,),
                       ),
                     ],
                   ),
@@ -243,102 +245,102 @@ class ContestPage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 10.0.w),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0.h),
-                          child: GestureDetector(
-                            onTap: () => Get.to(() => EvaluationPage2()),
-                            child: CircleAvatar(
-                              radius: 48.r,
-                              backgroundImage: AssetImage('assets/images/you.png'),
+                  GestureDetector(
+                    onTap: () => Get.to(() => EvaluationPage3()),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10.0.w),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0.h),
                               child: CircleAvatar(
-                                radius: 49.r,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: AssetImage('assets/images/playButton3.png'),
+                                radius: 48.r,
+                                backgroundImage: AssetImage('assets/images/you.png'),
+                                child: CircleAvatar(
+                                  radius: 49.r,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: AssetImage('assets/images/playButton3.png'),
+                                ),
+                              ),
+                          ),
+                          Positioned(
+                            left: 12,
+                            right: 5,
+                            top: -105,
+                            bottom: 0,
+                            child:Image.asset('assets/images/goldCrown.png', width: 100,),
+                          ),
+                          Positioned(
+                            left: 0,
+                            right: 55,
+                            top: -73,
+                            bottom: 3,
+                            child:Container(
+                              width: 20.r,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF618051),
+                                shape: BoxShape.circle,
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 12,
-                          right: 5,
-                          top: -105,
-                          bottom: 0,
-                          child:Image.asset('assets/images/goldCrown.png', width: 100,),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 55,
-                          top: -73,
-                          bottom: 3,
-                          child:Container(
-                            width: 20.r,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF618051),
-                              shape: BoxShape.circle,
-                            ),
+                          Positioned(
+                            left: 8,
+                            right: 0,
+                            top: 12,
+                            bottom: 0,
+                            child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
                           ),
-                        ),
-                        Positioned(
-                          left: 8,
-                          right: 0,
-                          top: 12,
-                          bottom: 0,
-                          child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10.0.w),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(top: 8.0.h),
-                          child: GestureDetector(
-                            onTap: () => Get.to(() => EvaluationPage2()),
-                            child: CircleAvatar(
-                              radius: 48.r,
-                              backgroundImage: AssetImage('assets/images/me.jpg'),
+                  GestureDetector(
+                    onTap: () => Get.to(() => EvaluationPage4()),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10.0.w),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0.h),
                               child: CircleAvatar(
-                                radius: 49.r,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: AssetImage('assets/images/playButton3.png'),
+                                radius: 48.r,
+                                backgroundImage: AssetImage('assets/images/me.jpg'),
+                                child: CircleAvatar(
+                                  radius: 49.r,
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage: AssetImage('assets/images/playButton3.png'),
+                                ),
+                              ),
+                          ),
+                          Positioned(
+                            left: 12,
+                            right: 5,
+                            top: -105,
+                            bottom: 0,
+                            child:Image.asset('assets/images/silverCrown.png', width: 100,),
+                          ),
+                          Positioned(
+                            left: 0,
+                            right: 55,
+                            top: -73,
+                            bottom: 3,
+                            child:Container(
+                              width: 20.r,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.primary,
+                                shape: BoxShape.circle,
                               ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 12,
-                          right: 5,
-                          top: -105,
-                          bottom: 0,
-                          child:Image.asset('assets/images/silverCrown.png', width: 100,),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 55,
-                          top: -73,
-                          bottom: 3,
-                          child:Container(
-                            width: 20.r,
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              shape: BoxShape.circle,
-                            ),
+                          Positioned(
+                            left: 8,
+                            right: 0,
+                            top: 12,
+                            bottom: 0,
+                            child:Text('2위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
                           ),
-                        ),
-                        Positioned(
-                          left: 8,
-                          right: 0,
-                          top: 12,
-                          bottom: 0,
-                          child:Text('2위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -441,48 +443,53 @@ class ContestPage extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 10.0.w),
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: 90.r,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/hamster.jpg'),
-                                  fit: BoxFit.fill
-                              )
+
+    GestureDetector(
+    onTap: () => Get.to(() => EvaluationPage4()),
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 10.0.w),
+                      child: Stack(
+                        children: [
+                          Container(
+                              width: 90.r,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage('assets/images/hamster.jpg'),
+                                      fit: BoxFit.fill
+                                  )
+                              ),
+                            ),
+
+                          Positioned(
+                            left: 15,
+                            right: 5,
+                            top: -105,
+                            bottom: 0,
+                            child:Image.asset('assets/images/goldCrown.png', width: 100,),
                           ),
-                        ),
-                        Positioned(
-                          left: 15,
-                          right: 5,
-                          top: -105,
-                          bottom: 0,
-                          child:Image.asset('assets/images/goldCrown.png', width: 100,),
-                        ),
-                        Positioned(
-                          left: 0,
-                          right: 50,
-                          top: -75,
-                          bottom: 3,
-                          child:Container(
-                            width: 20.r,
-                            decoration: BoxDecoration(
-                              color: Color(0xFF618051),
-                              shape: BoxShape.circle,
+                          Positioned(
+                            left: 0,
+                            right: 50,
+                            top: -75,
+                            bottom: 3,
+                            child:Container(
+                              width: 20.r,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF618051),
+                                shape: BoxShape.circle,
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 8,
-                          right: 0,
-                          top: 11,
-                          bottom: 0,
-                          child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
-                        ),
-                      ],
+                          Positioned(
+                            left: 8,
+                            right: 0,
+                            top: 11,
+                            bottom: 0,
+                            child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
