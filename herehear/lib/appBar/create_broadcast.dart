@@ -22,10 +22,9 @@ class CreateBroadcastPage extends StatefulWidget {
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
-  List<String> categoryList = ['소통', '힐링', '잡담'];
-  int _index = 0;
+  List<String> categoryList = ['소통', '힐링', 'ASMR','연애','음악','잡담'];
+  int _index = -1;
   bool _validateError = false;
-  List<bool> _isSelected = List.generate(3, (_) => false);
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
@@ -60,12 +59,20 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
           },
         ),
       ),
-      body: SizedBox(
+      body: Container(
+        padding: EdgeInsets.all(20),
         key: _formKey,
         height: MediaQuery.of(context).size.height,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('제목'),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '제목',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
             TextFormField(
               controller: _title,
               validator: (value) {
@@ -76,62 +83,92 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
                 hintText: '제목을 입력해주세요(15자 이내)',
               ),
             ),
             SizedBox(
               height: 16.0,
             ),
-            Container(padding: EdgeInsets.all(10), child: Text('카테고리')),
-            ToggleButtons(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('소통'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('힐링'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text('잡담'),
-                ),
-              ],
-              onPressed: (int index) {
-                setState(() {
-                  for (int i = 0; i < _isSelected.length; i++) {
-                    _isSelected[i] = i == index;
-                  }
-                  _index = index;
-                  // if (index == 3) {
-                  //   _role = ClientRole.Audience;
-                  // } else {
-                  //   _role = ClientRole.Broadcaster;
-                  // }
-                });
-              },
-              isSelected: _isSelected,
-            ),
-            Text('공지사항'),
-            TextFormField(
-              controller: _notice,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: '방의 공지를 입력해주세요(100자 이내)',
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '공지사항',
+                style: TextStyle(fontSize: 16),
               ),
             ),
-            Stack(
-              children: <Widget>[
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      onJoin();
-                    },
-                    child: Text('방만들기'),
-                  ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 0.7,
                 ),
-              ],
+              ),
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.newline,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: _notice,
+                textAlign: TextAlign.left,
+                decoration: InputDecoration(
+                  hintText: '공지를 입력해주세요(100자 이내)',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '카테고리',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+
+            Row(
+              children:
+              List.generate(categoryList.length, (index) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(3),
+                    child: ChoiceChip(
+                      label: Text(
+                        categoryList[index],
+                      ),
+                      labelStyle:
+                      TextStyle(color: Colors.black),
+                      shape: StadiumBorder(side: BorderSide(color: Colors.grey, width: 0.5)),
+                      backgroundColor: Colors.white,
+                      selected: _index == index,
+                      selectedColor: Colors.grey[500],
+                      onSelected: (value) {
+                        setState(() {
+                          _index = value ? index : _index;
+                        });
+                      },
+                      // backgroundColor: color,
+                    ),
+                  ),
+                );
+              }
+              ),),
+            SizedBox(
+              height: 32.0,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  onJoin();
+                },
+                child: Text('방만들기'),
+              ),
             ),
           ],
         ),

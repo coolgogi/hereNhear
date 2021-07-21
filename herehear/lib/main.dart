@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
                 ),
                 GetPage(
                   name: '/myPage',
-                  page: () => myPage(),
+                  page: () => myPage.withData(_data!),
                 ),
                 GetPage(
                   name: '/upload',
@@ -242,7 +242,7 @@ class LandingPage extends StatelessWidget {
               ChatPage(),
               searchPage(),
               // ChatPage(),
-              myPage(),
+              myPage.withData(_data),
             ],
           )),
       floatingActionButtonLocation: CustomFloatingActionButtonLocation(
