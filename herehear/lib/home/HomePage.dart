@@ -20,9 +20,6 @@ class HomePage extends StatelessWidget {
   late Map<String, dynamic> _data;
   HomePage.withData(Map<String, dynamic> data) {
     _data = data;
-    print(_data['nickName']);
-    print(_data['uid']);
-    print(_data['profile']);
   }
   HomePage();
   @override

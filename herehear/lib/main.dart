@@ -28,7 +28,6 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -43,7 +42,15 @@ class App extends StatelessWidget {
               builder: (value) {
                 print('위치: ${value.location.obs}');
                 return FutureBuilder(
-                    future: LocationController().getLocation(),
+                    future: LocationController()
+                        .getLocation()
+                        .whenComplete(() => getData().whenComplete(() => {
+                              print("===============Complete==============="),
+                              print(_data['uid']),
+                              print(_data['nickName']),
+                              print(_data['profile']),
+                              print("======================================"),
+                            })),
                     builder: (context, snapshot) {
                       return MyApp(_data);
                     });
@@ -94,7 +101,7 @@ class MyApp extends StatelessWidget {
               // GetX Controller 등록
               // initialBinding: BindingsBuilder(() {}),
               initialBinding: AppBinding(),
-              title: 'Flutter Basic',
+              title: 'Here & Hear',
               home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
@@ -116,6 +123,10 @@ class MyApp extends StatelessWidget {
                 GetPage(
                   name: '/notification',
                   page: () => NotificationPage(),
+                ),
+                GetPage(
+                  name: '/search',
+                  page: () => searchPage.withData(_data!),
                 )
               ],
             ),
@@ -234,11 +245,9 @@ class LandingPage extends StatelessWidget {
       body: Obx(() => IndexedStack(
             index: landingPageController.tabIndex.value,
             children: [
-              // InfiniteScrollView(),
               HomePage.withData(_data),
-
-              SubscribedPage.withData(_data),
-              // Subscribed22Page(),
+              searchPage.withData(_data),
+              // SubscribedPage.withData(_data),
               ChatPage(),
               searchPage(),
               // ChatPage(),
@@ -254,18 +263,21 @@ class LandingPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
         ),
         child: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          elevation: 0.0,
-          shape:
-              CircleBorder(side: BorderSide(color: Colors.white, width: 2.5.w)),
-          child: Image.asset(
-            'assets/icons/mic_fill.png',
-            height: 32.h,
-          ),
-          onPressed: () => _data['uid'] == 'guest'
-              ? _showMyDialog()
-              : showCreateOption(context),
-        ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            elevation: 0.0,
+            shape: CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2.5.w)),
+            child: Image.asset(
+              'assets/icons/mic_fill.png',
+              height: 32.h,
+            ),
+            onPressed: () => {
+                  _data['uid'] == null
+                      ? _showMyDialog2()
+                      : _data['uid'] != 'guest'
+                          ? showCreateOption(context)
+                          : _showMyDialog(),
+                }),
       ),
     ));
   }
@@ -273,6 +285,24 @@ class LandingPage extends StatelessWidget {
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
       title: '로그인이 필요합니다!',
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TextButton(
+                child: Text(
+                  '확인',
+                  style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+                ),
+                onPressed: () => Get.back()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showMyDialog2() async {
+    return Get.defaultDialog(
+      title: '정보를 불러오고 있습니다!',
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
