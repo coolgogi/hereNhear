@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcast.dart';
+import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/groupCall/group_call.dart';
@@ -162,7 +163,7 @@ class HomePage extends StatelessWidget {
                           );
                         return ListView(
                           scrollDirection: Axis.horizontal,
-                          children: broadcastRoomList(context, snapshot),
+                          children: broadcastRoomList(context, snapshot, _data),
                         );
                         // children: List.generate(10, (int index) {
                         //   return Card(
@@ -251,79 +252,6 @@ class HomePage extends StatelessWidget {
   //     },
   //   );
   // }
-
-  List<Widget> broadcastRoomList(
-      BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs.map((room) {
-      return Padding(
-        padding: EdgeInsets.only(right: 12.0.w),
-        child: InkWell(
-          onTap: () {
-            print("===============hello===============");
-            firestore.collection('broadcast').doc(room['docId']).update({
-              'currentListener': FieldValue.arrayUnion(_data['uid']),
-              'userNickName': FieldValue.arrayUnion(_data['nickName']),
-              'userProfile': FieldValue.arrayUnion([_data['profile']]),
-            });
-            Get.to(
-              () => BroadCastPage(
-                channelName: room['channelName'],
-                userName: current_uid,
-                role: ClientRole.Audience,
-              ),
-            );
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 125.0.w,
-                height: 125.0.h,
-                child: Card(
-                  margin: EdgeInsets.only(left: 0.0.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: Image.asset(room['image']),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 5.h),
-              Text(
-                room['notice'],
-                style: Theme.of(context).textTheme.subtitle1,
-              ),
-              SizedBox(height: 4.h),
-              Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.people,
-                    size: 14.w,
-                  ),
-                  Text(
-                    room['currentListener'] == null
-                        ? '0'
-                        : room['currentListener'].length.toString(),
-                  ),
-                  SizedBox(width: 8.sp),
-                  Icon(
-                    Icons.favorite,
-                    size: 12.w,
-                  ),
-                  Text(room['like'].toString()),
-                ],
-              )
-            ],
-          ),
-        ),
-      );
-    }).toList();
-  }
 
   List<Widget> groupcallRoomList(
       BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
