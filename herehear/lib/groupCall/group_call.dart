@@ -6,13 +6,12 @@ import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio/just_audio.dart';
+
 
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 class AgoraEventController extends GetxController {
-  final player = AudioPlayer();
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;
@@ -27,6 +26,11 @@ class AgoraEventController extends GetxController {
   // var groupcallStream = Stream<DocumentSnapshot<Map<String, dynamic>>>().obs;
   var participantsList = <Widget>[].obs;
   var currentListenerList = <Widget>[].obs;
+  var participantsDataList = <dynamic>[].obs;
+  var listenerDataList = <dynamic>[].obs;
+
+  var userStream = FirebaseFirestore.instance.collection("users").obs;
+  var roomStream = FirebaseFirestore.instance.collection('groupcall').doc(Get.arguments).snapshots().obs;
 
 
 
@@ -78,6 +82,61 @@ class AgoraEventController extends GetxController {
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
     await _engine.joinChannel(null, GroupCallPage().channelName, null, 0);
+  }
+
+  void getWatcherDataList(List currentListener) {
+    // var userList = FirebaseFirestore.instance.collection("users");
+
+    currentListener.forEach((uid) {
+      print('^^^?: ${uid}');
+      userStream.value.where('uid', isEqualTo: uid.toString())
+          .get().then((data) {
+        var user = data.docs.first;
+        print('****: ${user['nickName']}');
+        if(!listenerDataList.contains(user))
+          listenerDataList.add(user);
+        print('ASDFASDFA: ${listenerDataList.first}');
+      });
+    });
+    print('list.length: ${listenerDataList}');
+    print('^_______________________^');
+  }
+
+  Future<void> removeWatcherDataList(List currentListener) async {
+    // var userList = FirebaseFirestore.instance.collection("users");
+
+    currentListener.forEach((uid) {
+      print('^^^?: ${uid}');
+      userStream.value.where('uid', isEqualTo: uid.toString())
+          .get().then((data) {
+        var user = data.docs.first;
+        print('****: ${user['nickName']}');
+        listenerDataList.remove(user);
+        print('Deleted!: ${listenerDataList.first}');
+      });
+    });
+    print('list.length: ${listenerDataList}');
+    print('^_______________________^');
+  }
+
+  void getParticipantDataList(List currentListener) {
+    // var userList = FirebaseFirestore.instance.collection("users");
+
+    FirebaseFirestore.instance.collection("users");
+
+    currentListener.forEach((uid) {
+      print('^^^?: ${uid}');
+      userStream.value.where('uid', isEqualTo: uid.toString())
+          .get().then((data) {
+        var user = data.docs.first;
+        print('****: ${user['nickName']}');
+        if(!participantsDataList.contains(user))
+          participantsDataList.add(user);
+        print('ㅁㄴㅇㄻㄴㅇㄻㄹ: ${participantsDataList.first}');
+      });
+    });
+    print('list.length: ${participantsDataList}');
+    print('^_______________________^');
   }
 
   /// Create agora sdk instance and initialize
@@ -152,11 +211,17 @@ class AgoraEventController extends GetxController {
     ));
   }
 
-  void move_watcher_to_participant() {
+  void move_watcher_to_participant() async {
     // users.removeWhere((element) => element == currentUid);
     // participants.add(currentUid);
+    print('After Remove!!: ${listenerDataList.length}');
     FirebaseFirestore.instance.collection('groupcall').doc(docID).update({"currentListener": FieldValue.arrayRemove([currentUserUID])});
     FirebaseFirestore.instance.collection('groupcall').doc(docID).update({"participants": FieldValue.arrayUnion([currentUserUID])});
+    List currentUser = [docID];
+    getParticipantDataList(currentUser);
+    await removeWatcherDataList(currentUser);
+    // listenerDataList.removeWhere((element) => element['uid'] == docID);
+    print('After Remove!!: ${listenerDataList.length}');
     is_participate = true.obs;
     print('?!?!?: ${participants.length}');
   }
@@ -258,9 +323,16 @@ class GroupCallPage extends StatelessWidget {
         builder: (context, snapshot) {
           if(!snapshot.hasData) return Text('loading..');
 
+          controller.getParticipantDataList(snapshot.data!['participants']);
+          controller.getWatcherDataList(snapshot.data!['currentListener']);
+
           String hostUID = snapshot.data?['hostUId'];
-          controller.participantsList = _getParticipantsImageList(snapshot.data!['participants'], hostUID).obs;
-          controller.currentListenerList = _getWatcherImageList(snapshot.data!['currentListener']).obs;
+          // controller.participantsList = _getParticipantsImageList(snapshot.data!['participants'], hostUID).obs;
+          // controller.currentListenerList = _getWatcherImageList(snapshot.data!['currentListener']).obs;
+          // controller.listenerDataList.value = _getWatcherDataList(snapshot.data!['currentListener']);
+          controller.currentListenerList = _getWatcherImageList().obs;
+          controller.participantsList = _getParticipantsImageList().obs;
+
           return Column(
                 children: [
                   Container(
@@ -286,7 +358,10 @@ class GroupCallPage extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              Obx(() => _viewRows(controller.participantsList)),
+                              Obx(() {
+                                print(controller.listenerDataList);
+                                return _viewRows(_getParticipantsImageList());
+                              }),
                             ],
                           ),
                         ],
@@ -304,7 +379,7 @@ class GroupCallPage extends StatelessWidget {
                         ),
                         Row(
                           children: <Widget>[
-                            Obx(() => _viewRows(controller.currentListenerList)),
+                            Obx(() => _viewRows(_getWatcherImageList())),
                           ],
                         )
                       ],
@@ -327,267 +402,367 @@ class GroupCallPage extends StatelessWidget {
   //   });
   //   return list;
   // }
-  List<Widget> _getParticipantsImageList(List participants, String hostUID) {
-    final List<Widget> list = [];
-    List? participantsData;
-
-    var userList = FirebaseFirestore.instance.collection("users");
-
-    print('^_______________________^');
-    participants.forEach((uid) {
-      userList.where('uid', isEqualTo: uid.toString())
-          .get().then((user) => list.add(Padding(
-        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-        child: Column(
-          children: [
-            Container(
-              child: CircleAvatar(
-                radius: 35,
-                backgroundImage: AssetImage(user.docs.first.data()['profile']),
-              ),
-            ),
-            Text(user.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
-          ],
-        ),
-      )));
-    });
-    print('^_______________________^');
-
-    participants.forEach((uid) {
-      StreamBuilder<DocumentSnapshot<Object>>(
-          stream: FirebaseFirestore.instance.collection("users").doc(uid.toString()).snapshots(),
-          builder: (context, snapshot) {
-            print('!!!!!!!!!!!!!!: ${snapshot.data}');
-            participantsData!.add(snapshot.data);
-            bool flag = false;
-            for (int i = 0; i < controller.speakingUser.length; i++) {
-              if ((participantsData.length <= 2) && (controller.speakingUser[i] != 0)) {
-                list.add(Padding(
-                  padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-                  child: Column(
-                    children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          CircleAvatar(
-                            radius: 40,
-                            backgroundColor: Colors.lightGreen,
-                          ),
-                          CircleAvatar(
-                            radius: 35,
-                            backgroundImage: AssetImage(snapshot.data!['profile']),
-                          ),
-                        ],
-                      ),
-                      Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
-                    ],
-                  ),
-                ));
-                flag = true;
-                break;
-              }
-            }
-            if (flag != true)
-              list.add(Padding(
-                padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-                child: Column(
-                  children: [
-                    Container(
-                      child: CircleAvatar(
-                        radius: 35,
-                        backgroundImage: AssetImage(snapshot.data!['profile']),
-                      ),
+  List<Widget> _getParticipantsImageList() {
+    return controller.participantsDataList.map((user) {
+      bool flag = false;
+      for (int i = 0; i < controller.speakingUser.length; i++) {
+        if ((controller.participantsDataList.length <= 2) && (controller.speakingUser[i] != 0)) {
+          flag = true;
+          return Padding(
+            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+            child: Column(
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundColor: Colors.lightGreen,
                     ),
-                    Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
+                    CircleAvatar(
+                      radius: 35,
+                      backgroundImage: AssetImage(user['profile']),
+                    ),
                   ],
                 ),
-              ));
-            return Container();
-          }
-        );
+                Text(user['nickName'], style: TextStyle(color: Colors.white),),
+              ],
+            ),
+          );
+        }
       }
-    );
-
-    return list;
-
-
-    // if(!participants.isEmpty) {
-    //   list.add(Padding(
-    //     padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //     child: Container(
-    //       child: CircleAvatar(
-    //         radius: 35,
-    //         backgroundImage: AssetImage('assets/images/me.jpg'),
-    //       ),
-    //     ),
-    //   ));
-    // }
-    //
-    // controller.participants.forEach((int uid) {
-    //   // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-    //   bool flag = false;
-    //   for (int i = 0; i < controller.speakingUser.length; i++) {
-    //     if (uid == controller.speakingUser[i]) {
-    //       list.add(Padding(
-    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //         child: Container(
-    //           child: CircleAvatar(
-    //             radius: 40,
-    //             backgroundColor: Colors.lightGreen,
-    //             child: CircleAvatar(
-    //               radius: 35,
-    //               backgroundImage: AssetImage('assets/images/you.png'),
-    //             ),
-    //           ),
-    //         ),
-    //       ));
-    //       flag = true;
-    //       break;
-    //     }
-    //   }
-    //   if (flag != true)
-    //     list.add(Padding(
-    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //       child: Container(
-    //         child: CircleAvatar(
-    //           radius: 35,
-    //           backgroundImage: AssetImage('assets/images/you.png'),
-    //         ),
-    //       ),
-    //     ));
-    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    // });
-    // return list;
+        return Padding(
+          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+          child: Column(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 35,
+                  backgroundImage: AssetImage(user['profile']),
+                ),
+              ),
+              Text(user['nickName'], style: TextStyle(color: Colors.white),),
+            ],
+          ),
+        );
+    }).toList();
   }
 
-  List<Widget> _getWatcherImageList(List currentListener) {
-    final List<Widget> list = [];
-    var userList = FirebaseFirestore.instance.collection("users");
+  // List<Widget> _getParticipantsImageList(List participants, String hostUID) {
+  //   List<Widget> list = [];
+  //   List? participantsData;
+  //
+  //   var userList = FirebaseFirestore.instance.collection("users");
+  //
+  //   // print('^_______________________^');
+  //   participants.forEach((uid) {
+  //     // print('^^^?: ${uid}');
+  //     userList.where('uid', isEqualTo: uid.toString())
+  //         .get().then((user) => list.add(Padding(
+  //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //       child: Column(
+  //         children: [
+  //           Container(
+  //             child: CircleAvatar(
+  //               radius: 35,
+  //               backgroundImage: AssetImage(user.docs.first['profile']),
+  //             ),
+  //           ),
+  //           Text(user.docs.first['nickName'], style: TextStyle(color: Colors.black),),
+  //         ],
+  //       ),
+  //     )));
+  //   });
+  //   print(list.length);
+  //   // print('^_______________________^');
+  //
+  //   participants.forEach((uid) {
+  //     StreamBuilder<DocumentSnapshot<Object>>(
+  //         stream: FirebaseFirestore.instance.collection("users").doc(uid.toString()).snapshots(),
+  //         builder: (context, snapshot) {
+  //           print('!!!!!!!!!!!!!!: ${snapshot.data}');
+  //           participantsData!.add(snapshot.data);
+  //           bool flag = false;
+  //           for (int i = 0; i < controller.speakingUser.length; i++) {
+  //             if ((participantsData.length <= 2) && (controller.speakingUser[i] != 0)) {
+  //               list.add(Padding(
+  //                 padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //                 child: Column(
+  //                   children: [
+  //                     Stack(
+  //                       alignment: Alignment.center,
+  //                       children: <Widget>[
+  //                         CircleAvatar(
+  //                           radius: 40,
+  //                           backgroundColor: Colors.lightGreen,
+  //                         ),
+  //                         CircleAvatar(
+  //                           radius: 35,
+  //                           backgroundImage: AssetImage(snapshot.data!['profile']),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
+  //                   ],
+  //                 ),
+  //               ));
+  //               flag = true;
+  //               break;
+  //             }
+  //           }
+  //           if (flag != true)
+  //             list.add(Padding(
+  //               padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //               child: Column(
+  //                 children: [
+  //                   Container(
+  //                     child: CircleAvatar(
+  //                       radius: 35,
+  //                       backgroundImage: AssetImage(snapshot.data!['profile']),
+  //                     ),
+  //                   ),
+  //                   Text(snapshot.data!['nickName'], style: TextStyle(color: Colors.white),),
+  //                 ],
+  //               ),
+  //             ));
+  //           return Text('asdf');
+  //         }
+  //       );
+  //     }
+  //   );
+  //
+  //   return list;
+  //
+  //
+  //   // if(!participants.isEmpty) {
+  //   //   list.add(Padding(
+  //   //     padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //     child: Container(
+  //   //       child: CircleAvatar(
+  //   //         radius: 35,
+  //   //         backgroundImage: AssetImage('assets/images/me.jpg'),
+  //   //       ),
+  //   //     ),
+  //   //   ));
+  //   // }
+  //   //
+  //   // controller.participants.forEach((int uid) {
+  //   //   // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+  //   //   bool flag = false;
+  //   //   for (int i = 0; i < controller.speakingUser.length; i++) {
+  //   //     if (uid == controller.speakingUser[i]) {
+  //   //       list.add(Padding(
+  //   //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //         child: Container(
+  //   //           child: CircleAvatar(
+  //   //             radius: 40,
+  //   //             backgroundColor: Colors.lightGreen,
+  //   //             child: CircleAvatar(
+  //   //               radius: 35,
+  //   //               backgroundImage: AssetImage('assets/images/you.png'),
+  //   //             ),
+  //   //           ),
+  //   //         ),
+  //   //       ));
+  //   //       flag = true;
+  //   //       break;
+  //   //     }
+  //   //   }
+  //   //   if (flag != true)
+  //   //     list.add(Padding(
+  //   //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //       child: Container(
+  //   //         child: CircleAvatar(
+  //   //           radius: 35,
+  //   //           backgroundImage: AssetImage('assets/images/you.png'),
+  //   //         ),
+  //   //       ),
+  //   //     ));
+  //   //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+  //   // });
+  //   // return list;
+  // }
 
-    print('^_______________________^');
-    currentListener.forEach((uid) { 
-      userList.where('uid', isEqualTo: uid.toString())
-          .get().then((user) => list.add(Padding(
-        padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-        child: Column(
-          children: [
-            Container(
-              child: CircleAvatar(
-                radius: 35,
-                backgroundImage: AssetImage(user.docs.first.data()['profile']),
-              ),
+  // List<Widget> _getWatcherImageList(List currentListener) {
+  //   List<Widget> list = [];
+  //   var userList = FirebaseFirestore.instance.collection("users");
+  //
+  //   print('list.length: ${list.length}');
+  //   print('^_______________________^');
+  //   currentListener.forEach((uid) {
+  //     print('^^^?: ${uid}');
+  //     userList.where('uid', isEqualTo: uid.toString())
+  //         .get().then((data) {
+  //           var user = data.docs.first;
+  //           print('****: ${user['nickName']}');
+  //           list.add(Padding(
+  //             padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //             child: Column(
+  //               children: [
+  //                 Container(
+  //                   child: CircleAvatar(
+  //                     radius: 35,
+  //                     backgroundImage: AssetImage(data.docs.first['profile']),
+  //                   ),
+  //                 ),
+  //                 Text(data.docs.first['nickName'], style: TextStyle(color: Colors.black),),
+  //               ],
+  //             ),
+  //           ));
+  //     });
+  //   });
+  //   print('list.length: ${list.length}');
+  //   print('^_______________________^');
+  //
+  //
+  //   // currentListener.forEach((uid) {
+  //   //   print('uuuuid: ${uid.toString()}');
+  //   //   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+  //   //       stream: FirebaseFirestore.instance.collection("users").where('uid',
+  //   //           isEqualTo: uid.toString())
+  //   //           .snapshots(),
+  //   //       builder: (context, snapshot) {
+  //   //         if(!snapshot.hasData) return Text('no');
+  //   //         print('!!!!!!!!!!!!!!: ${snapshot.data}');
+  //   //         print('????????@?????: ${snapshot.data}');
+  //   //         list.add(Padding(
+  //   //           padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //           child: Column(
+  //   //             children: [
+  //   //               Container(
+  //   //                 child: CircleAvatar(
+  //   //                   radius: 35,
+  //   //                   backgroundImage: AssetImage(snapshot.data!.docs.first.data()['profile']),
+  //   //                 ),
+  //   //               ),
+  //   //               Text(snapshot.data!.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
+  //   //             ],
+  //   //           ),
+  //   //         ));
+  //   //         return CircularProgressIndicator(color: Colors.black,);
+  //   //       }
+  //   //   );
+  //   // }
+  //   // );
+  //   return list;
+  //
+  //   // if(!controller.is_participate.value){
+  //   //   list.add(Padding(
+  //   //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //       child: Container(
+  //   //         child: CircleAvatar(
+  //   //           radius: 35,
+  //   //           backgroundImage: AssetImage('assets/images/me.jpg'),
+  //   //         ),
+  //   //       ),
+  //   //     )
+  //   //     //     Container(
+  //   //     //   decoration: BoxDecoration(
+  //   //     //     shape: BoxShape.circle,
+  //   //     //     image: DecorationImage(
+  //   //     //       fit: BoxFit.fill,
+  //   //     //       image: AssetImage('assets/images/me.jpg'),
+  //   //     //     ),
+  //   //     //   ),
+  //   //     // )
+  //   //   );
+  //   // }
+  //   //
+  //   //
+  //   // controller.users.forEach((int uid) {
+  //   //   print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+  //   //   bool flag = false;
+  //   //   for (int i = 0; i < controller.speakingUser.length; i++) {
+  //   //     if (uid == controller.speakingUser[i]) {
+  //   //       list.add(Padding(
+  //   //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //         child: Container(
+  //   //           child: CircleAvatar(
+  //   //             radius: 40,
+  //   //             backgroundColor: Colors.lightGreen,
+  //   //             child: CircleAvatar(
+  //   //               radius: 35,
+  //   //               backgroundImage: AssetImage('assets/images/you.png'),
+  //   //             ),
+  //   //           ),
+  //   //         ),
+  //   //       )
+  //   //           // Container(
+  //   //           // decoration: BoxDecoration(
+  //   //           //   shape: BoxShape.circle,
+  //   //           //   border: Border.all(
+  //   //           //     color: Colors.lightGreen,
+  //   //           //     width: 2,
+  //   //           //   ),
+  //   //           // ),
+  //   //           // child: Image(
+  //   //           //   image: AssetImage('assets/images/you.png'),
+  //   //           //   width: 150,
+  //   //           //   height: 150,
+  //   //           // ))
+  //   //           );
+  //   //       flag = true;
+  //   //       break;
+  //   //     }
+  //   //   }
+  //   //   if (flag != true)
+  //   //     list.add(Padding(
+  //   //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+  //   //       child: Container(
+  //   //         child: CircleAvatar(
+  //   //           radius: 35,
+  //   //           backgroundImage: AssetImage('assets/images/you.png'),
+  //   //         ),
+  //   //       ),
+  //   //     ));
+  //   //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+  //   // });
+  //   // return list;
+  // }
+
+
+
+  // List<dynamic> _getWatcherDataList(List currentListener) {
+  //   List list = [];
+  //   List l = [];
+  //   var userList = FirebaseFirestore.instance.collection("users");
+  //
+  //   // print('list.length: ${list.length}');
+  //   print('^_______________________^');
+  //   currentListener.forEach((uid) {
+  //     print('^^^?: ${uid}');
+  //     userList.where('uid', isEqualTo: uid.toString())
+  //         .get().then((data) {
+  //       var user = data.docs.first;
+  //       print('****: ${user['nickName']}');
+  //
+  //       if(!list.contains(data))
+  //         list.add(user);
+  //
+  //       print('ASDFASDFA: ${list.first}');
+  //     });
+  //   });
+  //   print('list.length: ${list}');
+  //   print('^_______________________^');
+  //
+  //   return list;
+  // }
+
+  List<Widget> _getWatcherImageList() {
+    return controller.listenerDataList.map((user) => Padding(
+      padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+      child: Column(
+        children: [
+          Container(
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: AssetImage(user['profile']),
             ),
-            Text(user.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
-          ],
-        ),
-      )));
-    });
-    print('^_______________________^');
-
-
-    // currentListener.forEach((uid) {
-    //   print('uuuuid: ${uid.toString()}');
-    //   StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-    //       stream: FirebaseFirestore.instance.collection("users").where('uid',
-    //           isEqualTo: uid.toString())
-    //           .snapshots(),
-    //       builder: (context, snapshot) {
-    //         if(!snapshot.hasData) return Text('no');
-    //         print('!!!!!!!!!!!!!!: ${snapshot.data}');
-    //         print('????????@?????: ${snapshot.data}');
-    //         list.add(Padding(
-    //           padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //           child: Column(
-    //             children: [
-    //               Container(
-    //                 child: CircleAvatar(
-    //                   radius: 35,
-    //                   backgroundImage: AssetImage(snapshot.data!.docs.first.data()['profile']),
-    //                 ),
-    //               ),
-    //               Text(snapshot.data!.docs.first.data()['nickName'], style: TextStyle(color: Colors.black),),
-    //             ],
-    //           ),
-    //         ));
-    //         return CircularProgressIndicator(color: Colors.black,);
-    //       }
-    //   );
-    // }
-    // );
-    return list;
-
-    // if(!controller.is_participate.value){
-    //   list.add(Padding(
-    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //       child: Container(
-    //         child: CircleAvatar(
-    //           radius: 35,
-    //           backgroundImage: AssetImage('assets/images/me.jpg'),
-    //         ),
-    //       ),
-    //     )
-    //     //     Container(
-    //     //   decoration: BoxDecoration(
-    //     //     shape: BoxShape.circle,
-    //     //     image: DecorationImage(
-    //     //       fit: BoxFit.fill,
-    //     //       image: AssetImage('assets/images/me.jpg'),
-    //     //     ),
-    //     //   ),
-    //     // )
-    //   );
-    // }
-    //
-    //
-    // controller.users.forEach((int uid) {
-    //   print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-    //   bool flag = false;
-    //   for (int i = 0; i < controller.speakingUser.length; i++) {
-    //     if (uid == controller.speakingUser[i]) {
-    //       list.add(Padding(
-    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //         child: Container(
-    //           child: CircleAvatar(
-    //             radius: 40,
-    //             backgroundColor: Colors.lightGreen,
-    //             child: CircleAvatar(
-    //               radius: 35,
-    //               backgroundImage: AssetImage('assets/images/you.png'),
-    //             ),
-    //           ),
-    //         ),
-    //       )
-    //           // Container(
-    //           // decoration: BoxDecoration(
-    //           //   shape: BoxShape.circle,
-    //           //   border: Border.all(
-    //           //     color: Colors.lightGreen,
-    //           //     width: 2,
-    //           //   ),
-    //           // ),
-    //           // child: Image(
-    //           //   image: AssetImage('assets/images/you.png'),
-    //           //   width: 150,
-    //           //   height: 150,
-    //           // ))
-    //           );
-    //       flag = true;
-    //       break;
-    //     }
-    //   }
-    //   if (flag != true)
-    //     list.add(Padding(
-    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-    //       child: Container(
-    //         child: CircleAvatar(
-    //           radius: 35,
-    //           backgroundImage: AssetImage('assets/images/you.png'),
-    //         ),
-    //       ),
-    //     ));
-    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-    // });
-    // return list;
+          ),
+          Text(user['nickName'], style: TextStyle(color: Colors.black),),
+        ],
+      ),
+    )).toList();
   }
 
   /// Video view wrapper

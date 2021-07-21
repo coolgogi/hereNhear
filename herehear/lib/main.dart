@@ -17,6 +17,7 @@ import 'package:herehear/test_folder/subscribed_test_connect_firebase.dart';
 import 'appBar/create_broadcast.dart';
 import 'appBar/create_groupcall.dart';
 import 'contest/contest.dart';
+import 'etc/invite.dart';
 import 'etc/listTest.dart';
 import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
@@ -103,7 +104,8 @@ class MyApp extends StatelessWidget {
               // initialBinding: BindingsBuilder(() {}),
               initialBinding: AppBinding(),
               title: 'Here & Hear',
-              home: LandingPage.withData(_data!),
+              home:  InvitationPage.withData(_data!),
+              //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
                   name: '/',

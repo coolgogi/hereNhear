@@ -40,9 +40,7 @@ class LoginPage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                builder: (context) =>InvitationPage()
-                ));
+
     },
               child: Center(
                   child: Text(
