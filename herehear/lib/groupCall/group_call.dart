@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio/just_audio.dart';
 
 // import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 // import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 
 class AgoraEventController extends GetxController {
+  final player = AudioPlayer();
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;

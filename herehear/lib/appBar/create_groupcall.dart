@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/groupCall/controllers/group_call_controller.dart';
+import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
@@ -23,6 +24,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   DateTime selectedDate = DateTime.now();
   bool _validateError = false;
   final controller = Get.put(GroupCallController());
+  final controller2 = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +178,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId);
+    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId, controller2.location.value);
     // FirebaseFirestore.instance
     //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
     // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
