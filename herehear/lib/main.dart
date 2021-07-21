@@ -104,7 +104,7 @@ class MyApp extends StatelessWidget {
               // initialBinding: BindingsBuilder(() {}),
               initialBinding: AppBinding(),
               title: 'Here & Hear',
-              home:  InvitationPage(),
+              home:  InvitationPage.withData(_data!),
               //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(

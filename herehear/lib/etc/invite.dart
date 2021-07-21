@@ -7,19 +7,10 @@ import 'package:herehear/main.dart';
 
 class InvitationPage extends StatelessWidget {
   Map<String, dynamic> _data = new Map();
-  Future<void> getData() async {
-    String uid = '';
-    User? _user = FirebaseAuth.instance.currentUser;
-
-    if (_user != null)
-      uid = _user.uid;
-    else if (_user == null) uid = 'Guest';
-
-    var _data =
-    await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-    this._data = _data.data()!;
+  InvitationPage.withData(Map<String, dynamic> data) {
+    _data = data;
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +27,7 @@ class InvitationPage extends StatelessWidget {
             Container(
               child: ElevatedButton(
                 onPressed: () => Get.off(
-                  () => LandingPage.withData(_data!),
+                  () => LandingPage.withData(_data),
                 ),
                 child: Text(
                   "네",
