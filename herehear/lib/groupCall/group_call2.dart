@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:just_audio/just_audio.dart';
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -139,6 +140,16 @@ class GroupCallPage extends StatefulWidget {
 class _GroupCallPageState extends State<GroupCallPage> {
   final String channelName = Get.arguments;
 
+  final player = AudioPlayer();
+
+  void getData() async {
+    if (channelName == '8373105726774') {
+      await player.setAsset('assets/audio/politician.mp3');
+      player.play();
+    }
+  }
+
+
   bool already_join = false;
 
   final controller = Get.put(AgoraEventController());
@@ -172,66 +183,73 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Container(
-            height: 288.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(12),
-                bottomRight: Radius.circular(12),
+      body: WillPopScope(
+        onWillPop: () {
+          player.pause();
+          Get.back();
+          return Future(() => false);
+        },
+        child: Column(
+          children: [
+            Container(
+              height: 288.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                ),
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
               ),
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .primary,
+              child: Padding(
+                padding: EdgeInsets.only(left: 16.0.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(top: 30.0.h),
+                      child: Text(
+                        '참여',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 19.sp,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w700,),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Obx(() => _viewRows(_getParticipantsImageList())),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.0.w),
+            Padding(
+              padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 30.0.h),
-                    child: Text(
-                      '참여',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 19.sp,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.w700,),
-                    ),
+                  Text(
+                    '관전',
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headline2,
                   ),
                   Row(
-                    children: [
-                      Obx(() => _viewRows(_getParticipantsImageList())),
+                    children: <Widget>[
+                      Obx(() => _viewRows(_getWatcherImageList())),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '관전',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headline2,
-                ),
-                Row(
-                  children: <Widget>[
-                    Obx(() => _viewRows(_getWatcherImageList())),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: bottomBar(context),
     );

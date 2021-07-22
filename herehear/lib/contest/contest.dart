@@ -22,15 +22,16 @@ class ContestPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(44.0.h),
         child: AppBar(
-          title: Text('소리꾼들',
-              style: Theme.of(context).appBarTheme.titleTextStyle),
+          title:
+              Text('소리꾼들', style: Theme.of(context).appBarTheme.titleTextStyle),
         ),
       ),
       body: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
-            child: Text('자유 컨테스트', style: Theme.of(context).textTheme.headline2),
+            child:
+                Text('자유 컨테스트', style: Theme.of(context).textTheme.headline2),
           ),
           Container(
             height: 150.0.h,
@@ -38,14 +39,15 @@ class ContestPage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  padding:
+                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => EvaluationPage());
                           },
                           child: Container(
@@ -57,7 +59,10 @@ class ContestPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   children: [
                                     Image.asset('assets/images/it2.jpg'),
-                                    Image.asset('assets/images/playButton.png', width: 80.0.w,),
+                                    Image.asset(
+                                      'assets/images/playButton.png',
+                                      width: 80.0.w,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -67,20 +72,25 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Center(child: Text('한화 이글스를 찾아간 \n VJ특공대', style: Theme.of(context).textTheme.subtitle1,)),
+                        child: Center(
+                            child: Text(
+                          '한화 이글스를 찾아간',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        )),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  padding:
+                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => EvaluationPage2());
                           },
                           child: Container(
@@ -92,7 +102,10 @@ class ContestPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   children: [
                                     Image.asset('assets/images/she2.jpeg'),
-                                    Image.asset('assets/images/playButton.png', width: 80.0.w,),
+                                    Image.asset(
+                                      'assets/images/playButton.png',
+                                      width: 80.0.w,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -102,20 +115,24 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('여자 목소리', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text(
+                          '여자 목소리',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  padding:
+                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => EvaluationPage());
                           },
                           child: Container(
@@ -127,7 +144,10 @@ class ContestPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   children: [
                                     Image.asset('assets/images/you2.jpg'),
-                                    Image.asset('assets/images/playButton.png', width: 80.0.w,),
+                                    Image.asset(
+                                      'assets/images/playButton.png',
+                                      width: 80.0.w,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -137,20 +157,24 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('이륙하는 비행기', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text(
+                          '이륙하는 비행기',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  padding:
+                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => EvaluationPage());
                           },
                           child: Container(
@@ -162,7 +186,10 @@ class ContestPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   children: [
                                     Image.asset('assets/images/hamster.jpg'),
-                                    Image.asset('assets/images/playButton.png', width: 80.0.w,),
+                                    Image.asset(
+                                      'assets/images/playButton.png',
+                                      width: 80.0.w,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -172,20 +199,24 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('중구가 시키드나', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text(
+                          '중구가 시키드나',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  padding:
+                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Get.to(() => EvaluationPage());
                           },
                           child: Container(
@@ -197,7 +228,10 @@ class ContestPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   children: [
                                     Image.asset('assets/images/me.jpg'),
-                                    Image.asset('assets/images/playButton.png', width: 80.0.w,),
+                                    Image.asset(
+                                      'assets/images/playButton.png',
+                                      width: 80.0.w,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -207,7 +241,10 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text('도라에몽', style: Theme.of(context).textTheme.subtitle1,),
+                        child: Text(
+                          '도라에몽',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
                       ),
                     ],
                   ),
@@ -217,11 +254,16 @@ class ContestPage extends StatelessWidget {
           ),
           Divider(),
           Padding(
-            padding: EdgeInsets.only(right: 14.0.w,),
+            padding: EdgeInsets.only(
+              right: 14.0.w,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text('기간: 7월 19일 ~ 7월 23일', style: Theme.of(context).textTheme.bodyText2,),
+                Text(
+                  '기간: 7월 19일 ~ 7월 23일',
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
               ],
             ),
           ),
@@ -241,7 +283,9 @@ class ContestPage extends StatelessWidget {
           Container(
             height: 100.0.h,
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0.w,),
+              padding: EdgeInsets.only(
+                left: 16.0.w,
+              ),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
@@ -253,29 +297,34 @@ class ContestPage extends StatelessWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 8.0.h),
+                            child: CircleAvatar(
+                              radius: 48.r,
+                              backgroundImage:
+                                  AssetImage('assets/images/you.png'),
                               child: CircleAvatar(
-                                radius: 48.r,
-                                backgroundImage: AssetImage('assets/images/you.png'),
-                                child: CircleAvatar(
-                                  radius: 49.r,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage('assets/images/playButton3.png'),
-                                ),
+                                radius: 49.r,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/playButton3.png'),
                               ),
+                            ),
                           ),
                           Positioned(
                             left: 12,
                             right: 5,
                             top: -105,
                             bottom: 0,
-                            child:Image.asset('assets/images/goldCrown.png', width: 100,),
+                            child: Image.asset(
+                              'assets/images/goldCrown.png',
+                              width: 100,
+                            ),
                           ),
                           Positioned(
                             left: 0,
                             right: 55,
                             top: -73,
                             bottom: 3,
-                            child:Container(
+                            child: Container(
                               width: 20.r,
                               decoration: BoxDecoration(
                                 color: Color(0xFF618051),
@@ -288,7 +337,15 @@ class ContestPage extends StatelessWidget {
                             right: 0,
                             top: 12,
                             bottom: 0,
-                            child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                            child: Text(
+                              '1위',
+                              style: TextStyle(
+                                fontSize: 16.0.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -302,29 +359,34 @@ class ContestPage extends StatelessWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 8.0.h),
+                            child: CircleAvatar(
+                              radius: 48.r,
+                              backgroundImage:
+                                  AssetImage('assets/images/me.jpg'),
                               child: CircleAvatar(
-                                radius: 48.r,
-                                backgroundImage: AssetImage('assets/images/me.jpg'),
-                                child: CircleAvatar(
-                                  radius: 49.r,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage('assets/images/playButton3.png'),
-                                ),
+                                radius: 49.r,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/playButton3.png'),
                               ),
+                            ),
                           ),
                           Positioned(
                             left: 12,
                             right: 5,
                             top: -105,
                             bottom: 0,
-                            child:Image.asset('assets/images/silverCrown.png', width: 100,),
+                            child: Image.asset(
+                              'assets/images/silverCrown.png',
+                              width: 100,
+                            ),
                           ),
                           Positioned(
                             left: 0,
                             right: 55,
                             top: -73,
                             bottom: 3,
-                            child:Container(
+                            child: Container(
                               width: 20.r,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.primary,
@@ -337,7 +399,15 @@ class ContestPage extends StatelessWidget {
                             right: 0,
                             top: 12,
                             bottom: 0,
-                            child:Text('2위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                            child: Text(
+                              '2위',
+                              style: TextStyle(
+                                fontSize: 16.0.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -350,34 +420,39 @@ class ContestPage extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.only(top: 8.0.h),
                           child: CircleAvatar(
-                              radius: 48.r,
-                              backgroundImage: AssetImage('assets/images/he.jpg'),
-                              child: GestureDetector(
-                                onTap: () => Get.to(() => EvaluationPage2()),
-                                child: CircleAvatar(
-                                  radius: 49.r,
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage: AssetImage('assets/images/playButton3.png'),
-                                ),
+                            radius: 48.r,
+                            backgroundImage: AssetImage('assets/images/he.jpg'),
+                            child: GestureDetector(
+                              onTap: () => Get.to(() => EvaluationPage2()),
+                              child: CircleAvatar(
+                                radius: 49.r,
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:
+                                    AssetImage('assets/images/playButton3.png'),
                               ),
                             ),
                           ),
+                        ),
                         Positioned(
                           left: 12,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/bronzeCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/bronzeCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
                           right: 55,
                           top: -73,
                           bottom: 3,
-                          child:Container(
+                          child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryVariant,
+                              color:
+                                  Theme.of(context).colorScheme.primaryVariant,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -387,7 +462,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 12,
                           bottom: 0,
-                          child:Text('3위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '3위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -400,9 +483,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/dog.jpg'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                   Padding(
@@ -413,9 +494,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/cat.jpg'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                 ],
@@ -439,41 +518,43 @@ class ContestPage extends StatelessWidget {
           Container(
             height: 100.0.h,
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0.w,),
+              padding: EdgeInsets.only(
+                left: 16.0.w,
+              ),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-
-    GestureDetector(
-    onTap: () => Get.to(() => EvaluationPage4()),
+                  GestureDetector(
+                    onTap: () => Get.to(() => EvaluationPage4()),
                     child: Padding(
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: Stack(
                         children: [
                           Container(
-                              width: 90.r,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage('assets/images/hamster.jpg'),
-                                      fit: BoxFit.fill
-                                  )
-                              ),
-                            ),
-
+                            width: 90.r,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/hamster.jpg'),
+                                    fit: BoxFit.fill)),
+                          ),
                           Positioned(
                             left: 15,
                             right: 5,
                             top: -105,
                             bottom: 0,
-                            child:Image.asset('assets/images/goldCrown.png', width: 100,),
+                            child: Image.asset(
+                              'assets/images/goldCrown.png',
+                              width: 100,
+                            ),
                           ),
                           Positioned(
                             left: 0,
                             right: 50,
                             top: -75,
                             bottom: 3,
-                            child:Container(
+                            child: Container(
                               width: 20.r,
                               decoration: BoxDecoration(
                                 color: Color(0xFF618051),
@@ -486,7 +567,15 @@ class ContestPage extends StatelessWidget {
                             right: 0,
                             top: 11,
                             bottom: 0,
-                            child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                            child: Text(
+                              '1위',
+                              style: TextStyle(
+                                fontSize: 16.0.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: 'Roboto',
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -502,23 +591,24 @@ class ContestPage extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage('assets/images/cat.jpg'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                         Positioned(
                           left: 15,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/silverCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/silverCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
                           right: 50,
                           top: -75,
                           bottom: 3,
-                          child:Container(
+                          child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary,
@@ -531,7 +621,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 11,
                           bottom: 0,
-                          child:Text('2위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '2위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -546,16 +644,17 @@ class ContestPage extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage('assets/images/it.jpg'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                         Positioned(
                           left: 15,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/bronzeCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/bronzeCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
@@ -565,7 +664,8 @@ class ContestPage extends StatelessWidget {
                           child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryVariant,
+                              color:
+                                  Theme.of(context).colorScheme.primaryVariant,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -575,7 +675,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 11,
                           bottom: 0,
-                          child:Text('3위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '3위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -588,9 +696,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/it2.jpg'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                   Padding(
@@ -601,9 +707,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/you.png'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                 ],
@@ -614,7 +718,8 @@ class ContestPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 16.0.w, top: 10.0.h),
             child: Row(
               children: [
-                Text('우리동네 웃음 전도사', style: Theme.of(context).textTheme.headline2),
+                Text('우리동네 웃음 전도사',
+                    style: Theme.of(context).textTheme.headline2),
                 Expanded(child: Container()),
                 IconButton(
                   icon: Icon(Icons.chevron_right),
@@ -626,7 +731,9 @@ class ContestPage extends StatelessWidget {
           Container(
             height: 100.0.h,
             child: Padding(
-              padding: EdgeInsets.only(left: 16.0.w,),
+              padding: EdgeInsets.only(
+                left: 16.0.w,
+              ),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
@@ -640,23 +747,24 @@ class ContestPage extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage('assets/images/she.jpg'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                         Positioned(
                           left: 15,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/goldCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/goldCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
                           right: 50,
                           top: -75,
                           bottom: 3,
-                          child:Container(
+                          child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
                               color: Color(0xFF618051),
@@ -669,7 +777,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 11,
                           bottom: 0,
-                          child:Text('1위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '1위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -684,23 +800,24 @@ class ContestPage extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage('assets/images/she2.jpeg'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                         Positioned(
                           left: 15,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/silverCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/silverCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
                           right: 50,
                           top: -75,
                           bottom: 3,
-                          child:Container(
+                          child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
                               color: Theme.of(context).colorScheme.primary,
@@ -713,7 +830,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 11,
                           bottom: 0,
-                          child:Text('2위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '2위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -728,16 +853,17 @@ class ContestPage extends StatelessWidget {
                               shape: BoxShape.circle,
                               image: DecorationImage(
                                   image: AssetImage('assets/images/you2.jpg'),
-                                  fit: BoxFit.fill
-                              )
-                          ),
+                                  fit: BoxFit.fill)),
                         ),
                         Positioned(
                           left: 15,
                           right: 5,
                           top: -105,
                           bottom: 0,
-                          child:Image.asset('assets/images/bronzeCrown.png', width: 100,),
+                          child: Image.asset(
+                            'assets/images/bronzeCrown.png',
+                            width: 100,
+                          ),
                         ),
                         Positioned(
                           left: 0,
@@ -747,7 +873,8 @@ class ContestPage extends StatelessWidget {
                           child: Container(
                             width: 20.r,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primaryVariant,
+                              color:
+                                  Theme.of(context).colorScheme.primaryVariant,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -757,7 +884,15 @@ class ContestPage extends StatelessWidget {
                           right: 0,
                           top: 11,
                           bottom: 0,
-                          child:Text('3위', style: TextStyle(fontSize: 16.0.sp, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: 'Roboto',),),
+                          child: Text(
+                            '3위',
+                            style: TextStyle(
+                              fontSize: 16.0.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -770,9 +905,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/you.png'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                   Padding(
@@ -783,9 +916,7 @@ class ContestPage extends StatelessWidget {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: AssetImage('assets/images/cat.jpg'),
-                              fit: BoxFit.fill
-                          )
-                      ),
+                              fit: BoxFit.fill)),
                     ),
                   ),
                 ],
