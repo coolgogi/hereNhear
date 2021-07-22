@@ -205,11 +205,9 @@ class LandingPage extends StatelessWidget {
                 label: '홈',
               ),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/favorite_stroke.png',
-                    width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/favorite_active.png',
-                    width: 20.w, height: 20.w),
-                label: '구독',
+                icon: Icon(Icons.star_rate_outlined,),
+                activeIcon: Icon(Icons.star_rate, color: Theme.of(context).colorScheme.primary,),
+                label: '소리꾼들',
               ),
               BottomNavigationBarItem(
                 icon: Icon(

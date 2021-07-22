@@ -32,8 +32,8 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title:
-            Text('그룹 대화', style: Theme.of(context).appBarTheme.titleTextStyle),
+        centerTitle: true,
+        title: Text('새 그룹 대화방', style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
@@ -50,31 +50,35 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
             Container(
               padding: EdgeInsets.only(bottom: 10),
               child: Text(
-                '방 예약하기',
+                '시작시간 예약하기',
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: GestureDetector(
-                    onTap: () {
-                      _selectDate(context);
-                    },
-                    child: Icon(Icons.calendar_today, size: 30))),
-            Container(
-                padding: EdgeInsets.only(bottom: 10),
-                child: GestureDetector(
-                    onTap: () {
-                      Future<TimeOfDay?> selectedTime = showTimePicker(
-                          context: context, initialTime: TimeOfDay.now());
-                      selectedTime.then((timeOfDay) {
-                        setState(() {
-                          _selectedTime =
+            Row(
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.only(bottom: 10, right: 15),
+                    child: GestureDetector(
+                        onTap: () {
+                          _selectDate(context);
+                        },
+                        child: Icon(Icons.calendar_today, size: 30))),
+                Container(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: GestureDetector(
+                        onTap: () {
+                          Future<TimeOfDay?> selectedTime = showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          selectedTime.then((timeOfDay) {
+                            setState(() {
+                              _selectedTime =
                               '${timeOfDay!.hour}: ${timeOfDay.minute}';
-                        });
-                      });
-                    },
-                    child: Icon(Icons.access_time, size: 30))),
+                            });
+                          });
+                        },
+                        child: Icon(Icons.access_time, size: 30))),
+              ],
+            ),
             SizedBox(
               height: 16.0,
             ),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:just_audio/just_audio.dart';
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -54,7 +53,7 @@ class AgoraEventController extends GetxController {
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine.joinChannel(null, GroupCallPage().channelName, null, 0);
+    await _engine.joinChannel(null, GroupCallPage2().channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -131,24 +130,14 @@ class AgoraEventController extends GetxController {
   }
 }
 
-class GroupCallPage extends StatefulWidget {
+class GroupCallPage2 extends StatefulWidget {
   final String channelName = Get.arguments;
   @override
-  _GroupCallPageState createState() => _GroupCallPageState();
+  _GroupCallPage2State createState() => _GroupCallPage2State();
 }
 
-class _GroupCallPageState extends State<GroupCallPage> {
+class _GroupCallPage2State extends State<GroupCallPage2> {
   final String channelName = Get.arguments;
-
-  final player = AudioPlayer();
-
-  void getData() async {
-    if (channelName == '8373105726774') {
-      await player.setAsset('assets/audio/politician.mp3');
-      player.play();
-    }
-  }
-
 
   bool already_join = false;
 
@@ -183,73 +172,66 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ],
       ),
       backgroundColor: Colors.white,
-      body: WillPopScope(
-        onWillPop: () {
-          player.pause();
-          Get.back();
-          return Future(() => false);
-        },
-        child: Column(
-          children: [
-            Container(
-              height: 288.h,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
-                ),
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
+      body: Column(
+        children: [
+          Container(
+            height: 288.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
               ),
-              child: Padding(
-                padding: EdgeInsets.only(left: 16.0.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30.0.h),
-                      child: Text(
-                        '참여',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 19.sp,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Obx(() => _viewRows(_getParticipantsImageList())),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .primary,
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
+            child: Padding(
+              padding: EdgeInsets.only(left: 16.0.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    '관전',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2,
+                  Padding(
+                    padding: EdgeInsets.only(top: 30.0.h),
+                    child: Text(
+                      '참여',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19.sp,
+                        fontFamily: 'Roboto',
+                        fontWeight: FontWeight.w700,),
+                    ),
                   ),
                   Row(
-                    children: <Widget>[
-                      Obx(() => _viewRows(_getWatcherImageList())),
+                    children: [
+                      Obx(() => _viewRows(_getParticipantsImageList())),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '관전',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline2,
+                ),
+                Row(
+                  children: <Widget>[
+                    Obx(() => _viewRows(_getWatcherImageList())),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: bottomBar(context),
     );
@@ -275,7 +257,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
           child: Container(
             child: CircleAvatar(
               radius: 30,
-              backgroundImage: AssetImage('assets/images/hamster.jpg'),
+              backgroundImage: AssetImage('assets/images/me.jpg'),
             ),
           ),
         ),
