@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:herehear/appBar/invitation.dart';
 import 'package:herehear/broadcast/user_view.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import '../utils/AppID.dart';
@@ -186,11 +187,16 @@ class BroadCastPage extends StatelessWidget {
       // profile_audience.add();
       // nickName_audience.add();
     }
-    if(dbData['title'] == '바다 ASMR'){
+    if (dbData['title'] == '바다 ASMR') {
       await player.setAsset('assets/audio/broadcast/sea.mp3');
       player.play();
     }
+    if (dbData['title'] == '포항 문화예술회관') {
+      await player.setAsset('assets/audio/broadcast/piano.mp3');
+      player.play();
+    }
   }
+
   final player = AudioPlayer();
 
   @override
@@ -198,11 +204,14 @@ class BroadCastPage extends StatelessWidget {
     getData();
     return Scaffold(
       appBar: profileAppBar(context),
-      body: WillPopScope(child: ChatPage.withData(dbData),onWillPop: () {
-        player.pause();
-        Get.back();
-        return Future(() => false);
-      },),
+      body: WillPopScope(
+        child: ChatPage.withData(dbData),
+        onWillPop: () {
+          player.pause();
+          Get.back();
+          return Future(() => false);
+        },
+      ),
     );
   }
 
@@ -224,11 +233,23 @@ class BroadCastPage extends StatelessWidget {
       ),
       backgroundColor: Colors.white,
       title: Text(
-        nickName_broadcaster,
+        dbData['title'],
         style: Theme.of(context).textTheme.subtitle1,
       ),
       // backgroundColor: black,
       actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.add,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => invite()),
+            );
+          },
+        ),
         IconButton(
           icon: Image.asset(
             'assets/icons/groupBlack.png',
@@ -277,7 +298,10 @@ class BroadCastPage extends StatelessWidget {
     if (role == ClientRole.Broadcaster) {
       await changeState(channelName);
     }
-    if(dbData['title'] == '바다 ASMR'){
+    if (dbData['title'] == '바다 ASMR') {
+      player.pause();
+    }
+    if (dbData['title'] == '포항 문화예술회관') {
       player.pause();
     }
     controller.onClose();

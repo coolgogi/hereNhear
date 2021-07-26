@@ -30,7 +30,7 @@ class InvitationPage extends StatelessWidget {
                   () => LandingPage.withData(_data),
                 ),
                 child: Text(
-                  "네",
+                  "예",
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -39,7 +39,7 @@ class InvitationPage extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
               child: ElevatedButton(
                 onPressed: () => Get.off(
-                  () => LandingPage(),
+                  () => LandingPage.withData(_data),
                 ),
                 child: Text(
                   "아니요",

@@ -141,7 +141,9 @@ flutter:
     - assets/audio/politician.mp3
     - assets/images/testUser.png
     - assets/audio/broadcast/sea.mp3
+    - assets/audio/broadcast/piano.mp3
     - assets/images/broadcast/sea.jpg
+    - assets/images/broadcast/piano.png
     - assets/images/broadcast/bread.jpg
     - assets/images/broadcast/asmr.jpg
     - assets/images/broadcast/food.jpg

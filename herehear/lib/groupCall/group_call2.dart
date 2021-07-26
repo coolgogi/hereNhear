@@ -29,12 +29,8 @@ class AgoraEventController extends GetxController {
     // clear users
     users.clear();
     // destroy sdk
-    _engine
-        .leaveChannel()
-        .obs;
-    _engine
-        .destroy()
-        .obs;
+    _engine.leaveChannel().obs;
+    _engine.destroy().obs;
     super.onClose();
   }
 
@@ -54,7 +50,8 @@ class AgoraEventController extends GetxController {
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
-    await _engine.joinChannel(null, GroupCallPage().channelName, null, 0);
+    await _engine.joinChannel(
+        null, GroupCallPage('title').channelName, null, 0);
   }
 
   /// Create agora sdk instance and initialize
@@ -132,12 +129,17 @@ class AgoraEventController extends GetxController {
 }
 
 class GroupCallPage extends StatefulWidget {
+  String? _title;
+  GroupCallPage(this._title);
   final String channelName = Get.arguments;
   @override
-  _GroupCallPageState createState() => _GroupCallPageState();
+  _GroupCallPageState createState() => _GroupCallPageState(_title);
 }
 
 class _GroupCallPageState extends State<GroupCallPage> {
+  String? _title;
+  _GroupCallPageState(this._title);
+
   final String channelName = Get.arguments;
 
   final player = AudioPlayer();
@@ -149,35 +151,51 @@ class _GroupCallPageState extends State<GroupCallPage> {
     }
   }
 
-
   bool already_join = false;
 
   final controller = Get.put(AgoraEventController());
 
   @override
   Widget build(BuildContext context) {
+    getData();
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.add), color: Colors.black, onPressed: null,),
+        leading: IconButton(
+          icon: Icon(Icons.add),
+          color: Colors.black,
+          onPressed: null,
+        ),
         backgroundColor: Colors.black,
-        title: Center(child: Text('Here&Hear', style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'Noto Sans CJK kr',
-          fontWeight: FontWeight.w900,
-          fontSize: 18.sp,),),),
+        title: Center(
+          child: Text(
+            _title!,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Noto Sans CJK kr',
+              fontWeight: FontWeight.w900,
+              fontSize: 18.sp,
+            ),
+          ),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 10.0.h, right: 8.0.w),
             child: Column(
               children: <Widget>[
                 Icon(Icons.people),
-                Text('999+', style: TextStyle(fontSize: 10),),
+                Text(
+                  '999+',
+                  style: TextStyle(fontSize: 10),
+                ),
               ],
             ),
           ),
           IconButton(
             icon: Image.asset(
-              'assets/icons/exit.png', width: 23.w, color: Colors.white,),
+              'assets/icons/exit.png',
+              width: 23.w,
+              color: Colors.white,
+            ),
             onPressed: () => _onCallEnd(),
           ),
         ],
@@ -198,10 +216,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
                   bottomLeft: Radius.circular(12),
                   bottomRight: Radius.circular(12),
                 ),
-                color: Theme
-                    .of(context)
-                    .colorScheme
-                    .primary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               child: Padding(
                 padding: EdgeInsets.only(left: 16.0.w),
@@ -216,7 +231,8 @@ class _GroupCallPageState extends State<GroupCallPage> {
                           color: Colors.white,
                           fontSize: 19.sp,
                           fontFamily: 'Roboto',
-                          fontWeight: FontWeight.w700,),
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     Row(
@@ -235,10 +251,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
                 children: [
                   Text(
                     '관전',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline2,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   Row(
                     children: <Widget>[
@@ -281,7 +294,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('낚시쟁이', style: TextStyle(color: Colors.white),),
+          child: Text(
+            '낚시쟁이',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     ));
@@ -300,7 +316,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 6.0, top: 8.0),
-          child: Text('포항장첸', style: TextStyle(color: Colors.white),),
+          child: Text(
+            '포항장첸',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     ));
@@ -319,7 +338,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 9.0, top: 8.0),
-          child: Text('댕댕이', style: TextStyle(color: Colors.white),),
+          child: Text(
+            '댕댕이',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     ));
@@ -338,7 +360,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('공부벌레', style: TextStyle(color: Colors.white),),
+          child: Text(
+            '공부벌레',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     ));
@@ -361,7 +386,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
     //   ],
     // ));
 
-    if(controller.is_participate.value) {
+    if (controller.is_participate.value) {
       list.add(Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -376,72 +401,78 @@ class _GroupCallPageState extends State<GroupCallPage> {
           ),
           Padding(
             padding: EdgeInsets.only(left: 14.0, top: 8.0),
-            child: Text('USER', style: TextStyle(color: controller.is_participate.value? Colors.white : Color(0xFF618051)),),
+            child: Text(
+              'USER',
+              style: TextStyle(
+                  color: controller.is_participate.value
+                      ? Colors.white
+                      : Color(0xFF618051)),
+            ),
           ),
         ],
       ));
     }
 
-  //   controller.participants.forEach((int uid) {
-  //     // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-  //     bool flag = false;
-  //     for (int i = 0; i < controller.speakingUser.length; i++) {
-  //       if (uid == controller.speakingUser[i]) {
-  //         list.add(Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Padding(
-  //               padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-  //               child: Container(
-  //                   child: CircleAvatar(
-  //                     radius: 30,
-  //                     backgroundColor: Colors.lightGreen,
-  //                     child: CircleAvatar(
-  //                       radius: 30,
-  //                       backgroundImage: AssetImage('assets/images/you.png'),
-  //                     ),
-  //                   ),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.only(left: 9.0, top: 8.0),
-  //               child: Text('ME', style: TextStyle(color: Colors.white),),
-  //             ),
-  //           ],
-  //         ));
-  //         flag = true;
-  //         break;
-  //       }
-  //     }
-  //       if (flag != true)
-  //   list.add(Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Padding(
-  //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-  //         child: Container(
-  //           child: CircleAvatar(
-  //             radius: 30,
-  //             backgroundImage: AssetImage('assets/images/you.png'),
-  //           ),
-  //         ),
-  //       ),
-  //       Padding(
-  //         padding: EdgeInsets.only(left: 7.0, top: 8.0),
-  //         child: Text('ME', style: TextStyle(color: Colors.white),),
-  //       ),
-  //     ],
-  //   ));
-  //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-  // }
+    //   controller.participants.forEach((int uid) {
+    //     // print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+    //     bool flag = false;
+    //     for (int i = 0; i < controller.speakingUser.length; i++) {
+    //       if (uid == controller.speakingUser[i]) {
+    //         list.add(Column(
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: [
+    //             Padding(
+    //               padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //               child: Container(
+    //                   child: CircleAvatar(
+    //                     radius: 30,
+    //                     backgroundColor: Colors.lightGreen,
+    //                     child: CircleAvatar(
+    //                       radius: 30,
+    //                       backgroundImage: AssetImage('assets/images/you.png'),
+    //                     ),
+    //                   ),
+    //               ),
+    //             ),
+    //             Padding(
+    //               padding: EdgeInsets.only(left: 9.0, top: 8.0),
+    //               child: Text('ME', style: TextStyle(color: Colors.white),),
+    //             ),
+    //           ],
+    //         ));
+    //         flag = true;
+    //         break;
+    //       }
+    //     }
+    //       if (flag != true)
+    //   list.add(Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //     children: [
+    //       Padding(
+    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //         child: Container(
+    //           child: CircleAvatar(
+    //             radius: 30,
+    //             backgroundImage: AssetImage('assets/images/you.png'),
+    //           ),
+    //         ),
+    //       ),
+    //       Padding(
+    //         padding: EdgeInsets.only(left: 7.0, top: 8.0),
+    //         child: Text('ME', style: TextStyle(color: Colors.white),),
+    //       ),
+    //     ],
+    //   ));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // }
 
-  // );
+    // );
 
-  return list;
-}
+    return list;
+  }
 
-List<Widget> _getWatcherImageList() {
-  final List<Widget> list = [];
+  List<Widget> _getWatcherImageList() {
+    final List<Widget> list = [];
 
     list.add(Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -457,20 +488,23 @@ List<Widget> _getWatcherImageList() {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('짱구형아', style: TextStyle(color: Color(0xFF618051)),),
+          child: Text(
+            '짱구형아',
+            style: TextStyle(color: Color(0xFF618051)),
+          ),
         ),
       ],
     )
-      //     Container(
-      //   decoration: BoxDecoration(
-      //     shape: BoxShape.circle,
-      //     image: DecorationImage(
-      //       fit: BoxFit.fill,
-      //       image: AssetImage('assets/images/me.jpg'),
-      //     ),
-      //   ),
-      // )
-    );
+        //     Container(
+        //   decoration: BoxDecoration(
+        //     shape: BoxShape.circle,
+        //     image: DecorationImage(
+        //       fit: BoxFit.fill,
+        //       image: AssetImage('assets/images/me.jpg'),
+        //     ),
+        //   ),
+        // )
+        );
     list.add(Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -485,7 +519,10 @@ List<Widget> _getWatcherImageList() {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('명품내놔', style: TextStyle(color: Color(0xFF618051)),),
+          child: Text(
+            '명품내놔',
+            style: TextStyle(color: Color(0xFF618051)),
+          ),
         ),
       ],
     ));
@@ -503,7 +540,10 @@ List<Widget> _getWatcherImageList() {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('바나나킥', style: TextStyle(color: Color(0xFF618051)),),
+          child: Text(
+            '바나나킥',
+            style: TextStyle(color: Color(0xFF618051)),
+          ),
         ),
       ],
     ));
@@ -521,224 +561,232 @@ List<Widget> _getWatcherImageList() {
         ),
         Padding(
           padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('샌드위치', style: TextStyle(color: Color(0xFF618051)),),
-        ),
-      ],
-    ));
-  if(controller.is_participate.value == false) {
-    list.add(Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-          child: Container(
-            child: CircleAvatar(
-              radius: 30,
-              backgroundImage: AssetImage('assets/images/you.png'),
-            ),
+          child: Text(
+            '샌드위치',
+            style: TextStyle(color: Color(0xFF618051)),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.only(left: 7.0, top: 8.0),
-          child: Text('USER', style: TextStyle(color: controller.is_participate.value? Colors.white : Color(0xFF618051)),),
-        ),
       ],
     ));
-    print(controller.users.obs);
-  }
-
-
-
-  // controller.users.forEach((int uid) {
-  //   print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
-  //   bool flag = false;
-  //   for (int i = 0; i < controller.speakingUser.length; i++) {
-  //     if (uid == controller.speakingUser[i]) {
-  //       list.add(Padding(
-  //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-  //         child: Container(
-  //           child: CircleAvatar(
-  //             radius: 40,
-  //             backgroundColor: Colors.lightGreen,
-  //             child: CircleAvatar(
-  //               radius: 30,
-  //               backgroundImage: AssetImage('assets/images/you.png'),
-  //             ),
-  //           ),
-  //         ),
-  //       )
-  //         // Container(
-  //         // decoration: BoxDecoration(
-  //         //   shape: BoxShape.circle,
-  //         //   border: Border.all(
-  //         //     color: Colors.lightGreen,
-  //         //     width: 2,
-  //         //   ),
-  //         // ),
-  //         // child: Image(
-  //         //   image: AssetImage('assets/images/you.png'),
-  //         //   width: 150,
-  //         //   height: 150,
-  //         // ))
-  //       );
-  //       flag = true;
-  //       break;
-  //     }
-  //   }
-  //   if (flag != true)
-  //     list.add(Padding(
-  //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
-  //       child: Container(
-  //         child: CircleAvatar(
-  //           radius: 30,
-  //           backgroundImage: AssetImage('assets/images/you.png'),
-  //         ),
-  //       ),
-  //     ));
-  //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
-  // });
-  return list;
-}
-
-/// Video view wrapper
-Widget _videoView(view) {
-  return Container(
-      child: Center(
-        child: view,
+    if (controller.is_participate.value == false) {
+      list.add(Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+            child: Container(
+              child: CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/images/you.png'),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 7.0, top: 8.0),
+            child: Text(
+              'USER',
+              style: TextStyle(
+                  color: controller.is_participate.value
+                      ? Colors.white
+                      : Color(0xFF618051)),
+            ),
+          ),
+        ],
       ));
-}
+      print(controller.users.obs);
+    }
 
-/// Video view row wrapper
-Widget _expandedVideoRow(List<Widget> views) {
-  final wrappedViews = views.map<Widget>(_videoView).toList();
-  return Row(
-    children: wrappedViews,
-  );
-}
-
-Widget bottomBar(BuildContext context) {
-  return BottomAppBar(
-    color: Colors.black,
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(16.0.w, 10.0.w, 10.0.w, 10.0.w),
-          child: InkWell(
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              child: Icon(Icons.chat, color: Colors.black),
-            ),
-            onTap: null,
-          ),
-        ),
-        Expanded(
-          child: Container(
-            height: 50.h,
-          ),
-        ),
-        Obx(
-                () =>
-                Padding(
-                  padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
-                  child: InkWell(
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: controller.muted.value ? Theme
-                          .of(context)
-                          .colorScheme
-                          .primary : Colors.white,
-                      child: Icon(
-                        controller.muted.value ? Icons.mic_off : Icons.mic,
-                        color:
-                        !already_join ? Colors.grey
-                            : controller.muted.value ? Colors.white : Colors
-                            .black,
-                        size: 30,
-                      ),
-                    ),
-                    onTap: (() {
-                      if (already_join == true)
-                        controller.onToggleMute();
-                    }),
-                  ),
-                )
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
-          child: InkWell(
-            child: CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.pan_tool_outlined, color: Colors.black, size: 28,),
-            ),
-            onTap: (() {
-              setState(() {
-                if (already_join == false)
-                  controller.move_watcher_to_participant();
-
-                already_join = true;
-              });
-            }),
-          ),
-        )
-      ],
-    ),
-  );
-}
-
-/// Video layout wrapper
-Widget _viewRows(List<Widget> userImageList) {
-  // final views = _getRenderViews();
-  var views = userImageList;
-  print('asdfasdf: $views');
-  if (views.length == 1) {
-    return Container(
-        child: Column(
-          children: <Widget>[_videoView(views[0])],
-        ));
-  } else if (views.length <= 5) {
-    return Container(
-        child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, views.length)),
-          ],
-        ));
-  } else if (views.length <= 10) {
-    return Container(
-        child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 5)),
-            _expandedVideoRow(views.sublist(5, views.length - 1))
-          ],
-        ));
-  } else if (views.length <= 15) {
-    return Container(
-        child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 5)),
-            _expandedVideoRow(views.sublist(5, 10)),
-            _expandedVideoRow(views.sublist(15, views.length - 1))
-          ],
-        ));
-  } else if (views.length <= 20) {
-    return Container(
-        child: Column(
-          children: <Widget>[
-            _expandedVideoRow(views.sublist(0, 5)),
-            _expandedVideoRow(views.sublist(5, 10)),
-            _expandedVideoRow(views.sublist(10, 15)),
-            _expandedVideoRow(views.sublist(15, views.length - 1))
-          ],
-        ));
+    // controller.users.forEach((int uid) {
+    //   print("@@@@@@@@@@@@@: ${controller.speakingUser.length}");
+    //   bool flag = false;
+    //   for (int i = 0; i < controller.speakingUser.length; i++) {
+    //     if (uid == controller.speakingUser[i]) {
+    //       list.add(Padding(
+    //         padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //         child: Container(
+    //           child: CircleAvatar(
+    //             radius: 40,
+    //             backgroundColor: Colors.lightGreen,
+    //             child: CircleAvatar(
+    //               radius: 30,
+    //               backgroundImage: AssetImage('assets/images/you.png'),
+    //             ),
+    //           ),
+    //         ),
+    //       )
+    //         // Container(
+    //         // decoration: BoxDecoration(
+    //         //   shape: BoxShape.circle,
+    //         //   border: Border.all(
+    //         //     color: Colors.lightGreen,
+    //         //     width: 2,
+    //         //   ),
+    //         // ),
+    //         // child: Image(
+    //         //   image: AssetImage('assets/images/you.png'),
+    //         //   width: 150,
+    //         //   height: 150,
+    //         // ))
+    //       );
+    //       flag = true;
+    //       break;
+    //     }
+    //   }
+    //   if (flag != true)
+    //     list.add(Padding(
+    //       padding: EdgeInsets.only(top: 17.0.h, right: 10.0.w),
+    //       child: Container(
+    //         child: CircleAvatar(
+    //           radius: 30,
+    //           backgroundImage: AssetImage('assets/images/you.png'),
+    //         ),
+    //       ),
+    //     ));
+    //   // list.add(RtcRemoteView.SurfaceView(uid: uid));
+    // });
+    return list;
   }
-  return Container();
-}
 
-void _onCallEnd() {
-  controller.onClose();
-  Get.back();
-  Get.back();
-  Get.back();
-}}
+  /// Video view wrapper
+  Widget _videoView(view) {
+    return Container(
+        child: Center(
+      child: view,
+    ));
+  }
+
+  /// Video view row wrapper
+  Widget _expandedVideoRow(List<Widget> views) {
+    final wrappedViews = views.map<Widget>(_videoView).toList();
+    return Row(
+      children: wrappedViews,
+    );
+  }
+
+  Widget bottomBar(BuildContext context) {
+    return BottomAppBar(
+      color: Colors.black,
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(16.0.w, 10.0.w, 10.0.w, 10.0.w),
+            child: InkWell(
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.chat, color: Colors.black),
+              ),
+              onTap: null,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 50.h,
+            ),
+          ),
+          Obx(() => Padding(
+                padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
+                child: InkWell(
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: controller.muted.value
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.white,
+                    child: Icon(
+                      controller.muted.value ? Icons.mic_off : Icons.mic,
+                      color: !already_join
+                          ? Colors.grey
+                          : controller.muted.value
+                              ? Colors.white
+                              : Colors.black,
+                      size: 30,
+                    ),
+                  ),
+                  onTap: (() {
+                    if (already_join == true) controller.onToggleMute();
+                  }),
+                ),
+              )),
+          Padding(
+            padding: EdgeInsets.fromLTRB(10.0.w, 10.0.w, 16.0.w, 10.0.w),
+            child: InkWell(
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: Colors.white,
+                child: Icon(
+                  Icons.pan_tool_outlined,
+                  color: Colors.black,
+                  size: 28,
+                ),
+              ),
+              onTap: (() {
+                setState(() {
+                  if (already_join == false)
+                    controller.move_watcher_to_participant();
+
+                  already_join = true;
+                });
+              }),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  /// Video layout wrapper
+  Widget _viewRows(List<Widget> userImageList) {
+    // final views = _getRenderViews();
+    var views = userImageList;
+    print('asdfasdf: $views');
+    if (views.length == 1) {
+      return Container(
+          child: Column(
+        children: <Widget>[_videoView(views[0])],
+      ));
+    } else if (views.length <= 5) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, views.length)),
+        ],
+      ));
+    } else if (views.length <= 10) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, views.length - 1))
+        ],
+      ));
+    } else if (views.length <= 15) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, 10)),
+          _expandedVideoRow(views.sublist(15, views.length - 1))
+        ],
+      ));
+    } else if (views.length <= 20) {
+      return Container(
+          child: Column(
+        children: <Widget>[
+          _expandedVideoRow(views.sublist(0, 5)),
+          _expandedVideoRow(views.sublist(5, 10)),
+          _expandedVideoRow(views.sublist(10, 15)),
+          _expandedVideoRow(views.sublist(15, views.length - 1))
+        ],
+      ));
+    }
+    return Container();
+  }
+
+  void _onCallEnd() {
+    player.pause();
+    controller.onClose();
+    Get.back();
+    Get.back();
+    Get.back();
+  }
+}

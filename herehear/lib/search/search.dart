@@ -60,7 +60,7 @@ class searchPage extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  'TOP 라이브',
+                  '전국 TOP 라이브',
                   // style: Theme.of(context).textTheme.headline1,
                   style: Theme.of(context).textTheme.headline2,
                 ),
@@ -120,68 +120,503 @@ class searchPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16.0.w),
             child: Text(
-              '추천 테마',
+              '테마',
               style: Theme.of(context).textTheme.headline2,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 8.0.h, bottom: 25.0.h),
-            child: Container(
-              height: 27.0.h,
-              child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List.generate(3, (int index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 8.0.w),
-                      child: TextButton(
-                        child: Text(
-                          '카테고리 ${index + 1}',
-                          style: TextStyle(
-                              fontSize: 13.13.sp,
-                              color: Theme.of(context).colorScheme.onPrimary),
+            padding: EdgeInsets.only(left: 16.0.w, top: 16.0.h, bottom: 25.0.h),
+            child: Column(
+              children: [
+                Container(
+                  height: 27.0.h,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0.w),
+                        child: TextButton(
+                          child: Text(
+                            '일상',
+                            style: TextStyle(
+                                fontSize: 13.13.sp,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.r),
+                                // side: BorderSide(color: Colors.red),
+                              ))),
+                          onPressed: null,
                         ),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).colorScheme.primary),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.r),
-                              // side: BorderSide(color: Colors.red),
-                            ))),
-                        onPressed: null,
                       ),
-                    );
-                  })),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0.w),
+                        child: TextButton(
+                          child: Text(
+                            '재미',
+                            style: TextStyle(
+                                fontSize: 13.13.sp,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.r),
+                                // side: BorderSide(color: Colors.red),
+                              ))),
+                          onPressed: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0.w),
+                        child: TextButton(
+                          child: Text(
+                            '중계',
+                            style: TextStyle(
+                                fontSize: 13.13.sp,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.r),
+                                // side: BorderSide(color: Colors.red),
+                              ))),
+                          onPressed: null,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 8.0.w),
+                        child: TextButton(
+                          child: Text(
+                            '홍보',
+                            style: TextStyle(
+                                fontSize: 13.13.sp,
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).colorScheme.primary),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14.r),
+                                // side: BorderSide(color: Colors.red),
+                              ))),
+                          onPressed: null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0.h),
+                  child: Container(
+                    height: 27.0.h,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0.w),
+                          child: TextButton(
+                            child: Text(
+                              '고민&상담',
+                              style: TextStyle(
+                                  fontSize: 13.13.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  // side: BorderSide(color: Colors.red),
+                                ))),
+                            onPressed: null,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0.w),
+                          child: TextButton(
+                            child: Text(
+                              '정보',
+                              style: TextStyle(
+                                  fontSize: 13.13.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  // side: BorderSide(color: Colors.red),
+                                ))),
+                            onPressed: null,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0.w),
+                          child: TextButton(
+                            child: Text(
+                              '책읽어주는 남자',
+                              style: TextStyle(
+                                  fontSize: 13.13.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  // side: BorderSide(color: Colors.red),
+                                ))),
+                            onPressed: null,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0.w),
+                          child: TextButton(
+                            child: Text(
+                              'asmr',
+                              style: TextStyle(
+                                  fontSize: 13.13.sp,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14.r),
+                                  // side: BorderSide(color: Colors.red),
+                                ))),
+                            onPressed: null,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0.h),
+                  child: Container(
+                      height: 27.0.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '산책',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '운동',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '여행',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '음악',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                        ],
+                      )
+                      // child: ListView(
+                      //     scrollDirection: Axis.horizontal,
+                      //     children: List.generate(3, (int index) {
+                      //       return Padding(
+                      //         padding: EdgeInsets.only(right: 8.0.w),
+                      //         child: TextButton(
+                      //           child: Text(
+                      //             '카테고리 ${index + 1}',
+                      //             style: TextStyle(
+                      //                 fontSize: 13.13.sp,
+                      //                 color: Theme.of(context).colorScheme.onPrimary),
+                      //           ),
+                      //           style: ButtonStyle(
+                      //               backgroundColor: MaterialStateProperty.all<Color>(
+                      //                   Theme.of(context).colorScheme.primary),
+                      //               shape: MaterialStateProperty.all<
+                      //                   RoundedRectangleBorder>(RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(14.r),
+                      //                 // side: BorderSide(color: Colors.red),
+                      //               ))),
+                      //           onPressed: null,
+                      //         ),
+                      //       );
+                      //     })),
+                      // child: ListView(
+                      //     scrollDirection: Axis.horizontal,
+                      //     children: List.generate(3, (int index) {
+                      //       return Padding(
+                      //         padding: EdgeInsets.only(right: 8.0.w),
+                      //         child: TextButton(
+                      //           child: Text(
+                      //             '카테고리 ${index + 1}',
+                      //             style: TextStyle(
+                      //                 fontSize: 13.13.sp,
+                      //                 color: Theme.of(context).colorScheme.onPrimary),
+                      //           ),
+                      //           style: ButtonStyle(
+                      //               backgroundColor: MaterialStateProperty.all<Color>(
+                      //                   Theme.of(context).colorScheme.primary),
+                      //               shape: MaterialStateProperty.all<
+                      //                   RoundedRectangleBorder>(RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(14.r),
+                      //                 // side: BorderSide(color: Colors.red),
+                      //               ))),
+                      //           onPressed: null,
+                      //         ),
+                      //       );
+                      //     })),
+                      ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0.h),
+                  child: Container(
+                      height: 27.0.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '먹방 사운드',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '악기',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '노래',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '라디오',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ],
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 16.0.w),
-            child: Text(
-              '카테고리 ',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5.0.h),
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection("groupcall")
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData)
-                    return Container(
-                      child: Center(child: Text('생성된 대화방이 없습니다.')),
-                    );
-                  return Column(
-                    children: groupcallRoomList(context, snapshot),
-                  );
-                }),
-          ),
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 16.0.w),
+          //       child: Text(
+          //         '카테고리 ',
+          //         style: Theme.of(context).textTheme.headline2,
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.only(top: 5.0.h),
+          //       child: StreamBuilder<QuerySnapshot>(
+          //           stream: FirebaseFirestore.instance
+          //               .collection("groupcall")
+          //               .snapshots(),
+          //           builder: (BuildContext context,
+          //               AsyncSnapshot<QuerySnapshot> snapshot) {
+          //             if (!snapshot.hasData)
+          //               return Container(
+          //                 child: Center(child: Text('생성된 대화방이 없습니다.')),
+          //               );
+          //             return Column(
+          //               children: groupcallRoomList(context, snapshot),
+          //             );
+          //           }),
+          //     ),
         ],
       ),
       // floatingActionButtonLocation:
-      //     FloatingActionButtonLocation.miniCenterFloat,
+      // FloatingActionButtonLocation.miniCenterFloat,
       // floatingActionButton: FloatingActionButton.extended(
       //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
       //   label: Text(
@@ -252,7 +687,8 @@ class searchPage extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
               onTap: () {
-                Get.to(() => GroupCallPage(), arguments: room['channelName']);
+                Get.to(() => GroupCallPage(room['title']),
+                    arguments: room['channelName']);
               },
               child: Row(
                 children: <Widget>[

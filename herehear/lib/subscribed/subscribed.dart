@@ -227,7 +227,8 @@ class SubscribedPage extends StatelessWidget {
                   'currentListener':
                       FieldValue.arrayUnion([auth.currentUser!.uid])
                 });
-                Get.to(() => GroupCallPage(), arguments: room['channelName']);
+                Get.to(() => GroupCallPage(room['title']),
+                    arguments: room['channelName']);
               },
               child: Row(
                 children: <Widget>[

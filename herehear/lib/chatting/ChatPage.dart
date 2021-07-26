@@ -203,7 +203,7 @@ class GreenChatTheme extends ChatTheme {
   /// which extends [ChatTheme]
   const GreenChatTheme({
     Widget? attachmentButtonIcon,
-    Color backgroundColor = const Color(0xff000000),
+    Color backgroundColor = const Color(0xffffffff),
     TextStyle dateDividerTextStyle = const TextStyle(
       color: Color(0x00ffffff),
       fontFamily: 'Avenir',
