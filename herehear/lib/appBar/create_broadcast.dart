@@ -56,8 +56,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title:
-            Text('새 라이브 방송', style: Theme.of(context).appBarTheme.titleTextStyle),
+        title: Text('새 라이브 방송',
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
@@ -178,18 +178,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               children: [
                 SizedBox(
                   height: 32.0,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => invite()),
-                      );
-                    },
-                    child: Text('친구 초대'),
-                  ),
                 ),
               ],
             ),

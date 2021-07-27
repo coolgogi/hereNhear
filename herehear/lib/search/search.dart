@@ -146,7 +146,8 @@ class searchPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Theme.of(context).colorScheme.primary),
                               shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14.r),
                                 // side: BorderSide(color: Colors.red),
                               ))),
@@ -166,7 +167,8 @@ class searchPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Theme.of(context).colorScheme.primary),
                               shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14.r),
                                 // side: BorderSide(color: Colors.red),
                               ))),
@@ -186,7 +188,8 @@ class searchPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Theme.of(context).colorScheme.primary),
                               shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14.r),
                                 // side: BorderSide(color: Colors.red),
                               ))),
@@ -206,7 +209,8 @@ class searchPage extends StatelessWidget {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Theme.of(context).colorScheme.primary),
                               shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(RoundedRectangleBorder(
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(14.r),
                                 // side: BorderSide(color: Colors.red),
                               ))),
@@ -230,13 +234,16 @@ class searchPage extends StatelessWidget {
                               '고민&상담',
                               style: TextStyle(
                                   fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
                                 shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.r),
                                   // side: BorderSide(color: Colors.red),
                                 ))),
@@ -250,13 +257,16 @@ class searchPage extends StatelessWidget {
                               '정보',
                               style: TextStyle(
                                   fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
                                 shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.r),
                                   // side: BorderSide(color: Colors.red),
                                 ))),
@@ -270,13 +280,16 @@ class searchPage extends StatelessWidget {
                               '책읽어주는 남자',
                               style: TextStyle(
                                   fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
                                 shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.r),
                                   // side: BorderSide(color: Colors.red),
                                 ))),
@@ -290,13 +303,16 @@ class searchPage extends StatelessWidget {
                               'asmr',
                               style: TextStyle(
                                   fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
                             ),
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Theme.of(context).colorScheme.primary),
                                 shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14.r),
                                   // side: BorderSide(color: Colors.red),
                                 ))),
@@ -310,142 +326,158 @@ class searchPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 10.0.h),
                   child: Container(
-                    height: 27.0.h,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: TextButton(
-                            child: Text(
-                              '산책',
-                              style: TextStyle(
-                                  fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                      height: 27.0.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '산책',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
                             ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.r),
-                                  // side: BorderSide(color: Colors.red),
-                                ))),
-                            onPressed: null,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: TextButton(
-                            child: Text(
-                              '운동',
-                              style: TextStyle(
-                                  fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '운동',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
                             ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.r),
-                                  // side: BorderSide(color: Colors.red),
-                                ))),
-                            onPressed: null,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: TextButton(
-                            child: Text(
-                              '여행',
-                              style: TextStyle(
-                                  fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '여행',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
                             ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.r),
-                                  // side: BorderSide(color: Colors.red),
-                                ))),
-                            onPressed: null,
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0.w),
-                          child: TextButton(
-                            child: Text(
-                              '음악',
-                              style: TextStyle(
-                                  fontSize: 13.13.sp,
-                                  color: Theme.of(context).colorScheme.onPrimary),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0.w),
+                            child: TextButton(
+                              child: Text(
+                                '음악',
+                                style: TextStyle(
+                                    fontSize: 13.13.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
+                              ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      Theme.of(context).colorScheme.primary),
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(14.r),
+                                    // side: BorderSide(color: Colors.red),
+                                  ))),
+                              onPressed: null,
                             ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<Color>(
-                                    Theme.of(context).colorScheme.primary),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.r),
-                                  // side: BorderSide(color: Colors.red),
-                                ))),
-                            onPressed: null,
                           ),
-                        ),
-                              ],
-                            )
-                          // child: ListView(
-                          //     scrollDirection: Axis.horizontal,
-                          //     children: List.generate(3, (int index) {
-                          //       return Padding(
-                          //         padding: EdgeInsets.only(right: 8.0.w),
-                          //         child: TextButton(
-                          //           child: Text(
-                          //             '카테고리 ${index + 1}',
-                          //             style: TextStyle(
-                          //                 fontSize: 13.13.sp,
-                          //                 color: Theme.of(context).colorScheme.onPrimary),
-                          //           ),
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all<Color>(
-                          //                   Theme.of(context).colorScheme.primary),
-                          //               shape: MaterialStateProperty.all<
-                          //                   RoundedRectangleBorder>(RoundedRectangleBorder(
-                          //                 borderRadius: BorderRadius.circular(14.r),
-                          //                 // side: BorderSide(color: Colors.red),
-                          //               ))),
-                          //           onPressed: null,
-                          //         ),
-                          //       );
-                          //     })),
-                    // child: ListView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     children: List.generate(3, (int index) {
-                    //       return Padding(
-                    //         padding: EdgeInsets.only(right: 8.0.w),
-                    //         child: TextButton(
-                    //           child: Text(
-                    //             '카테고리 ${index + 1}',
-                    //             style: TextStyle(
-                    //                 fontSize: 13.13.sp,
-                    //                 color: Theme.of(context).colorScheme.onPrimary),
-                    //           ),
-                    //           style: ButtonStyle(
-                    //               backgroundColor: MaterialStateProperty.all<Color>(
-                    //                   Theme.of(context).colorScheme.primary),
-                    //               shape: MaterialStateProperty.all<
-                    //                   RoundedRectangleBorder>(RoundedRectangleBorder(
-                    //                 borderRadius: BorderRadius.circular(14.r),
-                    //                 // side: BorderSide(color: Colors.red),
-                    //               ))),
-                    //           onPressed: null,
-                    //         ),
-                    //       );
-                    //     })),
-                  ),
+                        ],
+                      )
+                      // child: ListView(
+                      //     scrollDirection: Axis.horizontal,
+                      //     children: List.generate(3, (int index) {
+                      //       return Padding(
+                      //         padding: EdgeInsets.only(right: 8.0.w),
+                      //         child: TextButton(
+                      //           child: Text(
+                      //             '카테고리 ${index + 1}',
+                      //             style: TextStyle(
+                      //                 fontSize: 13.13.sp,
+                      //                 color: Theme.of(context).colorScheme.onPrimary),
+                      //           ),
+                      //           style: ButtonStyle(
+                      //               backgroundColor: MaterialStateProperty.all<Color>(
+                      //                   Theme.of(context).colorScheme.primary),
+                      //               shape: MaterialStateProperty.all<
+                      //                   RoundedRectangleBorder>(RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(14.r),
+                      //                 // side: BorderSide(color: Colors.red),
+                      //               ))),
+                      //           onPressed: null,
+                      //         ),
+                      //       );
+                      //     })),
+                      // child: ListView(
+                      //     scrollDirection: Axis.horizontal,
+                      //     children: List.generate(3, (int index) {
+                      //       return Padding(
+                      //         padding: EdgeInsets.only(right: 8.0.w),
+                      //         child: TextButton(
+                      //           child: Text(
+                      //             '카테고리 ${index + 1}',
+                      //             style: TextStyle(
+                      //                 fontSize: 13.13.sp,
+                      //                 color: Theme.of(context).colorScheme.onPrimary),
+                      //           ),
+                      //           style: ButtonStyle(
+                      //               backgroundColor: MaterialStateProperty.all<Color>(
+                      //                   Theme.of(context).colorScheme.primary),
+                      //               shape: MaterialStateProperty.all<
+                      //                   RoundedRectangleBorder>(RoundedRectangleBorder(
+                      //                 borderRadius: BorderRadius.circular(14.r),
+                      //                 // side: BorderSide(color: Colors.red),
+                      //               ))),
+                      //           onPressed: null,
+                      //         ),
+                      //       );
+                      //     })),
+                      ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 10.0.h),
@@ -462,13 +494,17 @@ class searchPage extends StatelessWidget {
                                 '먹방 사운드',
                                 style: TextStyle(
                                     fontSize: 13.13.sp,
-                                    color: Theme.of(context).colorScheme.onPrimary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
                                       Theme.of(context).colorScheme.primary),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14.r),
                                     // side: BorderSide(color: Colors.red),
                                   ))),
@@ -482,13 +518,17 @@ class searchPage extends StatelessWidget {
                                 '악기',
                                 style: TextStyle(
                                     fontSize: 13.13.sp,
-                                    color: Theme.of(context).colorScheme.onPrimary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
                                       Theme.of(context).colorScheme.primary),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14.r),
                                     // side: BorderSide(color: Colors.red),
                                   ))),
@@ -502,13 +542,17 @@ class searchPage extends StatelessWidget {
                                 '노래',
                                 style: TextStyle(
                                     fontSize: 13.13.sp,
-                                    color: Theme.of(context).colorScheme.onPrimary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
                                       Theme.of(context).colorScheme.primary),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14.r),
                                     // side: BorderSide(color: Colors.red),
                                   ))),
@@ -522,13 +566,17 @@ class searchPage extends StatelessWidget {
                                 '라디오',
                                 style: TextStyle(
                                     fontSize: 13.13.sp,
-                                    color: Theme.of(context).colorScheme.onPrimary),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onPrimary),
                               ),
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
                                       Theme.of(context).colorScheme.primary),
                                   shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(RoundedRectangleBorder(
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(14.r),
                                     // side: BorderSide(color: Colors.red),
                                   ))),
@@ -536,50 +584,49 @@ class searchPage extends StatelessWidget {
                             ),
                           ),
                         ],
-                      )
-                  ),
+                      )),
                 ),
               ],
             ),
           ),
-      //     Padding(
-      //       padding: EdgeInsets.only(left: 16.0.w),
-      //       child: Text(
-      //         '카테고리 ',
-      //         style: Theme.of(context).textTheme.headline2,
-      //       ),
-      //     ),
-      //     Padding(
-      //       padding: EdgeInsets.only(top: 5.0.h),
-      //       child: StreamBuilder<QuerySnapshot>(
-      //           stream: FirebaseFirestore.instance
-      //               .collection("groupcall")
-      //               .snapshots(),
-      //           builder: (BuildContext context,
-      //               AsyncSnapshot<QuerySnapshot> snapshot) {
-      //             if (!snapshot.hasData)
-      //               return Container(
-      //                 child: Center(child: Text('생성된 대화방이 없습니다.')),
-      //               );
-      //             return Column(
-      //               children: groupcallRoomList(context, snapshot),
-      //             );
-      //           }),
-      //     ),
+          //     Padding(
+          //       padding: EdgeInsets.only(left: 16.0.w),
+          //       child: Text(
+          //         '카테고리 ',
+          //         style: Theme.of(context).textTheme.headline2,
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.only(top: 5.0.h),
+          //       child: StreamBuilder<QuerySnapshot>(
+          //           stream: FirebaseFirestore.instance
+          //               .collection("groupcall")
+          //               .snapshots(),
+          //           builder: (BuildContext context,
+          //               AsyncSnapshot<QuerySnapshot> snapshot) {
+          //             if (!snapshot.hasData)
+          //               return Container(
+          //                 child: Center(child: Text('생성된 대화방이 없습니다.')),
+          //               );
+          //             return Column(
+          //               children: groupcallRoomList(context, snapshot),
+          //             );
+          //           }),
+          //     ),
         ],
       ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-        label: Text(
-          '새로 고침',
-          style: TextStyle(
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: Colors.white,
-      ),
+      // floatingActionButtonLocation:
+      // FloatingActionButtonLocation.miniCenterFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
+      //   label: Text(
+      //     '새로 고침',
+      //     style: TextStyle(
+      //       color: Colors.black87,
+      //     ),
+      //   ),
+      //   backgroundColor: Colors.white,
+      // ),
     );
   }
 
@@ -640,7 +687,8 @@ class searchPage extends StatelessWidget {
             height: 80.0.h,
             child: InkWell(
               onTap: () {
-                Get.to(() => GroupCallPage(), arguments: room['channelName']);
+                Get.to(() => GroupCallPage(room['title']),
+                    arguments: room['channelName']);
               },
               child: Row(
                 children: <Widget>[

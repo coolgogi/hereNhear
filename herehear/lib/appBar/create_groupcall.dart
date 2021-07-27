@@ -33,7 +33,8 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('새 그룹 대화방', style: Theme.of(context).appBarTheme.titleTextStyle),
+        title: Text('새 그룹 대화방',
+            style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => {
@@ -72,7 +73,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                           selectedTime.then((timeOfDay) {
                             setState(() {
                               _selectedTime =
-                              '${timeOfDay!.hour}: ${timeOfDay.minute}';
+                                  '${timeOfDay!.hour}: ${timeOfDay.minute}';
                             });
                           });
                         },
@@ -193,7 +194,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     //     .doc('_docId')
     //     .update({"participants": FieldValue.arrayUnion([user!.uid])});
 
-    Get.to(() => GroupCallPage(), arguments: _docId);
+    Get.off(() => GroupCallPage(_title.text), arguments: _docId);
   }
 
   Future<void> _handleCameraAndMic(Permission permission) async {
