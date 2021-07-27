@@ -77,6 +77,14 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+                  child: Text(
+                    '현재 위치 : 포항시 북구',
+                    // style: Theme.of(context).textTheme.headline1,
+                    style: Theme.of(context).textTheme.headline2,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -166,14 +174,6 @@ class HomePage extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           children: broadcastRoomList(context, snapshot, _data),
                         );
-                        // children: List.generate(10, (int index) {
-                        //   return Card(
-                        //       child: Container(
-                        //     width: 110.0,
-                        //     height: 80.0,
-                        //     child: Center(child: Text("${index + 1} 라이브")),
-                        //   ));
-                        // }));
                       },
                     ),
                   ),
@@ -269,7 +269,8 @@ class HomePage extends StatelessWidget {
                   'currentListener':
                       FieldValue.arrayUnion([auth.currentUser!.uid])
                 });
-                Get.to(() => GroupCallPage(), arguments: room['channelName']);
+                Get.to(() => GroupCallPage(room['title']),
+                    arguments: room['channelName']);
               },
               child: Row(
                 children: <Widget>[

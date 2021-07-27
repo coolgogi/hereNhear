@@ -133,7 +133,7 @@ class ContestPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            Get.to(() => EvaluationPage());
+                            // Get.to(() => EvaluationPage());
                           },
                           child: Container(
                             width: 120.0.w,
@@ -175,7 +175,7 @@ class ContestPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            Get.to(() => EvaluationPage());
+                            //  Get.to(() => EvaluationPage());
                           },
                           child: Container(
                             width: 120.0.w,
@@ -217,7 +217,7 @@ class ContestPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            Get.to(() => EvaluationPage());
+                            //  Get.to(() => EvaluationPage());
                           },
                           child: Container(
                             width: 120.0.w,
@@ -525,7 +525,9 @@ class ContestPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Get.to(() => EvaluationPage4()),
+                    onTap: () {
+                      //Get.to(() => EvaluationPage4());
+                    },
                     child: Padding(
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: Stack(
