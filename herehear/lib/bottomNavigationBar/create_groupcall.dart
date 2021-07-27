@@ -183,7 +183,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
         user, _title.text, _notice.text, _docId, controller2.location.value);
     // FirebaseFirestore.instance
     //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
-    // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
+    // _docId =ㄲ(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
     // controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
     // // await FirebaseFirestore.instance
     //     .collection("groupcall")
