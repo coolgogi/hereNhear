@@ -6,18 +6,17 @@ import 'package:geolocator_platform_interface/geolocator_platform_interface.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-
 class LocationController extends GetxController {
   //yr controller
   bool check = true;
-  int count=1;
+  int count = 1;
 
-  void read(){
+  void read() {
     check = false;
   }
 
-  void decrement(){
-    if(count != 0){
+  void decrement() {
+    if (count != 0) {
       count--;
       update();
     }
@@ -69,16 +68,16 @@ class LocationController extends GetxController {
   }
 
   Future<void> getLocation() async {
-    Position? position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     debugPrint('location: ${position}');
     final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print("detail address : ${first.addressLine}");
     // print("needed address data : ${first.locality} ${first.subLocality}");
     location = '${first.locality} ${first.subLocality}'.obs;
     print('location: $location');
   }
-
-
 }

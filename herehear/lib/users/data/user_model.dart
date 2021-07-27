@@ -10,15 +10,15 @@ class UserModel {
   List<dynamic>? subscribe;
 
   UserModel(
-      {
-        this.uid,
-        this.ID,
-        this.password,
-        this.nickName,
-        this.name,
-        this.age,
-        this.profile,
-        this.number,
-        this.subscribe});
+      {this.uid,
+      this.ID,
+      this.password,
+      this.nickName,
+      this.name,
+      this.age,
+      this.profile,
+      this.number,
+      this.subscribe});
 }
 
+UserModel u1 = UserModel();

@@ -4,22 +4,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
-import 'package:herehear/chatting/chatList.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:herehear/search/search.dart';
-import 'package:herehear/subscribed/subscribed.dart';
 import 'package:herehear/home/HomePage.dart';
 import 'package:herehear/myPage/mypage.dart';
 import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
-import 'package:herehear/chatting/ChatPage.dart';
-import 'package:herehear/test_folder/subscribed_test_connect_firebase.dart';
 import 'appBar/create_broadcast.dart';
 import 'appBar/create_groupcall.dart';
 import 'contest/contest.dart';
 import 'etc/invite.dart';
 import 'etc/listTest.dart';
-import 'test_folder/HomePage2.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -104,7 +99,7 @@ class MyApp extends StatelessWidget {
               // initialBinding: BindingsBuilder(() {}),
               initialBinding: AppBinding(),
               title: 'Here & Hear',
-              home: InvitationPage.withData(_data!),
+              home: LandingPage.withData(_data!),
               //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
@@ -205,8 +200,13 @@ class LandingPage extends StatelessWidget {
                 label: '홈',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.star_rate_outlined,),
-                activeIcon: Icon(Icons.star_rate, color: Theme.of(context).colorScheme.primary,),
+                icon: Icon(
+                  Icons.star_rate_outlined,
+                ),
+                activeIcon: Icon(
+                  Icons.star_rate,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 label: '소리꾼들',
               ),
               BottomNavigationBarItem(
