@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:herehear/appBar/invitation.dart';
-import 'package:herehear/broadcast/user_view.dart';
+// import 'package:herehear/appBar/invitation.dart';
+import 'package:herehear/etc/delete/user_view.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import '../utils/AppID.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
@@ -244,10 +244,10 @@ class BroadCastPage extends StatelessWidget {
             color: Colors.black,
           ),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => invite()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => invite()),
+            // );
           },
         ),
         IconButton(

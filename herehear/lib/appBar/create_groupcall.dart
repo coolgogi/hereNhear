@@ -8,7 +8,7 @@ import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
-import '../groupCall/group_call.dart';
+import '../etc/delete/group_call.dart';
 
 class CreateGroupCallPage extends StatefulWidget {
   @override

@@ -34,6 +34,22 @@ class _ChatPageState extends State<ChatPage> {
     _loadMessages();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Chat(
+        messages: _messages,
+        onAttachmentPressed: _handleAtachmentPressed,
+        onMessageTap: _handleMessageTap,
+        onPreviewDataFetched: _handlePreviewDataFetched,
+        onSendPressed: _handleSendPressed,
+        user: _user,
+        theme: GreenChatTheme(),
+        // theme :
+      ),
+    );
+  }
+
   void _addMessage(types.Message message) {
     setState(() {
       _messages.insert(0, message);
@@ -177,22 +193,6 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       _messages = messages;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        user: _user,
-        theme: GreenChatTheme(),
-        // theme :
-      ),
-    );
   }
 }
 

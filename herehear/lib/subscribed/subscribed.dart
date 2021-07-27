@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/groupCall/group_call.dart';
+import 'package:herehear/etc/delete/group_call.dart';
 import 'package:herehear/groupCall/group_call2.dart';
 
 class SubscribedPage extends StatelessWidget {

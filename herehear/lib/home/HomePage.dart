@@ -1,16 +1,13 @@
-import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/appBar/searchBar.dart';
-import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/group_call2.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/groupCall/group_call.dart';
 import 'package:badges/badges.dart';
 
 class HomePage extends StatelessWidget {
@@ -125,21 +122,6 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // child: Padding(
-                          //   padding: const EdgeInsets.only(left: 8.0),
-                          //   child: TextButton(
-                          //     child: Text(
-                          //         'LIVE',
-                          //         style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 8)),
-                          //     style: ButtonStyle(
-                          //         shape: MaterialStateProperty.all<
-                          //             RoundedRectangleBorder>(RoundedRectangleBorder(
-                          //           borderRadius: BorderRadius.circular(9.0),
-                          //           side: BorderSide(color: Theme.of(context).colorScheme.primary),
-                          //         ))),
-                          //     onPressed: null,
-                          //   ),
-                          // ),
                         ),
                       ),
                       Expanded(child: Container()),
@@ -213,18 +195,6 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          // floatingActionButtonLocation:
-          //     FloatingActionButtonLocation.miniCenterFloat,
-          // floatingActionButton: FloatingActionButton.extended(
-          //   onPressed: null, //사용자 위치 기반으로 데이터 다시 불러오기 및 새로고침
-          //   label: Text(
-          //     '새로 고침',
-          //     style: TextStyle(
-          //       color: Colors.black87,
-          //     ),
-          //   ),
-          //   backgroundColor: Colors.white,
-          // ),
         ));
   }
 
@@ -233,26 +203,6 @@ class HomePage extends StatelessWidget {
     await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
     controller.getLocation().obs;
   }
-
-  // Route _createRoute() {
-  //   return PageRouteBuilder(
-  //     pageBuilder: (context, animation, secondaryAnimation) =>
-  //         CreateBroadcastPage(),
-  //     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-  //       var begin = Offset(0.0, 1.0);
-  //       var end = Offset.zero;
-  //       var curve = Curves.ease;
-  //
-  //       var tween =
-  //           Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-  //
-  //       return SlideTransition(
-  //         position: animation.drive(tween),
-  //         child: child,
-  //       );
-  //     },
-  //   );
-  // }
 
   List<Widget> groupcallRoomList(
       BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
