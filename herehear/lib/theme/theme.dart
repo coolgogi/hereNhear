@@ -27,6 +27,7 @@ ThemeData _buildClosetTheme_light() {
       brightness: Brightness.light,
     ),
     appBarTheme: base.appBarTheme.copyWith(
+      iconTheme: IconThemeData(color: OnBackgroundLight),
       color: BackgroundLight,
       titleTextStyle: TextStyle(
         color: PrimaryVariantDeepLight,
