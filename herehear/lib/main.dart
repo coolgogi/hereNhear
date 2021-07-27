@@ -275,13 +275,15 @@ class LandingPage extends StatelessWidget {
               'assets/icons/mic_fill.png',
               height: 32.h,
             ),
-            onPressed: () => {
-                  _data['uid'] == null
-                      ? _showMyDialog2()
-                      : _data['uid'] != 'guest'
-                          ? showCreateOption(context)
-                          : _showMyDialog(),
-                }),
+            onPressed: () => showCreateOption(context),
+            // onPressed: () => {
+            //       _data['uid'] == null
+            //           ? _showMyDialog2()
+            //           : _data['uid'] != 'guest'
+            //               ? showCreateOption(context)
+            //               : _showMyDialog(),
+            //     }
+                ),
       ),
     ));
   }
