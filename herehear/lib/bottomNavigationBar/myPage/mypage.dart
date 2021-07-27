@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/subscribed/subscribed.dart';
+import 'package:herehear/bottomNavigationBar/subscribed/subscribed.dart';
 import 'package:image_picker/image_picker.dart';
-import '../login/signIn.dart';
+import '../../login/signIn.dart';
 
 class myPage extends StatelessWidget {
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -21,10 +21,9 @@ class myPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-         // elevation: 0,
-          title: Text(
-            '마이페이지', style: Theme.of(context).appBarTheme.titleTextStyle
-          ),
+          // elevation: 0,
+          title: Text('마이페이지',
+              style: Theme.of(context).appBarTheme.titleTextStyle),
         ),
         body: Padding(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
@@ -48,13 +47,13 @@ class myPage extends StatelessWidget {
                 ListTile(
                   title: Text('현재 버전 0.0.5'),
                   onTap: () {
-                   // Get.to(LoginPage());
+                    // Get.to(LoginPage());
                   },
                 ),
                 ListTile(
                   title: Text('실험'),
                   onTap: () {
-                  //  FirebaseAuth.instance.signOut();
+                    //  FirebaseAuth.instance.signOut();
                   },
                 ),
                 _divier(),
@@ -102,7 +101,6 @@ class myPage extends StatelessWidget {
                   },
                 ),
                 _divier(),
-
                 _info(),
               ],
             )));
@@ -142,47 +140,48 @@ class myPage extends StatelessWidget {
       ),
     );
   }
-  Widget imageProfile(BuildContext context){
+
+  Widget imageProfile(BuildContext context) {
     return Center(
-        child:Stack(
-          children: <Widget>[
-            CircleAvatar(
-              radius:60,
-              backgroundImage:
-              _user['profile'] == null
-                  ? AssetImage('assets/images/you.png')
-                  : AssetImage(_user['profile']) as ImageProvider ,
-                  //: NetworkImage(_user['profile']) as ImageProvider ,
-            ),
-            Positioned(
-              bottom:0,
-              right:0,
-              child: InkWell(
-                  onTap:(){
-                    //showOptionsDialog(context);
-                    //showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
-                  },
-                  child: Icon(
-                    Icons.camera_alt,
-                    color: Colors.black,
-                    size:35,
-                  )
-              ),
-            )
-          ],
+        child: Stack(
+      children: <Widget>[
+        CircleAvatar(
+          radius: 60,
+          backgroundImage: _user['profile'] == null
+              ? AssetImage('assets/images/you.png')
+              : AssetImage(_user['profile']) as ImageProvider,
+          //: NetworkImage(_user['profile']) as ImageProvider ,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: InkWell(
+              onTap: () {
+                //showOptionsDialog(context);
+                //showModalBottomSheet(context: context, builder: ((builder) => bottomSheet()));
+              },
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.black,
+                size: 35,
+              )),
         )
-    );
+      ],
+    ));
   }
 
   Widget _profile(BuildContext context) {
     return Column(
       children: [
-           imageProfile(context),
+        imageProfile(context),
         Container(
-          padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-          child: _user['nickName'] != null ? Text(_user['nickName'],style: TextStyle(fontWeight: FontWeight.bold),)
-              : Text('noUser')
-        )
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
+            child: _user['nickName'] != null
+                ? Text(
+                    _user['nickName'],
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )
+                : Text('noUser'))
       ],
     );
   }
@@ -237,7 +236,6 @@ class myPage extends StatelessWidget {
   //   Navigator.of(context).pop();
   // }
   //
-
 
   Widget nameTextField() {
     return TextFormField(

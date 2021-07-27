@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/create_broadcast.dart';
+import 'package:herehear/bottomNavigationBar/create_broadcast.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -81,24 +81,27 @@ class Subscribed22Page extends StatelessWidget {
             child: Container(
               height: 100.0,
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection("broadcast").snapshots(),
-                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                stream: FirebaseFirestore.instance
+                    .collection("broadcast")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData)
                     return Container(
                       child: Text('라이브중인 방송이 없습니다.'),
                     );
                   return ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: broadcastRoomList(snapshot),
-                    );
-                          // children: List.generate(10, (int index) {
-                          //   return Card(
-                          //       child: Container(
-                          //     width: 110.0,
-                          //     height: 80.0,
-                          //     child: Center(child: Text("${index + 1} 라이브")),
-                          //   ));
-                          // }));
+                    scrollDirection: Axis.horizontal,
+                    children: broadcastRoomList(snapshot),
+                  );
+                  // children: List.generate(10, (int index) {
+                  //   return Card(
+                  //       child: Container(
+                  //     width: 110.0,
+                  //     height: 80.0,
+                  //     child: Center(child: Text("${index + 1} 라이브")),
+                  //   ));
+                  // }));
                 },
               ),
               // child: GetBuilder<Controller>(
@@ -158,60 +161,63 @@ class Subscribed22Page extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 18.0),
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection("groupcall").snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (!snapshot.hasData)
-                  return Container(
-                    child: Center(child: Text('생성된 대화방이 없습니다.')),
+                stream: FirebaseFirestore.instance
+                    .collection("groupcall")
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData)
+                    return Container(
+                      child: Center(child: Text('생성된 대화방이 없습니다.')),
+                    );
+                  return Column(
+                    children: groupcallRoomList(snapshot),
                   );
-                return Column(
-                  children: groupcallRoomList(snapshot),
-                );
-                return Column(
-                  children: List.generate(15, (int index) {
-                    return Card(
-                        child: Container(
-                      // width: MediaQuery.of(context).size.width,
-                      height: 80.0,
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 13.0, right: 13.0),
-                            child: Container(
-                              width: 50.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                color: Colors.amber,
-                                shape: BoxShape.circle,
+                  return Column(
+                    children: List.generate(15, (int index) {
+                      return Card(
+                          child: Container(
+                        // width: MediaQuery.of(context).size.width,
+                        height: 80.0,
+                        child: Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 13.0, right: 13.0),
+                              child: Container(
+                                width: 50.0,
+                                height: 50.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.amber,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${index + 1} 번째 대화방입니다~',
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  '같이 대화하면서 놀아요!!',
-                                  style: TextStyle(fontSize: 12),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ));
-                  }),
-                );
-              }
-            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '${index + 1} 번째 대화방입니다~',
+                                    style: TextStyle(fontSize: 17),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    '같이 대화하면서 놀아요!!',
+                                    style: TextStyle(fontSize: 12),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ));
+                    }),
+                  );
+                }),
           ),
         ],
       ),
@@ -244,40 +250,34 @@ class Subscribed22Page extends StatelessWidget {
     );
   }
 
-  List<Widget> broadcastRoomList(AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
-          return Card(
-            child: InkWell(
-              onTap: (){
-
-              },
-
-              child: Container(
-                width: 110.0,
-                height: 80.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Center(child: Text(room['title'])),
-                    Center(child: Text(room['notice'])),
-                  ],
-                ),
-              ),
+  List<Widget> broadcastRoomList(
+      AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
+      return Card(
+        child: InkWell(
+          onTap: () {},
+          child: Container(
+            width: 110.0,
+            height: 80.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(child: Text(room['title'])),
+                Center(child: Text(room['notice'])),
+              ],
+            ),
           ),
-          );
+        ),
+      );
     }).toList();
   }
 
-  List<Widget> groupcallRoomList(AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-    return broadcastSnapshot.data!.docs
-        .map((room) {
+  List<Widget> groupcallRoomList(
+      AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+    return broadcastSnapshot.data!.docs.map((room) {
       return Card(
         child: InkWell(
-          onTap: (){
-
-          },
-
+          onTap: () {},
           child: Container(
             // width: MediaQuery.of(context).size.width,
             height: 80.0,
@@ -315,7 +315,8 @@ class Subscribed22Page extends StatelessWidget {
                 )
               ],
             ),
-          ),),
+          ),
+        ),
       );
     }).toList();
   }
