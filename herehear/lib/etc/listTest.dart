@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/create_broadcast.dart';
-import 'package:herehear/appBar/create_groupcall.dart';
+import 'package:herehear/bottomNavigationBar/create_broadcast.dart';
+import 'package:herehear/bottomNavigationBar/create_groupcall.dart';
 import 'package:herehear/appBar/searchBar.dart';
 
 class AppBinding extends Bindings {
