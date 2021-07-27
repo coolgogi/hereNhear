@@ -7,7 +7,7 @@ import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'invitation.dart';
+// import 'invitation.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   late Map<String, dynamic> userData;

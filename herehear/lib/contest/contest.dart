@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:herehear/contest/evaluation2.dart';
 
 import 'evaluation.dart';
-import 'evaluation3.dart';
-import 'evaluation4.dart';
 
 class controller extends GetxController {
   RxBool flag1 = false.obs;
@@ -91,7 +88,7 @@ class ContestPage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 4.0.h),
                         child: GestureDetector(
                           onTap: () {
-                            Get.to(() => EvaluationPage2());
+                            // Get.to(() => EvaluationPage2());
                           },
                           child: Container(
                             width: 120.0.w,
@@ -290,7 +287,7 @@ class ContestPage extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Get.to(() => EvaluationPage3()),
+                    onTap: () {},
                     child: Padding(
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: Stack(
@@ -352,7 +349,7 @@ class ContestPage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => Get.to(() => EvaluationPage4()),
+                    onTap: () {},
                     child: Padding(
                       padding: EdgeInsets.only(right: 10.0.w),
                       child: Stack(
@@ -423,7 +420,7 @@ class ContestPage extends StatelessWidget {
                             radius: 48.r,
                             backgroundImage: AssetImage('assets/images/he.jpg'),
                             child: GestureDetector(
-                              onTap: () => Get.to(() => EvaluationPage2()),
+                              onTap: () => {},
                               child: CircleAvatar(
                                 radius: 49.r,
                                 backgroundColor: Colors.transparent,
