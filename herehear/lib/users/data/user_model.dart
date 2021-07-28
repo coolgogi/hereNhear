@@ -1,7 +1,7 @@
 class UserModel {
   String? uid;
   String? docId;
-  String? ID;
+  String? id;
   String? password;
   String? nickName;
   String? name;
@@ -13,7 +13,7 @@ class UserModel {
   UserModel(
       {this.uid,
         this.docId,
-      this.ID,
+      this.id,
       this.password,
       this.nickName,
       this.name,

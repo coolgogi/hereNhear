@@ -10,14 +10,14 @@ import 'package:herehear/users/repository/user_repository.dart';
 // 이를 Map으로 바꿔서 해줘야함.
 // 그래서 UserModle을 만든 다음에 toMap함수를 넣어서 이를 Map으로 바꿔준다음에 firebase DB에 업로드
 
-class ProfileController extends GetxController {
+class UserController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
-  static ProfileController get to => Get.find();
+  static UserController get to => Get.find();
   Rx<UserModel> myProfile = UserModel().obs;
   String? docId;
 
   // firebase storage에 데이터를 보내는 과정.
-  void authStateChanges(User firebaseUser) async {
+  void authStateChanges(User? firebaseUser) async {
     if (firebaseUser != null) {
       UserModel? firebaseUserdata =
       await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
@@ -34,6 +34,9 @@ class ProfileController extends GetxController {
         myProfile.value = firebaseUserdata;
         FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
       }
+    }
+    else{
+      myProfile.value = (await FirebaseUserRepository.findUserByUid('Guest'))!;
     }
   }
 }
