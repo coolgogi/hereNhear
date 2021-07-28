@@ -1,6 +1,7 @@
 class UserModel {
   String? uid;
-  String? ID;
+  String? docId;
+  String? id;
   String? password;
   String? nickName;
   String? name;
@@ -11,7 +12,8 @@ class UserModel {
 
   UserModel(
       {this.uid,
-      this.ID,
+        this.docId,
+      this.id,
       this.password,
       this.nickName,
       this.name,
@@ -19,6 +21,19 @@ class UserModel {
       this.profile,
       this.number,
       this.subscribe});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': this.uid,
+      'name': this.name,
+
+    };
+  }
+
+  UserModel.fromJson(Map<String, dynamic> json, String docId)
+      : uid = json['uid'] as String,
+        name = json['name'] as String;
+
 }
 
-UserModel u1 = UserModel();
+

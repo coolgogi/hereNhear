@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/groupCall/controllers/group_call_controller.dart';
 import 'package:herehear/groupCall/group_call.dart';
-import 'package:herehear/location_data/location.dart';
+import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 

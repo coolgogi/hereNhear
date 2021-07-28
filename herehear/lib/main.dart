@@ -2,24 +2,50 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
-import 'package:herehear/location_data/location.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
-import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'bottomNavigationBar/bottom_bar.dart';
-import 'bottomNavigationBar/create/create_broadcast.dart';
-import 'bottomNavigationBar/create/create_groupcall.dart';
-import 'bottomNavigationBar/contest/contest.dart';
+import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(App());
 
 class App extends StatelessWidget {
+  String? location;
+  @override
+  void onInit() async {
+    // called immediately after the widget is allocated memory
+    locationPermission();
+    location = await getLocation();
+  }
+
+  Future<void> locationPermission() async {
+    await Geolocator.requestPermission();
+  }
+
+  Future<String?> getLocation() async {
+    Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    debugPrint('location: ${position}');
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    print("detail address : ${first.addressLine}");
+    // print("needed address data : ${first.locality} ${first.subLocality}");
+    location = '${first.locality} ${first.subLocality}';
+    print(
+        '+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++location: $location');
+    return location;
+  }
+
   Map<String, dynamic> _data = new Map();
 
   @override
@@ -36,6 +62,8 @@ class App extends StatelessWidget {
           return GetBuilder<LocationController>(
               init: LocationController(),
               builder: (value) {
+                print(
+                    '====================================================location : ${location}');
                 print('위치: ${value.location.obs}');
                 return FutureBuilder(
                     future: LocationController()
