@@ -21,7 +21,9 @@ class _GroupCallPageState extends State<GroupCallPage> {
   bool already_join = false;
 
   late final controller = Get.put(
-      AgoraEventController.groupcall(channelName, ClientRole.Broadcaster));
+      // AgoraEventController.groupcall(channelName, ClientRole.Broadcaster));
+      AgoraEventController.groupcall(
+          channelName: channelName, role: ClientRole.Broadcaster));
 
   @override
   Widget build(BuildContext context) {

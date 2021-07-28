@@ -1,4 +1,4 @@
-class BroadcastModel {
+class agoraModel {
   //using both side.
   String? hostUid;
   String? title;
@@ -18,7 +18,7 @@ class BroadcastModel {
   String? hostNickname;
   List<String>? userNickname;
 
-  BroadcastModel({
+  agoraModel.broadcast({
     this.hostUid,
     this.title,
     this.notice,
@@ -36,6 +36,19 @@ class BroadcastModel {
     this.userProfile,
     this.hostNickname,
     this.userNickname,
+  });
+
+  agoraModel.groupcall({
+    this.hostUid,
+    this.title,
+    this.notice,
+    this.channelName,
+    this.docId,
+    this.image,
+    this.location,
+    this.createdTime,
+    this.currentListener,
+    this.participants,
   });
 
   // UserModel을 map으로 바꿔주는 함수.
@@ -61,7 +74,7 @@ class BroadcastModel {
     };
   }
 
-  BroadcastModel.fromJson(Map<String, dynamic> json, String hostUid)
+  agoraModel.fromJson(Map<String, dynamic> json, String hostUid)
       : hostUid = json['uid'] as String,
         title = json['title'] as String,
         notice = json['notice'] as String,

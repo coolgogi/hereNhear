@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/groupCall/controllers/group_call_controller.dart';
+import 'package:herehear/agora/agoraController.dart';
 import 'package:herehear/groupCall/group_call.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,12 +17,13 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final _title = TextEditingController();
   final _notice = TextEditingController();
   String? _docId;
-  String? _selectedTime;
-
   DateTime selectedDate = DateTime.now();
+  final controller = Get.put(agoraController());
+  final locationController = Get.put(LocationController());
+
+  //unused variable
+  String? _selectedTime;
   bool _validateError = false;
-  final controller = Get.put(GroupCallController());
-  final controller2 = Get.put(LocationController());
 
   @override
   Widget build(BuildContext context) {
@@ -179,22 +179,9 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    controller.createGroupCallRoom(
-        user, _title.text, _notice.text, _docId, controller2.location.value);
-    // FirebaseFirestore.instance
-    //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
-    // _docId =ㄲ(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
-    // controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
-    // // await FirebaseFirestore.instance
-    //     .collection("groupcall")
-    //     .doc('_docId')
-    //     .update({"participants": FieldValue.arrayUnion([user!.uid])});
+    controller.createGroupCallRoom(user, _title.text, _notice.text, _docId,
+        locationController.location.value);
 
     Get.off(() => GroupCallPage(_title.text), arguments: _docId);
-  }
-
-  Future<void> _handleCameraAndMic(Permission permission) async {
-    final status = await permission.request();
-    print('################: $status');
   }
 }

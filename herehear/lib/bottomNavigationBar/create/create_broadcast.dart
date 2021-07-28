@@ -206,6 +206,16 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
+    await controller.createGroupCallRoom(
+      user,
+      _title.text,
+      _notice.text,
+      categoryList[_index],
+      docId,
+      // widget.userData,
+      // List<String>.filled(0, '', growable: true),
+      // locationController.location.value,
+    );
     await Get.to(
       () => BroadCastPage.broadcaster(
         channelName: docId,

@@ -20,11 +20,13 @@ class AgoraEventController extends GetxController {
   final ClientRole role;
   late final int type;
 
-  AgoraEventController.groupcall(this.channelName, this.role) {
+  AgoraEventController.groupcall(
+      {required this.channelName, required this.role}) {
     this.type = GROUPCALL;
   }
 
-  AgoraEventController.broadcast(this.channelName, this.role) {
+  AgoraEventController.broadcast(
+      {required this.channelName, required this.role}) {
     this.type = BROADCAST;
   }
   //

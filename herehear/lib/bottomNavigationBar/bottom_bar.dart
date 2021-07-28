@@ -72,6 +72,9 @@ class BottomBar extends StatelessWidget {
                     height: 32.h,
                   ),
                   onPressed: () => {
+                        print("=================="),
+                        print(userController.myProfile.value.uid),
+                        print("=================="),
                         userController.myProfile.value.uid != 'guest'
                             ? showCreateOption(context)
                             : _showMyDialog(),
