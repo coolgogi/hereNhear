@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/data/user_model.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 Map<String, dynamic> data = new Map();
@@ -11,21 +12,21 @@ Map<String, dynamic> data = new Map();
 List<Widget> broadcastRoomList(
     BuildContext context,
     AsyncSnapshot<QuerySnapshot> broadcastSnapshot,
-    Map<String, dynamic> _data) {
+    UserModel _data) {
   return broadcastSnapshot.data!.docs.map((room) {
     return Padding(
       padding: EdgeInsets.only(right: 12.0.w),
       child: InkWell(
         onTap: () async {
           firestore.collection('broadcast').doc(room['docId']).update({
-            'currentListener': FieldValue.arrayUnion([_data['uid']]),
-            'userNickName': FieldValue.arrayUnion([_data['nickName']]),
-            'userProfile': FieldValue.arrayUnion([_data['profile']]),
+            'currentListener': FieldValue.arrayUnion([_data.uid]),
+            'userNickName': FieldValue.arrayUnion([_data.nickName]),
+            'userProfile': FieldValue.arrayUnion([_data.profile]),
           });
           await getData(room['docId']).whenComplete(() => Get.to(
                 () => BroadCastPage.audience(
                   channelName: room['channelName'],
-                  userName: _data['uid'],
+                  userName: _data.uid!,
                   role: ClientRole.Audience,
                   dbData: data,
                 ),

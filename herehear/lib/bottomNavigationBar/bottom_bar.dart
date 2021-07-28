@@ -16,13 +16,6 @@ import 'home/HomePage.dart';
 
 class BottomBar extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
-  late Map<String, dynamic> _data;
-
-  BottomBar.withData(Map<String, dynamic> data) {
-    _data = data;
-  }
-
-  BottomBar();
 
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),
@@ -31,70 +24,73 @@ class BottomBar extends StatelessWidget {
 
   final TextStyle selectedLabelStyle =
   TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
-
+  final UserController userController =
+  Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
     Get.put(BottomBarController(), permanent: false);
-    final UserController userController =
-    Get.put(UserController());
       return StreamBuilder(
         stream: _auth.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          userController.authStateChanges(snapshot.data);
-          return SafeArea(
-            child: Scaffold(
-              bottomNavigationBar:
-              buildBottomNavigationMenu(context, bottomBarController),
-              body: Obx(() => IndexedStack(
-                index: bottomBarController.tabIndex.value,
-                children: [
-                  HomePage.withData(_data),
-                  ContestPage(),
-                  Container(),
-                  searchPage.withData(_data),
-                  myPage.withData(_data),
-                ],
-              )),
-              floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-                  FloatingActionButtonLocation.centerDocked, 0, 15),
-              floatingActionButton: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary, width: 2.0.w),),
-                child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    elevation: 0.0,
-                    shape: CircleBorder(
-                        side: BorderSide(color: Colors.white, width: 2.5.w)),
-                    child: Image.asset(
-                      'assets/icons/mic_fill.png',
-                      height: 32.h,
-                    ),
-                    onPressed: () => {
-                      userController.myProfile.value.uid != 'guest'
-                          ? showCreateOption(context)
-                          : _showMyDialog(),
-                    }),
-              ),
-            ));
+          if(!snapshot.hasData){
+            FirebaseAuth.instance.signInAnonymously();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          else{
+            if(_auth.currentUser!.isAnonymous){
+              userController.forAnonymous(snapshot.data);
+            }
+            else{
+              userController.authStateChanges(snapshot.data);
+            }
+            return SafeArea(
+                child: Scaffold(
+                  bottomNavigationBar:
+                  buildBottomNavigationMenu(context, bottomBarController),
+                  body: Obx(() => IndexedStack(
+                    index: bottomBarController.tabIndex.value,
+                    children: [
+                      HomePage(),
+                      ContestPage(),
+                      Container(),
+                      searchPage(),
+                      myPage(),
+                    ],
+                  )),
+                  floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+                      FloatingActionButtonLocation.centerDocked, 0, 15),
+                  floatingActionButton: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: Theme.of(context).colorScheme.secondary, width: 2.0.w),),
+                    child: FloatingActionButton(
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
+                        elevation: 0.0,
+                        shape: CircleBorder(
+                            side: BorderSide(color: Colors.white, width: 2.5.w)),
+                        child: Image.asset(
+                          'assets/icons/mic_fill.png',
+                          height: 32.h,
+                        ),
+                        onPressed: () => {
+                          print('*******************************************************************************8'),
+                          print(userController.myProfile.value.uid),
+                          print('*******************************************************************************8'),
+                          _auth.currentUser!.isAnonymous
+                              ? _showMyDialog()
+                              : showCreateOption(context),
+                        }),
+                  ),
+                ));
+
+          }
+
         }
       );
-  }
-
-  Future<void> getData() async {
-    String uid = '';
-    User? _user = FirebaseAuth.instance.currentUser;
-
-    if (_user != null)
-      uid = _user.uid;
-    else if (_user == null) uid = 'Guest';
-
-    var _data =
-    await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-    this._data = _data.data()!;
   }
 
 
@@ -168,7 +164,7 @@ class BottomBar extends StatelessWidget {
                       ],
                     ),
                     onTap: () =>
-                        Get.off(() => CreateBroadcastPage.withData(_data)),
+                        Get.off(() => CreateBroadcastPage.withData(userController.myProfile.value as Map<String, dynamic>)),
                   ),
                   InkWell(
                     child: Column(
