@@ -5,6 +5,7 @@ class UserModel {
   String? password;
   String? nickName;
   String? name;
+  String? location;
   int? age;
   String? profile;
   String? number;
@@ -12,11 +13,12 @@ class UserModel {
 
   UserModel(
       {this.uid,
-        this.docId,
+      this.docId,
       this.id,
       this.password,
       this.nickName,
       this.name,
+      this.location,
       this.age,
       this.profile,
       this.number,
@@ -26,14 +28,12 @@ class UserModel {
     return {
       'uid': this.uid,
       'name': this.name,
-
+      'location' : this.location,
     };
   }
 
   UserModel.fromJson(Map<String, dynamic> json, String docId)
       : uid = json['uid'] as String,
-        name = json['name'] as String;
-
+        name = json['name'] as String,
+        location = json['location'] as String;
 }
-
-

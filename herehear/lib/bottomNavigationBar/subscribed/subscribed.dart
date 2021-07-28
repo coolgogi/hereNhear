@@ -5,18 +5,15 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/etc/delete/group_call.dart';
 import 'package:herehear/groupCall/group_call2.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 
-class SubscribedPage extends StatelessWidget {
+class SubscribedPage extends GetView<UserController> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late Map<String, dynamic> _data;
-  SubscribedPage.withData(Map<String, dynamic> data) {
-    _data = data;
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +112,7 @@ class SubscribedPage extends StatelessWidget {
                       );
                     return ListView(
                       scrollDirection: Axis.horizontal,
-                      children: broadcastRoomList(context, snapshot, _data),
+                      children: broadcastRoomList(context, snapshot, controller.myProfile.value ),
                     );
                   },
                 ),

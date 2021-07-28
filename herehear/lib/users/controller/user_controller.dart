@@ -18,13 +18,13 @@ class UserController extends GetxController {
 
   // firebase storage에 데이터를 보내는 과정.
   void authStateChanges(User? firebaseUser) async {
-    if (firebaseUser != null) {
+      print("this is user======================================================================");
       UserModel? firebaseUserdata =
-      await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
+      await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
       if (firebaseUserdata == null) {
         myProfile.value = UserModel(
-            uid: firebaseUser.uid,
+            uid: firebaseUser!.uid,
             name: firebaseUser.displayName);
         docId =
         await FirebaseUserRepository.saveUserToFirebase(myProfile.value);
@@ -34,9 +34,13 @@ class UserController extends GetxController {
         myProfile.value = firebaseUserdata;
         FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
       }
-    }
-    else{
+  }
+  void forAnonymous(User? firebaseUser) async {
+    if (firebaseUser!.isAnonymous) {
+      print("anonymous+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       myProfile.value = (await FirebaseUserRepository.findUserByUid('Guest'))!;
     }
   }
+
+
 }
