@@ -8,8 +8,6 @@ import 'package:herehear/location_data/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 
-import '../etc/delete/group_call.dart';
-
 class CreateGroupCallPage extends StatefulWidget {
   @override
   _CreateGroupCallPageState createState() => _CreateGroupCallPageState();
@@ -177,9 +175,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     setState(() {
       _title.text.isEmpty ? _validateError = true : _validateError = false;
     });
-    // await _handleCameraAndMic(Permission.camera);
     await Permission.microphone.request();
-    // await _handleCameraAndMic(Permission.microphone);
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
@@ -187,7 +183,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
         user, _title.text, _notice.text, _docId, controller2.location.value);
     // FirebaseFirestore.instance
     //     .collection("groupcall").doc('_docId').update({"participants": FieldValue.arrayUnion(user.uid)});
-    // _docId =(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
+    // _docId =ㄲ(10000000000000- DateTime.now().millisecondsSinceEpoch).toString();
     // controller.createGroupCallRoom(user, _title.text,_notice.text, _docId);
     // // await FirebaseFirestore.instance
     //     .collection("groupcall")
