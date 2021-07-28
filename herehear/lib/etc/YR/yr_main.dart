@@ -14,15 +14,12 @@ import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 
 void yrmain() => runApp(MyApp());
 
 class App extends StatelessWidget {
   Map<String, dynamic> _data = new Map();
-  App(Map<String, dynamic> data) {
-    this._data = data;
-  }
-
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -34,29 +31,9 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return GetBuilder<LocationController>(
-              init: LocationController(),
-              builder: (value) {
-                print('위치: ${value.location.obs}');
-                return FutureBuilder(
-                    future: LocationController()
-                        .getLocation()
-                        .whenComplete(() => getData().whenComplete(() => {
-                      print("===============Complete==============="),
-                      print(_data['uid']),
-                      print(_data['nickName']),
-                      print(_data['profile']),
-                      print("======================================"),
-                    })),
-                    builder: (context, snapshot) {
-                      if(_data == null){
-                        return Text('no data');
-                      }
-                      else
-                        return MyApp();
-                    });
-              });
-        } else {
+          return BottomBar.withData(_data);
+        }
+        else {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -81,36 +58,10 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  @override
-  void onInit() async {
-    // called immediately after the widget is allocated memory
-    locationPermission();
-    await getLocation();
-  }
-  Future<void> locationPermission() async {
-    await Geolocator.requestPermission();
-  }
-
-  Future<void> getLocation() async {
-    Position? position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    debugPrint('location: ${position}');
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    print("detail address : ${first.addressLine}");
-    // print("needed address data : ${first.locality} ${first.subLocality}");
-    location = '${first.locality} ${first.subLocality}';
-    print('location: $location');
-  }
   static ThemeController get to => Get.find();
-  String? location;
-  Map<String, dynamic>? _data;
   @override
   Widget build(BuildContext context) {
     // GetX 등록
-    print(location);
     return GetBuilder<ThemeController>(
         init: ThemeController(),
         builder: (value) {
@@ -119,33 +70,34 @@ class MyApp extends StatelessWidget {
             builder: () => GetMaterialApp(
               theme: value.isDarkTheme.value ? dark_theme : light_theme,
               debugShowCheckedModeBanner: false,
-              // GetX Controller 등록
-              // initialBinding: BindingsBuilder(() {}),
+              initialBinding: BindingsBuilder(() {
+                Get.lazyPut<UserController>(() => UserController());
+              }),
               title: 'Here & Hear',
-              home: BottomBar.withData(_data!),
+              home: App(),
               //home: LandingPage.withData(_data!),
-              getPages: [
-                GetPage(
-                  name: '/',
-                  page: () => HomePage.withData(_data!),
-                ),
-                GetPage(
-                  name: '/myPage',
-                  page: () => myPage.withData(_data!),
-                ),
-                GetPage(
-                  name: '/login',
-                  page: () => LoginPage(),
-                ),
-                GetPage(
-                  name: '/notification',
-                  page: () => NotificationPage(),
-                ),
-                GetPage(
-                  name: '/search',
-                  page: () => searchPage.withData(_data!),
-                )
-              ],
+              // getPages: [
+              //   GetPage(
+              //     name: '/',
+              //     page: () => HomePage.withData(_data!),
+              //   ),
+              //   GetPage(
+              //     name: '/myPage',
+              //     page: () => myPage.withData(_data!),
+              //   ),
+              //   GetPage(
+              //     name: '/login',
+              //     page: () => LoginPage(),
+              //   ),
+              //   GetPage(
+              //     name: '/notification',
+              //     page: () => NotificationPage(),
+              //   ),
+              //   GetPage(
+              //     name: '/search',
+              //     page: () => searchPage.withData(_data!),
+              //   )
+              // ],
             ),
           );
         });
