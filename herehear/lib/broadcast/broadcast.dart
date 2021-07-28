@@ -5,8 +5,10 @@ import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:herehear/users/data/user_model.dart';
 
-class BroadCastPage extends StatelessWidget {
+class BroadCastPage extends GetView<UserController> {
   String nickName_broadcaster = '';
   String profile_broadcaster = '';
   late List<dynamic> nickName_audience;
@@ -14,11 +16,11 @@ class BroadCastPage extends StatelessWidget {
   final String channelName;
   final String userName;
   final ClientRole role;
-  late final controller;
+  late final agoraController;
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
-  late Map<String, dynamic> userData;
+  late UserModel userData;
   late Map<String, dynamic> dbData = new Map();
 
   //unused variable
@@ -29,7 +31,7 @@ class BroadCastPage extends StatelessWidget {
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
-    controller = Get.put(
+    agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
   }
   BroadCastPage.broadcaster(
@@ -37,17 +39,21 @@ class BroadCastPage extends StatelessWidget {
       required this.userName,
       required this.role,
       required this.userData}) {
-    controller = Get.put(
+    agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
-    nickName_broadcaster = userData['nickName'];
-    profile_broadcaster = userData['profile'];
+    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
+    print(controller.myProfile.value.nickName);
+    print(controller.myProfile.value.profile);
+    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
+    // nickName_broadcaster = userData.nickName!;
+    // profile_broadcaster = userData.profile!;
   }
   BroadCastPage.audience(
       {required this.channelName,
       required this.userName,
       required this.role,
       required this.dbData}) {
-    controller = Get.put(
+    agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
     nickName_broadcaster = dbData['hostNickName'];
     profile_broadcaster = dbData['hostProfile'];

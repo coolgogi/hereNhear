@@ -5,12 +5,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location/controller/location_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
-  late Map<String, dynamic> userData;
+  late UserModel userData;
 
-  CreateBroadcastPage.withData(Map<String, dynamic> uData) {
+  CreateBroadcastPage.withData(UserModel uData) {
     this.userData = uData;
   }
 
@@ -21,7 +23,8 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  User? user = FirebaseAuth.instance.currentUser;
+  final userController = Get.put(UserController());
+  // User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -197,12 +200,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
     controller.createBroadcastRoom(
-      user,
+      userController.myProfile.value,
       _title.text,
       _notice.text,
       categoryList[_index],
       _docId,
-      widget.userData,
+      userController.myProfile.value,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
@@ -210,9 +213,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     Get.off(
       () => BroadCastPage.broadcaster(
         channelName: _docId,
-        userName: user!.uid,
+        userName: userController.myProfile.value.uid,
         role: ClientRole.Broadcaster,
-        userData: widget.userData,
+        userData: userController.myProfile.value,
       ),
     );
   }

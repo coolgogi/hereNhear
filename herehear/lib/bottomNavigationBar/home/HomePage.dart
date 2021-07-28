@@ -9,17 +9,16 @@ import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:badges/badges.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends GetView<UserController> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-  final controller = Get.put(LocationController());
+  final locationController = Get.put(LocationController());
   String current_uid = '';
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late Map<String, dynamic> _data;
-  HomePage.withData(Map<String, dynamic> data) {
-    _data = data;
-  }
+
+
   HomePage();
   @override
   void initState() {
@@ -35,9 +34,9 @@ class HomePage extends StatelessWidget {
               title: Text('HERE & HEAR',
                   style: Theme.of(context).appBarTheme.titleTextStyle),
               actions: <Widget>[
-                controller.count > 0
+                locationController.count > 0
                     ? Badge(
-                        badgeContent: Text(controller.count.toString(),
+                        badgeContent: Text(locationController.count.toString(),
                             style:
                                 TextStyle(color: Colors.white, fontSize: 11)),
                         position: BadgePosition.topEnd(top: 0, end: 5),
@@ -142,7 +141,7 @@ class HomePage extends StatelessWidget {
                       stream: firestore
                           .collection("broadcast")
                           .where('location',
-                              isEqualTo: controller.location.value)
+                              isEqualTo: locationController.location.value)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -153,13 +152,13 @@ class HomePage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                           ));
                         if (snapshot.data!.docs.length == 0 &&
-                            controller.location.value != '')
+                            locationController.location.value != '')
                           return Container(
                             child: Text('라이브중인 방송이 없습니다.'),
                           );
                         return ListView(
                           scrollDirection: Axis.horizontal,
-                          children: broadcastRoomList(context, snapshot, _data),
+                          children: broadcastRoomList(context, snapshot, controller.myProfile.value),
                         );
                       },
                     ),
@@ -178,7 +177,7 @@ class HomePage extends StatelessWidget {
                       stream: firestore
                           .collection("groupcall")
                           .where('location',
-                              isEqualTo: controller.location.value)
+                              isEqualTo: locationController.location.value)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -188,7 +187,7 @@ class HomePage extends StatelessWidget {
                             color: Theme.of(context).colorScheme.primary,
                           ));
                         if (snapshot.data!.docs.length == 0 &&
-                            controller.location.value != '')
+                            locationController.location.value != '')
                           return Container(
                             child: Center(child: Text('생성된 대화방이 없습니다.')),
                           );
@@ -206,6 +205,6 @@ class HomePage extends StatelessWidget {
   Future<void> refreshList() async {
     refreshKey.currentState?.show(atTop: false);
     await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
-    controller.getLocation().obs;
+    locationController.getLocation().obs;
   }
 }

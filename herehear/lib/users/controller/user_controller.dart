@@ -13,29 +13,34 @@ import 'package:herehear/users/repository/user_repository.dart';
 class UserController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static UserController get to => Get.find();
-  Rx<UserModel> myProfile = UserModel().obs;
+  Rx<UserModel> myProfile = UserModel(uid: '').obs;
   String? docId;
 
   // firebase storage에 데이터를 보내는 과정.
   void authStateChanges(User? firebaseUser) async {
-    if (firebaseUser != null) {
-      UserModel? firebaseUserdata =
-      await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
-      // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
-      if (firebaseUserdata == null) {
-        myProfile.value = UserModel(
-            uid: firebaseUser.uid,
-            name: firebaseUser.displayName);
-        docId =
-        await FirebaseUserRepository.saveUserToFirebase(myProfile.value);
-        myProfile.value.docId = docId;
-      } else {
-        // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
-        myProfile.value = firebaseUserdata;
-        FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
-      }
+    print(
+        "this is user======================================================================");
+    UserModel? firebaseUserdata =
+        await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
+    // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
+    if (firebaseUserdata == null) {
+      myProfile.value = UserModel(
+        uid: firebaseUser!.uid,
+        name: firebaseUser.displayName,
+      );
+      docId = await FirebaseUserRepository.saveUserToFirebase(myProfile.value);
+      myProfile.value.docId = docId;
+    } else {
+      // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
+      myProfile.value = firebaseUserdata;
+      //FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
     }
-    else{
+  }
+
+  void forAnonymous(User? firebaseUser) async {
+    if (firebaseUser!.isAnonymous) {
+      print(
+          "anonymous+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
       myProfile.value = (await FirebaseUserRepository.findUserByUid('Guest'))!;
     }
   }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
+import 'package:herehear/users/data/user_model.dart';
 import 'agoraRepository.dart';
 import 'agoraModel.dart';
 
@@ -11,18 +12,26 @@ class agoraCreateController extends GetxController {
   Rx<agoraModel> newGroupCallRoom = agoraModel.groupcall().obs;
 
   Future<void> createBroadcastRoom(
-      User? firebaseUser,
+      UserModel firebaseUser,
       String title,
       String notice,
       String category,
       String docId,
-      dynamic _data,
+      UserModel _data,
       List<String> uNickname,
       String location) async {
     if (firebaseUser != null) {
       print("==============================");
-      print('create broadcast room');
+      print('create broadcast room///////');
       print("==============================");
+
+      print("Uuuuuuuuuuuuuuuuuuuuuuuuuu");
+      print(firebaseUser.uid);
+      print(title);
+      print(notice);
+      print(docId);
+      print(location);
+
       newBroadcastRoom.value = agoraModel.broadcast(
         hostUid: firebaseUser.uid,
         title: title,
@@ -35,12 +44,13 @@ class agoraCreateController extends GetxController {
         currentListener: List<String>.filled(0, '', growable: true),
         category: category,
         like: 0,
-        hostProfile: _data['profile'],
+        hostProfile: _data.profile,
         userProfile: List<String>.filled(0, '', growable: true),
-        hostNickname: _data['nickName'],
+        hostNickname: _data.nickName,
         userNickname: uNickname,
       );
 
+      print("gooooooooooooooooooooooood");
       await agoraRepository.BroadcastToFirebase(newBroadcastRoom.value);
     } else {
       print("no user, please sign in");
@@ -54,6 +64,7 @@ class agoraCreateController extends GetxController {
       print("==============================");
       print('create groucall room');
       print("==============================");
+
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
       newGroupCallRoom.value = agoraModel.groupcall(
         hostUid: firebaseUser.uid,
