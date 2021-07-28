@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/agora/agoraController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/location_data/location.dart';
@@ -25,15 +26,16 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
-  bool _validateError = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
+  //unused variable
+  ClientRole _role = ClientRole.Broadcaster;
+  bool _validateError = false;
   var _data;
   bool _value = false;
 
-  final controller = Get.put(BroadcastController());
+  final controller = Get.put(agoraController());
   final locationController = Get.put(LocationController());
 
   @override

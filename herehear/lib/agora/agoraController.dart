@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 class agoraController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static agoraController get to => Get.find();
+
   Rx<BroadcastModel> newStreamingRoom = BroadcastModel().obs;
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
@@ -78,6 +79,7 @@ class agoraController extends GetxController {
 
       await GroupCallRepository.GroupCallToFirebase(newGroupCallRoom.value);
     } else {
+      print("no user, please sign in");
       Get.to(LoginPage());
     }
   }

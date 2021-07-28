@@ -11,8 +11,8 @@ import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'bottomNavigationBar/bottom_bar.dart';
-import 'bottomNavigationBar/create_broadcast.dart';
-import 'bottomNavigationBar/create_groupcall.dart';
+import 'bottomNavigationBar/create/create_broadcast.dart';
+import 'bottomNavigationBar/create/create_groupcall.dart';
 import 'bottomNavigationBar/contest/contest.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -48,12 +48,11 @@ class App extends StatelessWidget {
                               print("======================================"),
                             })),
                     builder: (context, snapshot) {
-                      if(_data == null){
+                      if (_data == null) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
-                      }
-                      else
+                      } else
                         return MyApp(_data);
                     });
               });

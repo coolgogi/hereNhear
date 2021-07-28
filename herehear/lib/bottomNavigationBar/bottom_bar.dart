@@ -6,8 +6,8 @@ import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'contest/contest.dart';
-import 'create_broadcast.dart';
-import 'create_groupcall.dart';
+import 'create/create_broadcast.dart';
+import 'create/create_groupcall.dart';
 import 'floating_action_button_location.dart';
 import 'home/HomePage.dart';
 
@@ -17,8 +17,53 @@ class BottomBar extends StatelessWidget {
   BottomBar.withData(Map<String, dynamic> data) {
     _data = data;
   }
-
   BottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    final BottomBarController landingPageController =
+        Get.put(BottomBarController(), permanent: false);
+    return SafeArea(
+        child: Scaffold(
+      bottomNavigationBar:
+          buildBottomNavigationMenu(context, landingPageController),
+      body: Obx(() => IndexedStack(
+            index: landingPageController.tabIndex.value,
+            children: [
+              HomePage.withData(_data),
+              ContestPage(),
+              Container(),
+              searchPage.withData(_data),
+              myPage.withData(_data),
+            ],
+          )),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+        ),
+        child: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            elevation: 0.0,
+            shape: CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2.5.w)),
+            child: Image.asset(
+              'assets/icons/mic_fill.png',
+              height: 32.h,
+            ),
+            onPressed: () => {
+                  _data['uid'] == null
+                      ? _showMyDialog2()
+                      : _data['uid'] != 'guest'
+                          ? showCreateOption(context)
+                          : _showMyDialog(),
+                }),
+      ),
+    ));
+  }
 
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),
@@ -26,7 +71,7 @@ class BottomBar extends StatelessWidget {
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-  TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
+      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
 
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
@@ -88,51 +133,6 @@ class BottomBar extends StatelessWidget {
         )));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final BottomBarController landingPageController =
-    Get.put(BottomBarController(), permanent: false);
-    return SafeArea(
-        child: Scaffold(
-          bottomNavigationBar:
-          buildBottomNavigationMenu(context, landingPageController),
-          body: Obx(() => IndexedStack(
-            index: landingPageController.tabIndex.value,
-            children: [
-              HomePage.withData(_data),
-              ContestPage(),
-              Container(),
-              searchPage.withData(_data),
-              myPage.withData(_data),
-            ],
-          )),
-          floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-              FloatingActionButtonLocation.centerDocked, 0, 15),
-          floatingActionButton: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                  color: Theme.of(context).colorScheme.secondary, width: 2.0.w),),
-            child: FloatingActionButton(
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                elevation: 0.0,
-                shape: CircleBorder(
-                    side: BorderSide(color: Colors.white, width: 2.5.w)),
-                child: Image.asset(
-                  'assets/icons/mic_fill.png',
-                  height: 32.h,
-                ),
-                onPressed: () => {
-                  _data['uid'] == null
-                      ? _showMyDialog2()
-                      : _data['uid'] != 'guest'
-                      ? showCreateOption(context)
-                      : _showMyDialog(),
-                }),
-          ),
-        ));
-  }
-
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
       title: '로그인이 필요합니다!',
@@ -185,7 +185,8 @@ class BottomBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 35.h,),
+                height: 35.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -243,4 +244,3 @@ class BottomBar extends StatelessWidget {
         });
   }
 }
-
