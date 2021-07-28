@@ -1,17 +1,18 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
-import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
-  late Map<String, dynamic> userData;
+  late UserModel userData;
 
-  CreateBroadcastPage.withData(Map<String, dynamic> uData) {
+  CreateBroadcastPage.withData(UserModel uData) {
     this.userData = uData;
   }
 
@@ -22,18 +23,21 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  User? user = FirebaseAuth.instance.currentUser;
+  final userController = Get.put(UserController());
+  // User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
-  bool _validateError = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  ClientRole _role = ClientRole.Broadcaster;
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
+  String _docId = '';
+  //unused variable
+  ClientRole _role = ClientRole.Broadcaster;
+  bool _validateError = false;
   var _data;
   bool _value = false;
 
-  final controller = Get.put(BroadcastController());
+  final controller = Get.put(agoraCreateController());
   final locationController = Get.put(LocationController());
 
   @override
@@ -192,24 +196,26 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
 
-    final docId =
+    _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    await controller.createBroadcastRoom(
-      user,
+
+    controller.createBroadcastRoom(
+      userController.myProfile.value,
       _title.text,
       _notice.text,
       categoryList[_index],
-      docId,
-      widget.userData,
+      _docId,
+      userController.myProfile.value,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
-    await Get.to(
+
+    Get.off(
       () => BroadCastPage.broadcaster(
-        channelName: docId,
-        userName: user!.uid,
+        channelName: _docId,
+        userName: userController.myProfile.value.uid,
         role: ClientRole.Broadcaster,
-        userData: widget.userData,
+        userData: userController.myProfile.value,
       ),
     );
   }

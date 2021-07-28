@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,8 +8,8 @@ import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'contest/contest.dart';
-import 'create_broadcast.dart';
-import 'create_groupcall.dart';
+import 'create/create_broadcast.dart';
+import 'create/create_groupcall.dart';
 import 'floating_action_button_location.dart';
 import 'home/HomePage.dart';
 
@@ -23,34 +22,31 @@ class BottomBar extends StatelessWidget {
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-  TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
-  final UserController userController =
-  Get.put(UserController());
+      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
+  final UserController userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
-    Get.put(BottomBarController(), permanent: false);
-      return StreamBuilder(
+        Get.put(BottomBarController(), permanent: false);
+    return StreamBuilder(
         stream: _auth.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          if(!snapshot.hasData){
+          if (!snapshot.hasData) {
             FirebaseAuth.instance.signInAnonymously();
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-          else{
-            if(_auth.currentUser!.isAnonymous){
+          } else {
+            if (_auth.currentUser!.isAnonymous) {
               userController.forAnonymous(snapshot.data);
-            }
-            else{
+            } else {
               userController.authStateChanges(snapshot.data);
             }
             return SafeArea(
                 child: Scaffold(
-                  bottomNavigationBar:
+              bottomNavigationBar:
                   buildBottomNavigationMenu(context, bottomBarController),
-                  body: Obx(() => IndexedStack(
+              body: Obx(() => IndexedStack(
                     index: bottomBarController.tabIndex.value,
                     children: [
                       HomePage(),
@@ -60,39 +56,39 @@ class BottomBar extends StatelessWidget {
                       myPage(),
                     ],
                   )),
-                  floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-                      FloatingActionButtonLocation.centerDocked, 0, 15),
-                  floatingActionButton: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: Theme.of(context).colorScheme.secondary, width: 2.0.w),),
-                    child: FloatingActionButton(
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        elevation: 0.0,
-                        shape: CircleBorder(
-                            side: BorderSide(color: Colors.white, width: 2.5.w)),
-                        child: Image.asset(
-                          'assets/icons/mic_fill.png',
-                          height: 32.h,
-                        ),
-                        onPressed: () => {
-                          print('*******************************************************************************8'),
+              floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+                  FloatingActionButtonLocation.centerDocked, 0, 15),
+              floatingActionButton: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: Theme.of(context).colorScheme.secondary,
+                      width: 2.0.w),
+                ),
+                child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    elevation: 0.0,
+                    shape: CircleBorder(
+                        side: BorderSide(color: Colors.white, width: 2.5.w)),
+                    child: Image.asset(
+                      'assets/icons/mic_fill.png',
+                      height: 32.h,
+                    ),
+                    onPressed: () => {
+                          print(
+                              '*******************************************************************************8'),
                           print(userController.myProfile.value.uid),
-                          print('*******************************************************************************8'),
-                          _auth.currentUser!.isAnonymous
+                          print(
+                              '*******************************************************************************8'),
+                          userController.myProfile.value.uid == 'Guest'
                               ? _showMyDialog()
                               : showCreateOption(context),
                         }),
-                  ),
-                ));
-
+              ),
+            ));
           }
-
-        }
-      );
+        });
   }
-
 
   Future<void> _showMyDialog() async {
     return Get.defaultDialog(
@@ -130,7 +126,6 @@ class BottomBar extends StatelessWidget {
     );
   }
 
-
   Future<dynamic> showCreateOption(BuildContext context) async {
     return showModalBottomSheet(
         context: context,
@@ -139,7 +134,8 @@ class BottomBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                height: 35.h,),
+                height: 35.h,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -163,8 +159,8 @@ class BottomBar extends StatelessWidget {
                                 fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    onTap: () =>
-                        Get.off(() => CreateBroadcastPage.withData(userController.myProfile.value as Map<String, dynamic>)),
+                    onTap: () => Get.off(() => CreateBroadcastPage.withData(
+                        userController.myProfile.value)),
                   ),
                   InkWell(
                     child: Column(
@@ -196,7 +192,6 @@ class BottomBar extends StatelessWidget {
           );
         });
   }
-
 
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
@@ -258,4 +253,3 @@ class BottomBar extends StatelessWidget {
         )));
   }
 }
-

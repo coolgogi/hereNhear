@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
@@ -34,10 +30,9 @@ class App extends StatelessWidget {
               builder: (value) {
                 print('위치: ${value.location.obs}');
                 return FutureBuilder(
-                    future: LocationController()
-                        .getLocation(),
+                    future: LocationController().getLocation(),
                     builder: (context, snapshot) {
-                        return MyApp();
+                      return MyApp();
                     });
               });
         } else {
@@ -48,7 +43,6 @@ class App extends StatelessWidget {
       },
     );
   }
-
 }
 
 class MyApp extends StatelessWidget {
