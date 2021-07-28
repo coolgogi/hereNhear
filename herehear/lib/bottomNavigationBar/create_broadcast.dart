@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
-import 'package:herehear/location_data/location.dart';
+import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 // import 'invitation.dart';
 

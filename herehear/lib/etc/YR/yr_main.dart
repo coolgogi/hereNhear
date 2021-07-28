@@ -6,46 +6,22 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification.dart';
+import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 import 'package:herehear/login/signIn.dart';
-import 'bottomNavigationBar/bottom_bar.dart';
-import 'location/controller/location_controller.dart';
-import 'theme/theme.dart';
+import 'package:herehear/theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() => runApp(App());
+void yrmain() => runApp(MyApp());
 
 class App extends StatelessWidget {
-  String? location;
-  @override
-  void onInit() async {
-    // called immediately after the widget is allocated memory
-    locationPermission();
-    location = await getLocation();
-  }
-  Future<void> locationPermission() async {
-    await Geolocator.requestPermission();
-  }
-
-  Future<String?> getLocation() async {
-    Position? position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    debugPrint('location: ${position}');
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    print("detail address : ${first.addressLine}");
-    // print("needed address data : ${first.locality} ${first.subLocality}");
-    location = '${first.locality} ${first.subLocality}';
-    print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++location: $location');
-    return location;
-
-  }
-
   Map<String, dynamic> _data = new Map();
+  App(Map<String, dynamic> data) {
+    this._data = data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +37,6 @@ class App extends StatelessWidget {
           return GetBuilder<LocationController>(
               init: LocationController(),
               builder: (value) {
-                print('====================================================location : ${location}');
                 print('위치: ${value.location.obs}');
                 return FutureBuilder(
                     future: LocationController()
@@ -75,12 +50,10 @@ class App extends StatelessWidget {
                     })),
                     builder: (context, snapshot) {
                       if(_data == null){
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return Text('no data');
                       }
                       else
-                        return MyApp(_data);
+                        return MyApp();
                     });
               });
         } else {
@@ -108,14 +81,36 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  static ThemeController get to => Get.find();
-  Map<String, dynamic>? _data;
-  MyApp(Map<String, dynamic> data) {
-    this._data = data;
+  @override
+  void onInit() async {
+    // called immediately after the widget is allocated memory
+    locationPermission();
+    await getLocation();
   }
+  Future<void> locationPermission() async {
+    await Geolocator.requestPermission();
+  }
+
+  Future<void> getLocation() async {
+    Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    debugPrint('location: ${position}');
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+    await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    print("detail address : ${first.addressLine}");
+    // print("needed address data : ${first.locality} ${first.subLocality}");
+    location = '${first.locality} ${first.subLocality}';
+    print('location: $location');
+  }
+  static ThemeController get to => Get.find();
+  String? location;
+  Map<String, dynamic>? _data;
   @override
   Widget build(BuildContext context) {
     // GetX 등록
+    print(location);
     return GetBuilder<ThemeController>(
         init: ThemeController(),
         builder: (value) {
