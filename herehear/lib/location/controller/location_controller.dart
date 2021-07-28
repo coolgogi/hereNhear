@@ -73,7 +73,7 @@ class LocationController extends GetxController {
     debugPrint('location: ${position}');
     final coordinates = new Coordinates(position.latitude, position.longitude);
     var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print("detail address : ${first.addressLine}");
     // print("needed address data : ${first.locality} ${first.subLocality}");
