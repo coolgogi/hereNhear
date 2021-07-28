@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/agora/agoraController.dart';
+import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/groupCall/group_call.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,7 +18,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final _notice = TextEditingController();
   String? _docId;
   DateTime selectedDate = DateTime.now();
-  final controller = Get.put(agoraController());
+  final controller = Get.put(agoraCreateController());
   final locationController = Get.put(LocationController());
 
   //unused variable

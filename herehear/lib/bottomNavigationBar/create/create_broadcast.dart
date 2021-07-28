@@ -1,11 +1,9 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/agora/agoraController.dart';
+import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
-import 'package:herehear/broadcast/controllers/broadcast_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -29,13 +27,14 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
+  String _docId = '';
   //unused variable
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   var _data;
   bool _value = false;
 
-  final controller = Get.put(agoraController());
+  final controller = Get.put(agoraCreateController());
   final locationController = Get.put(LocationController());
 
   @override
@@ -194,31 +193,23 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
 
-    final docId =
+    _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    await controller.createBroadcastRoom(
+
+    controller.createBroadcastRoom(
       user,
       _title.text,
       _notice.text,
       categoryList[_index],
-      docId,
+      _docId,
       widget.userData,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
-    await controller.createGroupCallRoom(
-      user,
-      _title.text,
-      _notice.text,
-      categoryList[_index],
-      docId,
-      // widget.userData,
-      // List<String>.filled(0, '', growable: true),
-      // locationController.location.value,
-    );
-    await Get.to(
+
+    Get.off(
       () => BroadCastPage.broadcaster(
-        channelName: docId,
+        channelName: _docId,
         userName: user!.uid,
         role: ClientRole.Broadcaster,
         userData: widget.userData,

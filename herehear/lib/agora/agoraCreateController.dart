@@ -4,9 +4,8 @@ import 'package:get/get.dart';
 import 'agoraRepository.dart';
 import 'agoraModel.dart';
 
-class agoraController extends GetxController {
-  // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
-  static agoraController get to => Get.find();
+class agoraCreateController extends GetxController {
+  static agoraCreateController get to => Get.find();
 
   Rx<agoraModel> newBroadcastRoom = agoraModel.broadcast().obs;
   Rx<agoraModel> newGroupCallRoom = agoraModel.groupcall().obs;
