@@ -18,6 +18,7 @@ class BottomBar extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
 
   final UserController userController = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
@@ -176,7 +177,7 @@ class BottomBar extends StatelessWidget {
       fontSize: 12);
 
   final TextStyle selectedLabelStyle =
-  TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
+      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
 
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(

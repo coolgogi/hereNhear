@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'bottomNavigationBar/bottom_bar.dart';
 import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
@@ -60,8 +62,8 @@ class MyApp extends StatelessWidget {
 
 
 
-class App extends GetView<LocationController> {
-  final controller = Get.put(LocationController());
+class App extends GetView<UserController> {
+  final locationController = Get.put(LocationController());
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -73,16 +75,39 @@ class App extends GetView<LocationController> {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return FutureBuilder(
-              future: controller.getLocation(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  print(snapshot.data.toString());
-                  return BottomBar();
-                } else {
-                  return Center(child: CircularProgressIndicator());
-                }
-              });
+          return
+            StreamBuilder<User?>(
+            stream: FirebaseAuth.instance
+                .authStateChanges(), //firebase 상태가 바뀌었는지 아닌지 체크하는 stream.
+            builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+              UserController.to.authStateChanges(snapshot.data);
+              if (!snapshot.hasData) {
+                return LoginPage(); //data가 없으면 로그인으로
+              } else {
+                return     FutureBuilder(
+                  future: locationController.getLocation(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      print(snapshot.data.toString());
+                      return BottomBar();
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  });
+              }
+            },
+          );
+
+            // FutureBuilder(
+            //   future: controller.getLocation(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       print(snapshot.data.toString());
+            //       return BottomBar();
+            //     } else {
+            //       return Center(child: CircularProgressIndicator());
+            //     }
+            //   });
         } else {
           return Center(
             child: CircularProgressIndicator(),

@@ -25,9 +25,9 @@ List<Widget> broadcastRoomList(
           await getData(_roomData['docId']).whenComplete(() => Get.to(
                 () => BroadCastPage.audience(
                   channelName: _roomData['channelName'],
-                  userName: _userData.uid,
+                  userData: _userData,
                   role: ClientRole.Audience,
-                  dbData: data,
+                  roomData: data,
                 ),
               ));
         },
