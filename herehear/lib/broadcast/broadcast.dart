@@ -55,7 +55,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
     return StreamBuilder<DocumentSnapshot>(
         stream : documentStream.doc(channelName).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.data!.data() != null) {
+        if (snapshot.hasData) {
           roomData = snapshot.data!.data() as Map<String, dynamic>;
           if(roomData != null) {
             return Scaffold(
