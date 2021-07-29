@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
+import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -196,9 +198,7 @@ class BroadCastPage extends GetView<UserController> {
       await changeState(channelName);
     }
     controller.onClose();
-    Get.back();
-    Get.back();
-    Get.back();
+    Get.off(() => BottomBar());
   }
 
   Future<void> changeState(String docID) async {

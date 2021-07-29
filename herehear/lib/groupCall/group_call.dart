@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
 
 class GroupCallPage extends StatefulWidget {
   String? _title;
@@ -333,8 +334,6 @@ class _GroupCallPageState extends State<GroupCallPage> {
 
   void _onCallEnd() {
     controller.onClose();
-    Get.back();
-    Get.back();
-    Get.back();
+    Get.off(() => BottomBar());
   }
 }
