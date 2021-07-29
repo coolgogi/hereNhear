@@ -23,8 +23,6 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  final userController = Get.put(UserController());
-  // User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -36,7 +34,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   bool _validateError = false;
 
 
-  final controller = Get.put(agoraCreateController());
+  final agoraController = Get.put(agoraCreateController());
   final locationController = Get.put(LocationController());
 
   @override
@@ -197,24 +195,29 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+    print('=========================host profile========================');
+    print(UserController.to.myProfile.value.profile);
+    print('======================================================');
 
-    controller.createBroadcastRoom(
-      userController.myProfile.value,
+    agoraController.createBroadcastRoom(
+      UserController.to.myProfile.value,
       _title.text,
       _notice.text,
       categoryList[_index],
       _docId,
-      userController.myProfile.value,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
 
+    print('==============ddddddddddddddddaaata======================');
+    print(_docId);
+    print(UserController.to.myProfile.value.profile);
+    print('====================================');
     Get.off(
       () => BroadCastPage.broadcaster(
         channelName: _docId,
-        userName: UserController.to.myProfile.value.uid,
         role: ClientRole.Broadcaster,
-        userData: userController.myProfile.value,
+        userData: UserController.to.myProfile.value,
       ),
     );
   }

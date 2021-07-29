@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'group_call.dart';
-import 'package:herehear/users/controller/user_controller.dart';
 import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 
@@ -18,7 +16,6 @@ List<Widget> groupcallRoomList(
       children: [
         Divider(thickness: 2),
         Container(
-          // width: MediaQuery.of(context).size.width,
           height: 80.0.h,
           child: InkWell(
             onTap: () {

@@ -14,28 +14,28 @@ class agoraCreateController extends GetxController {
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
   Future<void> createBroadcastRoom(
-      UserModel firebaseUser,
+      UserModel userData,
       String title,
       String notice,
       String category,
       String docId,
-      UserModel _data,
       List<String> uNickname,
       String location) async {
-    if (firebaseUser != null) {
+    if (userData != null) {
       print("==============================");
       print('create broadcast room///////');
       print("==============================");
 
       print("Uuuuuuuuuuuuuuuuuuuuuuuuuu");
-      print(firebaseUser.uid);
+      print(userData.uid);
+      print(userData.profile);
       print(title);
       print(notice);
       print(docId);
       print(location);
 
       newBroadcastRoom.value = BroadcastModel(
-        hostUid: firebaseUser.uid,
+        hostUid: userData.uid,
         title: title,
         notice: notice,
         channelName: docId,
@@ -46,9 +46,9 @@ class agoraCreateController extends GetxController {
         currentListener: List<String>.filled(0, '', growable: true),
         category: category,
         like: 0,
-        hostProfile: _data.profile,
+        hostProfile: userData.profile,
         userProfile: List<String>.filled(0, '', growable: true),
-        hostNickname: _data.nickName,
+        hostNickname: userData.nickName,
         userNickname: uNickname,
       );
 
