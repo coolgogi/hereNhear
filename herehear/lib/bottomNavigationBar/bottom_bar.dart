@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
+import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'contest/contest.dart';
 import 'create/create_broadcast.dart';
@@ -28,66 +29,49 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
         Get.put(BottomBarController(), permanent: false);
-    return StreamBuilder(
-        stream: _auth.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          if (!snapshot.hasData) {
-            FirebaseAuth.instance.signInAnonymously();
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else {
-            if (_auth.currentUser!.isAnonymous) {
-              userController.forAnonymous(snapshot.data);
-            } else {
-              userController.authStateChanges(snapshot.data);
-            }
-            return SafeArea(
-                child: Scaffold(
-              bottomNavigationBar:
-                  buildBottomNavigationMenu(context, bottomBarController),
-              body: Obx(() => IndexedStack(
-                    index: bottomBarController.tabIndex.value,
-                    children: [
-                      HomePage(),
-                      ContestPage(),
-                      Container(),
-                      searchPage(),
-                      myPage(),
-                    ],
-                  )),
-              floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-                  FloatingActionButtonLocation.centerDocked, 0, 15),
-              floatingActionButton: Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      color: Theme.of(context).colorScheme.secondary,
-                      width: 2.0.w),
-                ),
-                child: FloatingActionButton(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    elevation: 0.0,
-                    shape: CircleBorder(
-                        side: BorderSide(color: Colors.white, width: 2.5.w)),
-                    child: Image.asset(
-                      'assets/icons/mic_fill.png',
-                      height: 32.h,
-                    ),
-                    onPressed: () => {
-                          print(
-                              '*******************************************************************************8'),
-                          print(userController.myProfile.value.uid),
-                          print(
-                              '*******************************************************************************8'),
-                          userController.myProfile.value.uid == 'Guest'
-                              ? _showMyDialog()
-                              : showCreateOption(context),
-                        }),
-              ),
-            ));
-          }
-        });
+    return SafeArea(
+        child: Scaffold(
+      bottomNavigationBar:
+          buildBottomNavigationMenu(context, bottomBarController),
+      body: Obx(() => IndexedStack(
+            index: bottomBarController.tabIndex.value,
+            children: [
+              HomePage(),
+              ContestPage(),
+              Container(),
+              searchPage(),
+              myPage(),
+            ],
+          )),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+              color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+        ),
+        child: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            elevation: 0.0,
+            shape: CircleBorder(
+                side: BorderSide(color: Colors.white, width: 2.5.w)),
+            child: Image.asset(
+              'assets/icons/mic_fill.png',
+              height: 32.h,
+            ),
+            onPressed: () => {
+                  print(
+                      '*******************************************************************************8'),
+                  print(userController.myProfile.value.uid),
+                  print(
+                      '*******************************************************************************8'),
+                  userController.myProfile.value.uid == 'Guest'
+                      ? _showMyDialog()
+                      : showCreateOption(context),
+                }),
+      ),
+    ));
   }
 
   Future<void> _showMyDialog() async {

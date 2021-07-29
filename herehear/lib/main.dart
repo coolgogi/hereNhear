@@ -11,11 +11,13 @@ import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() => runApp(App());
+void main() => runApp(MyApp());
 
-class App extends StatelessWidget {
+class App extends GetView<LocationController> {
+  final controller = Get.put(LocationController());
   @override
   Widget build(BuildContext context) {
+    Future<String> location;
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -25,15 +27,15 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return GetBuilder<LocationController>(
-              init: LocationController(),
-              builder: (value) {
-                print('위치: ${value.location.obs}');
-                return FutureBuilder(
-                    future: LocationController().getLocation(),
-                    builder: (context, snapshot) {
-                      return MyApp();
-                    });
+          return FutureBuilder(
+              future: controller.getLocation(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data.toString());
+                  return BottomBar();
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
               });
         } else {
           return Center(
@@ -61,7 +63,7 @@ class MyApp extends StatelessWidget {
               // GetX Controller 등록
               // initialBinding: BindingsBuilder(() {}),
               title: 'Here & Hear',
-              home: BottomBar(),
+              home: App(),
               //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
