@@ -26,30 +26,28 @@ class ContestPage extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(left: 16.0.w, top: 25.0.r),
+            padding: EdgeInsets.only(left: 16.0.w, top: 25.0.h, bottom: 12.0.h),
             child:
                 Text('자유 컨테스트', style: Theme.of(context).textTheme.headline2),
           ),
           Container(
-            height: 150.0.h,
+            height: 195.0.h,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: <Widget>[
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                      EdgeInsets.only(left: 16.0.w, bottom: 6.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 4.0.h),
-                        child: GestureDetector(
+                      GestureDetector(
                           onTap: () {
                             Get.to(() => EvaluationPage());
                           },
                           child: Container(
-                            width: 120.0.w,
-                            height: 120.0.w,
+                            width: 130.0.w,
+                            height: 130.0.w,
                             child: Card(
                               child: Center(
                                 child: Stack(
@@ -66,7 +64,6 @@ class ContestPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
                         child: Center(
@@ -80,31 +77,28 @@ class ContestPage extends StatelessWidget {
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  EdgeInsets.only(left: 12.0.w, bottom: 6.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 4.0.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Get.to(() => EvaluationPage2());
-                          },
-                          child: Container(
-                            width: 120.0.w,
-                            height: 120.0.w,
-                            child: Card(
-                              child: Center(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset('assets/images/she2.jpeg'),
-                                    Image.asset(
-                                      'assets/images/playButton.png',
-                                      width: 80.0.w,
-                                    ),
-                                  ],
-                                ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => EvaluationPage());
+                        },
+                        child: Container(
+                          width: 130.0.w,
+                          height: 130.0.w,
+                          child: Card(
+                            child: Center(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset('assets/images/she2.jpeg'),
+                                  Image.asset(
+                                    'assets/images/playButton.png',
+                                    width: 80.0.w,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -112,41 +106,39 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text(
-                          '여자 목소리',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
+                        child: Center(
+                            child: Text(
+                              '여자 목소리 내는 법',
+                              style: Theme.of(context).textTheme.subtitle1,
+                            )),
                       ),
                     ],
                   ),
                 ),
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 6.0.w, top: 12.0.h, bottom: 10.0.h),
+                  EdgeInsets.only(left: 12.0.w, bottom: 6.0.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 4.0.h),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Get.to(() => EvaluationPage());
-                          },
-                          child: Container(
-                            width: 120.0.w,
-                            height: 120.0.w,
-                            child: Card(
-                              child: Center(
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset('assets/images/you2.jpg'),
-                                    Image.asset(
-                                      'assets/images/playButton.png',
-                                      width: 80.0.w,
-                                    ),
-                                  ],
-                                ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(() => EvaluationPage());
+                        },
+                        child: Container(
+                          width: 130.0.w,
+                          height: 130.0.w,
+                          child: Card(
+                            child: Center(
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset('assets/images/you2.jpg'),
+                                  Image.asset(
+                                    'assets/images/playButton.png',
+                                    width: 80.0.w,
+                                  ),
+                                ],
                               ),
                             ),
                           ),
@@ -154,10 +146,11 @@ class ContestPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 5.0.sp),
-                        child: Text(
-                          '이륙하는 비행기',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
+                        child: Center(
+                            child: Text(
+                              '이륙하는 비행기',
+                              style: Theme.of(context).textTheme.subtitle1,
+                            )),
                       ),
                     ],
                   ),
@@ -278,7 +271,7 @@ class ContestPage extends StatelessWidget {
             ),
           ),
           Container(
-            height: 100.0.h,
+            height: 98.0.h,
             child: Padding(
               padding: EdgeInsets.only(
                 left: 16.0.w,
@@ -289,11 +282,11 @@ class ContestPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {},
                     child: Padding(
-                      padding: EdgeInsets.only(right: 10.0.w),
+                      padding: EdgeInsets.only(right: 12.0.w),
                       child: Stack(
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 8.0.h),
+                            padding: EdgeInsets.only(top: 26.0.h),
                             child: CircleAvatar(
                               radius: 48.r,
                               backgroundImage:
@@ -307,22 +300,22 @@ class ContestPage extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            left: 12,
-                            right: 5,
-                            top: -105,
-                            bottom: 0,
+                            left: 12.w,
+                            right: 8.w,
+                            top: -63.h,
+                            bottom: 0.h,
                             child: Image.asset(
                               'assets/images/goldCrown.png',
-                              width: 100,
+                              width: 20.31.w,
                             ),
                           ),
                           Positioned(
-                            left: 0,
-                            right: 55,
-                            top: -73,
-                            bottom: 3,
+                            left: 0.w,
+                            right: 55.w,
+                            top: -43.h,
+                            bottom: 3.h,
                             child: Container(
-                              width: 20.r,
+                              width: 28.w,
                               decoration: BoxDecoration(
                                 color: Color(0xFF618051),
                                 shape: BoxShape.circle,
@@ -330,14 +323,14 @@ class ContestPage extends StatelessWidget {
                             ),
                           ),
                           Positioned(
-                            left: 8,
-                            right: 0,
-                            top: 12,
-                            bottom: 0,
+                            left: 8.w,
+                            right: 0.w,
+                            top: 17.0.h,
+                            bottom: 0.h,
                             child: Text(
                               '1위',
                               style: TextStyle(
-                                fontSize: 16.0.sp,
+                                fontSize: 12.0.sp,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                                 fontFamily: 'Roboto',

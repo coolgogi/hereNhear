@@ -176,9 +176,12 @@ flutter:
     - family: Baloo Bhai
       fonts:
         - asset: fonts/BalooBhai-Regular.ttf
-    - family: Noto Sans CJK kr
+    - family: Noto Sans CJK kr-bold
       fonts:
         - asset: fonts/NotoSansCJKkr-Bold.ttf
+    - family: Noto Sans CJK kr-regular
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
