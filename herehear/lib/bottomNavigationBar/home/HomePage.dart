@@ -51,14 +51,14 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                 ),
-                pinned: true,
-                floating: false,
+                floating: true,
+                pinned: false,
                 snap: false,
               ),
               SliverList(delegate: SliverChildListDelegate(
                 [
                   Container(
-                    constraints: BoxConstraints(minHeight: 580.0.h),
+                    constraints: BoxConstraints(minHeight: 590.0.h),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
                               child: Row(
                                 children: <Widget>[
                                   Text(
-                                    '실시간 소리',
+                                    'HEAR LIVE',
                                     // style: Theme.of(context).textTheme.headline1,
                                     style: Theme.of(context).textTheme.headline2,
                                   ),
@@ -80,7 +80,7 @@ class HomePage extends StatelessWidget {
                                     padding: EdgeInsets.only(left: 3.0.w),
                                     child: Container(
                                       width: 41.w,
-                                      height: 17.h,
+                                      height: 18.h,
                                       decoration: BoxDecoration(
                                         border: Border.all(
                                             color: Theme.of(context)
@@ -136,8 +136,11 @@ class HomePage extends StatelessWidget {
                                       ));
                                     if (snapshot.data!.docs.length == 0 &&
                                         locationController.location.value != '')
-                                      return Container(
-                                        child: Text('라이브중인 방송이 없습니다.'),
+                                      return Padding(
+                                        padding: EdgeInsets.only(top: 50.0.h),
+                                        child: Container(
+                                          child: Text('라이브중인 방송이 없습니다.'),
+                                        ),
                                       );
                                     return ListView(
                                       scrollDirection: Axis.horizontal,
@@ -148,38 +151,46 @@ class HomePage extends StatelessWidget {
                                 ),
                               ),
                         ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0.w),
-                              child: Text(
-                                '토크',
-                                style: Theme.of(context).textTheme.headline2,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 25.0.w),
+                                child: Text(
+                                  'HEAR CHAT',
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 9.0.h),
-                              child: StreamBuilder<QuerySnapshot>(
-                                  stream: firestore
-                                      .collection("groupcall")
-                                      .where('location',
-                                          isEqualTo: locationController.location.value)
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (!snapshot.hasData)
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ));
-                                    if (snapshot.data!.docs.length == 0 &&
-                                        locationController.location.value != '')
-                                      return Container(
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 9.0.h),
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: firestore
+                                    .collection("groupcall")
+                                    .where('location',
+                                        isEqualTo: locationController.location.value)
+                                    .snapshots(),
+                                builder: (BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  if (!snapshot.hasData)
+                                    return Center(
+                                        child: CircularProgressIndicator(
+                                      color: Theme.of(context).colorScheme.primary,
+                                    ));
+                                  if (snapshot.data!.docs.length == 0 &&
+                                      locationController.location.value != '')
+                                    return Padding(
+                                      padding: EdgeInsets.only(top: 50.0.h),
+                                      child: Container(
                                         child: Center(child: Text('생성된 대화방이 없습니다.')),
-                                      );
-                                    return Column(
-                                      children: groupcallRoomList(context, snapshot,UserController.to.myProfile.value ),
+                                      ),
                                     );
-                                  }),
-                            ),
+                                  return Column(
+                                    children: groupcallRoomList(context, snapshot,UserController.to.myProfile.value ),
+                                  );
+                                }),
+                          ),
                       ],
                     ),
                   ),
