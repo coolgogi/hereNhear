@@ -20,18 +20,19 @@ class AgoraEventController extends GetxController {
   final ClientRole role;
   late final int type;
 
-  AgoraEventController.groupcall(this.channelName, this.role) {
+  AgoraEventController.groupcall(
+      {required this.channelName, required this.role}) {
     this.type = GROUPCALL;
   }
 
-  AgoraEventController.broadcast(this.channelName, this.role) {
+  AgoraEventController.broadcast(
+      {required this.channelName, required this.role}) {
     this.type = BROADCAST;
   }
   //
 
   @override
   void onInit() {
-    // called immediately after the widget is allocated memory
     initialize();
     super.onInit();
   }
@@ -54,7 +55,7 @@ class AgoraEventController extends GetxController {
       infoStrings.add('Agora Engine is not starting');
       return;
     }
-    await _initAgoraRtcEngine(this.type);
+    await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
     await _engine.enableAudioVolumeIndication(250, 2, true);
@@ -65,12 +66,12 @@ class AgoraEventController extends GetxController {
   }
 
   /// Create agora sdk instance and initialize
-  Future<void> _initAgoraRtcEngine(int type) async {
+  Future<void> _initAgoraRtcEngine() async {
     _engine = await RtcEngine.create(appID);
     await _engine.disableVideo();
     await _engine.enableAudio();
 
-    if (type == BROADCAST) {
+    if (this.type == BROADCAST) {
       await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
       await _engine.setClientRole(role);
     }

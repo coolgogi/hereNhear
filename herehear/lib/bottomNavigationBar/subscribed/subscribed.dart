@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/groupCall/group_call2.dart';
+import 'package:herehear/groupCall/group_call.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 
 class SubscribedPage extends GetView<UserController> {
@@ -112,7 +112,8 @@ class SubscribedPage extends GetView<UserController> {
                       );
                     return ListView(
                       scrollDirection: Axis.horizontal,
-                      children: broadcastRoomList(context, snapshot, controller.myProfile.value ),
+                      children: broadcastRoomList(
+                          context, snapshot, controller.myProfile.value),
                     );
                   },
                 ),
