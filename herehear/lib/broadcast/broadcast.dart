@@ -2,97 +2,84 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
+import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 
-class BroadCastPage extends GetView<UserController> {
-  String nickName_broadcaster = '';
-  String profile_broadcaster = '';
-  late List<dynamic> nickName_audience;
-  late List<dynamic> profile_audience;
+class BroadCastPage extends GetView<AgoraEventController> {
   final String channelName;
-  final String? userName;
+  final UserModel userData;
   final ClientRole role;
   late final agoraController;
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
-  late UserModel userData;
-  late Map<String, dynamic> dbData = new Map();
+  Map<String, dynamic> roomData = new Map();
 
 
   BroadCastPage(
-      {required this.channelName, required this.userName, required this.role}) {
+      {required this.channelName, required this.userData, required this.role}) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
   }
+
   BroadCastPage.broadcaster(
       {required this.channelName,
-       this.userName,
       required this.role,
       required this.userData}) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
     print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
-    print(controller.myProfile.value.nickName);
-    print(controller.myProfile.value.profile);
+    print(userData.nickName);
+    print(userData.profile);
     print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
-     nickName_broadcaster = controller.myProfile.value.nickName!;
-     profile_broadcaster = controller.myProfile.value.profile!;
+
   }
+
   BroadCastPage.audience(
       {required this.channelName,
-      required this.userName,
+      required this.userData,
       required this.role,
-      required this.dbData}) {
+      required this.roomData}) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
-    nickName_broadcaster = dbData['hostNickName'];
-    profile_broadcaster = dbData['hostProfile'];
-  }
 
-  void getData() async {
-    var temp = await FirebaseFirestore.instance
-        .collection('broadcast')
-        .doc(channelName)
-        .get();
-
-    dbData = temp.data()!;
-    host_uid = dbData['hostUid'];
-    nickName_broadcaster = dbData['hostNickName'];
-    profile_broadcaster = dbData['hostProfile'];
-    nickName_audience = dbData['userNickName'];
-    profile_audience = dbData['userProfile'];
-    print("===========dbData===========");
-    print(dbData['hostUid']);
-    print(dbData['hostProfile']);
-    print("============================");
-    if (role == ClientRole.Broadcaster) {
-      print("==========notice===========");
-      print("Broadcaster");
-      print("===========================");
-    } else if (role == ClientRole.Audience) {
-      print("==========notice===========");
-      print("Audience");
-      print("===========================");
-    }
   }
+  final documentStream = FirebaseFirestore.instance.collection('broadcast');
 
   @override
   Widget build(BuildContext context) {
-    getData();
-    return Scaffold(
-      appBar: profileAppBar(context),
-      body: ChatPage.withData(dbData),
+    return StreamBuilder<DocumentSnapshot>(
+        stream : documentStream.doc(channelName).snapshots(),
+      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasData) {
+          roomData = snapshot.data!.data() as Map<String, dynamic>;
+          if(roomData != null) {
+            return Scaffold(
+              appBar: profileAppBar(context),
+              body: ChatPage.withData(roomData),
+            );
+          }
+          else {
+            return Center(child: CircularProgressIndicator());
+          }
+              }
+        else {
+          return Center(child: CircularProgressIndicator());
+        }
+      }
     );
   }
 
-  PreferredSizeWidget profileAppBar(BuildContext context) {
+  PreferredSizeWidget profileAppBar(BuildContext context, ) {
+    print('^^^^^^^^^^^^^^^^^^^^^^^^dbData^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6');
+    print(roomData['hostUid']);
+    print(roomData['title']);
+    print(roomData['hostProfile']);
     return AppBar(
-      // leading: hostCard(context, nickName_broadcaster, profile_broadcaster)
       leading: Card(
         margin: EdgeInsets.only(left: 0.0.w),
         child: Column(
@@ -101,14 +88,15 @@ class BroadCastPage extends GetView<UserController> {
             SizedBox(
               width: 30,
               height: 30,
-              child: Image.asset(profile_broadcaster),
+              child: Image.asset(roomData['hostProfile']),
+
             ),
           ],
         ),
       ),
       backgroundColor: Colors.white,
       title: Text(
-         dbData['title'],
+        roomData['title'],
         style: Theme.of(context).textTheme.subtitle1,
       ),
       // backgroundColor: black,
@@ -190,9 +178,7 @@ class BroadCastPage extends GetView<UserController> {
       await changeState(channelName);
     }
     controller.onClose();
-    Get.back();
-    Get.back();
-    Get.back();
+    Get.off(() => BottomBar());
   }
 
   Future<void> changeState(String docID) async {
@@ -209,33 +195,3 @@ class BroadCastPage extends GetView<UserController> {
   }
 }
 
-//어디로 가야할지
-Widget profileCard(BuildContext context, String nickName, String profile) {
-  return Column(
-    children: [
-      Container(
-        width: 35.0.w,
-        height: 35.0.h,
-        child: Card(
-          margin: EdgeInsets.only(left: 0.0.w),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 30,
-                height: 30,
-                child: Image.asset(profile),
-              ),
-            ],
-          ),
-        ),
-      ),
-      SizedBox(height: 5.h),
-      Text(
-        nickName,
-        style: Theme.of(context).textTheme.subtitle1,
-      ),
-      SizedBox(height: 4.h),
-    ],
-  );
-}

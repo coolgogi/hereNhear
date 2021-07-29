@@ -11,7 +11,6 @@ import 'package:herehear/users/controller/user_controller.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-FirebaseAuth _auth = FirebaseAuth.instance;
 
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();

@@ -13,7 +13,7 @@ import 'package:herehear/users/repository/user_repository.dart';
 class UserController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static UserController get to => Get.find();
-  Rx<UserModel> myProfile = UserModel(uid: '').obs;
+  Rx<UserModel> myProfile = UserModel().obs;
   String? docId;
 
   // firebase storage에 데이터를 보내는 과정.
