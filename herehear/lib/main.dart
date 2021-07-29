@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/notification.dart';
+import 'package:herehear/appBar/notification/notification.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
@@ -52,12 +52,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // GetX 등록
-    return GetBuilder<ThemeController>(
-        init: ThemeController(),
-        builder: (value) {
-          return ScreenUtilInit(
-            designSize: Size(375, 667),
-            builder: () => GetMaterialApp(
+    return ScreenUtilInit(
+      designSize: Size(375, 667),
+      builder: () => GetBuilder<ThemeController>(
+          init: ThemeController(),
+          builder: (value) {
+            return GetMaterialApp(
               theme: value.isDarkTheme.value ? dark_theme : light_theme,
               debugShowCheckedModeBanner: false,
               // GetX Controller 등록
@@ -87,8 +87,9 @@ class MyApp extends StatelessWidget {
                   page: () => searchPage(),
                 )
               ],
-            ),
-          );
-        });
+            );
+          }
+        ),
+      );
   }
 }
