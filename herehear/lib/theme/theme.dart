@@ -29,10 +29,11 @@ ThemeData _buildClosetTheme_light() {
     appBarTheme: base.appBarTheme.copyWith(
       iconTheme: IconThemeData(color: OnBackgroundLight),
       color: BackgroundLight,
+      elevation: 0.0,
       titleTextStyle: TextStyle(
-        color: PrimaryVariantDeepLight,
-        fontFamily: 'Noto Sans CJK kr',
-        fontWeight: FontWeight.w900,
+        color: OnBackgroundLight,
+        fontFamily: 'Noto Sans CJK kr-regular',
+        fontWeight: FontWeight.w500,
         fontSize: 17.sp,
         // height: 38.26,
       ),
@@ -160,6 +161,18 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 19.sp,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w700,
+    ),
+    headline3: base.headline3!.copyWith(
+      color: OnBackgroundLight,
+      fontSize: 17.sp,
+      fontFamily: 'Noto Sans CJK kr-bold',
+      fontWeight: FontWeight.w400,
+    ),
+    headline4: base.headline4!.copyWith(
+      color: OnBackgroundLight,
+      fontSize: 17.sp,
+      fontFamily: 'Noto Sans CJK kr-regular',
+      fontWeight: FontWeight.w400,
     ),
     headline6: base.headline6!.copyWith(
       fontSize: 16.0.sp,

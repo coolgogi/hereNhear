@@ -17,13 +17,6 @@ import 'home/HomePage.dart';
 class BottomBar extends StatelessWidget {
   final _auth = FirebaseAuth.instance;
 
-  final TextStyle unselectedLabelStyle = TextStyle(
-      color: Colors.white.withOpacity(0.5),
-      fontWeight: FontWeight.w700,
-      fontSize: 12);
-
-  final TextStyle selectedLabelStyle =
-      TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
   final UserController userController = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
@@ -177,6 +170,14 @@ class BottomBar extends StatelessWidget {
         });
   }
 
+  final TextStyle unselectedLabelStyle = TextStyle(
+      color: Colors.white.withOpacity(0.5),
+      fontWeight: FontWeight.w700,
+      fontSize: 12);
+
+  final TextStyle selectedLabelStyle =
+  TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12);
+
   buildBottomNavigationMenu(context, landingPageController) {
     return Obx(() => MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
@@ -188,7 +189,8 @@ class BottomBar extends StatelessWidget {
             showSelectedLabels: true,
             onTap: landingPageController.changeTabIndex,
             currentIndex: landingPageController.tabIndex.value,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            // backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Colors.white,
             unselectedItemColor: Color(0xFFB8B8B8),
             selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
             unselectedLabelStyle: unselectedLabelStyle,

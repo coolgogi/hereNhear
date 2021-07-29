@@ -16,7 +16,7 @@ class BroadCastPage extends GetView<UserController> {
   late List<dynamic> nickName_audience;
   late List<dynamic> profile_audience;
   final String channelName;
-  final String userName;
+  final String? userName;
   final ClientRole role;
   late final agoraController;
   bool muted = false;
@@ -25,11 +25,6 @@ class BroadCastPage extends GetView<UserController> {
   late UserModel userData;
   late Map<String, dynamic> dbData = new Map();
 
-  //unused variable
-  // final String channelName = Get.arguments;
-  late RtcEngine _engine;
-  final Map<int, String> _allUsers = {};
-  static final _users = <int>[];
 
   BroadCastPage(
       {required this.channelName, required this.userName, required this.role}) {
@@ -38,7 +33,7 @@ class BroadCastPage extends GetView<UserController> {
   }
   BroadCastPage.broadcaster(
       {required this.channelName,
-      required this.userName,
+       this.userName,
       required this.role,
       required this.userData}) {
     agoraController = Get.put(
@@ -47,8 +42,8 @@ class BroadCastPage extends GetView<UserController> {
     print(controller.myProfile.value.nickName);
     print(controller.myProfile.value.profile);
     print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
-    // nickName_broadcaster = userData.nickName!;
-    // profile_broadcaster = userData.profile!;
+     nickName_broadcaster = controller.myProfile.value.nickName!;
+     profile_broadcaster = controller.myProfile.value.profile!;
   }
   BroadCastPage.audience(
       {required this.channelName,
@@ -115,8 +110,7 @@ class BroadCastPage extends GetView<UserController> {
       ),
       backgroundColor: Colors.white,
       title: Text(
-        // dbData['title'],
-        'hard coding',
+         dbData['title'],
         style: Theme.of(context).textTheme.subtitle1,
       ),
       // backgroundColor: black,
