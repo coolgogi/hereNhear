@@ -30,11 +30,11 @@ class GroupCallModel {
       'notice': this.notice,
       'channelName': this.channelName,
       'docId': this.docId,
-      'image' : this.image,
-      'location' : this.location,
-      'createTIme' : this.createdTime,
+      'image': this.image,
+      'location': this.location,
+      'createTIme': this.createdTime,
       'currentListener': this.currentListener,
-      'participants' : this.participants,
+      'participants': this.participants,
     };
   }
 

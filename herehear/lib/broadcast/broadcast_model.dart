@@ -1,36 +1,41 @@
 class BroadcastModel {
+  //using both side.
   String? hostUid;
   String? title;
   String? notice;
-  String? category;
+  String? channelName;
   String? docId;
   String? image;
-  int? like;
-  String? channelName;
+  String? location;
   DateTime? createdTime;
   List<String>? currentListener;
+  List<dynamic>? participants;
+  //only broadcast
+  String? category;
+  int? like;
   String? hostProfile;
   List<String>? userProfile;
   String? hostNickname;
   List<String>? userNickname;
-  String? location;
 
   BroadcastModel({
     this.hostUid,
     this.title,
     this.notice,
-    this.category,
+    this.channelName,
     this.docId,
     this.image,
-    this.like,
-    this.channelName,
+    this.location,
     this.createdTime,
     this.currentListener,
+    this.participants,
+    //only broadcast
+    this.category,
+    this.like,
     this.hostProfile,
     this.userProfile,
     this.hostNickname,
     this.userNickname,
-    this.location,
   });
 
   // UserModel을 map으로 바꿔주는 함수.
@@ -39,18 +44,20 @@ class BroadcastModel {
       'hostUid': this.hostUid,
       'title': this.title,
       'notice': this.notice,
-      'category': this.category,
+      'channelName': this.channelName,
       'docId': this.docId,
       'image': this.image,
-      'like': this.like,
-      'channelName': this.channelName,
+      'location': this.location,
       'createdTime': this.createdTime,
       'currentListener': this.currentListener,
+      'participants': this.participants,
+      //only broadcast
+      'category': this.category,
+      'like': this.like,
       'hostProfile': this.hostProfile,
       'hostNickName': this.hostNickname,
       'userProfile': this.userProfile,
       'userNickName': this.userNickname,
-      'location': this.location,
     };
   }
 
@@ -58,10 +65,11 @@ class BroadcastModel {
       : hostUid = json['uid'] as String,
         title = json['title'] as String,
         notice = json['notice'] as String,
-        category = json['category'] as String,
+        channelName = json['channelName'] as String,
         docId = json['docId'] as String,
         image = json['image'] as String,
-        like = json['like'] as int,
-        channelName = json['channelName'] as String,
-        createdTime = json['createdTime'].toDate();
+        createdTime = json['createdTime'].toDate(),
+        //only broadcast
+        category = json['category'] as String,
+        like = json['like'] as int;
 }

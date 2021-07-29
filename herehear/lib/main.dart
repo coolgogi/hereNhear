@@ -1,29 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification/notification.dart';
-import 'package:herehear/location_data/location.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
-import 'package:herehear/etc/upload.dart';
 import 'package:herehear/login/signIn.dart';
 import 'bottomNavigationBar/bottom_bar.dart';
-import 'bottomNavigationBar/create_broadcast.dart';
-import 'bottomNavigationBar/create_groupcall.dart';
-import 'bottomNavigationBar/contest/contest.dart';
+import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() => runApp(App());
+void main() => runApp(MyApp());
 
-class App extends StatelessWidget {
-  Map<String, dynamic> _data = new Map();
-
+class App extends GetView<LocationController> {
+  final controller = Get.put(LocationController());
   @override
   Widget build(BuildContext context) {
+    Future<String> location;
     return FutureBuilder(
       future: Firebase.initializeApp(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -33,29 +27,15 @@ class App extends StatelessWidget {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return GetBuilder<LocationController>(
-              init: LocationController(),
-              builder: (value) {
-                print('위치: ${value.location.obs}');
-                return FutureBuilder(
-                    future: LocationController()
-                        .getLocation()
-                        .whenComplete(() => getData().whenComplete(() => {
-                              print("===============Complete==============="),
-                              print(_data['uid']),
-                              print(_data['nickName']),
-                              print(_data['profile']),
-                              print("======================================"),
-                            })),
-                    builder: (context, snapshot) {
-                      if(_data == null){
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      else
-                        return MyApp(_data);
-                    });
+          return FutureBuilder(
+              future: controller.getLocation(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  print(snapshot.data.toString());
+                  return BottomBar();
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
               });
         } else {
           return Center(
@@ -65,28 +45,10 @@ class App extends StatelessWidget {
       },
     );
   }
-
-  Future<void> getData() async {
-    String uid = '';
-    User? _user = FirebaseAuth.instance.currentUser;
-
-    if (_user != null)
-      uid = _user.uid;
-    else if (_user == null) uid = 'Guest';
-
-    var _data =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-
-    this._data = _data.data()!;
-  }
 }
 
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
-  Map<String, dynamic>? _data;
-  MyApp(Map<String, dynamic> data) {
-    this._data = data;
-  }
   @override
   Widget build(BuildContext context) {
     // GetX 등록
@@ -101,16 +63,16 @@ class MyApp extends StatelessWidget {
               // GetX Controller 등록
               // initialBinding: BindingsBuilder(() {}),
               title: 'Here & Hear',
-              home: BottomBar.withData(_data!),
+              home: App(),
               //home: LandingPage.withData(_data!),
               getPages: [
                 GetPage(
                   name: '/',
-                  page: () => HomePage.withData(_data!),
+                  page: () => HomePage(),
                 ),
                 GetPage(
                   name: '/myPage',
-                  page: () => myPage.withData(_data!),
+                  page: () => myPage(),
                 ),
                 GetPage(
                   name: '/login',
@@ -122,7 +84,7 @@ class MyApp extends StatelessWidget {
                 ),
                 GetPage(
                   name: '/search',
-                  page: () => searchPage.withData(_data!),
+                  page: () => searchPage(),
                 )
               ],
             );

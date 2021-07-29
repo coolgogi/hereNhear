@@ -3,19 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/bottomNavigationBar/subscribed/subscribed.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../login/signIn.dart';
 
-class myPage extends StatelessWidget {
+class myPage extends GetView<UserController> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late Map<String, dynamic> _user;
-  myPage.withData(Map<String, dynamic> data) {
-    _user = data;
-    // print(_data['nickName']);
-    // print(_data['uid']);
-    // print(_data['profile']);
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +30,6 @@ class myPage extends StatelessWidget {
                   title: Text('회원정보 수정'),
                   onTap: () {
                     Get.to(LoginPage());
-                  },
-                ),
-                ListTile(
-                  title: Text('구독 정보'),
-                  onTap: () {
-                    Get.to(() => SubscribedPage.withData(_user));
                   },
                 ),
                 _divier(),
@@ -147,9 +136,9 @@ class myPage extends StatelessWidget {
       children: <Widget>[
         CircleAvatar(
           radius: 60,
-          backgroundImage: _user['profile'] == null
+          backgroundImage: controller.myProfile.value.profile == null
               ? AssetImage('assets/images/you.png')
-              : AssetImage(_user['profile']) as ImageProvider,
+              : AssetImage('assets/images/you.png') as ImageProvider,
           //: NetworkImage(_user['profile']) as ImageProvider ,
         ),
         Positioned(
@@ -176,66 +165,14 @@ class myPage extends StatelessWidget {
         imageProfile(context),
         Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
-            child: _user['nickName'] != null
-                ? Text(
-                    _user['nickName'],
+            child: controller.myProfile.value.uid != null
+                ? Text('${controller.myProfile.value.uid}',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 : Text('noUser'))
       ],
     );
   }
-  //
-  // Future<void> showOptionsDialog(BuildContext context) {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return AlertDialog(
-  //           title: Center(child: Text("프로필 사진")),
-  //           content: SingleChildScrollView(
-  //             child: ListBody(
-  //               children: [
-  //                 GestureDetector(
-  //                   child: Center(child: Text("카메라")),
-  //                   onTap: ()  {
-  //                     takePhoto(ImageSource.camera);
-  //                   },
-  //                 ),
-  //                 Padding(padding: EdgeInsets.all(10)),
-  //                 GestureDetector(
-  //                   child: Center(child: Text("갤러리")),
-  //                   onTap: () {
-  //                     takePhoto(ImageSource.gallery);
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
-  //
-  // takePhoto(ImageSource source) async {
-  //   final now = FieldValue.serverTimestamp();
-  //   final pickedFile = await _picker.getImage(source:source);
-  //   setState(() {
-  //     _imageFile = pickedFile;
-  //   });
-  //
-  //   if(_imageFile != null){
-  //     await storage
-  //         .ref()
-  //         .child('user/${docId}/')
-  //         .putFile(File(_imageFile.path));
-  //
-  //     imageURL = await firebase_storage.FirebaseStorage.instance
-  //         .ref()
-  //         .child('products/${_productNameController.text}')
-  //         .getDownloadURL();
-  //   }
-  //   Navigator.of(context).pop();
-  // }
-  //
 
   Widget nameTextField() {
     return TextFormField(

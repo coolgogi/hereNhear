@@ -1,20 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/bottomNavigationBar/create_broadcast.dart';
+import 'package:herehear/bottomNavigationBar/create/create_broadcast.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
-import 'package:herehear/groupCall/group_call2.dart';
+import 'package:herehear/groupCall/group_call.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 
-class searchPage extends StatelessWidget {
-  Map<String, dynamic> _data = Map();
+class searchPage extends GetView<UserController> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  searchPage.withData(Map<String, dynamic> data) {
-    _data = data;
-  }
-  searchPage();
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +101,7 @@ class searchPage extends StatelessWidget {
                     );
                   return ListView(
                     scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(context, snapshot, _data),
+                    children: broadcastRoomList(context, snapshot, controller.myProfile.value),
                   );
                 },
               ),
