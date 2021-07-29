@@ -1,5 +1,5 @@
 class UserModel {
-  String uid;
+  String? uid;
   String? docId;
   String? id;
   String? password;
@@ -12,7 +12,8 @@ class UserModel {
   List<dynamic>? subscribe;
 
   UserModel(
-      {required this.uid,
+      {
+        this.uid,
       this.docId,
       this.id,
       this.password,

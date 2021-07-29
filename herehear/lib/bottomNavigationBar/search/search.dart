@@ -101,7 +101,7 @@ class searchPage extends GetView<UserController> {
                     );
                   return ListView(
                     scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(context, snapshot, controller.myProfile.value),
+                    children: broadcastRoomList(context, snapshot),
                   );
                 },
               ),

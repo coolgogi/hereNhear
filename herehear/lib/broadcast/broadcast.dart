@@ -14,7 +14,7 @@ class BroadCastPage extends GetView<UserController> {
   late List<dynamic> nickName_audience;
   late List<dynamic> profile_audience;
   final String channelName;
-  final String userName;
+  final String? userName;
   final ClientRole role;
   late final agoraController;
   bool muted = false;
@@ -31,7 +31,7 @@ class BroadCastPage extends GetView<UserController> {
   }
   BroadCastPage.broadcaster(
       {required this.channelName,
-      required this.userName,
+       this.userName,
       required this.role,
       required this.userData}) {
     agoraController = Get.put(

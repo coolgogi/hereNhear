@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/data/user_model.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+
 Map<String, dynamic> data = new Map();
 
-List<Widget> broadcastRoomList(BuildContext context,
-    AsyncSnapshot<QuerySnapshot> broadcastSnapshot, UserModel _userData) {
+List<Widget> broadcastRoomList(
+    BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
+  final _userData = UserController.to.myProfile.value;
   return broadcastSnapshot.data!.docs.map((_roomData) {
     return Padding(
       padding: EdgeInsets.only(right: 12.0.w),
@@ -23,7 +25,7 @@ List<Widget> broadcastRoomList(BuildContext context,
           await getData(_roomData['docId']).whenComplete(() => Get.to(
                 () => BroadCastPage.audience(
                   channelName: _roomData['channelName'],
-                  userName: _userData.uid!,
+                  userName: _userData.uid,
                   role: ClientRole.Audience,
                   dbData: data,
                 ),

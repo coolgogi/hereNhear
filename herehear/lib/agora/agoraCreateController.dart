@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/broadcast/broadcast_model.dart';
+import 'package:herehear/groupCall/group_call_model.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
@@ -8,8 +10,8 @@ import 'agoraModel.dart';
 class agoraCreateController extends GetxController {
   static agoraCreateController get to => Get.find();
 
-  Rx<agoraModel> newBroadcastRoom = agoraModel.broadcast().obs;
-  Rx<agoraModel> newGroupCallRoom = agoraModel.groupcall().obs;
+  Rx<BroadcastModel> newBroadcastRoom = BroadcastModel().obs;
+  Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
 
   Future<void> createBroadcastRoom(
       UserModel firebaseUser,
@@ -32,7 +34,7 @@ class agoraCreateController extends GetxController {
       print(docId);
       print(location);
 
-      newBroadcastRoom.value = agoraModel.broadcast(
+      newBroadcastRoom.value = BroadcastModel(
         hostUid: firebaseUser.uid,
         title: title,
         notice: notice,
@@ -66,7 +68,7 @@ class agoraCreateController extends GetxController {
       print("==============================");
 
       // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
-      newGroupCallRoom.value = agoraModel.groupcall(
+      newGroupCallRoom.value = GroupCallModel(
         hostUid: firebaseUser.uid,
         title: title,
         notice: notice,

@@ -34,8 +34,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   //unused variable
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
-  var _data;
-  bool _value = false;
+
 
   final controller = Get.put(agoraCreateController());
   final locationController = Get.put(LocationController());
@@ -213,7 +212,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     Get.off(
       () => BroadCastPage.broadcaster(
         channelName: _docId,
-        userName: userController.myProfile.value.uid,
+        userName: UserController.to.myProfile.value.uid,
         role: ClientRole.Broadcaster,
         userData: userController.myProfile.value,
       ),
