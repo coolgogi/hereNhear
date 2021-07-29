@@ -5,26 +5,25 @@ import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/data/user_model.dart';
-
-FirebaseFirestore firestore = FirebaseFirestore.instance;
+import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
 Map<String, dynamic> data = new Map();
 
 List<Widget> broadcastRoomList(BuildContext context,
-    AsyncSnapshot<QuerySnapshot> broadcastSnapshot, UserModel _data) {
-  return broadcastSnapshot.data!.docs.map((room) {
+    AsyncSnapshot<QuerySnapshot> broadcastSnapshot, UserModel _userData) {
+  return broadcastSnapshot.data!.docs.map((_roomData) {
     return Padding(
       padding: EdgeInsets.only(right: 12.0.w),
       child: InkWell(
         onTap: () async {
-          firestore.collection('broadcast').doc(room['docId']).update({
-            'currentListener': FieldValue.arrayUnion([_data.uid]),
-            'userNickName': FieldValue.arrayUnion([_data.nickName]),
-            'userProfile': FieldValue.arrayUnion([_data.profile]),
+          firestore.collection('broadcast').doc(_roomData['docId']).update({
+            'currentListener': FieldValue.arrayUnion([_userData.uid]),
+            'userNickName': FieldValue.arrayUnion([_userData.nickName]),
+            'userProfile': FieldValue.arrayUnion([_userData.profile]),
           });
-          await getData(room['docId']).whenComplete(() => Get.to(
+          await getData(_roomData['docId']).whenComplete(() => Get.to(
                 () => BroadCastPage.audience(
-                  channelName: room['channelName'],
-                  userName: _data.uid!,
+                  channelName: _roomData['channelName'],
+                  userName: _userData.uid!,
                   role: ClientRole.Audience,
                   dbData: data,
                 ),
@@ -44,7 +43,7 @@ List<Widget> broadcastRoomList(BuildContext context,
                     SizedBox(
                       width: 120,
                       height: 120,
-                      child: Image.asset(room['image']),
+                      child: Image.asset(_roomData['image']),
                     ),
                   ],
                 ),
@@ -52,7 +51,7 @@ List<Widget> broadcastRoomList(BuildContext context,
             ),
             SizedBox(height: 5.h),
             Text(
-              room['notice'],
+              _roomData['notice'],
               style: Theme.of(context).textTheme.subtitle1,
             ),
             SizedBox(height: 4.h),
@@ -63,16 +62,16 @@ List<Widget> broadcastRoomList(BuildContext context,
                   size: 14.w,
                 ),
                 Text(
-                  room['currentListener'] == null
+                  _roomData['currentListener'] == null
                       ? '0'
-                      : room['currentListener'].length.toString(),
+                      : _roomData['currentListener'].length.toString(),
                 ),
                 SizedBox(width: 8.sp),
                 Icon(
                   Icons.favorite,
                   size: 12.w,
                 ),
-                Text(room['like'].toString()),
+                Text(_roomData['like'].toString()),
               ],
             )
           ],

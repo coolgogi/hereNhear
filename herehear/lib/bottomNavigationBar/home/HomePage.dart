@@ -12,17 +12,20 @@ import 'package:badges/badges.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 
-class HomePage extends GetView<UserController> {
+
+FirebaseFirestore firestore = FirebaseFirestore.instance;
+FirebaseAuth _auth = FirebaseAuth.instance;
+
+class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
   String current_uid = '';
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  @override
-  void initState() {
-    LocationController().getLocation();
-  }
+
+  // @override
+  // void initState() {
+  //   LocationController().getLocation();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +159,7 @@ class HomePage extends GetView<UserController> {
                       return ListView(
                         scrollDirection: Axis.horizontal,
                         children: broadcastRoomList(
-                            context, snapshot, controller.myProfile.value),
+                            context, snapshot, UserController.to.myProfile.value),
                       );
                     },
                   ),
@@ -190,7 +193,7 @@ class HomePage extends GetView<UserController> {
                           child: Center(child: Text('생성된 대화방이 없습니다.')),
                         );
                       return Column(
-                        children: groupcallRoomList(context, snapshot),
+                        children: groupcallRoomList(context, snapshot, UserController.to.myProfile.value),
                       );
                     }),
               ),

@@ -1,17 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:herehear/broadcast/broadcastList.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'group_call.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 
-FirebaseAuth auth = FirebaseAuth.instance;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/data/user_model.dart';
+import 'group_call.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+
+import '';
 
 List<Widget> groupcallRoomList(
-    BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
-  return broadcastSnapshot.data!.docs.map((room) {
+    BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot , UserModel _userData) {
+  return broadcastSnapshot.data!.docs.map((_roomData) {
     return Column(
       children: [
         Divider(thickness: 2),
@@ -20,12 +22,12 @@ List<Widget> groupcallRoomList(
           height: 80.0.h,
           child: InkWell(
             onTap: () {
-              firestore.collection('groupcall').doc(room['docId']).update({
+              firestore.collection('groupcall').doc(_roomData['docId']).update({
                 'currentListener':
-                    FieldValue.arrayUnion([auth.currentUser!.uid])
+                    FieldValue.arrayUnion([_userData.uid]),
               });
-              Get.to(() => GroupCallPage(room['title']),
-                  arguments: room['channelName']);
+              Get.to(() => GroupCallPage(_roomData['title']),
+                  arguments: _roomData['channelName']);
             },
             child: Row(
               children: <Widget>[
@@ -35,21 +37,21 @@ List<Widget> groupcallRoomList(
                     // margin: EdgeInsets.all(0.0.w),
                     width: 70.0.h,
                     height: 70.0.h,
-                    child: SizedBox(child: Image.asset(room['image'])),
+                    child: SizedBox(child: Image.asset(_roomData['image'])),
                   ),
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      room['title'],
+                      _roomData['title'],
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     SizedBox(
                       height: 5.h,
                     ),
                     Text(
-                      room['notice'],
+                      _roomData['notice'],
                       style: Theme.of(context).textTheme.subtitle1,
                     )
                   ],
