@@ -113,7 +113,7 @@ class SubscribedPage extends GetView<UserController> {
                     return ListView(
                       scrollDirection: Axis.horizontal,
                       children: broadcastRoomList(
-                          context, snapshot, controller.myProfile.value),
+                          context, snapshot),
                     );
                   },
                 ),
