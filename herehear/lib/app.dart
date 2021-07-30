@@ -75,8 +75,7 @@ class App extends GetView<UserController> {
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
-          return
-            StreamBuilder<User?>(
+          return StreamBuilder<User?>(
             stream: FirebaseAuth.instance
                 .authStateChanges(), //firebase 상태가 바뀌었는지 아닌지 체크하는 stream.
             builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
@@ -84,20 +83,10 @@ class App extends GetView<UserController> {
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
-                return     FutureBuilder(
-                  future: locationController.getLocation(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      print(snapshot.data.toString());
-                      return BottomBar();
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                  });
+                return BottomBar(); // data가 있으면 MainPage로
               }
             },
           );
-
             // FutureBuilder(
             //   future: controller.getLocation(),
             //   builder: (context, snapshot) {
