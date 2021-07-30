@@ -60,7 +60,7 @@ dependencies:
   just_audio: ^0.9.2
   flutter_local_notifications: ^6.1.0
   firebase_messaging: ^10.0.4
-
+  overlay_support: ^1.2.1
 
 
 
@@ -180,6 +180,9 @@ flutter:
     - family: Noto Sans CJK kr-bold
       fonts:
         - asset: fonts/NotoSansCJKkr-Bold.ttf
+    - family: Noto Sans CJK kr-bold
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Medium.ttf
     - family: Noto Sans CJK kr-regular
       fonts:
         - asset: fonts/NotoSansCJKkr-Regular.ttf

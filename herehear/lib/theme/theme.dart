@@ -156,11 +156,17 @@ class ThemeController extends GetxController {
 TextTheme _buildClosetTextTheme(TextTheme base) {
   return base
       .copyWith(
+    headline1: base.headline1!.copyWith(
+      color: OnBackgroundLight,
+      fontSize: 17.sp,
+      fontFamily: 'Noto Sans CJK kr-bold',
+      fontWeight: FontWeight.w700,
+    ),
     headline2: base.headline2!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 19.sp,
-      fontFamily: 'Roboto',
-      fontWeight: FontWeight.w700,
+      fontSize: 17.sp,
+      fontFamily: 'Noto Sans CJK kr-medium',
+      fontWeight: FontWeight.w500,
     ),
     headline3: base.headline3!.copyWith(
       color: OnBackgroundLight,
