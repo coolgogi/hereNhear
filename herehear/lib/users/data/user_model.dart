@@ -31,7 +31,7 @@ class UserModel {
       'name': this.name,
       'location': this.location,
       'nickName': this.nickName,
-      'profile': this.nickName,
+      'profile': this.profile,
     };
   }
 
