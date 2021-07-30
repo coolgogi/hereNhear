@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/bottomNavigationBar/myPage/pushNotification.dart';
 import 'package:herehear/bottomNavigationBar/subscribed/subscribed.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,6 @@ import '../../login/signIn.dart';
 class myPage extends GetView<UserController> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class myPage extends GetView<UserController> {
                 ListTile(
                   title: Text('실험'),
                   onTap: () {
-                    //  FirebaseAuth.instance.signOut();
+                    Get.to(pushNotification());
                   },
                 ),
                 _divier(),
@@ -64,18 +64,6 @@ class myPage extends GetView<UserController> {
                     //Get.to(LoginPage());
                   },
                 ),
-                ListTile(
-                  title: Text('로그아웃'),
-                  onTap: () {
-                    FirebaseAuth.instance.signOut();
-                  },
-                ),
-                ListTile(
-                  title: Text('회원탈퇴'),
-                  onTap: () {
-                    //Get.to(LoginPage());
-                  },
-                ),
                 _divier(),
                 ListTile(
                   title: Text('로그인 페이지'),
@@ -87,6 +75,12 @@ class myPage extends GetView<UserController> {
                   title: Text('로그아웃'),
                   onTap: () {
                     FirebaseAuth.instance.signOut();
+                  },
+                ),
+                ListTile(
+                  title: Text('회원탈퇴'),
+                  onTap: () {
+                    //Get.to(LoginPage());
                   },
                 ),
                 _divier(),
@@ -166,7 +160,8 @@ class myPage extends GetView<UserController> {
         Container(
             padding: EdgeInsets.fromLTRB(0, 15, 0, 15),
             child: controller.myProfile.value.uid != null
-                ? Text('${controller.myProfile.value.uid}',
+                ? Text(
+                    '${controller.myProfile.value.uid}',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )
                 : Text('noUser'))
