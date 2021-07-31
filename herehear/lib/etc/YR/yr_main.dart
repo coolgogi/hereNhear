@@ -1,105 +1,188 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'package:geocoder/geocoder.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:get/get.dart';
-// import 'package:herehear/appBar/notification.dart';
-// import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
-// import 'package:herehear/location/controller/location_controller.dart';
-// import 'package:herehear/bottomNavigationBar/search/search.dart';
-// import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
-// import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
-// import 'package:herehear/login/signIn.dart';
-// import 'package:herehear/theme/theme.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:herehear/users/controller/user_controller.dart';
-//
-// void yrmain() => runApp(MyApp());
-//
-// class App extends StatelessWidget {
-//   Map<String, dynamic> _data = new Map();
-//   @override
-//   Widget build(BuildContext context) {
-//     return FutureBuilder(
-//       future: Firebase.initializeApp(),
-//       builder: (BuildContext context, AsyncSnapshot snapshot) {
-//         if (snapshot.hasError) {
-//           return Center(
-//             child: Text('Firebase load fail'), // 에러 대응
-//           );
-//         }
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           return BottomBar.withData(_data);
-//         }
-//         else {
-//           return Center(
-//             child: CircularProgressIndicator(),
-//           );
-//         }
-//       },
-//     );
-//   }
-//
-//   Future<void> getData() async {
-//     String uid = '';
-//     User? _user = FirebaseAuth.instance.currentUser;
-//
-//     if (_user != null)
-//       uid = _user.uid;
-//     else if (_user == null) uid = 'Guest';
-//
-//     var _data =
-//     await FirebaseFirestore.instance.collection('users').doc(uid).get();
-//
-//     this._data = _data.data()!;
-//   }
-// }
-//
-// class MyApp extends StatelessWidget {
-//   static ThemeController get to => Get.find();
-//   @override
-//   Widget build(BuildContext context) {
-//     // GetX 등록
-//     return GetBuilder<ThemeController>(
-//         init: ThemeController(),
-//         builder: (value) {
-//           return ScreenUtilInit(
-//             designSize: Size(375, 667),
-//             builder: () => GetMaterialApp(
-//               theme: value.isDarkTheme.value ? dark_theme : light_theme,
-//               debugShowCheckedModeBanner: false,
-//               initialBinding: BindingsBuilder(() {
-//                 Get.lazyPut<UserController>(() => UserController());
-//               }),
-//               title: 'Here & Hear',
-//               home: App(),
-//               //home: LandingPage.withData(_data!),
-//               // getPages: [
-//               //   GetPage(
-//               //     name: '/',
-//               //     page: () => HomePage.withData(_data!),
-//               //   ),
-//               //   GetPage(
-//               //     name: '/myPage',
-//               //     page: () => myPage.withData(_data!),
-//               //   ),
-//               //   GetPage(
-//               //     name: '/login',
-//               //     page: () => LoginPage(),
-//               //   ),
-//               //   GetPage(
-//               //     name: '/notification',
-//               //     page: () => NotificationPage(),
-//               //   ),
-//               //   GetPage(
-//               //     name: '/search',
-//               //     page: () => searchPage.withData(_data!),
-//               //   )
-//               // ],
-//             ),
-//           );
-//         });
-//   }
-// }
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:herehear/agora/agoraCreateController.dart';
+import 'package:herehear/bottomNavigationBar/create/broadcastInfoController/broadcast_info_controller.dart';
+import 'package:herehear/broadcast/broadcast.dart';
+import 'package:herehear/location/controller/location_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
+
+class BroadcastInfoPage extends StatelessWidget {
+  final BroadcastInfoController _broadcastInfoController = Get.put(BroadcastInfoController());
+  final UserController _userController = Get.find();
+  List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
+  int _index = -1;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _docId = '';
+
+
+  final agoraController = Get.put(agoraCreateController());
+  final locationController = Get.put(LocationController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('새 라이브 방송',
+            style: Theme.of(context).appBarTheme.titleTextStyle),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => {
+            Get.back(),
+          },
+        ),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(20),
+        key: _formKey,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '제목',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            TextFormField(
+              controller: _broadcastInfoController.title,
+              validator: (value) {
+                if (value!.trim().isEmpty) {
+                  return '제목을 입력해주세요.';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
+                hintText: '제목을 입력해주세요(15자 이내)',
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '공지사항',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                border: Border.all(
+                  color: Colors.grey,
+                  width: 0.7,
+                ),
+              ),
+              child: TextField(
+                cursorColor: Theme.of(context).primaryColor,
+                textInputAction: TextInputAction.newline,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                controller: _broadcastInfoController.title,
+                textAlign: TextAlign.left,
+                decoration: InputDecoration(
+                  hintText: '공지를 입력해주세요(100자 이내)',
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16.0,
+            ),
+            Container(
+              padding: EdgeInsets.only(bottom: 10),
+              child: Text(
+                '카테고리',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+            Row(
+              children: List.generate(categoryList.length, (index) {
+                return Center(
+                  child: Container(
+                    padding: EdgeInsets.all(3),
+                    child: ChoiceChip(
+                      label: Text(
+                        categoryList[index],
+                      ),
+                      labelStyle: TextStyle(color: Colors.black),
+                      shape: StadiumBorder(
+                          side: BorderSide(color: Colors.grey, width: 0.5)),
+                      backgroundColor: Colors.white,
+                      selected: _broadcastInfoController.index == index,
+                      selectedColor: Colors.grey[500],
+                      onSelected: (value) {
+
+                        // setState(() {
+                        //   value ? index : _index;
+                        //   _index = value ? index : _index;
+                        // });
+                      },
+                      // backgroundColor: color,
+                    ),
+                  ),
+                );
+              }),
+            ),
+            SizedBox(
+              height: 32.0,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  onJoin();
+                },
+                child: Text('방만들기'),
+              ),
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 32.0,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> onJoin() async {
+    await Permission.microphone.request();
+
+    _docId =
+        (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+
+    agoraController.createBroadcastRoom(
+      UserController.to.myProfile.value,
+      _broadcastInfoController.title.text,
+      _broadcastInfoController.notice.text,
+      categoryList[_index],
+      _docId,
+      List<String>.filled(0, '', growable: true),
+      locationController.location.value,
+    );
+
+    Get.off(
+          () => BroadCastPage.broadcaster(
+        channelName: _docId,
+        role: ClientRole.Broadcaster,
+        userData: UserController.to.myProfile.value,
+      ),
+    );
+  }
+}
