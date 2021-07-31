@@ -18,12 +18,11 @@ class FirebaseUserRepository {
   }
 
 
-  static Future<String> saveUserToFirebase(UserModel firebaseUser) async {
+  static Future<void> saveUserToFirebase(UserModel firebaseUser) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     // firebase의 users collection에 data를 추가하는 것.
-    DocumentReference drf = await users.add(firebaseUser.toMap());
+   await users.doc(firebaseUser.uid).set(firebaseUser.toMap());
     // user id 반환
-    return drf.id;
   }
 
   static void updateLoginTime(String? docId) {

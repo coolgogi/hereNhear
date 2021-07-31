@@ -1,7 +1,6 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/location/controller/location_controller.dart';
@@ -152,9 +151,17 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                       selected: _index == index,
                       selectedColor: Colors.grey[500],
                       onSelected: (value) {
+
+                        print('value: ${value.toString()}');
+                        print('index: ${index.toString()}');
+                        print('_index: ${_index.toString()}');
+
                         setState(() {
                           _index = value ? index : _index;
                         });
+                        print('value: ${value.toString()}');
+                        print('index: ${index.toString()}');
+                        print('_index: ${_index.toString()}');
                       },
                       // backgroundColor: color,
                     ),
@@ -195,9 +202,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-    print('=========================host profile========================');
-    print(UserController.to.myProfile.value.profile);
-    print('======================================================');
 
     agoraController.createBroadcastRoom(
       UserController.to.myProfile.value,
@@ -209,10 +213,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       locationController.location.value,
     );
 
-    print('==============ddddddddddddddddaaata======================');
-    print(_docId);
-    print(UserController.to.myProfile.value.profile);
-    print('====================================');
     Get.off(
       () => BroadCastPage.broadcaster(
         channelName: _docId,
