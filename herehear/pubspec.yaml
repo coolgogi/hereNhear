@@ -120,6 +120,10 @@ flutter:
     - assets/icons/mic_fill.png
     - assets/icons/groupBlack.png
     - assets/icons/groupWhite.png
+    - assets/icons/location.png
+    - assets/icons/leaf.png
+    - assets/icons/bell.png
+    - assets/icons/more.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg
@@ -179,6 +183,9 @@ flutter:
     - family: Noto Sans CJK kr-bold
       fonts:
         - asset: fonts/NotoSansCJKkr-Bold.ttf
+    - family: Noto Sans CJK kr-medium
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Medium.ttf
     - family: Noto Sans CJK kr-regular
       fonts:
         - asset: fonts/NotoSansCJKkr-Regular.ttf
