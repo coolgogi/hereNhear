@@ -32,7 +32,7 @@ ThemeData _buildClosetTheme_light() {
       elevation: 0.0,
       titleTextStyle: TextStyle(
         color: OnBackgroundLight,
-        fontFamily: 'Noto Sans CJK kr-regular',
+        fontFamily: 'Noto Sans CJK kr-medium',
         fontWeight: FontWeight.w500,
         fontSize: 17.sp,
         // height: 38.26,
@@ -171,7 +171,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
     headline3: base.headline3!.copyWith(
       color: OnBackgroundLight,
       fontSize: 17.sp,
-      fontFamily: 'Noto Sans CJK kr-bold',
+      fontFamily: 'Noto Sans CJK kr-regular',
       fontWeight: FontWeight.w400,
     ),
     headline4: base.headline4!.copyWith(
@@ -181,7 +181,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontWeight: FontWeight.w400,
     ),
     headline6: base.headline6!.copyWith(
-      fontSize: 16.0.sp,
+      fontSize: 12.0.sp,
       fontFamily: 'Roboto',
       fontWeight: FontWeight.w700,
     ),
@@ -194,12 +194,19 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 14.0.sp,
       fontFamily: 'Roboto',
     ),
+    bodyText1: base.bodyText1!.copyWith(
+      fontWeight: FontWeight.w500,
+      color: OnSurfaceLight,
+      fontSize: 13.0.sp,
+      fontFamily: 'Noto Sans CJK KR-bold',
+    ),
     bodyText2: base.bodyText2!.copyWith(
       fontWeight: FontWeight.w500,
-      color: Colors.grey,
+      color: OnSurfaceLight,
       fontSize: 12.0.sp,
-      fontFamily: 'Roboto',
+      fontFamily: 'Noto Sans CJK KR-regular',
     ),
+
   );
   // .apply(
   //   displayColor: OnSecondaryLight,
