@@ -17,6 +17,20 @@ class _pushNotificationState extends State {
   @override
   void initState() {
     _totalNotifications = 0;
+
+    checkForInitialMessage();
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      PushNotification notification = PushNotification(
+        title: message.notification?.title,
+        body: message.notification?.body,
+      );
+      setState(() {
+        _notificationInfo = notification;
+        _totalNotifications++;
+      });
+    });
+
     super.initState();
   }
 
@@ -42,6 +56,36 @@ class _pushNotificationState extends State {
           NotificationBadge(totalNotifications: _totalNotifications),
           SizedBox(height: 16.0),
           // TODO: add the notification text here
+          _notificationInfo != null
+              ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TITLE: ${_notificationInfo!.title}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 8.0),
+                    Text(
+                      'BODY: ${_notificationInfo!.body}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
+          // Text(
+          //   'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
+          //   // ...
+          // ),
+          // Text(
+          //   'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
+          //   // ...
+          // ),
         ],
       ),
     );
@@ -53,6 +97,7 @@ class _pushNotificationState extends State {
 
     // 2. Instantiate Firebase Messaging
     _messaging = FirebaseMessaging.instance;
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // 3. On iOS, this helps to take the user permissions
     NotificationSettings settings = await _messaging.requestPermission(
@@ -70,6 +115,8 @@ class _pushNotificationState extends State {
         PushNotification notification = PushNotification(
           title: message.notification?.title,
           body: message.notification?.body,
+          dataTitle: message.data['title'],
+          dataBody: message.data['body'],
         );
 
         setState(() {
@@ -90,6 +137,24 @@ class _pushNotificationState extends State {
       });
     } else {
       print('User declined or has not accepted permission');
+    }
+  }
+
+  // For handling notification when the app is in terminated state
+  checkForInitialMessage() async {
+    await Firebase.initializeApp();
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    if (initialMessage != null) {
+      PushNotification notification = PushNotification(
+        title: initialMessage.notification?.title,
+        body: initialMessage.notification?.body,
+      );
+      setState(() {
+        _notificationInfo = notification;
+        _totalNotifications++;
+      });
     }
   }
 }
@@ -125,7 +190,16 @@ class PushNotification {
   PushNotification({
     this.title,
     this.body,
+    this.dataTitle,
+    this.dataBody,
   });
+
   String? title;
   String? body;
+  String? dataTitle;
+  String? dataBody;
+}
+
+Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print("Handling a background message: ${message.messageId}");
 }
