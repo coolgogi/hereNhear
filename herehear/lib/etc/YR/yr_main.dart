@@ -14,7 +14,6 @@ class BroadcastInfoPage extends StatelessWidget {
   final BroadcastInfoController _broadcastInfoController = Get.put(BroadcastInfoController());
   final UserController _userController = Get.find();
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
-  int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _docId = '';
 
@@ -90,7 +89,7 @@ class BroadcastInfoPage extends StatelessWidget {
                 textInputAction: TextInputAction.newline,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
-                controller: _broadcastInfoController.title,
+                controller: _broadcastInfoController.notice,
                 textAlign: TextAlign.left,
                 decoration: InputDecoration(
                   hintText: '공지를 입력해주세요(100자 이내)',
@@ -108,34 +107,7 @@ class BroadcastInfoPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            Row(
-              children: List.generate(categoryList.length, (index) {
-                return Center(
-                  child: Container(
-                    padding: EdgeInsets.all(3),
-                    child: ChoiceChip(
-                      label: Text(
-                        categoryList[index],
-                      ),
-                      labelStyle: TextStyle(color: Colors.black),
-                      shape: StadiumBorder(
-                          side: BorderSide(color: Colors.grey, width: 0.5)),
-                      backgroundColor: Colors.white,
-                      selected: _broadcastInfoController.index == index,
-                      selectedColor: Colors.grey[500],
-                      onSelected: (value) {
-
-                        // setState(() {
-                        //   value ? index : _index;
-                        //   _index = value ? index : _index;
-                        // });
-                      },
-                      // backgroundColor: color,
-                    ),
-                  ),
-                );
-              }),
-            ),
+            _broadcastInfoController.category(),
             SizedBox(
               height: 32.0,
             ),
@@ -168,10 +140,10 @@ class BroadcastInfoPage extends StatelessWidget {
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
     agoraController.createBroadcastRoom(
-      UserController.to.myProfile.value,
+      _userController.myProfile.value,
       _broadcastInfoController.title.text,
       _broadcastInfoController.notice.text,
-      categoryList[_index],
+      categoryList[_broadcastInfoController.index],
       _docId,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,

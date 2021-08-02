@@ -15,6 +15,7 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
+  final UserController userController = Get.find();
   String current_uid = '';
 
 
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
                 title: Row(
                   children: <Widget>[
                     Icon(Icons.place_outlined, size: 19.h,),
-                    Text(' ${LocationController.to.location.value}', style: Theme.of(context).appBarTheme.titleTextStyle),
+                    Text(' ${UserController.to.myProfile.value.location}', style: Theme.of(context).appBarTheme.titleTextStyle),
                     Icon(Icons.expand_more, size: 19.h,),
                   ],
                 ),
@@ -50,9 +51,10 @@ class HomePage extends StatelessWidget {
                               Row(
                                 children: [
                                   Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
-                                  Text('유리한 녀석들님,', style: Theme.of(context).textTheme.headline1),
+                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline1),
                                 ],
                               ),
+
                               Row(
                                 children: [
                                   Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
@@ -66,7 +68,7 @@ class HomePage extends StatelessWidget {
                             padding: EdgeInsets.only(right: 5.0.w),
                             child: CircleAvatar(
                               radius: 21.r,
-                              backgroundImage: AssetImage('assets/images/you.png'),
+                              backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
                             ),
                           ),
                         ],
@@ -161,7 +163,7 @@ class HomePage extends StatelessWidget {
                       stream: firestore
                           .collection("broadcast")
                           .where('location',
-                          isEqualTo: locationController.location.value)
+                          isEqualTo: UserController.to.myProfile.value.location)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -210,7 +212,7 @@ class HomePage extends StatelessWidget {
                       stream: firestore
                           .collection("groupcall")
                           .where('location',
-                          isEqualTo: locationController.location.value)
+                          isEqualTo: UserController.to.myProfile.value.location)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {

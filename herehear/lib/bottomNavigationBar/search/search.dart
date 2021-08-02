@@ -118,8 +118,8 @@ class SearchPage extends StatelessWidget {
               child: StreamBuilder<QuerySnapshot>(
                 stream: firestore
                     .collection("broadcast")
-                    .where('location',
-                    isEqualTo: locationController.location.value)
+                    // .where('location',
+                    // isEqualTo: locationController.location.value)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

@@ -5,8 +5,49 @@ class BroadcastInfoController extends GetxController {
   late TextEditingController title = TextEditingController();
   late TextEditingController notice = TextEditingController();
 
-  bool value = true;
-  int index = -1;
+  bool x = true;
+  int index = -1.obs;
+  List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
+
+  int setCategory(bool value, int categoryIndex){
+    index = value ? categoryIndex : index;
+    update();
+    return index;
+  }
+
+  bool setSelected(int categoryIndex){
+   x = index == categoryIndex;
+   update();
+   return x;
+  }
+
+  Widget category(){
+    return Row(
+      children: List.generate(categoryList.length, (categoryIndex) {
+        return Center(
+          child: Container(
+            padding: EdgeInsets.all(3),
+            child: ChoiceChip(
+              label: Text(
+                categoryList[categoryIndex],
+              ),
+              labelStyle: TextStyle(color: Colors.black),
+              shape: StadiumBorder(
+                  side: BorderSide(color: Colors.grey, width: 0.5)),
+              backgroundColor: Colors.white,
+              selected: index == categoryIndex,
+              selectedColor: Colors.grey[500],
+              onSelected: (value) {
+                  index = value ? categoryIndex : index;
+                  update();
+              },
+              // backgroundColor: color,
+            ),
+          ),
+        );
+      }),
+    );
+  }
 
 
   //
@@ -25,8 +66,8 @@ class BroadcastInfoController extends GetxController {
 
   @override
   void onClose() {
-    title?.dispose();
-    notice?.dispose();
+    title.dispose();
+    notice.dispose();
     super.onClose();
   }
 }

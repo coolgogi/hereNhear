@@ -21,7 +21,6 @@ class LocationController extends GetxController {
       update();
     }
   }
-  //https://www.python2.net/questions-632050.htm
 
   ///////////////////////////////////////////////for YR
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
