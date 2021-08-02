@@ -135,7 +135,7 @@ class BottomBar extends StatelessWidget {
                                 fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    onTap: () => Get.off(() => BroadcastInfoPage()),
+                    onTap: () => Get.off(() => CreateBroadcastPage()),
                   ),
                   InkWell(
                     child: Column(

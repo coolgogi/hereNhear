@@ -25,6 +25,7 @@ class UserController extends GetxController {
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
       myProfile.value = UserModel(
+        nickName: 'Nickname',
         profile: 'assets/suhyun.jpg',
         uid: firebaseUser.uid,
         name: firebaseUser.displayName,
