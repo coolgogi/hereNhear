@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                               Row(
                                 children: [
                                   Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
-                                  Image(image: AssetImage('assets/icons/leaf.png')),
+                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
                                 ],
                               ),
                             ],

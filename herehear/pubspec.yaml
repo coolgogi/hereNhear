@@ -61,6 +61,7 @@ dependencies:
   flutter_local_notifications: ^6.1.0
   firebase_messaging: ^10.0.4
   overlay_support: ^1.2.1
+  search_widget: ^1.0.2
 
 
 
@@ -123,6 +124,7 @@ flutter:
     - assets/icons/profile_active.png
     - assets/icons/add.png
     - assets/icons/search.png
+    - assets/icons/search2.png
     - assets/icons/notification.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
@@ -133,6 +135,7 @@ flutter:
     - assets/icons/leaf2.png
     - assets/icons/bell.png
     - assets/icons/more.png
+    - assets/images/game.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg
