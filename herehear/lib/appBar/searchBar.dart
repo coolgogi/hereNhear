@@ -19,6 +19,17 @@ class PostSearchDelegate extends SearchDelegate {
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(10),
+              topRight: Radius.circular(10),
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)
+          ),
+        ),
+      ),
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
@@ -93,3 +104,5 @@ class PostSearchDelegate extends SearchDelegate {
     ));
   }
 }
+
+

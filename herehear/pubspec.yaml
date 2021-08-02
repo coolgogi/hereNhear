@@ -59,7 +59,8 @@ dependencies:
   badges: ^2.0.1
   just_audio: ^0.9.2
   flutter_local_notifications: ^6.1.0
-
+  firebase_messaging: ^10.0.4
+  overlay_support: ^1.2.1
 
 
 
@@ -104,22 +105,35 @@ flutter:
     - assets/images/you2.jpg
     - assets/images/it2.jpg
     - assets/images/she2.jpeg
+    - assets/images/group.png
+    - assets/images/sing.png
+    - assets/images/voiceCopy.png
+    - assets/images/mike.png
+    - assets/images/mike2.png
     - assets/messages.json
     - assets/messages2.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
     - assets/icons/favorite_stroke.png
     - assets/icons/favorite_active.png
+    - assets/icons/people_stroke.png
+    - assets/icons/people_active.png
     - assets/icons/search_stroke.png
     - assets/icons/search_active.png
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
+    - assets/icons/add.png
     - assets/icons/search.png
     - assets/icons/notification.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
     - assets/icons/groupBlack.png
     - assets/icons/groupWhite.png
+    - assets/icons/location.png
+    - assets/icons/leaf.png
+    - assets/icons/leaf2.png
+    - assets/icons/bell.png
+    - assets/icons/more.png
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg
@@ -179,6 +193,9 @@ flutter:
     - family: Noto Sans CJK kr-bold
       fonts:
         - asset: fonts/NotoSansCJKkr-Bold.ttf
+    - family: Noto Sans CJK kr-medium
+      fonts:
+        - asset: fonts/NotoSansCJKkr-Medium.ttf
     - family: Noto Sans CJK kr-regular
       fonts:
         - asset: fonts/NotoSansCJKkr-Regular.ttf

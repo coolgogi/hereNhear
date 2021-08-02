@@ -1,5 +1,6 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
@@ -14,7 +15,7 @@ List<Widget> broadcastRoomList(
   final _userData = UserController.to.myProfile.value;
   return broadcastSnapshot.data!.docs.map((_roomData) {
     return Padding(
-      padding: EdgeInsets.only(right: 12.0.w),
+      padding: EdgeInsets.only(right: 16.0.w),
       child: InkWell(
         onTap: () async {
           firestore.collection('broadcast').doc(_roomData['docId']).update({
@@ -34,48 +35,87 @@ List<Widget> broadcastRoomList(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 125.0.w,
-              height: 125.0.h,
-              child: Card(
-                margin: EdgeInsets.only(left: 0.0.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: 120,
-                      height: 120,
-                      child: Image.asset(_roomData['image']),
+            Padding(
+              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h,),
+              child: Container(
+                width: 208.0.w,
+                height: 119.0.h,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/groupcall/fish.jpg")
+                  ),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15)
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 0,
+                      blurRadius: 8,
+                      offset: Offset(1, 4), // changes position of shadow
                     ),
                   ],
                 ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 92.0.h, bottom: 7.0.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 20.0.r,
+                        backgroundImage: AssetImage('assets/images/you2.jpg'),
+                        // backgroundImage: AssetImage(_roomData['image']),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 33.0.w),
+                        child: Text('유리한 녀석들', style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                        )),
+                      ),
+                      Icon(
+                        Icons.people,
+                        size: 14.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                          _roomData['currentListener'] == null
+                              ? ' 0'
+                              : ' ${_roomData['currentListener'].length.toString()}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                            fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          ),
+                      ),
+                      SizedBox(width: 8.sp),
+                      Icon(
+                        Icons.favorite,
+                        size: 12.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        ' ${_roomData['like'].toString()}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            SizedBox(height: 5.h),
-            Text(
-              _roomData['notice'],
-              style: Theme.of(context).textTheme.subtitle1,
+            Padding(
+              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 27.0.h),
+              child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.bodyText1),
             ),
-            SizedBox(height: 4.h),
-            Row(
-              children: <Widget>[
-                Icon(
-                  Icons.people,
-                  size: 14.w,
-                ),
-                Text(
-                  _roomData['currentListener'] == null
-                      ? '0'
-                      : _roomData['currentListener'].length.toString(),
-                ),
-                SizedBox(width: 8.sp),
-                Icon(
-                  Icons.favorite,
-                  size: 12.w,
-                ),
-                Text(_roomData['like'].toString()),
-              ],
-            )
           ],
         ),
       ),

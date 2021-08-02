@@ -21,172 +21,222 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-          body: CustomScrollView(
+      body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
-                  titleSpacing: 25.0.w,
-                  title: Text('HOME',
-                    style: Theme.of(context).appBarTheme.titleTextStyle),
-                  expandedHeight: 131.h,
+                titleSpacing: 25.0.w,
+                title: Row(
+                  children: <Widget>[
+                    Icon(Icons.place_outlined, size: 19.h,),
+                    Text(' ${LocationController.to.location.value}', style: Theme.of(context).appBarTheme.titleTextStyle),
+                    Icon(Icons.expand_more, size: 19.h,),
+                  ],
+                ),
+                actions: <Widget>[
+                  IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
+                  IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+                ],
+                  expandedHeight: 125.h,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
                     background: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                      padding: EdgeInsets.only(left: 25.0.w, top: 25.0.h, right: 26.0.w),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
+                                  Text('유리한 녀석들님,', style: Theme.of(context).textTheme.headline1),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
+                                  Image(image: AssetImage('assets/icons/leaf.png')),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Expanded(child: Container()),
                           Padding(
-                            padding: EdgeInsets.only(top: 55.0.h),
-                            child: Row(
-                              children: [
-                                Text('안녕하세요 ', style: Theme.of(context).textTheme.headline4),
-                                Text('유리한 녀석들님,', style: Theme.of(context).textTheme.headline3),
-                              ],
+                            padding: EdgeInsets.only(right: 5.0.w),
+                            child: CircleAvatar(
+                              radius: 21.r,
+                              backgroundImage: AssetImage('assets/images/you.png'),
                             ),
                           ),
-                          Text('오늘도 좋은 하루 되세요.', style: Theme.of(context).textTheme.headline4),
                         ],
                       ),
                     ),
                 ),
-                pinned: true,
                 floating: false,
+                pinned: true,
                 snap: false,
               ),
-              SliverList(delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    constraints: BoxConstraints(minHeight: 580.0.h),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30.0.r),
-                          topRight: Radius.circular(30.0.r),),
-                    ),
-                    child: Column(
+              SliverList(delegate: SliverChildListDelegate([
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 1.0, color: Colors.transparent), //color is transparent so that it does not blend with the actual color specified
+                      color: Colors.transparent// Specifies the background color and the opacity
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 25.0.w),
+                    child: Row(
                       children: <Widget>[
-                      Padding(
-                              padding: EdgeInsets.only(left: 25.0.w, top: 40.0.r),
+                        Text(
+                          'HERE 라이브 ',
+                          // style: Theme.of(context).textTheme.headline1,
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 3.0.w),
+                          child: Container(
+                            width: 43.w,
+                            height: 18.h,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .secondaryVariant,
+                                  width: 2.0.w),
+                              borderRadius: BorderRadius.all(Radius.circular(9.0
+                                  .r) //                 <--- border radius here
+                              ),
+                            ),
+                            child: Center(
                               child: Row(
-                                children: <Widget>[
+                                children: [
                                   Text(
-                                    '실시간 소리',
-                                    // style: Theme.of(context).textTheme.headline1,
-                                    style: Theme.of(context).textTheme.headline2,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 3.0.w),
-                                    child: Container(
-                                      width: 41.w,
-                                      height: 17.h,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primaryVariant,
-                                            width: 2.0.w),
-                                        borderRadius: BorderRadius.all(Radius.circular(9.0
-                                                .r) //                 <--- border radius here
-                                            ),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'LIVE',
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primaryVariant,
-                                            fontSize: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .fontSize,
-                                            fontWeight: Theme.of(context)
-                                                .textTheme
-                                                .headline6!
-                                                .fontWeight,
-                                          ),
-                                        ),
-                                      ),
+                                    '   ● ',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondaryVariant,
+                                      fontSize: 5.0.sp,
+                                      fontWeight: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .fontWeight,
                                     ),
                                   ),
-                                  Expanded(child: Container()),
+                                  Text(
+                                    'LIVE',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondaryVariant,
+                                      fontSize: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .fontSize,
+                                      fontWeight: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .fontWeight,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16.0.w, top: 12.0.h, bottom: 20.0.h),
-                              child: Container(
-                                height: 173.0.h,
-                                child: StreamBuilder<QuerySnapshot>(
-                                  stream: firestore
-                                      .collection("broadcast")
-                                      .where('location',
-                                          isEqualTo: locationController.location.value)
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    print('done!!');
-                                    if (!snapshot.hasData)
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ));
-                                    if (snapshot.data!.docs.length == 0 &&
-                                        locationController.location.value != '')
-                                      return Container(
-                                        child: Text('라이브중인 방송이 없습니다.'),
-                                      );
-                                    return ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      children: broadcastRoomList(
-                                          context, snapshot),
-                                    );
-                                  },
-                                ),
-                              ),
+                          ),
                         ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 16.0.w),
-                              child: Text(
-                                '토크',
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 9.0.h),
-                              child: StreamBuilder<QuerySnapshot>(
-                                  stream: firestore
-                                      .collection("groupcall")
-                                      .where('location',
-                                          isEqualTo: locationController.location.value)
-                                      .snapshots(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (!snapshot.hasData)
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ));
-                                    if (snapshot.data!.docs.length == 0 &&
-                                        locationController.location.value != '')
-                                      return Container(
-                                        child: Center(child: Text('생성된 대화방이 없습니다.')),
-                                      );
-                                    return Column(
-                                      children: groupcallRoomList(context, snapshot,UserController.to.myProfile.value ),
-                                    );
-                                  }),
-                            ),
+                        Expanded(child: Container()),
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(Icons.arrow_forward_ios)),
                       ],
                     ),
                   ),
-                ]
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 21.0.w, top: 11.0.h),
+                  child: Container(
+                    height: 195.0.h,
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: firestore
+                          .collection("broadcast")
+                          .where('location',
+                          isEqualTo: locationController.location.value)
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        print('done!!');
+                        if (!snapshot.hasData)
+                          return Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).colorScheme.primary,
+                              ));
+                        if (snapshot.data!.docs.length == 0 &&
+                            locationController.location.value != '')
+                          return Padding(
+                            padding: EdgeInsets.only(top: 50.0.h),
+                            child: Container(
+                              child: Text('라이브중인 방송이 없습니다.'),
+                            ),
+                          );
+                        return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: broadcastRoomList(
+                              context, snapshot),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 25.0.w),
+                      child: Text(
+                        'HEAR CHAT',
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    IconButton(
+                        onPressed: null,
+                        icon: Icon(Icons.arrow_forward_ios)),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 13.0.h),
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: firestore
+                          .collection("groupcall")
+                          .where('location',
+                          isEqualTo: locationController.location.value)
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (!snapshot.hasData)
+                          return Center(
+                              child: CircularProgressIndicator(
+                                color: Theme.of(context).colorScheme.primary,
+                              ));
+                        if (snapshot.data!.docs.length == 0 &&
+                            locationController.location.value != '')
+                          return Padding(
+                            padding: EdgeInsets.only(top: 50.0.h),
+                            child: Container(
+                              child: Center(child: Text('생성된 대화방이 없습니다.')),
+                            ),
+                          );
+                        return Column(
+                          children: groupcallRoomList(context, snapshot,UserController.to.myProfile.value ),
+                        );
+                      }),
+                ),
+              ]
               )),
             ],
           )
-        ));
+    ));
   }
 
   Future<void> refreshList() async {

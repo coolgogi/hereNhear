@@ -9,7 +9,7 @@ import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
 import 'package:herehear/etc/YR/yr_main.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-import 'contest/contest.dart';
+import 'community/community.dart';
 import 'create/create_broadcast.dart';
 import 'create/create_groupcall.dart';
 import 'floating_action_button_location.dart';
@@ -32,9 +32,9 @@ class BottomBar extends StatelessWidget {
             index: bottomBarController.tabIndex.value,
             children: [
               HomePage(),
-              ContestPage(),
+              SearchPage(),
               Container(),
-              searchPage(),
+              CommunityPage(),
               myPage(),
             ],
           )),
@@ -44,17 +44,14 @@ class BottomBar extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-              color: Theme.of(context).colorScheme.secondary, width: 2.0.w),
+              color: Theme.of(context).colorScheme.primary, width: 2.0.w),
         ),
         child: FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.secondary,
+            backgroundColor: Theme.of(context).colorScheme.primary,
             elevation: 0.0,
             shape: CircleBorder(
                 side: BorderSide(color: Colors.white, width: 2.5.w)),
-            child: Image.asset(
-              'assets/icons/mic_fill.png',
-              height: 32.h,
-            ),
+            child: Image.asset('assets/icons/add.png', width: 23.0.w,),
             onPressed: () => {
                   print(
                       '*******************************************************************************8'),
@@ -190,10 +187,9 @@ class BottomBar extends StatelessWidget {
             showSelectedLabels: true,
             onTap: landingPageController.changeTabIndex,
             currentIndex: landingPageController.tabIndex.value,
-            // backgroundColor: Theme.of(context).colorScheme.background,
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).colorScheme.background,
             unselectedItemColor: Color(0xFFB8B8B8),
-            selectedItemColor: Theme.of(context).colorScheme.primaryVariant,
+            selectedItemColor: Theme.of(context).colorScheme.onSurface,
             unselectedLabelStyle: unselectedLabelStyle,
             selectedLabelStyle: selectedLabelStyle,
             items: [
@@ -202,17 +198,14 @@ class BottomBar extends StatelessWidget {
                     width: 20.w, height: 20.w),
                 activeIcon: Image.asset('assets/icons/home_active.png',
                     width: 20.w, height: 20.w),
-                label: '홈',
+                label: 'HOME',
               ),
               BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.star_rate_outlined,
-                ),
-                activeIcon: Icon(
-                  Icons.star_rate,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                label: '소리꾼들',
+                icon: Image.asset('assets/icons/search_stroke.png',
+                    width: 20.w, height: 20.w),
+                activeIcon: Image.asset('assets/icons/search_active.png',
+                    width: 20.w, height: 20.w),
+                label: 'SEARCH',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
@@ -222,18 +215,18 @@ class BottomBar extends StatelessWidget {
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Image.asset('assets/icons/search_stroke.png',
+                icon: Image.asset('assets/icons/people_stroke.png',
                     width: 20.w, height: 20.w),
-                activeIcon: Image.asset('assets/icons/search_active.png',
+                activeIcon: Image.asset('assets/icons/people_active.png',
                     width: 20.w, height: 20.w),
-                label: '탐색',
+                label: 'COMMUNITY',
               ),
               BottomNavigationBarItem(
                 icon: Image.asset('assets/icons/profile_stroke.png',
                     width: 20.w, height: 20.w),
                 activeIcon: Image.asset('assets/icons/profile_active.png',
                     width: 20.w, height: 20.w),
-                label: '마이 페이지',
+                label: 'MY PAGE',
               ),
             ],
           ),
