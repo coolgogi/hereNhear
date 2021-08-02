@@ -70,7 +70,7 @@ class CommunityPage extends StatelessWidget {
                 stream: firestore
                     .collection("broadcast")
                     .where('location',
-                    isEqualTo: locationController.location.value)
+                    isEqualTo: UserController.to.myProfile.value.location)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -81,7 +81,7 @@ class CommunityPage extends StatelessWidget {
                           color: Theme.of(context).colorScheme.primary,
                         ));
                   if (snapshot.data!.docs.length == 0 &&
-                      locationController.location.value != '')
+                      UserController.to.myProfile.value.location != '')
                     return Padding(
                       padding: EdgeInsets.only(top: 50.0.h),
                       child: Container(
