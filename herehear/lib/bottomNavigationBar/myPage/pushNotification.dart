@@ -11,12 +11,13 @@ class pushNotification extends StatefulWidget {
 
 class _pushNotificationState extends State {
   late int _totalNotifications;
-  late final FirebaseMessaging _messaging;
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   PushNotification? _notificationInfo;
 
   @override
-  void initState() {
+  void initState() async {
     _totalNotifications = 0;
+    printToken();
 
     checkForInitialMessage();
 
@@ -24,6 +25,8 @@ class _pushNotificationState extends State {
       PushNotification notification = PushNotification(
         title: message.notification?.title,
         body: message.notification?.body,
+        dataTitle: message.data['title'],
+        dataBody: message.data['body'],
       );
       setState(() {
         _notificationInfo = notification;
@@ -32,6 +35,12 @@ class _pushNotificationState extends State {
     });
 
     super.initState();
+  }
+
+  void printToken() async {
+    print("===========token===========");
+    print(_messaging.getToken());
+    print("===========================");
   }
 
   @override
@@ -61,7 +70,7 @@ class _pushNotificationState extends State {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'TITLE: ${_notificationInfo!.title}',
+                      'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
@@ -69,7 +78,7 @@ class _pushNotificationState extends State {
                     ),
                     SizedBox(height: 8.0),
                     Text(
-                      'BODY: ${_notificationInfo!.body}',
+                      'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,
@@ -78,14 +87,6 @@ class _pushNotificationState extends State {
                   ],
                 )
               : Container(),
-          // Text(
-          //   'TITLE: ${_notificationInfo!.dataTitle ?? _notificationInfo!.title}',
-          //   // ...
-          // ),
-          // Text(
-          //   'BODY: ${_notificationInfo!.dataBody ?? _notificationInfo!.body}',
-          //   // ...
-          // ),
         ],
       ),
     );
@@ -96,7 +97,7 @@ class _pushNotificationState extends State {
     await Firebase.initializeApp();
 
     // 2. Instantiate Firebase Messaging
-    _messaging = FirebaseMessaging.instance;
+    // _messaging = FirebaseMessaging.instance;
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     // 3. On iOS, this helps to take the user permissions
