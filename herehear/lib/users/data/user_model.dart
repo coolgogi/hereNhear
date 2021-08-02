@@ -1,4 +1,5 @@
 class UserModel {
+  String? token;
   String? uid;
   String? docId;
   String? id;
@@ -13,6 +14,7 @@ class UserModel {
 
   UserModel(
       {
+        this.token,
         this.uid,
       this.docId,
       this.id,
@@ -27,6 +29,7 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'token' : this.token,
       'uid': this.uid,
       'name': this.name,
       'location': this.location,
@@ -37,7 +40,9 @@ class UserModel {
   }
 
   UserModel.fromJson(Map<String, dynamic> json, String docId)
-      : uid = json['uid'] as String,
+      : 
+        token = json['token'] as String,
+        uid = json['uid'] as String,
         name = json['name'] as String,
         nickName = json['nickName'] as String,
         profile = json['profile'] as String,
