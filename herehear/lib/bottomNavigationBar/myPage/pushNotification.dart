@@ -42,6 +42,10 @@ class _pushNotificationState extends State {
     print("===========================");
   }
 
+  void send_Message(String msg) async {
+    FirebaseMessaging.instance.sendMessage()
+  }
+
   @override
   Widget build(BuildContext context) {
     printToken();
