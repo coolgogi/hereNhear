@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+import 'package:herehear/bottomNavigationBar/home/home.dart';
 
 class LoginScreen extends StatelessWidget {
   final _phoneController = TextEditingController();
@@ -47,10 +47,9 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 actions: <Widget>[
-                  FlatButton(
+                  TextButton(
                     child: Text("Confirm"),
-                    textColor: Colors.white,
-                    color: Colors.blue,
+                    style: TextButton.styleFrom(backgroundColor: Colors.blue,textStyle: TextStyle(color: Colors.white)),
                     onPressed: () async {
                       final code = _codeController.text.trim();
                       AuthCredential credential = PhoneAuthProvider.credential(
@@ -117,17 +116,16 @@ class LoginScreen extends StatelessWidget {
                 height: 16,
               ),
               Container(
+                padding: EdgeInsets.all(16),
                 width: double.infinity,
-                child: FlatButton(
-                  child: Text("LOGIN"),
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(16),
+                child: TextButton(
+                  child: Text("LOGIN",style: TextStyle(color: Colors.black),),
                   onPressed: () {
                     final phone = _phoneController.text.trim();
 
                     loginUser(phone, context);
                   },
-                  color: Colors.blue,
+                  style: TextButton.styleFrom(backgroundColor: Colors.blue),
                 ),
               )
             ],

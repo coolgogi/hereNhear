@@ -33,7 +33,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   bool _validateError = false;
 
 
-  final agoraController = Get.put(agoraCreateController());
+  final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
   @override

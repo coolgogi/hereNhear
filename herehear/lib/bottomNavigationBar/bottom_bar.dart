@@ -1,23 +1,17 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
-import 'package:herehear/etc/YR/yr_main.dart';
-import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'community/community.dart';
 import 'create/create_broadcast.dart';
 import 'create/create_groupcall.dart';
 import 'floating_action_button_location.dart';
-import 'home/HomePage.dart';
+import 'home/home.dart';
 
 class BottomBar extends StatelessWidget {
-  final _auth = FirebaseAuth.instance;
-
   final UserController userController = Get.put(UserController());
 
   @override

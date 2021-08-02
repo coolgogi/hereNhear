@@ -5,10 +5,9 @@ import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'agoraRepository.dart';
-import 'agoraModel.dart';
 
-class agoraCreateController extends GetxController {
-  static agoraCreateController get to => Get.find();
+class AgoraCreateController extends GetxController {
+  static AgoraCreateController get to => Get.find();
 
   Rx<BroadcastModel> newBroadcastRoom = BroadcastModel().obs;
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
@@ -53,7 +52,7 @@ class agoraCreateController extends GetxController {
       );
 
       print("gooooooooooooooooooooooood");
-      await agoraRepository.BroadcastToFirebase(newBroadcastRoom.value);
+      await AgoraRepository.BroadcastToFirebase(newBroadcastRoom.value);
     } else {
       print("no user, please sign in");
       Get.to(LoginPage());
@@ -79,7 +78,7 @@ class agoraCreateController extends GetxController {
         createdTime: DateTime.now(),
       );
 
-      await agoraRepository.GroupCallToFirebase(newGroupCallRoom.value);
+      await AgoraRepository.GroupCallToFirebase(newGroupCallRoom.value);
     } else {
       print("no user, please sign in");
       Get.to(LoginPage());

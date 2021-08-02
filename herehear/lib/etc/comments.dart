@@ -351,7 +351,7 @@ class _CommentPageState extends State<CommentPage> {
           '좋아요 ${doc['likeNum']}개',
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         );
-        return Icon(Icons.favorite, color: Colors.red);
+
       }
     }
     return Text(

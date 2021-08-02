@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/data/user_model.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'group_call.dart';
 import 'package:get/get.dart';
-import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+import 'package:herehear/bottomNavigationBar/home/home.dart';
 
-import '';
 
 List<Widget> groupcallRoomList(
-    BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot , UserModel _userData) {
+    BuildContext context, AsyncSnapshot<QuerySnapshot> broadcastSnapshot) {
   return broadcastSnapshot.data!.docs.map((_roomData) {
     return Column(
       children: [
@@ -39,7 +38,7 @@ List<Widget> groupcallRoomList(
             onTap: () {
               firestore.collection('groupcall').doc(_roomData['docId']).update({
                 'currentListener':
-                    FieldValue.arrayUnion([_userData.uid]),
+                    FieldValue.arrayUnion([UserController.to.myProfile.value.uid]),
               });
               Get.to(() => GroupCallPage(_roomData['title']),
                   arguments: _roomData['channelName']);

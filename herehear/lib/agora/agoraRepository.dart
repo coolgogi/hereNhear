@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:herehear/broadcast/broadcast_model.dart';
 import 'package:herehear/groupCall/group_call_model.dart';
-import 'agoraModel.dart';
 
-class agoraRepository {
+
+class AgoraRepository {
   static Future<void> BroadcastToFirebase(BroadcastModel newRoom) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('broadcast');
