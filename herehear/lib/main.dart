@@ -7,7 +7,7 @@ import 'package:herehear/users/controller/user_controller.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 import 'appBar/notification/notification.dart';
-import 'bottomNavigationBar/home/HomePage.dart';
+import 'bottomNavigationBar/home/home.dart';
 import 'bottomNavigationBar/myPage/mypage.dart';
 import 'bottomNavigationBar/search/search.dart';
 import 'login/signIn.dart';

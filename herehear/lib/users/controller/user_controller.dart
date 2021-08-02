@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:herehear/users/repository/user_repository.dart';
@@ -15,6 +17,7 @@ class UserController extends GetxController {
   static UserController get to => Get.find();
   Rx<UserModel> myProfile = UserModel().obs;
   String? docId;
+  String? token;
 
   // firebase storage에 데이터를 보내는 과정.
   void authStateChanges(User? firebaseUser) async {
@@ -22,9 +25,12 @@ class UserController extends GetxController {
         "this is user======================================================================");
     UserModel? firebaseUserdata =
         await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
+
+
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
       myProfile.value = UserModel(
+        token: await _token(),
         nickName: 'Nickname',
         profile: 'assets/suhyun.jpg',
         uid: firebaseUser.uid,
@@ -37,6 +43,11 @@ class UserController extends GetxController {
       myProfile.value = firebaseUserdata;
       //FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
     }
+  }
+
+  Future<String?> _token() async {
+    return FirebaseMessaging.instance.getToken();
+
   }
 
   void forAnonymous(User? firebaseUser) async {
