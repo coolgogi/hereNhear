@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
+import 'package:herehear/etc/YR/yr_main.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'contest/contest.dart';
@@ -137,8 +138,7 @@ class BottomBar extends StatelessWidget {
                                 fontWeight: FontWeight.bold)),
                       ],
                     ),
-                    onTap: () => Get.off(() => CreateBroadcastPage.withData(
-                        userController.myProfile.value)),
+                    onTap: () => Get.off(() => BroadcastInfoPage()),
                   ),
                   InkWell(
                     child: Column(
