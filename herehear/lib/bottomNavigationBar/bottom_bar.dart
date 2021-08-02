@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
@@ -34,29 +35,20 @@ class BottomBar extends StatelessWidget {
           )),
       floatingActionButtonLocation: CustomFloatingActionButtonLocation(
           FloatingActionButtonLocation.centerDocked, 0, 15),
-      floatingActionButton: Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-              color: Theme.of(context).colorScheme.primary, width: 2.0.w),
-        ),
-        child: FloatingActionButton(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            elevation: 0.0,
-            shape: CircleBorder(
-                side: BorderSide(color: Colors.white, width: 2.5.w)),
-            child: Image.asset('assets/icons/add.png', width: 23.0.w,),
-            onPressed: () => {
-                  print(
-                      '*******************************************************************************8'),
-                  print(userController.myProfile.value.uid),
-                  print(
-                      '*******************************************************************************8'),
-                  userController.myProfile.value.uid == 'Guest'
-                      ? _showMyDialog()
-                      : showCreateOption(context),
-                }),
-      ),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          elevation: 0.0,
+          child: Image.asset('assets/icons/add.png', width: 23.0.w,),
+          onPressed: () => {
+                print(
+                    '*******************************************************************************8'),
+                print(userController.myProfile.value.uid),
+                print(
+                    '*******************************************************************************8'),
+                userController.myProfile.value.uid == 'Guest'
+                    ? _showMyDialog()
+                    : showCreateOption(context),
+              }),
     ));
   }
 
