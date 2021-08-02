@@ -116,6 +116,7 @@ class CommunityPage extends StatelessWidget {
     );
   }
 
+  
   Widget searchBarWidget(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
