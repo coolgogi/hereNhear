@@ -32,6 +32,7 @@ class UserModel {
       'location': this.location,
       'nickName': this.nickName,
       'profile': this.profile,
+      'subscribe' : this.subscribe,
     };
   }
 
@@ -40,5 +41,6 @@ class UserModel {
         name = json['name'] as String,
         nickName = json['nickName'] as String,
         profile = json['profile'] as String,
+        subscribe = json['subscribe'] as List,
         location = json['location'] as String;
 }
