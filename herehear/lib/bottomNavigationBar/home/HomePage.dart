@@ -33,8 +33,8 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 actions: <Widget>[
-                  IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png')),
-                  IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png')),
+                  IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
+                  IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
                 ],
                   expandedHeight: 125.h,
                   flexibleSpace: FlexibleSpaceBar(
