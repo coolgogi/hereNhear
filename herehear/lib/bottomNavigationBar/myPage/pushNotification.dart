@@ -15,9 +15,8 @@ class _pushNotificationState extends State {
   PushNotification? _notificationInfo;
 
   @override
-  void initState() async {
+  void initState() {
     _totalNotifications = 0;
-    printToken();
 
     checkForInitialMessage();
 
@@ -39,12 +38,13 @@ class _pushNotificationState extends State {
 
   void printToken() async {
     print("===========token===========");
-    print(_messaging.getToken());
+    print(await FirebaseMessaging.instance.getToken());
     print("===========================");
   }
 
   @override
   Widget build(BuildContext context) {
+    printToken();
     return Scaffold(
       appBar: AppBar(
         title: Text('Notify'),
