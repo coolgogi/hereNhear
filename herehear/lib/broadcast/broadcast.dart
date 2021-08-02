@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
-import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+import 'package:herehear/bottomNavigationBar/home/home.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

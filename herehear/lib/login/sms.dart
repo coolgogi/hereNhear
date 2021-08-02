@@ -165,6 +165,11 @@ class _SmsPage extends State<Sms> {
   }
 
   void showSnackbar(String message) {
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+        content: Text(message),
+      ),
+    );
+   // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(message)));
   }
 }

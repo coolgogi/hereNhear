@@ -6,7 +6,7 @@ import 'package:herehear/theme/theme.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 
 import 'appBar/notification/notification.dart';
-import 'bottomNavigationBar/home/HomePage.dart';
+import 'bottomNavigationBar/home/home.dart';
 import 'bottomNavigationBar/myPage/mypage.dart';
 import 'bottomNavigationBar/search/search.dart';
 import 'login/signIn.dart';

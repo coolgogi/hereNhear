@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
@@ -222,7 +220,7 @@ class HomePage extends StatelessWidget {
                                 color: Theme.of(context).colorScheme.primary,
                               ));
                         if (snapshot.data!.docs.length == 0 &&
-                            locationController.location.value != '')
+                            UserController.to.myProfile.value.location != '')
                           return Padding(
                             padding: EdgeInsets.only(top: 50.0.h),
                             child: Container(
@@ -230,7 +228,7 @@ class HomePage extends StatelessWidget {
                             ),
                           );
                         return Column(
-                          children: groupcallRoomList(context, snapshot,UserController.to.myProfile.value ),
+                          children: groupcallRoomList(context, snapshot),
                         );
                       }),
                 ),

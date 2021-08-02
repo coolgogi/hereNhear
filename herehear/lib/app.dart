@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/notification/notification.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
-import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+import 'package:herehear/bottomNavigationBar/home/home.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'bottomNavigationBar/bottom_bar.dart';
@@ -83,7 +83,7 @@ class App extends GetView<UserController> {
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
-                return     FutureBuilder(
+                return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {

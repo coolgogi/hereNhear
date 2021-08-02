@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-import 'package:herehear/bottomNavigationBar/home/HomePage.dart';
+import 'package:herehear/bottomNavigationBar/home/home.dart';
 
 Map<String, dynamic> data = new Map();
 

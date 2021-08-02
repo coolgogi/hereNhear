@@ -1,4 +1,4 @@
-class agoraModel {
+class AgoraModel {
   //using both side.
   String? hostUid;
   String? title;
@@ -18,7 +18,7 @@ class agoraModel {
   String? hostNickname;
   List<String>? userNickname;
 
-  agoraModel.broadcast({
+  AgoraModel.broadcast({
     this.hostUid,
     this.title,
     this.notice,
@@ -38,7 +38,7 @@ class agoraModel {
     this.userNickname,
   });
 
-  agoraModel.groupcall({
+  AgoraModel.groupcall({
     this.hostUid,
     this.title,
     this.notice,
@@ -74,7 +74,7 @@ class agoraModel {
     };
   }
 
-  agoraModel.fromJson(Map<String, dynamic> json, String hostUid)
+  AgoraModel.fromJson(Map<String, dynamic> json, String hostUid)
       : hostUid = json['uid'] as String,
         title = json['title'] as String,
         notice = json['notice'] as String,
