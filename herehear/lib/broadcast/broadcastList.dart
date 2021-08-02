@@ -36,12 +36,13 @@ List<Widget> broadcastRoomList(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h,),
+              padding: EdgeInsets.only(left: 5.0.w),
               child: Container(
-                width: 208.0.w,
-                height: 119.0.h,
+                width: 250.0.w,
+                height: 141.0.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
+                    fit: BoxFit.fill,
                     image: AssetImage("assets/images/groupcall/fish.jpg")
                   ),
                   color: Colors.white,
@@ -61,26 +62,35 @@ List<Widget> broadcastRoomList(
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 92.0.h, bottom: 7.0.h),
+                  padding: EdgeInsets.only(top: 110.0.h, bottom: 8.0.h),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: 20.0.r,
-                        backgroundImage: AssetImage('assets/images/you2.jpg'),
-                        // backgroundImage: AssetImage(_roomData['image']),
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0.w, right: 6.0.w),
+                        child: Container(
+                          width: 40.0.w,
+                          height: 40.0.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/you2.jpg'),
+                              fit: BoxFit.fitWidth,
+                            )
+                          ),
+                        ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 33.0.w),
+                        padding: EdgeInsets.only(right: 45.0.w),
                         child: Text('유리한 녀석들', style: TextStyle(
                           color: Colors.white,
-                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                          fontSize: 13.sp,
                           fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
                         )),
                       ),
                       Icon(
                         Icons.people,
-                        size: 14.w,
+                        size: 17.w,
                         color: Colors.white,
                       ),
                       Text(
@@ -89,21 +99,21 @@ List<Widget> broadcastRoomList(
                               : ' ${_roomData['currentListener'].length.toString()}',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                            fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
                             fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
                           ),
                       ),
                       SizedBox(width: 8.sp),
                       Icon(
                         Icons.favorite,
-                        size: 12.w,
+                        size: 14.w,
                         color: Colors.white,
                       ),
                       Text(
                         ' ${_roomData['like'].toString()}',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
                           fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
                         ),
                       ),
@@ -113,7 +123,7 @@ List<Widget> broadcastRoomList(
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 27.0.h),
+              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 24.0.h),
               child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.bodyText1),
             ),
           ],
@@ -122,6 +132,7 @@ List<Widget> broadcastRoomList(
     );
   }).toList();
 }
+
 
 Future<void> getData(String docID) async {
   var temp =
