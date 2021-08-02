@@ -18,7 +18,7 @@ class BroadcastInfoPage extends StatelessWidget {
   String _docId = '';
 
 
-  final agoraController = Get.put(agoraCreateController());
+  final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
   @override

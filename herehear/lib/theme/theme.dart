@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final ThemeData light_theme = _buildClosetTheme_light();
-final ThemeData dark_theme = _buildClosetTheme_dark();
+final ThemeData light_theme = buildClosetTheme_light();
+final ThemeData dark_theme = buildClosetTheme_dark();
 
-ThemeData _buildClosetTheme_light() {
+ThemeData buildClosetTheme_light() {
   final ThemeData base = ThemeData.light();
 
   return base.copyWith(
@@ -72,7 +71,7 @@ ThemeData _buildClosetTheme_light() {
 //     scaffoldBackgroundColor: Color(0xfff1f1f1));
 // // scaffoldBackgroundColor: Color(0xff6200EE));
 
-ThemeData _buildClosetTheme_dark() {
+ThemeData buildClosetTheme_dark() {
   final ThemeData base = ThemeData.dark();
 
   return base.copyWith(
@@ -213,7 +212,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
   // );
 }
 
-AppBarTheme _buildClosetAppBarTheme(AppBarTheme base) {
+AppBarTheme buildClosetAppBarTheme(AppBarTheme base) {
   return base.copyWith(
     centerTitle: false,
     titleTextStyle: base.titleTextStyle!.copyWith(

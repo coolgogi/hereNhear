@@ -18,7 +18,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final _notice = TextEditingController();
   String? _docId;
   DateTime selectedDate = DateTime.now();
-  final controller = Get.put(agoraCreateController());
+  final controller = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
   //unused variable
