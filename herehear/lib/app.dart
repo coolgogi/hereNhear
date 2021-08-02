@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
                 ),
                 GetPage(
                   name: '/search',
-                  page: () => searchPage(),
+                  page: () => SearchPage(),
                 )
               ],
             ),
@@ -83,20 +83,20 @@ class App extends GetView<UserController> {
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
-                return BottomBar(); // data가 있으면 MainPage로
+                return     FutureBuilder(
+                    future: locationController.getLocation(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print(snapshot.data.toString());
+                        return BottomBar();
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    });// data가 있으면 MainPage로
               }
             },
           );
-            // FutureBuilder(
-            //   future: controller.getLocation(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.hasData) {
-            //       print(snapshot.data.toString());
-            //       return BottomBar();
-            //     } else {
-            //       return Center(child: CircularProgressIndicator());
-            //     }
-            //   });
+
         } else {
           return Center(
             child: CircularProgressIndicator(),

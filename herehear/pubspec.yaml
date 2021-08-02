@@ -104,16 +104,24 @@ flutter:
     - assets/images/you2.jpg
     - assets/images/it2.jpg
     - assets/images/she2.jpeg
+    - assets/images/group.png
+    - assets/images/sing.png
+    - assets/images/voiceCopy.png
+    - assets/images/mike.png
+    - assets/images/mike2.png
     - assets/messages.json
     - assets/messages2.json
     - assets/icons/home_stroke.png
     - assets/icons/home_active.png
     - assets/icons/favorite_stroke.png
     - assets/icons/favorite_active.png
+    - assets/icons/people_stroke.png
+    - assets/icons/people_active.png
     - assets/icons/search_stroke.png
     - assets/icons/search_active.png
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
+    - assets/icons/add.png
     - assets/icons/search.png
     - assets/icons/notification.png
     - assets/icons/exit.png
@@ -122,6 +130,7 @@ flutter:
     - assets/icons/groupWhite.png
     - assets/icons/location.png
     - assets/icons/leaf.png
+    - assets/icons/leaf2.png
     - assets/icons/bell.png
     - assets/icons/more.png
     - assets/images/mountain.jpg

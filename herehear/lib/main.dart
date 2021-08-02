@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
                     ),
                     GetPage(
                       name: '/search',
-                      page: () => searchPage(),
+                      page: () => SearchPage(),
                     )
                   ],
                 ),

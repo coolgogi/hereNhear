@@ -158,6 +158,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
                         setState(() {
                           _index = value ? index : _index;
+                          print(_index = value ? index : _index);
                         });
                         print('value: ${value.toString()}');
                         print('index: ${index.toString()}');
