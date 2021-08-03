@@ -253,7 +253,7 @@ class SearchPage extends StatelessWidget {
           bottom: 20.h
       ),
       child: GestureDetector(
-        onTap: (() => Get.to(SearchResultsPage())),
+        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(

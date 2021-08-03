@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
+import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
 
 import 'package:herehear/broadcast/broadcastList.dart';
@@ -23,8 +25,7 @@ class SearchResultsPage extends StatefulWidget {
 
 class _SearchResultsPageState extends State<SearchResultsPage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
-  FocusNode? searchBarFocusNode;
-  final _textController = TextEditingController();
+  final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
 
   String current_uid = '';
@@ -34,13 +35,12 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    searchBarFocusNode = FocusNode();
   }
 
   @override
   void dispose() {
     // 폼이 삭제되면 myFocusNode도 삭제됨
-    searchBarFocusNode!.dispose();
+    searchController.searchBarFocusNode.value.dispose();
     super.dispose();
   }
 
@@ -59,228 +59,124 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          // TextField(
-          //   controller: _textController,
-          //   focusNode: searchBarFocusNode,
-          //   keyboardType: TextInputType.text,
-          //   onChanged: (text){
-          //     // _streamSearch.add(text);
-          //   },
-          //   decoration: InputDecoration(
-          //       hintText: '검색어를 입력하세요',
-          //       border: InputBorder.none,
-          //       filled: true,
-          //       fillColor: Color(0xFFE9E9E9),
-          //       suffixIcon: Icon(Icons.search),
-          //   ),
-          // ),
-          SearchTextField(_textController, searchBarFocusNode),
-      Padding(
-        padding: EdgeInsets.only(left: 25.0.w),
-        child: Row(
-          children: <Widget>[
-            Text(
-              'TOP 라이브 ',
-              // style: Theme.of(context).textTheme.headline1,
-              style: Theme.of(context).textTheme.headline1,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 3.0.w),
-              child: Container(
-                width: 43.w,
-                height: 18.h,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondaryVariant,
-                      width: 2.0.w),
-                  borderRadius: BorderRadius.all(Radius.circular(9.0
-                      .r) //                 <--- border radius here
-                  ),
-                ),
-                child: Center(
-                  child: Row(
-                    children: [
-                      Text(
-                        '   ● ',
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondaryVariant,
-                          fontSize: 5.0.sp,
-                          fontWeight: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .fontWeight,
-                        ),
-                      ),
-                      Text(
-                        'LIVE',
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondaryVariant,
-                          fontSize: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .fontSize,
-                          fontWeight: Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .fontWeight,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(child: Container()),
-            IconButton(
-                onPressed: null,
-                icon: Icon(Icons.arrow_forward_ios)),
-          ],
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(
-            left: 21.0.w, top: 11.0.h),
-        child: Container(
-          height: 195.0.h,
-          child: StreamBuilder<QuerySnapshot>(
-            stream: firestore
-                .collection("broadcast")
-            // .where('location',
-            // isEqualTo: locationController.location.value)
-                .snapshots(),
-            builder: (BuildContext context,
-                AsyncSnapshot<QuerySnapshot> snapshot) {
-              print('done!!');
-              if (!snapshot.hasData)
-                return Center(
-                    child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.primary,
-                    ));
-              if (snapshot.data!.docs.length == 0 &&
-                  locationController.location.value != '')
-                return Padding(
-                  padding: EdgeInsets.only(top: 50.0.h),
-                  child: Container(
-                    child: Text('라이브중인 방송이 없습니다.'),
-                  ),
-                );
-              return ListView(
-                scrollDirection: Axis.horizontal,
-                children: broadcastRoomList(
-                    context, snapshot),
-              );
-            },
-          ),
-        ),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 25.0.w),
-            child: Text(
-              '카테고리',
-              style: Theme.of(context).textTheme.headline1,
-            ),
-          ),
-          Expanded(child: Container()),
-          IconButton(
-              onPressed: null,
-              icon: Icon(Icons.arrow_forward_ios)),
-        ],
-      ),
-      Padding(
-        padding: EdgeInsets.only(left: 24.0.w, top: 19.0.h),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                category_card(context),
-                category_card(context),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                category_card(context),
-                category_card(context),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                category_card(context),
-                category_card(context),
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                category_card(context),
-                category_card(context),
-              ],
-            ),
-          ],
-        ),
-      )
+          SearchTextField(),
+          Obx(() {
+            if(searchController.text.value.isEmpty) {
+              print('searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
+              return searchHistory();
+            }
+            else {
+              print('searchController.textController.value??????????????? : ${searchController.textController.value.text}');
+              return Container(child: Center(child: Text('SomeThing..!!')));
+            }
+          })
       ],
     ),
     );
   }
 
-  Widget category_card(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16, right: 16.0.w),
-      width: 156.0.w,
-      height: 69.0.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: null,
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 13.0.w, right: 20.0.w),
-              child: Container(
-                // margin: EdgeInsets.all(0.0.w),
-                width: 41.0.w,
-                height: 41.0.h,
-                // child: SizedBox(child: Image.asset(_roomData['image'])),
-                child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/images/group.png'),
-                      ),
-                    )),
+  Widget searchHistory() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
+          child: Row(
+            children: <Widget>[
+              Text(
+                '최근 본 HEAR',
+                // style: Theme.of(context).textTheme.headline1,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-            ),
-            Text(
-              '#친목도모',
-              style: Theme.of(context).textTheme.bodyText1,
-            ),
-          ],
+              Expanded(child: Container()),
+              IconButton(
+                  onPressed: null,
+                  icon: Icon(Icons.clear, size: 15.w)),
+            ],
+          ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w, bottom: 5.0.h,),
+          child: Container(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: firestore
+                  .collection("broadcast")
+              // .where('location',
+              // isEqualTo: locationController.location.value)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                print('done!!');
+                if (!snapshot.hasData)
+                  return Center(
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).colorScheme.primary,
+                      ));
+                if (snapshot.data!.docs.length == 0 &&
+                    locationController.location.value != '')
+                  return Container(
+                    child: Text('최근 본 HEAR가 없습니다.'),
+                  );
+                return Row(
+                    children: <Widget>[
+                      Text('같이 대화하면서 놀아요!'),
+                      Expanded(child: Container()),
+                      Text('HERO 정보', style: TextStyle(
+                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                          color: Theme.of(context).colorScheme.primary
+                      )),
+                      IconButton(
+                          onPressed: null,
+                          icon: Icon(Icons.navigate_next, size: 18.w))
+                    ]
+                );
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(25.0.w, 0.h, 30.w, 0.h),
+          child: Divider(
+            thickness: 1,
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(25.0.w, 10.h, 30.w, 15.h),
+          child: Text(
+            '최근 검색어',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+        ),
+        Column(
+          children: List.generate(searchHistoryExample!.length, (index) =>
+              Padding(
+                padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: null,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            searchHistoryExample![index],
+                            style: Theme.of(context).textTheme.bodyText2,
+                          ),
+                          Expanded(child: Container()),
+                          IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.clear, size: 15.w)),
+                        ],
+                      ),
+                    ),
+                    Divider(thickness: 1, height: 0.h,),
+                  ],
+                ),
+              ),
+          ),
+        )
+      ],
     );
   }
 
