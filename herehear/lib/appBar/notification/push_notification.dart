@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +22,13 @@ class _pushNotificationState extends State {
     checkForInitialMessage();
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("=====remotemsg=====");
+      print(message.data); //{}
+      print(message.messageId); //0:1627958961401002%6529c8c36529c8c3
+      print(message.messageType); //null
+      print(message.category); //null
+      print(message.collapseKey); //com.hgu.herehear
+      print("===================");
       PushNotification notification = PushNotification(
         title: message.notification?.title,
         body: message.notification?.body,
@@ -42,9 +50,32 @@ class _pushNotificationState extends State {
     print("===========================");
   }
 
+  String push_token =
+      'eVa6RLgkQYCWxRVOipcJj9:APA91bHGQFzTEWc4E36BYdSoubWkVNFLZvDxYMmFN6RrYUsEpjvj8iPoNB6sr42IxORdvVEj8XJIO9FDozZXmWio5miPApaeeFn_bKu8fADpKk9U57lFh2YltPJSe3S3X482aHG0b38x';
+  Map<String, String> _data = new Map<String, String>();
+  String _messageId = DateTime.now().millisecond.toString();
+  String? _messageType;
+  String? _category;
+  String _collapseKey = 'com.hgu.herehear';
+
   void send_Message(String msg) async {
-    FirebaseMessaging.instance.sendMessage()
+    FirebaseMessaging.instance.sendMessage(
+        to: push_token,
+        data: _data,
+        collapseKey: _collapseKey,
+        messageId: _messageId,
+        messageType: _messageType);
   }
+
+  // RemoteMessage msg;
+  /* 참고코드
+  FirebaseMessaging fm = FirebaseMessaging.getInstance();
+  fm.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
+          .setMessageId(Integer.toString(messageId))
+          .addData("my_message", "Hello World")
+          .addData("my_action","SAY_HELLO")
+          .build());
+   */
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +122,11 @@ class _pushNotificationState extends State {
                   ],
                 )
               : Container(),
+          TextButton(
+              onPressed: () {
+                send_Message('');
+              },
+              child: Text('msg send')),
         ],
       ),
     );
