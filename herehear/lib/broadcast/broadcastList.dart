@@ -123,7 +123,7 @@ List<Widget> broadcastRoomList(
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 24.0.h),
+              padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
               child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.bodyText1),
             ),
           ],

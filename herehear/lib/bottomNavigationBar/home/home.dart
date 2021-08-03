@@ -48,26 +48,23 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Row(
                                 children: [
-                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
-                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline1),
+                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline5),
+                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline3),
                                 ],
                               ),
 
                               Row(
                                 children: [
-                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
-                                  Image(image: AssetImage('assets/icons/leaf.png')),
+                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
+                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
                                 ],
                               ),
                             ],
                           ),
                           Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 5.0.w),
-                            child: CircleAvatar(
-                              radius: 21.r,
-                              backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
-                            ),
+                          CircleAvatar(
+                            radius: 21.r,
+                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
                           ),
                         ],
                       ),
@@ -154,7 +151,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 21.0.w, top: 21.0.h),
+                      left: 21.0.w, top: 16.0.h),
                   child: Container(
                     height: 195.0.h,
                     child: StreamBuilder<QuerySnapshot>(
@@ -205,7 +202,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 18.0.h),
+                  padding: EdgeInsets.only(top: 16.0.h),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection("groupcall")

@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
+import 'package:search_widget/search_widget.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -21,27 +23,18 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Scaffold(
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title: Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset('assets/icons/search.png'),
-            iconSize: 20.w,
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PostSearchDelegate(),
-              );
-            },
-          ),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
         children: <Widget>[
+          searchBarWidget(context),
           Padding(
             padding: EdgeInsets.only(left: 25.0.w),
             child: Row(
@@ -195,7 +188,7 @@ class SearchPage extends StatelessWidget {
           )
         ],
       ),
-    ));
+    );
   }
 
   Widget category_card(BuildContext context) {
@@ -246,6 +239,41 @@ class SearchPage extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget searchBarWidget(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          left: 25.0.w,
+          top: 10.h,
+          right: 22.0.w,
+          bottom: 20.h
+      ),
+      child: GestureDetector(
+        onTap: (() => Get.to(SearchResultsPage())),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)
+            ),
+            color: Color(0xFFE9E9E9),
+          ),
+          height: 33.0.h,
+          child: Padding(
+            padding: EdgeInsets.only(right: 13.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Image.asset('assets/icons/search.png', width: 20.w,),
+              ],
+            ),
+          ),
         ),
       ),
     );
