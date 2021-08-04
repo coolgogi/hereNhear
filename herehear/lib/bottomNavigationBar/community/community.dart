@@ -126,7 +126,7 @@ class CommunityPage extends StatelessWidget {
           bottom: 20.h
       ),
       child: GestureDetector(
-        onTap: (() => Get.to(SearchResultsPage())),
+        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -153,69 +153,129 @@ class CommunityPage extends StatelessWidget {
   }
 
   Widget postCard(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 39.0.h, right: 16.0.w),
-      width: 144.0.w,
-      height: 119.0.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(1, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: null,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 51.0.h),
-              child: Center(child: Text('연애 상담 해드려요.', style: Theme.of(context).textTheme.bodyText1)),
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
+          width: 160.0.w,
+          height: 135.0.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white,
+                Colors.black,
+              ],
             ),
-            Expanded(child: Container()),
-            Padding(
-              padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.people,
-                    size: 14.w,
-                  ),
-                  Text(
-                    // _roomData['currentListener'] == null
-                    //     ? ' 0'
-                    //     : ' ${_roomData['currentListener'].length.toString()}',
-                    '26',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  SizedBox(width: 8.0.w),
-                  Icon(
-                    Icons.favorite,
-                    size: 12.w,
-                  ),
-                  Text(
-                    // ' ${_roomData['like'].toString()}',
-                    '35',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ],
+            image: DecorationImage(
+                image: AssetImage('assets/images/sora.jpg'),
+                fit: BoxFit.cover
+            ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(1, 4), // changes position of shadow
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+        Container(
+          margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
+          width: 160.0.w,
+          height: 135.0.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF000000).withOpacity(0.5),
+                Color(0xFF747474).withOpacity(0.0),
+              ],
+            ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(1, 4), // changes position of shadow
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: null,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 51.0.h),
+                  child: Center(child: Text(
+                      '연애 상담 해드려요.',
+                      style: TextStyle(
+                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                          fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                          color: Colors.white
+                      ))),
+                ),
+                Expanded(child: Container()),
+                Padding(
+                  padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        size: 14.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        // _roomData['currentListener'] == null
+                        //     ? ' 0'
+                        //     : ' ${_roomData['currentListener'].length.toString()}',
+                          ' 26',
+                          style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                              color: Colors.white
+                          )
+                      ),
+                      SizedBox(width: 8.0.w),
+                      Icon(
+                        Icons.favorite,
+                        size: 12.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        // ' ${_roomData['like'].toString()}',
+                          ' 35',
+                          style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                              color: Colors.white
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );;
   }
 
   Widget playThemeList(BuildContext context) {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 
 class SearchTextField extends StatelessWidget {
-  const SearchTextField(this.controller, this.focusNode);
-
-  final TextEditingController controller;
-  final FocusNode? focusNode;
+  final searchController = Get.put(SearchBarController());
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +13,17 @@ class SearchTextField extends StatelessWidget {
           left: 25.0.w,
           top: 10.h,
           right: 22.0.w,
-          bottom: 20.h
+          bottom: 14.h
       ),
       child: Container(
         height: 33.0.h,
         child: TextField(
-          controller: controller,
-          focusNode: focusNode,
+          keyboardType: TextInputType.text,
+          controller: searchController.textController.value,
+          focusNode: searchController.searchBarFocusNode.value,
+          onChanged: (value) {
+            searchController.text.value = searchController.textController.value.text;
+          },
           autofocus: true,
           style: TextStyle(fontSize: 16.sp, color: Colors.grey[600],),
           decoration: InputDecoration(
@@ -49,7 +52,14 @@ class SearchTextField extends StatelessWidget {
                 color: Color(0xFFE9E9E9),
               ),
             ),
-            suffixIcon: Image.asset('assets/icons/search2.png'),
+            suffixIconConstraints: BoxConstraints(
+              maxWidth: 33.0.w,
+              maxHeight: 22.0.h,
+            ),
+            suffixIcon: Padding(
+              padding: EdgeInsets.only(right: 13.w),
+              child: Image.asset('assets/icons/search.png'),
+            ),
             contentPadding: EdgeInsets.only(
               left: 16.w,
               right: 25.w,

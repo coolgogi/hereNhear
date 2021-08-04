@@ -65,6 +65,8 @@ dependencies:
   cloud_functions: ^3.0.0
   provider: ^5.0.0
   logger: ^1.0.0
+  sliver_header_delegate: ^0.0.5
+
 
 
 
@@ -138,7 +140,10 @@ flutter:
     - assets/icons/leaf2.png
     - assets/icons/bell.png
     - assets/icons/more.png
+    - assets/icons/live.png
+    - assets/icons/history.png
     - assets/images/game.png
+    - assets/images/sora.jpg
     - assets/images/mountain.jpg
     - assets/images/mic1.jpg
     - assets/images/mic2.jpg
