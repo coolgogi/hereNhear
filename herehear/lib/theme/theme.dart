@@ -211,7 +211,6 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       fontSize: 12.0.sp,
       fontFamily: 'Noto Sans CJK KR-regular',
     ),
-
   );
   // .apply(
   //   displayColor: OnSecondaryLight,

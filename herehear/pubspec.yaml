@@ -155,6 +155,10 @@ flutter:
     - assets/images/playButton2.png
     - assets/images/playButton3.png
     - assets/images/stopButton.png
+    - assets/images/sample1.jpg
+    - assets/images/sample2.jpg
+    - assets/images/sample3.jpg
+    - assets/images/sample4.jpg
     - assets/audio/girlVoice.mp3
     - assets/audio/vj.mp3
     - assets/audio/loveRain.mp3
