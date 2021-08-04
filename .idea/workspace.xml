@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a38cba2-4532-4a6b-b045-b217dfa724e3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/firebase_provider.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/function_1.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/hereNhear.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hereNhear.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/herehear/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/functions/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/myPage/mypage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/myPage/mypage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/search/search.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/search/search.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
