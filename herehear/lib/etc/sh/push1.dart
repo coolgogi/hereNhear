@@ -28,8 +28,8 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
   // Firestore users fields
   final String fName = "name";
   final String fToken = "token";
-  final String fCreateTime = "createTime";
-  final String fPlatform = "platform";
+  // final String fCreateTime = "createTime";
+  // final String fPlatform = "platform";
 
   final TextStyle tsTitle = TextStyle(color: Colors.grey, fontSize: 13);
   final TextStyle tsContent = TextStyle(color: Colors.blueGrey, fontSize: 15);
@@ -126,8 +126,8 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
                   default:
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                        Timestamp ts = doc[fCreateTime];
-                        String dt = timestampToStrDateTime(ts);
+                        // Timestamp ts = doc[fCreateTime];
+                        // String dt = timestampToStrDateTime(ts);
 
                         if (!_map.containsKey(doc[fToken])) {
                           _map[doc[fToken]] = false;
@@ -155,25 +155,25 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          Container(
-                                            width: 80,
-                                            child: Text("platform",
-                                                style: tsTitle),
-                                          ),
-                                          Expanded(
-                                              child: Text(doc[fPlatform],
-                                                  style: tsContent))
+                                          // Container(
+                                          //   width: 80,
+                                          //   child: Text("platform",
+                                          //       style: tsTitle),
+                                          // ),
+                                          // Expanded(
+                                          //     child: Text(doc[fPlatform],
+                                          //         style: tsContent))
                                         ],
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          Container(
-                                            width: 80,
-                                            child: Text("createAt",
-                                                style: tsTitle),
-                                          ),
-                                          Expanded(
-                                              child: Text(dt, style: tsContent))
+                                          // Container(
+                                          //   width: 80,
+                                          //   child: Text("createAt",
+                                          //       style: tsTitle),
+                                          // ),
+                                          // Expanded(
+                                          //     child: Text(dt, style: tsContent))
                                         ],
                                       ),
                                     ],
@@ -233,8 +233,8 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
     await user.set({
       fName: fp.getUser().displayName,
       fToken: token,
-      fCreateTime: FieldValue.serverTimestamp(),
-      fPlatform: Platform.operatingSystem
+      // fCreateTime: FieldValue.serverTimestamp(),
+      // fPlatform: Platform.operatingSystem
     });
     setState(() {
       didUpdateUserInfo = true;
