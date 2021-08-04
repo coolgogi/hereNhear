@@ -18,12 +18,12 @@ import 'package:herehear/users/controller/user_controller.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-class SearchResultsPage extends StatefulWidget {
+class SetLocationPage extends StatefulWidget {
   @override
-  _SearchResultsPageState createState() => _SearchResultsPageState();
+  _SetLocationPageState createState() => _SetLocationPageState();
 }
 
-class _SearchResultsPageState extends State<SearchResultsPage> {
+class _SetLocationPageState extends State<SetLocationPage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
@@ -49,9 +49,10 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        titleSpacing: 25.0.w,
-        centerTitle: true,
-        title: Text('HEAR 검색', style: Theme.of(context).appBarTheme.titleTextStyle),
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => Get.back(),
+        ),
         actions: <Widget>[
           IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
@@ -59,6 +60,16 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       ),
       body: ListView(
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(25.w, 25.h, 0.w, 10.h),
+            child: Row(
+              children: <Widget>[
+                Text('당신의 ', style: Theme.of(context).textTheme.headline3),
+                Text('HERE', style: Theme.of(context).textTheme.headline1),
+                Text('은 어디인가요?', style: Theme.of(context).textTheme.headline3),
+              ],
+            ),
+          ),
           SearchTextField(),
           Obx(() {
             if(searchController.text.value.isEmpty) {
@@ -70,90 +81,72 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               return Container(child: Center(child: Text('SomeThing..!!')));
             }
           })
-      ],
-    ),
+        ],
+      ),
     );
   }
+  
 
   Widget searchHistory() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
-          child: Row(
-            children: <Widget>[
-              Text(
-                '최근 본 HEAR',
-                // style: Theme.of(context).textTheme.headline1,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              Expanded(child: Container()),
-              IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.clear, size: 15.w)),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w, bottom: 5.0.h,),
+          padding: EdgeInsets.only(left: 25.0.w, right: 25.0.w),
           child: Container(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: firestore
-                  .collection("broadcast")
-              // .where('location',
-              // isEqualTo: locationController.location.value)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                print('done!!');
-                if (!snapshot.hasData)
-                  return Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.primary,
-                      ));
-                if (snapshot.data!.docs.length == 0 &&
-                    locationController.location.value != '')
-                  return Container(
-                    child: Text('최근 본 HEAR가 없습니다.'),
-                  );
-                return Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 6.0.w),
-                        child: Image.asset('assets/icons/history.png', width: 20.w, height: 17.h,),
-                      ),
-                      Text('같이 대화하면서 놀아요!'),
-                      Expanded(child: Container()),
-                      Text('HERO 정보', style: TextStyle(
-                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                          color: Theme.of(context).colorScheme.primary
-                      )),
-                      IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.navigate_next, size: 18.w))
-                    ]
-                );
-              },
+            height: 38.h,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 0,
+                  blurRadius: 8,
+                  offset: Offset(0, 4), // changes position of shadow
+                ),
+              ],
+            ),
+            child: ElevatedButton(
+              onPressed: null,
+              style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      // side: BorderSide(color: Colors.red)
+                    )
+                  ),
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/icons/location.png', width: 17.w,),
+                  Padding(
+                    padding: EdgeInsets.only(left: 5.0.w),
+                    child: Text('현 위치로 주소 설정', style: TextStyle(
+                      fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                      fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                      color: Colors.white
+                    ),),
+                  )
+                ],
+              ),
             ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(25.0.w, 0.h, 30.w, 0.h),
+          padding: EdgeInsets.fromLTRB(25.0.w, 28.h, 30.w, 0.h),
           child: Divider(
             thickness: 1,
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(25.0.w, 10.h, 30.w, 15.h),
+          padding: EdgeInsets.fromLTRB(25.0.w, 26.h, 30.w, 15.h),
           child: Text(
-            '최근 검색어',
+            '최근 주소',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Column(
-          children: List.generate(searchHistoryExample!.length, (index) =>
+          children: List.generate(locationHistoryExample!.length, (index) =>
               Padding(
                 padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
                 child: Column(
@@ -164,7 +157,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            searchHistoryExample![index],
+                            locationHistoryExample![index],
                             style: Theme.of(context).textTheme.bodyText2,
                           ),
                           Expanded(child: Container()),
@@ -174,7 +167,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         ],
                       ),
                     ),
-                    Divider(thickness: 1, height: 0.h,),
+                    Divider(thickness: 1, height: 2.h,),
                   ],
                 ),
               ),
@@ -190,3 +183,4 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     locationController.getLocation().obs;
   }
 }
+

@@ -208,7 +208,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
     bodyText2: base.bodyText2!.copyWith(
       fontWeight: FontWeight.w500,
       color: OnSurfaceLight,
-      fontSize: 10.0.sp,
+      fontSize: 12.0.sp,
       fontFamily: 'Noto Sans CJK KR-regular',
     ),
 
