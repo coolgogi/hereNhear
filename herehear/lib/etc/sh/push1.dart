@@ -1,11 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'firebase_provider.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 
 late FcmFirstDemoState pageState;
 
@@ -28,8 +26,6 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
   // Firestore users fields
   final String fName = "name";
   final String fToken = "token";
-  // final String fCreateTime = "createTime";
-  // final String fPlatform = "platform";
 
   final TextStyle tsTitle = TextStyle(color: Colors.grey, fontSize: 13);
   final TextStyle tsContent = TextStyle(color: Colors.blueGrey, fontSize: 15);
@@ -107,7 +103,7 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
         children: <Widget>[
           Container(
             child: ListTile(
-                title: Text("Auth UID"),
+                title: Text("My Name"),
                 subtitle: Text(
                     // (fp.getUser() != null) ?
                     fp.getUser().displayName!
@@ -126,9 +122,6 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
                   default:
                     return ListView(
                       children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-                        // Timestamp ts = doc[fCreateTime];
-                        // String dt = timestampToStrDateTime(ts);
-
                         if (!_map.containsKey(doc[fToken])) {
                           _map[doc[fToken]] = false;
                         }
@@ -151,29 +144,6 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
                                           Expanded(
                                               child: Text(doc[fName],
                                                   style: tsContent))
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          // Container(
-                                          //   width: 80,
-                                          //   child: Text("platform",
-                                          //       style: tsTitle),
-                                          // ),
-                                          // Expanded(
-                                          //     child: Text(doc[fPlatform],
-                                          //         style: tsContent))
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          // Container(
-                                          //   width: 80,
-                                          //   child: Text("createAt",
-                                          //       style: tsTitle),
-                                          // ),
-                                          // Expanded(
-                                          //     child: Text(dt, style: tsContent))
                                         ],
                                       ),
                                     ],
@@ -225,7 +195,6 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
 
   void updateUserInfo() async {
     print("업데이트");
-    // if (fp.getUser() == null) return;
     String? token = await _fcm.getToken();
     if (token == null) return;
 
@@ -233,8 +202,6 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
     await user.set({
       fName: fp.getUser().displayName,
       fToken: token,
-      // fCreateTime: FieldValue.serverTimestamp(),
-      // fPlatform: Platform.operatingSystem
     });
     setState(() {
       didUpdateUserInfo = true;
@@ -326,11 +293,5 @@ class FcmFirstDemoState extends State<FcmFirstDemo> {
         "body": body,
       },
     );
-  }
-
-  String timestampToStrDateTime(Timestamp ts) {
-    // if (ts == null) return "";
-    return DateTime.fromMicrosecondsSinceEpoch(ts.microsecondsSinceEpoch)
-        .toString();
   }
 }
