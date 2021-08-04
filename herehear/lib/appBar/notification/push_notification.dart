@@ -52,7 +52,8 @@ class _pushNotificationState extends State {
 
   String push_token =
       'eVa6RLgkQYCWxRVOipcJj9:APA91bHGQFzTEWc4E36BYdSoubWkVNFLZvDxYMmFN6RrYUsEpjvj8iPoNB6sr42IxORdvVEj8XJIO9FDozZXmWio5miPApaeeFn_bKu8fADpKk9U57lFh2YltPJSe3S3X482aHG0b38x';
-  Map<String, String> _data = new Map<String, String>();
+  Map<String, String> _data = {'title': 'Hello', 'body': 'I\'m suhyun'};
+
   String _messageId = DateTime.now().millisecond.toString();
   String? _messageType;
   String? _category;
@@ -64,7 +65,8 @@ class _pushNotificationState extends State {
         data: _data,
         collapseKey: _collapseKey,
         messageId: _messageId,
-        messageType: _messageType);
+        messageType: _messageType,
+        ttl: 0);
   }
 
   // RemoteMessage msg;
@@ -191,6 +193,8 @@ class _pushNotificationState extends State {
       PushNotification notification = PushNotification(
         title: initialMessage.notification?.title,
         body: initialMessage.notification?.body,
+        dataTitle: initialMessage.data['title'],
+        dataBody: initialMessage.data['body'],
       );
       setState(() {
         _notificationInfo = notification;
