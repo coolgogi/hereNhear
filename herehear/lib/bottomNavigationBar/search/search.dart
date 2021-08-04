@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:search_widget/search_widget.dart';
 
-
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchPage extends StatelessWidget {
@@ -20,16 +19,20 @@ class SearchPage extends StatelessWidget {
   final locationController = Get.put(LocationController());
   String current_uid = '';
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 25.0.w,
-        title: Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
+        title:
+            Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
@@ -45,8 +48,57 @@ class SearchPage extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Padding(
+                  // padding: EdgeInsets.only(left: 3.0.w),
+                  // child: Container(
+                  //   width: 43.w,
+                  //   height: 18.h,
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(
+                  //         color: Theme.of(context).colorScheme.secondaryVariant,
+                  //         width: 2.0.w),
+                  //     borderRadius: BorderRadius.all(Radius.circular(
+                  //             9.0.r) //                 <--- border radius here
+                  //         ),
+                  //   ),
+                  //   child: Center(
+                  //     child: Row(
+                  //       children: [
+                  //         Text(
+                  //           '   ● ',
+                  //           style: TextStyle(
+                  //             color: Theme.of(context)
+                  //                 .colorScheme
+                  //                 .secondaryVariant,
+                  //             fontSize: 5.0.sp,
+                  //             fontWeight: Theme.of(context)
+                  //                 .textTheme
+                  //                 .headline6!
+                  //                 .fontWeight,
+                  //           ),
+                  //         ),
+                  //         Text(
+                  //           'LIVE',
+                  //           style: TextStyle(
+                  //             color: Theme.of(context)
+                  //                 .colorScheme
+                  //                 .secondaryVariant,
+                  //             fontSize: Theme.of(context)
+                  //                 .textTheme
+                  //                 .headline6!
+                  //                 .fontSize,
+                  //             fontWeight: Theme.of(context)
+                  //                 .textTheme
+                  //                 .headline6!
+                  //                 .fontWeight,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   padding: EdgeInsets.only(left: 5.0.w),
-                  child: Image.asset('assets/icons/live.png', width: 43.w, height: 18.h),
+                  child: Image.asset('assets/icons/live.png',
+                      width: 43.w, height: 18.h),
                 ),
                 // Padding(
                 //   padding: EdgeInsets.only(left: 3.0.w),
@@ -102,14 +154,12 @@ class SearchPage extends StatelessWidget {
                 // ),
                 Expanded(child: Container()),
                 IconButton(
-                    onPressed: null,
-                    icon: Icon(Icons.arrow_forward_ios)),
+                    onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
               ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(
-                left: 21.0.w, top: 11.0.h),
+            padding: EdgeInsets.only(left: 21.0.w, top: 11.0.h),
             child: Container(
               height: 195.0.h,
               child: StreamBuilder<QuerySnapshot>(
@@ -124,8 +174,8 @@ class SearchPage extends StatelessWidget {
                   if (!snapshot.hasData)
                     return Center(
                         child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.primary,
-                        ));
+                      color: Theme.of(context).colorScheme.primary,
+                    ));
                   if (snapshot.data!.docs.length == 0 &&
                       locationController.location.value != '')
                     return Padding(
@@ -136,8 +186,7 @@ class SearchPage extends StatelessWidget {
                     );
                   return ListView(
                     scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(
-                        context, snapshot),
+                    children: broadcastRoomList(context, snapshot),
                   );
                 },
               ),
@@ -154,9 +203,7 @@ class SearchPage extends StatelessWidget {
                 ),
               ),
               Expanded(child: Container()),
-              IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.arrow_forward_ios)),
+              IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
             ],
           ),
           Padding(
@@ -206,8 +253,7 @@ class SearchPage extends StatelessWidget {
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
             bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)
-        ),
+            bottomRight: Radius.circular(15)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.2),
@@ -231,11 +277,11 @@ class SearchPage extends StatelessWidget {
                 // child: SizedBox(child: Image.asset(_roomData['image'])),
                 child: Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/images/group.png'),
-                      ),
-                    )),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/group.png'),
+                  ),
+                )),
               ),
             ),
             Text(
@@ -250,12 +296,8 @@ class SearchPage extends StatelessWidget {
 
   Widget searchBarWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: 25.0.w,
-          top: 10.h,
-          right: 22.0.w,
-          bottom: 20.h
-      ),
+      padding:
+          EdgeInsets.only(left: 25.0.w, top: 10.h, right: 22.0.w, bottom: 20.h),
       child: GestureDetector(
         onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
         child: Container(
@@ -264,8 +306,7 @@ class SearchPage extends StatelessWidget {
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)
-            ),
+                bottomRight: Radius.circular(10)),
             color: Color(0xFFE9E9E9),
           ),
           height: 33.0.h,
@@ -274,7 +315,10 @@ class SearchPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Image.asset('assets/icons/search.png', width: 20.w,),
+                Image.asset(
+                  'assets/icons/search.png',
+                  width: 20.w,
+                ),
               ],
             ),
           ),
@@ -289,10 +333,6 @@ class SearchPage extends StatelessWidget {
     locationController.getLocation().obs;
   }
 }
-
-
-
-
 
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:flutter/material.dart';
