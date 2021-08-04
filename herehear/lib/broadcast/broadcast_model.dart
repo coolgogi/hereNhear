@@ -9,7 +9,6 @@ class BroadcastModel {
   String? location;
   DateTime? createdTime;
   List<String>? currentListener;
-  List<dynamic>? participants;
   //only broadcast
   String? category;
   int? like;
@@ -28,7 +27,6 @@ class BroadcastModel {
     this.location,
     this.createdTime,
     this.currentListener,
-    this.participants,
     //only broadcast
     this.category,
     this.like,
@@ -50,7 +48,6 @@ class BroadcastModel {
       'location': this.location,
       'createdTime': this.createdTime,
       'currentListener': this.currentListener,
-      'participants': this.participants,
       //only broadcast
       'category': this.category,
       'like': this.like,
@@ -73,3 +70,16 @@ class BroadcastModel {
         category = json['category'] as String,
         like = json['like'] as int;
 }
+
+// Map<String, dynamic> toJson() => {
+//   'hostUid': createdAt,
+//   'title': id,
+//   'notice': imageUrl,
+//   'channelName': lastMessages?.map((e) => e.toJson()).toList(),
+//   'docId': metadata,
+//   'image': name,
+//   'createdTime': type.toShortString(),
+//   'category': updatedAt,
+//   'like': users.map((e) => e.toJson()).toList(),
+// };
+

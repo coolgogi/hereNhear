@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
-import 'package:herehear/bottomNavigationBar/home/home.dart';
+import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import 'package:herehear/broadcast/broadcast_model.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,6 +20,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
   Map<String, dynamic> roomData = new Map();
+
 
 
   BroadCastPage(
@@ -56,8 +59,10 @@ class BroadCastPage extends GetView<AgoraEventController> {
         stream : documentStream.doc(channelName).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
-          roomData = snapshot.data!.data() as Map<String, dynamic>;
-          if(roomData != null) {
+          print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+           roomData = snapshot.data!.data() as Map<String, dynamic>;
+          if(roomData['docId'] != null) {
+            print('dkjfslkdjfa;lskdfja;lskdjf;alsdf');
             return Scaffold(
               appBar: profileAppBar(context),
               body: ChatPage.withData(roomData),
@@ -180,6 +185,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
     controller.onClose();
     Get.off(() => BottomBar());
   }
+
 
   Future<void> changeState(String docID) async {
     var fields = await FirebaseFirestore.instance

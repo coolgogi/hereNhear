@@ -1,29 +1,42 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:herehear/chatting/firebase_chat.dart';
 import 'package:herehear/theme/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
+
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
+import 'my_chat.dart';
+import 'firebase_chat.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class ChatPage extends StatefulWidget {
   ChatPage({Key? key}) : super(key: key);
 
-  late final Map<String, dynamic> _data;
-  ChatPage.withData(Map<String, dynamic> data) {
-    _data = data;
+  late final docId;
+  late final roomData;
+
+ // late final Map<String, dynamic> roomData;
+  ChatPage.withData(data) {
+    roomData = data;
+
   }
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
+  FirebaseFirestore firebase = FirebaseFirestore.instance;
+  bool _isAttachmentUploading = false;
   List<types.Message> _messages = [];
   // final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
   final _user = const types.User(id: 'guest');
@@ -37,15 +50,43 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAtachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        user: _user,
-        theme: GreenChatTheme(),
-        // theme :
+      body:
+      StreamBuilder(
+        initialData: widget.roomData,
+        stream: MyFirebaseChatCore.instance.room(widget.roomData['docId']),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return StreamBuilder<List<types.Message>>(
+                initialData: const [],
+                stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    print(
+                        '########################################################3');
+                    print(snapshot.data);
+                    return
+                      Chat(
+                        isAttachmentUploading: _isAttachmentUploading,
+                        messages: snapshot.data ?? [],
+                        onAttachmentPressed: _handleAtachmentPressed,
+                        onMessageTap: _handleMessageTap,
+                        onPreviewDataFetched: _handlePreviewDataFetched,
+                        onSendPressed: _handleSendPressed,
+                        user: types.User(
+                          id: MyFirebaseChatCore.instance.firebaseUser?.uid ??
+                              '',
+                        ),
+                      );
+                  }
+                  else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }
+
+            );
+          }
+          else return Center(child: CircularProgressIndicator());
+        }
       ),
     );
   }
@@ -61,39 +102,41 @@ class _ChatPageState extends State<ChatPage> {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Photo'),
+        return SafeArea(
+          child: SizedBox(
+            height: 144,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _handleImageSelection();
+                  },
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Photo'),
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleFileSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('File'),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _handleFileSelection();
+                  },
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('File'),
+                  ),
                 ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('Cancel'),
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Cancel'),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -153,33 +196,41 @@ class _ChatPageState extends State<ChatPage> {
 
   void _handleMessageTap(types.Message message) async {
     if (message is types.FileMessage) {
-      await OpenFile.open(message.uri);
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        final client = http.Client();
+        final request = await client.get(Uri.parse(message.uri));
+        final bytes = request.bodyBytes;
+        final documentsDir = (await getApplicationDocumentsDirectory()).path;
+        localPath = '$documentsDir/${message.name}';
+
+        if (!File(localPath).existsSync()) {
+          final file = File(localPath);
+          await file.writeAsBytes(bytes);
+        }
+      }
+
+      await OpenFile.open(localPath);
     }
   }
 
-  void _handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = _messages[index].copyWith(previewData: previewData);
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _messages[index] = updatedMessage;
-      });
-    });
+  void _handlePreviewDataFetched(
+      types.TextMessage message,
+      types.PreviewData previewData,
+      ) {
+    final updatedMessage = message.copyWith(previewData: previewData);
+
+    MyFirebaseChatCore.instance.updateMessage(updatedMessage, widget.roomData['docId']);
   }
 
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: Uuid().v4(),
-      text: message.text,
+    print('send');
+    MyFirebaseChatCore.instance.sendMessage(
+      message,
+      widget.roomData['docId'],
     );
-
-    _addMessage(textMessage);
   }
 
   void _loadMessages() async {
@@ -194,6 +245,8 @@ class _ChatPageState extends State<ChatPage> {
       _messages = messages;
     });
   }
+
+
 }
 
 @immutable
