@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
@@ -24,23 +25,13 @@ class CommunityPage extends StatelessWidget {
         titleSpacing: 25.0.w,
         title: Text('COMMUNITY', style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset('assets/icons/search.png'),
-            iconSize: 20.w,
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PostSearchDelegate(),
-              );
-            },
-          ),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
         children: <Widget>[
-          // SizedBox(height: 81.0.h),
+          searchBarWidget(context),
           Padding(
             padding: EdgeInsets.only(left: 25.0.w),
             child: Row(
@@ -125,70 +116,166 @@ class CommunityPage extends StatelessWidget {
     );
   }
 
-  Widget postCard(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 39.0.h, right: 16.0.w),
-      width: 144.0.w,
-      height: 119.0.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(15),
-            topRight: Radius.circular(15),
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15)
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(1, 4), // changes position of shadow
-          ),
-        ],
+  
+  Widget searchBarWidget(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          left: 25.0.w,
+          top: 10.h,
+          right: 22.0.w,
+          bottom: 20.h
       ),
-      child: InkWell(
-        onTap: null,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 51.0.h),
-              child: Center(child: Text('연애 상담 해드려요.', style: Theme.of(context).textTheme.bodyText1)),
+      child: GestureDetector(
+        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)
             ),
-            Expanded(child: Container()),
-            Padding(
-              padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Icon(
-                    Icons.people,
-                    size: 14.w,
-                  ),
-                  Text(
-                    // _roomData['currentListener'] == null
-                    //     ? ' 0'
-                    //     : ' ${_roomData['currentListener'].length.toString()}',
-                    '26',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  SizedBox(width: 8.0.w),
-                  Icon(
-                    Icons.favorite,
-                    size: 12.w,
-                  ),
-                  Text(
-                    // ' ${_roomData['like'].toString()}',
-                    '35',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                ],
-              ),
+            color: Color(0xFFE9E9E9),
+          ),
+          height: 33.0.h,
+          child: Padding(
+            padding: EdgeInsets.only(right: 13.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Image.asset('assets/icons/search.png', width: 20.w,),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget postCard(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
+          width: 160.0.w,
+          height: 135.0.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.white,
+                Colors.black,
+              ],
+            ),
+            image: DecorationImage(
+                image: AssetImage('assets/images/sora.jpg'),
+                fit: BoxFit.cover
+            ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(1, 4), // changes position of shadow
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
+          width: 160.0.w,
+          height: 135.0.h,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF000000).withOpacity(0.5),
+                Color(0xFF747474).withOpacity(0.0),
+              ],
+            ),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15),
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(1, 4), // changes position of shadow
+              ),
+            ],
+          ),
+          child: InkWell(
+            onTap: null,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 51.0.h),
+                  child: Center(child: Text(
+                      '연애 상담 해드려요.',
+                      style: TextStyle(
+                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                          fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                          color: Colors.white
+                      ))),
+                ),
+                Expanded(child: Container()),
+                Padding(
+                  padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.people,
+                        size: 14.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        // _roomData['currentListener'] == null
+                        //     ? ' 0'
+                        //     : ' ${_roomData['currentListener'].length.toString()}',
+                          ' 26',
+                          style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                              color: Colors.white
+                          )
+                      ),
+                      SizedBox(width: 8.0.w),
+                      Icon(
+                        Icons.favorite,
+                        size: 12.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                        // ' ${_roomData['like'].toString()}',
+                          ' 35',
+                          style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                              color: Colors.white
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );;
   }
 
   Widget playThemeList(BuildContext context) {
@@ -297,6 +384,60 @@ class CommunityPage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
                         child: Center(child: Text('1번 테이블에 봉골레 파스타 하나.', style: Theme.of(context).textTheme.bodyText2)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(bottom: 15.0.h, right: 16.0.w),
+            width: 327.0.w,
+            height: 95.0.h,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                  bottomLeft: Radius.circular(15),
+                  bottomRight: Radius.circular(15)
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 0,
+                  blurRadius: 8,
+                  offset: Offset(1, 4), // changes position of shadow
+                ),
+              ],
+            ),
+            child: InkWell(
+              onTap: null,
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 12.0.w, right: 15.0.w,),
+                    child: Image.asset('assets/images/sing.png'),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 27.0.h),
+                        child: Row(
+                          children: [
+                            Text('레크레이션', style: Theme.of(context).textTheme.bodyText1),
+                            Padding(
+                              padding: EdgeInsets.only(left: 4.0.w),
+                              child: Image.asset('assets/images/game.png', width: 13.0.w,),
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8.0.h),
+                        child: Center(child: Text('다양한 게임을 즐겨보아요.', style: Theme.of(context).textTheme.bodyText2)),
                       ),
                     ],
                   ),

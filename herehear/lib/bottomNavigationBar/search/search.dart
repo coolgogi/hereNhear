@@ -3,12 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
+import 'package:search_widget/search_widget.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -21,88 +23,83 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Scaffold(
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title: Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(
-            icon: Image.asset('assets/icons/search.png'),
-            iconSize: 20.w,
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PostSearchDelegate(),
-              );
-            },
-          ),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
         children: <Widget>[
+          searchBarWidget(context),
           Padding(
             padding: EdgeInsets.only(left: 25.0.w),
             child: Row(
               children: <Widget>[
                 Text(
-                  'TOP 라이브 ',
+                  'TOP 라이브',
                   // style: Theme.of(context).textTheme.headline1,
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 3.0.w),
-                  child: Container(
-                    width: 43.w,
-                    height: 18.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondaryVariant,
-                          width: 2.0.w),
-                      borderRadius: BorderRadius.all(Radius.circular(9.0
-                          .r) //                 <--- border radius here
-                      ),
-                    ),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Text(
-                            '   ● ',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryVariant,
-                              fontSize: 5.0.sp,
-                              fontWeight: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontWeight,
-                            ),
-                          ),
-                          Text(
-                            'LIVE',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryVariant,
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontSize,
-                              fontWeight: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontWeight,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  padding: EdgeInsets.only(left: 5.0.w),
+                  child: Image.asset('assets/icons/live.png', width: 43.w, height: 18.h),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 3.0.w),
+                //   child: Container(
+                //     width: 43.w,
+                //     height: 18.h,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //           color: Theme.of(context)
+                //               .colorScheme
+                //               .secondaryVariant,
+                //           width: 2.0.w),
+                //       borderRadius: BorderRadius.all(Radius.circular(9.0
+                //           .r) //                 <--- border radius here
+                //       ),
+                //     ),
+                //     child: Center(
+                //       child: Row(
+                //         children: [
+                //           Text(
+                //             '   ● ',
+                //             style: TextStyle(
+                //               color: Theme.of(context)
+                //                   .colorScheme
+                //                   .secondaryVariant,
+                //               fontSize: 5.0.sp,
+                //               fontWeight: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontWeight,
+                //             ),
+                //           ),
+                //           Text(
+                //             'LIVE',
+                //             style: TextStyle(
+                //               color: Theme.of(context)
+                //                   .colorScheme
+                //                   .secondaryVariant,
+                //               fontSize: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontSize,
+                //               fontWeight: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontWeight,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Expanded(child: Container()),
                 IconButton(
                     onPressed: null,
@@ -195,7 +192,7 @@ class SearchPage extends StatelessWidget {
           )
         ],
       ),
-    ));
+    );
   }
 
   Widget category_card(BuildContext context) {
@@ -246,6 +243,41 @@ class SearchPage extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget searchBarWidget(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+          left: 25.0.w,
+          top: 10.h,
+          right: 22.0.w,
+          bottom: 20.h
+      ),
+      child: GestureDetector(
+        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)
+            ),
+            color: Color(0xFFE9E9E9),
+          ),
+          height: 33.0.h,
+          child: Padding(
+            padding: EdgeInsets.only(right: 13.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Image.asset('assets/icons/search.png', width: 20.w,),
+              ],
+            ),
+          ),
         ),
       ),
     );

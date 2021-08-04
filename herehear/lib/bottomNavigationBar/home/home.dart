@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/setLocation.dart';
 import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
+import 'package:sliver_header_delegate/sliver_header_delegate.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -24,22 +26,25 @@ class HomePage extends StatelessWidget {
             slivers: <Widget>[
               SliverAppBar(
                 titleSpacing: 25.0.w,
-                title: Row(
-                  children: <Widget>[
-                    Icon(Icons.place_outlined, size: 19.h,),
-                    Text(' ${UserController.to.myProfile.value.location}', style: Theme.of(context).appBarTheme.titleTextStyle),
-                    Icon(Icons.expand_more, size: 19.h,),
-                  ],
+                title: GestureDetector(
+                  onTap: (() => Get.to(SetLocationPage())),
+                  child: Row(
+                    children: <Widget>[
+                      Icon(Icons.place_outlined, size: 19.h,),
+                      Text(' ${UserController.to.myProfile.value.location}', style: Theme.of(context).appBarTheme.titleTextStyle),
+                      Icon(Icons.expand_more, size: 19.h,),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
                   IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
                 ],
-                  expandedHeight: 125.h,
+                  expandedHeight: 153.0.h,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
                     background: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w, top: 25.0.h, right: 26.0.w),
+                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w),
                       child: Row(
                         children: [
                           Column(
@@ -48,26 +53,23 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Row(
                                 children: [
-                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
-                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline1),
+                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline5),
+                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline3),
                                 ],
                               ),
 
                               Row(
                                 children: [
-                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
-                                  Image(image: AssetImage('assets/icons/leaf.png')),
+                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
+                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
                                 ],
                               ),
                             ],
                           ),
                           Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 5.0.w),
-                            child: CircleAvatar(
-                              radius: 21.r,
-                              backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
-                            ),
+                          CircleAvatar(
+                            radius: 21.r,
+                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
                           ),
                         ],
                       ),
@@ -88,62 +90,66 @@ class HomePage extends StatelessWidget {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          'HERE 라이브 ',
+                          'HERE 라이브',
                           // style: Theme.of(context).textTheme.headline1,
                           style: Theme.of(context).textTheme.headline1,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 3.0.w),
-                          child: Container(
-                            width: 43.w,
-                            height: 18.h,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryVariant,
-                                  width: 2.0.w),
-                              borderRadius: BorderRadius.all(Radius.circular(9.0
-                                  .r) //                 <--- border radius here
-                              ),
-                            ),
-                            child: Center(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '   ● ',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondaryVariant,
-                                      fontSize: 5.0.sp,
-                                      fontWeight: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .fontWeight,
-                                    ),
-                                  ),
-                                  Text(
-                                    'LIVE',
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondaryVariant,
-                                      fontSize: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .fontSize,
-                                      fontWeight: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .fontWeight,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          padding: EdgeInsets.only(left: 5.0.w),
+                          child: Image.asset('assets/icons/live.png', width: 43.w, height: 18.h),
                         ),
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: 3.0.w),
+                        //   child: Container(
+                        //     width: 43.w,
+                        //     height: 18.h,
+                        //     decoration: BoxDecoration(
+                        //       border: Border.all(
+                        //           color: Theme.of(context)
+                        //               .colorScheme
+                        //               .secondaryVariant,
+                        //           width: 2.0.w),
+                        //       borderRadius: BorderRadius.all(Radius.circular(9.0
+                        //           .r) //                 <--- border radius here
+                        //       ),
+                        //     ),
+                        //     child: Center(
+                        //       child: Row(
+                        //         children: [
+                        //           Text(
+                        //             '   ● ',
+                        //             style: TextStyle(
+                        //               color: Theme.of(context)
+                        //                   .colorScheme
+                        //                   .secondaryVariant,
+                        //               fontSize: 5.0.sp,
+                        //               fontWeight: Theme.of(context)
+                        //                   .textTheme
+                        //                   .headline6!
+                        //                   .fontWeight,
+                        //             ),
+                        //           ),
+                        //           Text(
+                        //             'LIVE',
+                        //             style: TextStyle(
+                        //               color: Theme.of(context)
+                        //                   .colorScheme
+                        //                   .secondaryVariant,
+                        //               fontSize: Theme.of(context)
+                        //                   .textTheme
+                        //                   .headline6!
+                        //                   .fontSize,
+                        //               fontWeight: Theme.of(context)
+                        //                   .textTheme
+                        //                   .headline6!
+                        //                   .fontWeight,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(child: Container()),
                         IconButton(
                             onPressed: null,
@@ -154,7 +160,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 21.0.w, top: 11.0.h),
+                      left: 21.0.w, top: 16.0.h),
                   child: Container(
                     height: 195.0.h,
                     child: StreamBuilder<QuerySnapshot>(
@@ -205,7 +211,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 13.0.h),
+                  padding: EdgeInsets.only(top: 16.0.h),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection("groupcall")
