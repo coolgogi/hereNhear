@@ -169,13 +169,19 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
     ),
     headline3: base.headline3!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 17.sp,
-      fontFamily: 'Noto Sans CJK kr-regular',
-      fontWeight: FontWeight.w400,
+      fontSize: 20.sp,
+      fontFamily: 'Noto Sans CJK kr-bold',
+      fontWeight: FontWeight.w700,
     ),
     headline4: base.headline4!.copyWith(
       color: OnBackgroundLight,
       fontSize: 17.sp,
+      fontFamily: 'Noto Sans CJK kr-regular',
+      fontWeight: FontWeight.w400,
+    ),
+    headline5: base.headline5!.copyWith(
+      color: OnBackgroundLight,
+      fontSize: 20.sp,
       fontFamily: 'Noto Sans CJK kr-regular',
       fontWeight: FontWeight.w400,
     ),
@@ -196,7 +202,7 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
     bodyText1: base.bodyText1!.copyWith(
       fontWeight: FontWeight.w500,
       color: OnSurfaceLight,
-      fontSize: 13.0.sp,
+      fontSize: 15.0.sp,
       fontFamily: 'Noto Sans CJK KR-bold',
     ),
     bodyText2: base.bodyText2!.copyWith(

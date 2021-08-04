@@ -35,11 +35,11 @@ class HomePage extends StatelessWidget {
                   IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
                   IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
                 ],
-                  expandedHeight: 125.h,
+                  expandedHeight: 153.0.h,
                   flexibleSpace: FlexibleSpaceBar(
                     collapseMode: CollapseMode.parallax,
                     background: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w, top: 25.0.h, right: 26.0.w),
+                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w),
                       child: Row(
                         children: [
                           Column(
@@ -48,26 +48,23 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Row(
                                 children: [
-                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
-                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline1),
+                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline5),
+                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline3),
                                 ],
                               ),
 
                               Row(
                                 children: [
-                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
-                                  Image(image: AssetImage('assets/icons/leaf.png')),
+                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
+                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
                                 ],
                               ),
                             ],
                           ),
                           Expanded(child: Container()),
-                          Padding(
-                            padding: EdgeInsets.only(right: 5.0.w),
-                            child: CircleAvatar(
-                              radius: 21.r,
-                              backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
-                            ),
+                          CircleAvatar(
+                            radius: 21.r,
+                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
                           ),
                         ],
                       ),
@@ -154,7 +151,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 21.0.w, top: 11.0.h),
+                      left: 21.0.w, top: 16.0.h),
                   child: Container(
                     height: 195.0.h,
                     child: StreamBuilder<QuerySnapshot>(
@@ -205,7 +202,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 13.0.h),
+                  padding: EdgeInsets.only(top: 16.0.h),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection("groupcall")
