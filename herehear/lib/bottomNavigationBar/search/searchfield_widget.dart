@@ -13,7 +13,7 @@ class SearchTextField extends StatelessWidget {
           left: 25.0.w,
           top: 10.h,
           right: 22.0.w,
-          bottom: 15.h
+          bottom: 14.h
       ),
       child: Container(
         height: 33.0.h,

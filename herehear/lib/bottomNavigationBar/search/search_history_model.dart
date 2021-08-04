@@ -29,3 +29,12 @@ List<String>? searchHistoryExample = [
   '바다',
   '인브리즈 커피 굿',
 ];
+
+List<String>? locationHistoryExample = [
+  '포항시 북구',
+  '포항시 남구',
+  '용인시 처인구',
+  '서울시 강남구',
+  '아스가르드',
+  '짱구',
+];

@@ -40,62 +40,66 @@ class SearchPage extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 Text(
-                  'TOP 라이브 ',
+                  'TOP 라이브',
                   // style: Theme.of(context).textTheme.headline1,
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 3.0.w),
-                  child: Container(
-                    width: 43.w,
-                    height: 18.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondaryVariant,
-                          width: 2.0.w),
-                      borderRadius: BorderRadius.all(Radius.circular(9.0
-                          .r) //                 <--- border radius here
-                      ),
-                    ),
-                    child: Center(
-                      child: Row(
-                        children: [
-                          Text(
-                            '   ● ',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryVariant,
-                              fontSize: 5.0.sp,
-                              fontWeight: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontWeight,
-                            ),
-                          ),
-                          Text(
-                            'LIVE',
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryVariant,
-                              fontSize: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontSize,
-                              fontWeight: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .fontWeight,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  padding: EdgeInsets.only(left: 5.0.w),
+                  child: Image.asset('assets/icons/live.png', width: 43.w, height: 18.h),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: 3.0.w),
+                //   child: Container(
+                //     width: 43.w,
+                //     height: 18.h,
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //           color: Theme.of(context)
+                //               .colorScheme
+                //               .secondaryVariant,
+                //           width: 2.0.w),
+                //       borderRadius: BorderRadius.all(Radius.circular(9.0
+                //           .r) //                 <--- border radius here
+                //       ),
+                //     ),
+                //     child: Center(
+                //       child: Row(
+                //         children: [
+                //           Text(
+                //             '   ● ',
+                //             style: TextStyle(
+                //               color: Theme.of(context)
+                //                   .colorScheme
+                //                   .secondaryVariant,
+                //               fontSize: 5.0.sp,
+                //               fontWeight: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontWeight,
+                //             ),
+                //           ),
+                //           Text(
+                //             'LIVE',
+                //             style: TextStyle(
+                //               color: Theme.of(context)
+                //                   .colorScheme
+                //                   .secondaryVariant,
+                //               fontSize: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontSize,
+                //               fontWeight: Theme.of(context)
+                //                   .textTheme
+                //                   .headline6!
+                //                   .fontWeight,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Expanded(child: Container()),
                 IconButton(
                     onPressed: null,
