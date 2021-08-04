@@ -1,31 +1,34 @@
 const functions = require('firebase-functions');
-functions.logger.log("example", {a:1, b:2, c:"33", d:{e:4}})
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
 const admin = require("firebase-admin");
-"parserOptions": {
-    "ecmaVersion": 2018
-}
-let serviceAccount = require("./firebase-admin.json");
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount), });
 
-await admin.messaging().sendMulticast({
-  tokens: ["token_1", "token_2"],
-  notification: {
-    title: "Weather Warning!",
-    body: "A new weather warning has been issued for your location.",
-    imageUrl: "https://my-cdn.com/extreme-weather.png",
-  },
+admin.initializeApp();
+
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  response.send({ data: "Hello from Firebase" });
 });
 
-
-
-var serviceAccount = require("path/to/serviceAccountKey.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+exports.addCount = functions.https.onCall((data, context) => {
+  var count = parseInt(data["count"], 10);
+  return ++count;
 });
+
+exports.removeCount = functions.https.onCall((data, context) => {
+  var count = data["count"];
+  return --count;
+});
+
+exports.sendFCM = functions.https.onCall((data, context) => {
+  var token = data["token"];
+  var title = data["title"];
+  var body = data["body"];
+
+  var payload = {
+    notification: {
+      title: title,
+      body: body
+    }
+  }
+
+  var result = admin.messaging().sendToDevice(token, payload);
+  return result;
+})

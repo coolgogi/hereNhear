@@ -5,26 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a38cba2-4532-4a6b-b045-b217dfa724e3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/firebase_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/function_1.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/hereNhear.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/hereNhear.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/android/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/herenhear-e67af-firebase-adminsdk-ilxdc-4b621f69e0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/lib/appBar/notification/push_notification.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/appBar/notification/push_notification.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/functions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/functions/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/myPage/mypage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/myPage/mypage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/search/search.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/search/search.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dart File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1wCihVyGrfZvnKH89ahA47NZ15g" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
@@ -43,5 +60,8 @@
       <updated>1627969090849</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>

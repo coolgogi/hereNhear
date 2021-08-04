@@ -62,6 +62,9 @@ dependencies:
   firebase_messaging: ^10.0.4
   overlay_support: ^1.2.1
   search_widget: ^1.0.2
+  cloud_functions: ^3.0.0
+  provider: ^5.0.0
+  logger: ^1.0.0
 
 
 
