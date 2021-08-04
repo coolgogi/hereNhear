@@ -44,18 +44,6 @@ class myPage extends GetView<UserController> {
                 ListTile(
                   title: Text('실험'),
                   onTap: () {
-                    Get.to(pushNotification());
-                  },
-                ),
-                ListTile(
-                  title: Text('실험2'),
-                  onTap: () {
-                    Get.to(CloudFunctionsHelloWorld());
-                  },
-                ),
-                ListTile(
-                  title: Text('실험3'),
-                  onTap: () {
                     Get.to(FcmFirstDemo());
                   },
                 ),
