@@ -117,14 +117,6 @@ class FreeBoardPage extends StatelessWidget {
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15)
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(1, 4), // changes position of shadow
-              ),
-            ],
           ),
         ),
         Container(
@@ -148,9 +140,9 @@ class FreeBoardPage extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.white.withOpacity(0.3),
                 spreadRadius: 0,
-                blurRadius: 8,
+                blurRadius: 4,
                 offset: Offset(1, 4), // changes position of shadow
               ),
             ],
