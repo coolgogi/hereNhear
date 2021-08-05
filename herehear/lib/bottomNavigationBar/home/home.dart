@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/setLocation.dart';
+
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
+
+import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
+
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,82 +16,110 @@ import 'package:sliver_header_delegate/sliver_header_delegate.dart';
 
 import 'package:herehear/broadcast/broadcast_model.dart' as types;
 
-
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
+  final _scrollController = Get.put(ScrollOpacityController());
   final locationController = Get.put(LocationController());
   final UserController userController = Get.find();
   String current_uid = '';
 
-
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      body: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                titleSpacing: 25.0.w,
-                title: GestureDetector(
-                  onTap: (() => Get.to(SetLocationPage())),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(Icons.place_outlined, size: 19.h,),
-                      Text(' ${UserController.to.myProfile.value.location}', style: Theme.of(context).appBarTheme.titleTextStyle),
-                      Icon(Icons.expand_more, size: 19.h,),
-                    ],
+          appBar: AppBar(
+            titleSpacing: 25.0.w,
+            title: GestureDetector(
+              onTap: (() => Get.to(SetLocationPage())),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.place_outlined,
+                    size: 19.h,
                   ),
-                ),
-                actions: <Widget>[
-                  IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-                  IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+                  Text(' ${UserController.to.myProfile.value.location}',
+                      style: Theme.of(context).appBarTheme.titleTextStyle),
+                  Icon(
+                    Icons.expand_more,
+                    size: 19.h,
+                  ),
                 ],
-                  expandedHeight: 153.0.h,
-                  flexibleSpace: FlexibleSpaceBar(
-                    collapseMode: CollapseMode.parallax,
-                    background: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w),
-                      child: Row(
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: [
-                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline5),
-                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline3),
-                                ],
-                              ),
-
-                              Row(
-                                children: [
-                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
-                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Expanded(child: Container()),
-                          CircleAvatar(
-                            radius: 21.r,
-                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
-                          ),
-                        ],
-                      ),
-                    ),
-                ),
-                floating: false,
-                pinned: true,
-                snap: false,
               ),
-              SliverList(delegate: SliverChildListDelegate([
+            ),
+            actions: <Widget>[
+              IconButton(
+                  onPressed: null,
+                  icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
+              IconButton(
+                  onPressed: null,
+                  icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+            ],
+          ),
+          body: SingleChildScrollView(
+              controller: _scrollController.scrollController.value,
+              child: Column(children: <Widget>[
+                Obx(() => AnimatedOpacity(
+                      // key: widgetKey,
+                      duration: Duration(milliseconds: 1),
+                      opacity: _scrollController.opacity.value,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 25.0.w,
+                            top: 23.0.h,
+                            right: 26.0.w,
+                            bottom: 41.h),
+                        child: Row(
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: [
+                                    Text('안녕하세요 ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5),
+                                    Text(
+                                        '${UserController.to.myProfile.value.nickName!}님',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline3),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('오늘도 좋은 하루 되세요. ',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline5),
+                                    Image(
+                                      image:
+                                          AssetImage('assets/icons/leaf.png'),
+                                      width: 20.0.w,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Expanded(child: Container()),
+                            CircleAvatar(
+                              radius: 21.r,
+                              backgroundImage: AssetImage(
+                                  UserController.to.myProfile.value.profile!),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Colors.transparent), //color is transparent so that it does not blend with the actual color specified
-                      color: Colors.transparent// Specifies the background color and the opacity
-                  ),
+                      border: Border.all(width: 1.0, color: Colors.transparent),
+                      //color is transparent so that it does not blend with the actual color specified
+                      color: Colors
+                          .transparent // Specifies the background color and the opacity
+                      ),
                   child: Padding(
                     padding: EdgeInsets.only(left: 25.0.w),
                     child: Row(
@@ -99,60 +131,9 @@ class HomePage extends StatelessWidget {
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 5.0.w),
-                          child: Image.asset('assets/icons/live.png', width: 43.w, height: 18.h),
+                          child: Image.asset('assets/icons/live.png',
+                              width: 43.w, height: 18.h),
                         ),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 3.0.w),
-                        //   child: Container(
-                        //     width: 43.w,
-                        //     height: 18.h,
-                        //     decoration: BoxDecoration(
-                        //       border: Border.all(
-                        //           color: Theme.of(context)
-                        //               .colorScheme
-                        //               .secondaryVariant,
-                        //           width: 2.0.w),
-                        //       borderRadius: BorderRadius.all(Radius.circular(9.0
-                        //           .r) //                 <--- border radius here
-                        //       ),
-                        //     ),
-                        //     child: Center(
-                        //       child: Row(
-                        //         children: [
-                        //           Text(
-                        //             '   ● ',
-                        //             style: TextStyle(
-                        //               color: Theme.of(context)
-                        //                   .colorScheme
-                        //                   .secondaryVariant,
-                        //               fontSize: 5.0.sp,
-                        //               fontWeight: Theme.of(context)
-                        //                   .textTheme
-                        //                   .headline6!
-                        //                   .fontWeight,
-                        //             ),
-                        //           ),
-                        //           Text(
-                        //             'LIVE',
-                        //             style: TextStyle(
-                        //               color: Theme.of(context)
-                        //                   .colorScheme
-                        //                   .secondaryVariant,
-                        //               fontSize: Theme.of(context)
-                        //                   .textTheme
-                        //                   .headline6!
-                        //                   .fontSize,
-                        //               fontWeight: Theme.of(context)
-                        //                   .textTheme
-                        //                   .headline6!
-                        //                   .fontWeight,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // ),
                         Expanded(child: Container()),
                         IconButton(
                             onPressed: null,
@@ -162,8 +143,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
-                      left: 21.0.w, top: 16.0.h),
+                  padding: EdgeInsets.only(left: 21.0.w, top: 16.0.h),
                   child: Container(
                     height: 195.0.h,
                     child: StreamBuilder<List<types.BroadcastModel>>(
@@ -173,10 +153,11 @@ class HomePage extends StatelessWidget {
                         if (!snapshot.hasData)
                           return Center(
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.primary,
-                              ));
+                            color: Theme.of(context).colorScheme.primary,
+                          ));
 
-                        if (snapshot.data!.isEmpty && //snapshot.data!.docs.length == 0
+                        if (snapshot.data!
+                                .isEmpty && //snapshot.data!.docs.length == 0
                             locationController.location.value != '')
                           return Padding(
                             padding: EdgeInsets.only(top: 50.0.h),
@@ -185,39 +166,8 @@ class HomePage extends StatelessWidget {
                             ),
                           );
                         return broadcastRoomList(context, snapshot);
-
                       },
                     ),
-
-                    // StreamBuilder<QuerySnapshot>(
-                    //   stream: firestore
-                    //       .collection("broadcast")
-                    //       .where('location',
-                    //       isEqualTo: UserController.to.myProfile.value.location)
-                    //       .snapshots(),
-                    //   builder: (BuildContext context,
-                    //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                    //     print('done!!');
-                    //     if (!snapshot.hasData)
-                    //       return Center(
-                    //           child: CircularProgressIndicator(
-                    //             color: Theme.of(context).colorScheme.primary,
-                    //           ));
-                    //     if (snapshot.data!.docs.length == 0 &&
-                    //         locationController.location.value != '')
-                    //       return Padding(
-                    //         padding: EdgeInsets.only(top: 50.0.h),
-                    //         child: Container(
-                    //           child: Text('라이브중인 방송이 없습니다.'),
-                    //         ),
-                    //       );
-                    //     return ListView(
-                    //       scrollDirection: Axis.horizontal,
-                    //       children: broadcastRoomList(
-                    //           context, snapshot),
-                    //     );
-                    //   },
-                    // ),
                   ),
                 ),
                 Row(
@@ -232,8 +182,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Expanded(child: Container()),
                     IconButton(
-                        onPressed: null,
-                        icon: Icon(Icons.arrow_forward_ios)),
+                        onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
                   ],
                 ),
                 Padding(
@@ -242,15 +191,16 @@ class HomePage extends StatelessWidget {
                       stream: firestore
                           .collection("groupcall")
                           .where('location',
-                          isEqualTo: UserController.to.myProfile.value.location)
+                              isEqualTo:
+                                  UserController.to.myProfile.value.location)
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData)
                           return Center(
                               child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.primary,
-                              ));
+                            color: Theme.of(context).colorScheme.primary,
+                          ));
                         if (snapshot.data!.docs.length == 0 &&
                             UserController.to.myProfile.value.location != '')
                           return Padding(
@@ -264,11 +214,8 @@ class HomePage extends StatelessWidget {
                         );
                       }),
                 ),
-              ]
-              )),
-            ],
-          )
-    ));
+              ])),
+        ));
   }
 
   Future<void> refreshList() async {

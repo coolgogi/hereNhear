@@ -63,6 +63,9 @@ dependencies:
   overlay_support: ^1.2.1
   flutter_firebase_chat_core: ^1.1.1
   search_widget: ^1.0.2
+  cloud_functions: ^3.0.0
+  provider: ^5.0.0
+  logger: ^1.0.0
   sliver_header_delegate: ^0.0.5
 
 
@@ -157,6 +160,10 @@ flutter:
     - assets/images/playButton2.png
     - assets/images/playButton3.png
     - assets/images/stopButton.png
+    - assets/images/sample1.jpg
+    - assets/images/sample2.jpg
+    - assets/images/sample3.jpg
+    - assets/images/sample4.jpg
     - assets/audio/girlVoice.mp3
     - assets/audio/vj.mp3
     - assets/audio/loveRain.mp3

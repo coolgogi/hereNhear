@@ -84,7 +84,6 @@ class _SetLocationPageState extends State<SetLocationPage> {
       ),
     );
   }
-  
 
   Widget searchHistory() {
     return Column(
