@@ -79,10 +79,12 @@ class App extends GetView<UserController> {
             stream: FirebaseAuth.instance
                 .authStateChanges(), //firebase 상태가 바뀌었는지 아닌지 체크하는 stream.
             builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-              UserController.to.authStateChanges(snapshot.data);
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
+                UserController.to.authStateChanges(snapshot.data);
+                print('UUUUUUUUUUUUUUUUUUUUUUUUUUSSSSSSSSSSSSSSSSSSSSSSSER');
+                print(UserController.to.myProfile.value.uid);
                 return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {

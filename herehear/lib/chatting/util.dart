@@ -1,101 +1,39 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+// import 'message.dart' show Status;
+// import 'user.dart' show Role;
+import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:herehear/broadcast/broadcast_model.dart' show MyRoomType;
+import 'package:herehear/users/data/user_model.dart' show MyRole;
+import 'package:herehear/chatting/src/class/my_message.dart';
 
-/// Fetches user from Firebase and returns a promise
-Future<types.User> fetchUser(String userId, {types.Role? role}) async {
-  final doc =
-  await FirebaseFirestore.instance.collection('users').doc(userId).get();
+/// Converts [stringStatus] to the [Status] enum.
+MyStatus? getMyStatusFromString(String? stringStatus) {
+  for (final myStatus in MyStatus.values) {
+    if (myStatus.toString() == 'Status.$stringStatus') {
+      return myStatus;
+    }
+  }
 
-  return processUserDocument(doc, role: role);
+  return null;
 }
 
-/// Returns a list of [types.Room] created from Firebase query.
-/// If room has 2 participants, sets correct room name and image.
-Future<List<types.BroadcastModel>> processRoomsQuery(
-    User firebaseUser,
-    QuerySnapshot<Map<String, dynamic>> query,
-    ) async {
-  final futures = query.docs.map(
-        (doc) => processRoomDocument(doc),
-  );
+/// Converts [stringRole] to the [Role] enum.
+MyRole? getMyRoleFromString(String? stringRole) {
+  for (final myRole in MyRole.values) {
+    if (myRole.toString() == 'Role.$stringRole') {
+      return myRole;
+    }
+  }
 
-  return await Future.wait(futures);
+  return null;
 }
 
-/*
-  String? hostUid;
-  String? title;
-  String? notice;
-  String? channelName;
-  String? docId;
-  String? image;
-  String? location;
-  DateTime? createdTime;
-  List<String>? currentListener;
-  //only broadcast
-  String? category;
-  int? like;
-  String? hostProfile;
-  List<String>? userProfile;
-  String? hostNickname;
-  List<String>? userNickname;
- */
+/// Converts [stringRoomType] to the [RoomType] enum.
+MyRoomType getMyRoomTypeFromString(String stringRoomType) {
+  for (final myRoomType in MyRoomType.values) {
+    if (myRoomType.toString() == 'MyRoomType.$stringRoomType') {
+      return myRoomType;
+    }
+  }
 
-
-/// Returns a [types.Room] created from Firebase document
-Future<types.BroadcastModel> processRoomDocument(
-    DocumentSnapshot<Map<String, dynamic>> doc,
-    ) async {
-  print('777777777777777777777777777777777777777777777777777777777777');
-  print(doc.data()?['hostUid']);
-  final hostUid = doc.data()?['hostUid'] as String? ;
-  final hostNickname = doc.data()?['hostNickname'] ;
-  final like = doc.data()?['like'] ;
-  final category = doc.data()?['category'];
-  var title = doc.data()?['title'];
-  final notice = doc.data()?['notice'] ;
-  final userProfile = doc.data()?['userProfile'];
-  final location = doc.data()?['location'] ;
-  final createdTime = doc.data()!['createdTime'] ;
-  final currentListener = doc.data()?['currentListener'];
-
-  print('goooooooooooooooooooooooood');
-
-  final room = types.BroadcastModel(
-    hostNickname: hostUid,
-
-  );
-  print('return');
-  return room;
-}
-
-/// Returns a [types.User] created from Firebase document
-types.User processUserDocument(
-    DocumentSnapshot<Map<String, dynamic>> doc, {
-      types.Role? role,
-    }) {
-  final createdAt = doc.data()?['createdAt'] as Timestamp?;
-  final firstName = doc.data()?['firstName'] as String?;
-  final imageUrl = doc.data()?['imageUrl'] as String?;
-  final lastName = doc.data()?['lastName'] as String?;
-  final lastSeen = doc.data()?['lastSeen'] as Timestamp?;
-  final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
-  final roleString = doc.data()?['role'] as String?;
-  final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
-
-  final user = types.User(
-    createdAt: createdAt?.millisecondsSinceEpoch,
-    firstName: firstName,
-    id: doc.id,
-    imageUrl: imageUrl,
-    lastName: lastName,
-    lastSeen: lastSeen?.millisecondsSinceEpoch,
-    metadata: metadata,
-    role: role ?? types.getRoleFromString(roleString),
-    updatedAt: updatedAt?.millisecondsSinceEpoch,
-  );
-
-  return user;
+  return MyRoomType.unsupported;
 }

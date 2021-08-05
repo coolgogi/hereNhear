@@ -1,3 +1,4 @@
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,12 +26,12 @@ List<Widget> broadcastRoomList(
           });
           await getData(_roomData['docId']).whenComplete(() => Get.to(
                 () => BroadCastPage.audience(
-                  channelName: _roomData['channelName'],
-                  userData: _userData,
-                  role: ClientRole.Audience,
-                  roomData: data,
-                ),
-              ));
+              channelName: _roomData['channelName'],
+              userData: _userData,
+              role: ClientRole.Audience,
+              roomData: data,
+            ),
+          ));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,8 +43,8 @@ List<Widget> broadcastRoomList(
                 height: 141.0.h,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage("assets/images/groupcall/fish.jpg")
+                      fit: BoxFit.fill,
+                      image: AssetImage("assets/images/groupcall/fish.jpg")
                   ),
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -72,11 +73,11 @@ List<Widget> broadcastRoomList(
                           width: 40.0.w,
                           height: 40.0.h,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/you2.jpg'),
-                              fit: BoxFit.fitWidth,
-                            )
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/you2.jpg'),
+                                fit: BoxFit.fitWidth,
+                              )
                           ),
                         ),
                       ),
@@ -94,14 +95,14 @@ List<Widget> broadcastRoomList(
                         color: Colors.white,
                       ),
                       Text(
-                          _roomData['currentListener'] == null
-                              ? ' 0'
-                              : ' ${_roomData['currentListener'].length.toString()}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                            fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                          ),
+                        _roomData['currentListener'] == null
+                            ? ' 0'
+                            : ' ${_roomData['currentListener'].length.toString()}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                        ),
                       ),
                       SizedBox(width: 8.sp),
                       Icon(
@@ -136,7 +137,7 @@ List<Widget> broadcastRoomList(
 
 Future<void> getData(String docID) async {
   var temp =
-      await FirebaseFirestore.instance.collection('broadcast').doc(docID).get();
+  await FirebaseFirestore.instance.collection('broadcast').doc(docID).get();
   Map<String, dynamic> _data = temp.data()!;
   data = _data;
 }

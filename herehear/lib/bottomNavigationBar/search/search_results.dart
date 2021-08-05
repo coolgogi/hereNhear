@@ -7,7 +7,7 @@ import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
 
-import 'package:herehear/broadcast/broadcastList.dart';
+import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/etc/delete/contest/contest.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';

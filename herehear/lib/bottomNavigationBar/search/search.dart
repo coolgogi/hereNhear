@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 
-import 'package:herehear/broadcast/broadcastList.dart';
+import '../../etc/my_broadcast_list.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -19,6 +19,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
+  late types.BroadcastModel room;
   Map<String, dynamic> roomData = new Map();
 
 
@@ -41,12 +42,22 @@ class BroadCastPage extends GetView<AgoraEventController> {
     print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
 
   }
+  BroadCastPage.myaudience(
+      {required this.channelName,
+        required this.userData,
+        required this.role,
+        required this.room}) {
+    agoraController = Get.put(
+        AgoraEventController.broadcast(channelName: channelName, role: role));
+
+  }
 
   BroadCastPage.audience(
       {required this.channelName,
       required this.userData,
       required this.role,
-      required this.roomData}) {
+      required this.roomData,
+    }) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
 
@@ -59,13 +70,11 @@ class BroadCastPage extends GetView<AgoraEventController> {
         stream : documentStream.doc(channelName).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
-          print('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
            roomData = snapshot.data!.data() as Map<String, dynamic>;
           if(roomData['docId'] != null) {
-            print('dkjfslkdjfa;lskdfja;lskdjf;alsdf');
             return Scaffold(
               appBar: profileAppBar(context),
-              body: ChatPage.withData(roomData),
+              body: ChatPage.withData(room),
             );
           }
           else {
