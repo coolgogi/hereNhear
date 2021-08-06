@@ -1,5 +1,3 @@
-
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:herehear/chatting/util.dart';
@@ -74,19 +72,19 @@ class BroadcastModel extends Equatable {
         updatedAt = json['updatedAt'] as int?,
 
 //
-  hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
-  title = json['title'] as String,
-  notice = json['notice'] as String,
-  channelName = json['channelName'] as String,
-  docId = json['docId'] as String,
-  thumbnail =json['thumbnail'] as String,
-  location = json['location'] as String,
-  createdTime = json['createdTime'].toDate(),
-  roomCategory = json['roomCategory'].toList(),
-  like =json['like'] as int,
-  users = (json['users'] as List<Map<String, dynamic>>)
-      .map((e) => UserModel.fromJson(e))
-      .toList()
+        hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
+        title = json['title'] as String,
+        notice = json['notice'] as String,
+        channelName = json['channelName'] as String,
+        docId = json['docId'] as String,
+        thumbnail =json['thumbnail'] as String,
+        location = json['location'] as String,
+        createdTime = json['createdTime'].toDate(),
+        roomCategory = json['roomCategory'].toList(),
+        like =json['like'] as int,
+        users = (json['users'] as List<Map<String, dynamic>>)
+            .map((e) => UserModel.fromJson(e))
+            .toList()
   ;
 
 
@@ -202,7 +200,7 @@ class BroadcastModel extends Equatable {
   /// Updated room timestamp, in ms
   final int? updatedAt;
 
-  /// List of users which are in the room
+/// List of users which are in the room
 }
 
 

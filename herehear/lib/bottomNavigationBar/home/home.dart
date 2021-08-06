@@ -12,7 +12,6 @@ import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-import 'package:sliver_header_delegate/sliver_header_delegate.dart';
 
 import 'package:herehear/broadcast/broadcast_model.dart' as types;
 
@@ -56,63 +55,48 @@ class HomePage extends StatelessWidget {
                   icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
             ],
           ),
-          body: SingleChildScrollView(
-              controller: _scrollController.scrollController.value,
-              child: Column(children: <Widget>[
-                Obx(() => AnimatedOpacity(
-                      // key: widgetKey,
-                      duration: Duration(milliseconds: 1),
-                      opacity: _scrollController.opacity.value,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 25.0.w,
-                            top: 23.0.h,
-                            right: 26.0.w,
-                            bottom: 41.h),
-                        child: Row(
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: [
-                                    Text('안녕하세요 ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5),
-                                    Text(
-                                        '${UserController.to.myProfile.value.nickName!}님',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline3),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text('오늘도 좋은 하루 되세요. ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5),
-                                    Image(
-                                      image:
-                                          AssetImage('assets/icons/leaf.png'),
-                                      width: 20.0.w,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Expanded(child: Container()),
-                            CircleAvatar(
-                              radius: 21.r,
-                              backgroundImage: AssetImage(
-                                  UserController.to.myProfile.value.profile!),
-                            ),
-                          ],
-                        ),
+
+
+      body: SingleChildScrollView(
+        controller: _scrollController.scrollController.value,
+            child: Column(
+                children: <Widget>[
+                  Obx(() => AnimatedOpacity(
+                    // key: widgetKey,
+                    duration: Duration(milliseconds: 1),
+                    opacity: _scrollController.opacity.value,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w, bottom: 38.h),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                children: [
+                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline5),
+                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline3),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline5),
+                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Expanded(child: Container()),
+                          CircleAvatar(
+                            radius: 21.r,
+                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
+                          ),
+                        ],
+
                       ),
-                    )),
+                    ))),
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(width: 1.0, color: Colors.transparent),

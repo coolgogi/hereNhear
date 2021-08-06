@@ -13,12 +13,13 @@ class AgoraCreateController extends GetxController {
 
   late Rx<BroadcastModel> newBroadcastRoom;
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
+  RxList<String> selectedCategoryList = <String>[].obs;
 
   Future<void> createBroadcastRoom(
       UserModel userData,
       String title,
       String notice,
-      String category,
+      List<String> category,
       String docId,
       List<String> uNickname,
       String location) async {
