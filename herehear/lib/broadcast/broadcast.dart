@@ -36,10 +36,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
       required this.userData}) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
-    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
-    print(userData.nickName);
-    print(userData.profile);
-    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
 
   }
   BroadCastPage.myaudience(
@@ -71,7 +67,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
            roomData = snapshot.data!.data() as Map<String, dynamic>;
-          if(roomData['docId'] != null) {
+          if(room.docId != null) {
             return Scaffold(
               appBar: profileAppBar(context),
               body: ChatPage.withData(room),
