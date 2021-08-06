@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:herehear/chatting/src/class/my_image_message.dart' as types;
+
 import '../conditional/conditional.dart';
 import '../util.dart';
 import 'inherited_chat_theme.dart';
@@ -19,7 +20,7 @@ class ImageMessage extends StatefulWidget {
   }) : super(key: key);
 
   /// [types.ImageMessage]
-  final types.ImageMessage message;
+  final types.MyImageMessage message;
 
   /// Maximum message width
   final int messageWidth;

@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
-import 'package:herehear/broadcast/broadcastList.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/etc/my_broadcast_list.dart';
 import 'package:herehear/groupCall/group_call.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 

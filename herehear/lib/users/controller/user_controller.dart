@@ -23,13 +23,16 @@ class UserController extends GetxController {
   void authStateChanges(User? firebaseUser) async {
     print(
         "this is user======================================================================");
+    print(firebaseUser!.uid);
     UserModel? firebaseUserdata =
         await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
 
+    print(firebaseUserdata);
 
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
       myProfile.value = UserModel(
+        id:firebaseUser.uid,
         token: await _token(),
         nickName: 'Nickname',
         profile: 'assets/suhyun.jpg',

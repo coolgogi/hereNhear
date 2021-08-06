@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/location/controller/location_controller.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationPage extends StatelessWidget {
   final controller = Get.put(LocationController());

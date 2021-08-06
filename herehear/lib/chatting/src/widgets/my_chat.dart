@@ -2,26 +2,30 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:flutter_chat_ui/src/widgets/inherited_l10n.dart';
+import 'package:herehear/chatting/src/conditional/conditional.dart';
+import 'package:herehear/chatting/src/models/date_header.dart';
+import 'package:herehear/chatting/src/models/message_spacer.dart';
+import 'package:herehear/chatting/src/models/preview_image.dart';
+import 'package:herehear/chatting/src/util.dart';
+import 'package:herehear/chatting/src/widgets/chat_list.dart';
+import 'package:herehear/chatting/src/widgets/inherited_chat_theme.dart';
+import 'package:herehear/chatting/src/widgets/inherited_l10n.dart';
+import 'package:herehear/chatting/src/widgets/inherited_user.dart';
+import 'package:herehear/chatting/src/widgets/message.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-import '../chat_l10n.dart';
-import '../chat_theme.dart';
-import '../conditional/conditional.dart';
-import '../models/date_header.dart';
-import '../models/message_spacer.dart';
-import '../models/preview_image.dart';
-import '../util.dart';
-import 'chat_list.dart';
-import 'inherited_chat_theme.dart';
-import 'inherited_user.dart';
-import 'input.dart';
-import 'message.dart';
+import 'package:herehear/users/data/user_model.dart' as types;
+import '../class/my_message.dart' as types;
+import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
+import 'package:herehear/chatting/src/class/my_image_message.dart' as types;
+import 'package:herehear/chatting/src/widgets/input.dart' as myInput;
+
+
 
 /// Entry widget, represents the complete chat
-class Chat extends StatefulWidget {
+class MyChat extends StatefulWidget {
   /// Creates a chat widget
-  const Chat({
+  const MyChat({
     Key? key,
     this.buildCustomMessage,
     this.customDateHeaderText,
@@ -49,7 +53,7 @@ class Chat extends StatefulWidget {
   }) : super(key: key);
 
   /// See [Message.buildCustomMessage]
-  final Widget Function(types.Message)? buildCustomMessage;
+  final Widget Function(types.MyMessage)? buildCustomMessage;
 
   /// If [dateFormat], [dateLocale] and/or [timeFormat] is not enough to
   /// customize date headers in your case, use this to return an arbitrary
@@ -87,7 +91,7 @@ class Chat extends StatefulWidget {
   final ChatL10n l10n;
 
   /// List of [types.Message] to render in the chat widget
-  final List<types.Message> messages;
+  final List<types.MyMessage> messages;
 
   /// See [Input.onAttachmentPressed]
   final void Function()? onAttachmentPressed;
@@ -99,19 +103,19 @@ class Chat extends StatefulWidget {
   final double? onEndReachedThreshold;
 
   /// See [Message.onMessageLongPress]
-  final void Function(types.Message)? onMessageLongPress;
+  final void Function(types.MyMessage)? onMessageLongPress;
 
   /// See [Message.onMessageTap]
-  final void Function(types.Message)? onMessageTap;
+  final void Function(types.MyMessage)? onMessageTap;
 
   /// See [Message.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)?
-      onPreviewDataFetched;
+  final void Function(types.MyTextMessage, types.PreviewData)?
+  onPreviewDataFetched;
 
-  /// See [Input.onSendPressed]
+  /// See [myInput.Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
 
-  /// See [Input.onTextChanged]
+  /// See [myInput.Input.onTextChanged]
   final void Function(String)? onTextChanged;
 
   /// See [Message.showUserAvatars]
@@ -137,14 +141,14 @@ class Chat extends StatefulWidget {
   final bool usePreviewData;
 
   /// See [InheritedUser.user]
-  final types.User user;
+  final types.UserModel user;
 
   @override
   _ChatState createState() => _ChatState();
 }
 
 /// [Chat] widget state
-class _ChatState extends State<Chat> {
+class _ChatState extends State<MyChat> {
   List<Object> _chatMessages = [];
   List<PreviewImage> _gallery = [];
   int _imageViewIndex = 0;
@@ -158,10 +162,11 @@ class _ChatState extends State<Chat> {
   }
 
   @override
-  void didUpdateWidget(covariant Chat oldWidget) {
+  void didUpdateWidget(covariant MyChat oldWidget) {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages.isNotEmpty) {
+      print('NOT EMMPTY@#%^&*(');
       final result = calculateChatMessages(
         widget.messages,
         widget.user,
@@ -174,6 +179,11 @@ class _ChatState extends State<Chat> {
 
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
+      print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      print(_chatMessages);
+      print(_gallery);
+
+      print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
     }
   }
 
@@ -187,8 +197,8 @@ class _ChatState extends State<Chat> {
           PhotoViewGallery.builder(
             builder: (BuildContext context, int index) =>
                 PhotoViewGalleryPageOptions(
-              imageProvider: Conditional().getProvider(_gallery[index].uri),
-            ),
+                  imageProvider: Conditional().getProvider(_gallery[index].uri),
+                ),
             itemCount: _gallery.length,
             loadingBuilder: (context, event) =>
                 _imageGalleryLoadingBuilder(context, event),
@@ -228,20 +238,20 @@ class _ChatState extends State<Chat> {
       );
     } else {
       final map = object as Map<String, Object>;
-      final message = map['message']! as types.Message;
+      final message = map['message']! as types.MyMessage;
       final _messageWidth =
-          widget.showUserAvatars && message.author.id != widget.user.id
-              ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
-              : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
+      widget.showUserAvatars && message.author.id != widget.user.id
+          ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
+          : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
 
-      return Message(
+      return MyMessage(
         key: ValueKey(message.id),
         buildCustomMessage: widget.buildCustomMessage,
         message: message,
         messageWidth: _messageWidth,
         onMessageLongPress: widget.onMessageLongPress,
         onMessageTap: (tappedMessage) {
-          if (tappedMessage is types.ImageMessage &&
+          if (tappedMessage is types.MyImageMessage &&
               widget.disableImageGallery != true) {
             _onImagePressed(tappedMessage);
           }
@@ -251,7 +261,7 @@ class _ChatState extends State<Chat> {
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar:
-            widget.showUserAvatars && map['nextMessageInGroup'] == false,
+        widget.showUserAvatars && map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,
         showStatus: map['showStatus'] == true,
         showUserAvatars: widget.showUserAvatars,
@@ -261,9 +271,9 @@ class _ChatState extends State<Chat> {
   }
 
   Widget _imageGalleryLoadingBuilder(
-    BuildContext context,
-    ImageChunkEvent? event,
-  ) {
+      BuildContext context,
+      ImageChunkEvent? event,
+      ) {
     return Center(
       child: SizedBox(
         width: 20.0,
@@ -283,10 +293,10 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  void _onImagePressed(types.ImageMessage message) {
+  void _onImagePressed(types.MyImageMessage message) {
     setState(() {
       _imageViewIndex = _gallery.indexWhere(
-        (element) => element.id == message.id && element.uri == message.uri,
+            (element) => element.id == message.id && element.uri == message.uri,
       );
       _isImageViewVisible = true;
     });
@@ -299,14 +309,20 @@ class _ChatState extends State<Chat> {
   }
 
   void _onPreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
+      types.MyTextMessage message,
+      types.PreviewData previewData,
+      ) {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
   @override
   Widget build(BuildContext context) {
+    print('USERSERSERSESDSDG');
+    print(widget.user);
+    print(widget.isAttachmentUploading);
+    print(widget.onAttachmentPressed);
+    print(widget.onSendPressed);
+    print(widget.onTextChanged);
     return InheritedUser(
       user: widget.user,
       child: InheritedChatTheme(
@@ -324,39 +340,42 @@ class _ChatState extends State<Chat> {
                       Flexible(
                         child: widget.messages.isEmpty
                             ? SizedBox.expand(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                  ),
-                                  child: Text(
-                                    widget.l10n.emptyChatPlaceholder,
-                                    style: widget
-                                        .theme.emptyChatPlaceholderTextStyle,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                            ),
+                            child: Text(
+                              widget.l10n.emptyChatPlaceholder,
+                              style: widget
+                                  .theme.emptyChatPlaceholderTextStyle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
                             : GestureDetector(
-                                onTap: () => FocusManager.instance.primaryFocus
-                                    ?.unfocus(),
-                                child: ChatList(
-                                  isLastPage: widget.isLastPage,
-                                  itemBuilder: (item, index) =>
-                                      _buildMessage(item),
-                                  items: _chatMessages,
-                                  onEndReached: widget.onEndReached,
-                                  onEndReachedThreshold:
-                                      widget.onEndReachedThreshold,
-                                ),
-                              ),
+                          onTap: () => FocusManager.instance.primaryFocus
+                              ?.unfocus(),
+                          child:
+                          MyChatList(
+                            isLastPage: widget.isLastPage,
+                            itemBuilder: (item, index) =>
+                                _buildMessage(item),
+                            items: _chatMessages,
+                            onEndReached: widget.onEndReached,
+                            onEndReachedThreshold:
+                            widget.onEndReachedThreshold,
+                          ),
+                        ),
                       ),
-                      Input(
-                        isAttachmentUploading: widget.isAttachmentUploading,
+
+
+                      myInput.Input(
+                       isAttachmentUploading: widget.isAttachmentUploading,
                         onAttachmentPressed: widget.onAttachmentPressed,
-                        onSendPressed: widget.onSendPressed,
+                         onSendPressed: widget.onSendPressed,
                         onTextChanged: widget.onTextChanged,
-                      ),
+                     ),
                     ],
                   ),
                 ),

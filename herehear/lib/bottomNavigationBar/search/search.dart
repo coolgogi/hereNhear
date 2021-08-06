@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
+import 'package:herehear/broadcast/broadcast_list.dart';
+import 'package:herehear/broadcast/broadcast_model.dart';
+import 'package:herehear/chatting/my_firebase_chat.dart';
 
-import 'package:herehear/broadcast/broadcastList.dart';
 import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -162,21 +164,17 @@ class SearchPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 21.0.w, top: 11.0.h),
             child: Container(
               height: 195.0.h,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore
-                    .collection("broadcast")
-                    // .where('location',
-                    // isEqualTo: locationController.location.value)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
+              child: StreamBuilder<List<BroadcastModel>>(
+                stream: MyFirebaseChatCore.instance.rooms(),
+                builder: (context,snapshot) {
                   print('done!!');
                   if (!snapshot.hasData)
                     return Center(
                         child: CircularProgressIndicator(
                       color: Theme.of(context).colorScheme.primary,
                     ));
-                  if (snapshot.data!.docs.length == 0 &&
+                  if (snapshot.data!
+                      .isEmpty && //snapshot.data!.docs.length == 0
                       locationController.location.value != '')
                     return Padding(
                       padding: EdgeInsets.only(top: 50.0.h),
@@ -184,10 +182,7 @@ class SearchPage extends StatelessWidget {
                         child: Text('라이브중인 방송이 없습니다.'),
                       ),
                     );
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: broadcastRoomList(context, snapshot),
-                  );
+                  return broadcastRoomList(context, snapshot);
                 },
               ),
             ),

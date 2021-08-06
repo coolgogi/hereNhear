@@ -3,9 +3,12 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:intl/intl.dart';
-import './models/date_header.dart';
-import './models/message_spacer.dart';
-import './models/preview_image.dart';
+import 'models/date_header.dart';
+import 'models/message_spacer.dart';
+import 'package:herehear/users/data/user_model.dart' as types;
+import 'models/preview_image.dart';
+import 'class/my_message.dart' as types;
+import 'package:herehear/chatting/src/class/my_image_message.dart' as types;
 
 /// Returns text representation of a provided bytes value (e.g. 1kB, 1GB)
 String formatBytes(int size, [int fractionDigits = 2]) {
@@ -17,14 +20,14 @@ String formatBytes(int size, [int fractionDigits = 2]) {
 }
 
 /// Returns user avatar and name color based on the ID
-Color getUserAvatarNameColor(types.User user, List<Color> colors) {
+Color getUserAvatarNameColor(types.UserModel user, List<Color> colors) {
   final index = user.id.hashCode % colors.length;
   return colors[index];
 }
 
 /// Returns user name as joined firstName and lastName
-String getUserName(types.User user) =>
-    '${user.firstName ?? ''} ${user.lastName ?? ''}'.trim();
+String getUserName(types.UserModel user) =>
+    user.uid.toString();
 
 /// Returns formatted date used as a divider between different days in the
 /// chat history
@@ -55,8 +58,8 @@ String getVerboseDateTimeRepresentation(
 /// Parses provided messages to chat messages (with headers and spacers) and
 /// returns them with a gallery
 List<Object> calculateChatMessages(
-  List<types.Message> messages,
-  types.User user, {
+  List<types.MyMessage> messages,
+  types.UserModel user, {
   String Function(DateTime)? customDateHeaderText,
   DateFormat? dateFormat,
   String? dateLocale,
@@ -94,14 +97,14 @@ List<Object> calculateChatMessages(
 
       if (isFirstInGroup) {
         shouldShowName = false;
-        if (message.type == types.MessageType.text) {
+        if (message.type == types.MyMessageType.text) {
           showName = true;
         } else {
           shouldShowName = true;
         }
       }
 
-      if (message.type == types.MessageType.text && shouldShowName) {
+      if (message.type == types.MyMessageType.text && shouldShowName) {
         showName = true;
         shouldShowName = false;
       }
@@ -175,7 +178,7 @@ List<Object> calculateChatMessages(
       );
     }
 
-    if (message is types.ImageMessage) {
+    if (message is types.MyImageMessage) {
       if (kIsWeb) {
         if (message.uri.startsWith('http')) {
           gallery.add(PreviewImage(id: message.id, uri: message.uri));
