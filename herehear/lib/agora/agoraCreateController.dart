@@ -5,11 +5,13 @@ import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'agoraRepository.dart';
+import 'package:herehear/broadcast/broadcast_model.dart' as types;
+
 
 class AgoraCreateController extends GetxController {
   static AgoraCreateController get to => Get.find();
 
-  Rx<BroadcastModel> newBroadcastRoom = BroadcastModel().obs;
+  late Rx<BroadcastModel> newBroadcastRoom;
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
   RxList<String> selectedCategoryList = <String>[].obs;
 
@@ -34,22 +36,19 @@ class AgoraCreateController extends GetxController {
       print(docId);
       print(location);
 
+
       newBroadcastRoom.value = BroadcastModel(
-        hostUid: userData.uid,
+        id: docId,
+        hostInfo: userData,
         title: title,
         notice: notice,
         channelName: docId,
         docId: docId,
-        image: 'assets/images/mic1.jpg',
+        thumbnail: 'assets/images/mic1.jpg',
         location: location,
         createdTime: DateTime.now(),
-        currentListener: List<String>.filled(0, '', growable: true),
-        category: category,
         like: 0,
-        hostProfile: userData.profile,
-        userProfile: List<String>.filled(0, '', growable: true),
-        hostNickname: userData.nickName,
-        userNickname: uNickname,
+        type: types.MyRoomType.group,
       );
 
       print("gooooooooooooooooooooooood");

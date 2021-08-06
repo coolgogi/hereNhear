@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
+import 'package:herehear/chatting/src/class/my_file_message.dart' as types;
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_l10n.dart';
@@ -15,10 +16,10 @@ class FileMessage extends StatelessWidget {
   }) : super(key: key);
 
   /// [types.FileMessage]
-  final types.FileMessage message;
+  final types.MyFileMessage message;
 
   /// Called when user taps on a file
-  final void Function(types.FileMessage)? onPressed;
+  final void Function(types.MyFileMessage)? onPressed;
 
   @override
   Widget build(BuildContext context) {

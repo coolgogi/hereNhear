@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
-import 'package:herehear/bottomNavigationBar/home/home.dart';
+import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import 'package:herehear/broadcast/broadcast_model.dart';
 import 'package:herehear/chatting/ChatPage.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,7 +19,9 @@ class BroadCastPage extends GetView<AgoraEventController> {
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   String host_uid = '';
+  late types.BroadcastModel room;
   Map<String, dynamic> roomData = new Map();
+
 
 
   BroadCastPage(
@@ -32,10 +36,15 @@ class BroadCastPage extends GetView<AgoraEventController> {
       required this.userData}) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
-    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
-    print(userData.nickName);
-    print(userData.profile);
-    print("&&&&&&&&&&&&userData&&&&&&&&&&&&&&&&");
+
+  }
+  BroadCastPage.myaudience(
+      {required this.channelName,
+        required this.userData,
+        required this.role,
+        required this.room}) {
+    agoraController = Get.put(
+        AgoraEventController.broadcast(channelName: channelName, role: role));
 
   }
 
@@ -43,7 +52,8 @@ class BroadCastPage extends GetView<AgoraEventController> {
       {required this.channelName,
       required this.userData,
       required this.role,
-      required this.roomData}) {
+      required this.roomData,
+    }) {
     agoraController = Get.put(
         AgoraEventController.broadcast(channelName: channelName, role: role));
 
@@ -56,11 +66,11 @@ class BroadCastPage extends GetView<AgoraEventController> {
         stream : documentStream.doc(channelName).snapshots(),
       builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData) {
-          roomData = snapshot.data!.data() as Map<String, dynamic>;
-          if(roomData != null) {
+           roomData = snapshot.data!.data() as Map<String, dynamic>;
+          if(room.docId != null) {
             return Scaffold(
               appBar: profileAppBar(context),
-              body: ChatPage.withData(roomData),
+              body: ChatPage.withData(room),
             );
           }
           else {
@@ -180,6 +190,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
     controller.onClose();
     Get.off(() => BottomBar());
   }
+
 
   Future<void> changeState(String docID) async {
     var fields = await FirebaseFirestore.instance

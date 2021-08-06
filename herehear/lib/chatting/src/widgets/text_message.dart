@@ -5,6 +5,8 @@ import 'package:flutter_link_previewer/flutter_link_previewer.dart'
 import '../util.dart';
 import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
+import 'package:herehear/users/data/user_model.dart' as types;
+import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
 
 /// A class that represents text message widget with optional link preview
 class TextMessage extends StatelessWidget {
@@ -18,10 +20,10 @@ class TextMessage extends StatelessWidget {
   }) : super(key: key);
 
   /// [types.TextMessage]
-  final types.TextMessage message;
+  final types.MyTextMessage message;
 
   /// See [LinkPreview.onPreviewDataFetched]
-  final void Function(types.TextMessage, types.PreviewData)?
+  final void Function(types.MyTextMessage, types.PreviewData)?
       onPreviewDataFetched;
 
   /// Show user name for the received message. Useful for a group chat.
@@ -37,11 +39,11 @@ class TextMessage extends StatelessWidget {
   }
 
   Widget _linkPreview(
-    types.User user,
+    types.UserModel user,
     double width,
     BuildContext context,
   ) {
-    final bodyTextStyle = user.id == message.author.id
+    final bodyTextStyle = user.uid == message.author.id
         ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
         : InheritedChatTheme.of(context).theme.receivedMessageBodyTextStyle;
     final linkDescriptionTextStyle = user.id == message.author.id
@@ -83,7 +85,7 @@ class TextMessage extends StatelessWidget {
     );
   }
 
-  Widget _textWidget(types.User user, BuildContext context) {
+  Widget _textWidget(types.UserModel user, BuildContext context) {
     final color = getUserAvatarNameColor(message.author,
         InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(message.author);

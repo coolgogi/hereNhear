@@ -9,7 +9,7 @@ class AgoraRepository {
     CollectionReference users =
         FirebaseFirestore.instance.collection('broadcast');
 
-    await users.doc(newRoom.docId).set(newRoom.toMap());
+    await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
   static Future<void> GroupCallToFirebase(GroupCallModel newRoom) async {
