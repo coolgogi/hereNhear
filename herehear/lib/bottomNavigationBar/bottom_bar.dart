@@ -89,6 +89,94 @@ class BottomBar extends StatelessWidget {
   }
 
   Future<dynamic> showCreateOption(BuildContext context) async {
+    return Get.dialog(
+      Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // Padding(
+                //   padding: EdgeInsets.only(right: 16.0.w),
+                //   child: IconButton(onPressed: null, icon: Icon(Icons.close)),
+                // ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 14.0.w),
+                  child: GestureDetector(
+                    onTap: () => Get.off(() => CreateBroadcastPage()),
+                    child: Container(
+                      width: 161.w,
+                      height: 177.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 18.0.h),
+                            child: Text('HERE 라이브', style: Theme.of(context).textTheme.bodyText1),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 11.0.h),
+                            child: Text('HERE 라이브를 통해', style: Theme.of(context).textTheme.bodyText2),
+                          ),
+                          Text('원하는 주제로 대화해보세요!', style: Theme.of(context).textTheme.bodyText2),
+                          Padding(
+                            padding:EdgeInsets.only(top: 13.h),
+                            child: Image.asset('assets/images/liveImage.png', width: 57.w),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Get.off(() => CreateGroupCallPage()),
+                  child: Container(
+                    width: 161.w,
+                    height: 177.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 18.0.h),
+                          child: Text('HERE CHAT',  style: Theme.of(context).textTheme.bodyText1),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 11.0.h),
+                          child: Text('사람들과 자유로운 대화를', style: Theme.of(context).textTheme.bodyText2),
+                        ),
+                        Text('즐겨보세요!', style: Theme.of(context).textTheme.bodyText2),
+                        Padding(
+                          padding: EdgeInsets.only(top: 13.0.h),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset('assets/images/voiceCopy.png', width: 85.w,),
+                              Image.asset('assets/images/liveImage.png', width: 48.5.w),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -153,6 +241,72 @@ class BottomBar extends StatelessWidget {
           );
         });
   }
+
+  // Future<dynamic> showCreateOption(BuildContext context) async {
+  //   return showModalBottomSheet(
+  //       context: context,
+  //       builder: (context) {
+  //         return Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             SizedBox(
+  //               height: 35.h,
+  //             ),
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //               children: <Widget>[
+  //                 InkWell(
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: <Widget>[
+  //                       Icon(
+  //                         Icons.record_voice_over,
+  //                         size: 50.w,
+  //                         color: Theme.of(context).colorScheme.primary,
+  //                       ),
+  //                       SizedBox(
+  //                         height: 20.h,
+  //                       ),
+  //                       // podcasts
+  //                       Text('개인 라이브',
+  //                           style: TextStyle(
+  //                               fontSize: 18.sp,
+  //                               color: Colors.black87,
+  //                               fontWeight: FontWeight.bold)),
+  //                     ],
+  //                   ),
+  //                   onTap: () => Get.off(() => CreateBroadcastPage()),
+  //                 ),
+  //                 InkWell(
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: <Widget>[
+  //                       Icon(
+  //                         Icons.connect_without_contact,
+  //                         size: 50.w,
+  //                         color: Theme.of(context).colorScheme.primary,
+  //                       ),
+  //                       SizedBox(
+  //                         height: 20.h,
+  //                       ),
+  //                       Text('그룹 대화',
+  //                           style: TextStyle(
+  //                               fontSize: 18.sp,
+  //                               color: Colors.black87,
+  //                               fontWeight: FontWeight.bold)),
+  //                     ],
+  //                   ),
+  //                   onTap: () => Get.off(() => CreateGroupCallPage()),
+  //                 ),
+  //               ],
+  //             ),
+  //             SizedBox(
+  //               height: 35.h,
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),

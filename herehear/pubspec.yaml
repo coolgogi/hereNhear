@@ -65,7 +65,7 @@ dependencies:
   cloud_functions: ^3.0.0
   provider: ^5.0.0
   logger: ^1.0.0
-  sliver_header_delegate: ^0.0.5
+  flutter_tags: ^0.4.9+1
 
 
 
@@ -142,6 +142,16 @@ flutter:
     - assets/icons/more.png
     - assets/icons/live.png
     - assets/icons/history.png
+    - assets/icons/reload.png
+    - assets/icons/tree.png
+    - assets/icons/smile.png
+    - assets/icons/healing.png
+    - assets/icons/talk.png
+    - assets/icons/eyes.png
+    - assets/icons/book.png
+    - assets/icons/music.png
+    - assets/icons/sale.png
+    - assets/icons/advertise.png
     - assets/images/game.png
     - assets/images/sora.jpg
     - assets/images/mountain.jpg
@@ -163,6 +173,7 @@ flutter:
     - assets/images/sample2.jpg
     - assets/images/sample3.jpg
     - assets/images/sample4.jpg
+    - assets/images/liveImage.png
     - assets/audio/girlVoice.mp3
     - assets/audio/vj.mp3
     - assets/audio/loveRain.mp3
