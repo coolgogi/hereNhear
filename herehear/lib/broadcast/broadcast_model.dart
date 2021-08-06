@@ -11,7 +11,7 @@ class BroadcastModel {
   List<String>? currentListener;
   List<dynamic>? participants;
   //only broadcast
-  String? category;
+  List<String>? category;
   int? like;
   String? hostProfile;
   List<String>? userProfile;
@@ -70,6 +70,6 @@ class BroadcastModel {
         image = json['image'] as String,
         createdTime = json['createdTime'].toDate(),
         //only broadcast
-        category = json['category'] as String,
+        category = json['category'] as List<String>,
         like = json['like'] as int;
 }
