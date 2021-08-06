@@ -8,7 +8,6 @@ import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-import 'package:sliver_header_delegate/sliver_header_delegate.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -50,7 +49,7 @@ class HomePage extends StatelessWidget {
                     duration: Duration(milliseconds: 1),
                     opacity: _scrollController.opacity.value,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w, bottom: 41.h),
+                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w, bottom: 38.h),
                       child: Row(
                         children: [
                           Column(

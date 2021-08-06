@@ -7,6 +7,8 @@ import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   late UserModel userData;
@@ -22,7 +24,6 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
@@ -31,7 +32,21 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   //unused variable
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
-
+  List<String> categoryTextList = [
+    'asmr', '홍보', '판매', '음악', '독서', '고민상담', '수다/챗', '힐링', '유머', '일상'
+  ];
+  List<String> categoryIconList = [
+    'assets/images/mike2.png',
+    'assets/icons/advertise.png',
+    'assets/icons/sale.png',
+    'assets/icons/music.png',
+    'assets/icons/book.png',
+    'assets/icons/eyes.png',
+    'assets/icons/talk.png',
+    'assets/icons/healing.png',
+    'assets/icons/smile.png',
+    'assets/icons/music.png',
+  ];
 
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
@@ -55,27 +70,27 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('새 라이브 방송',
+        title: Text('HERE 라이브',
             style: Theme.of(context).appBarTheme.titleTextStyle),
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(Icons.arrow_back_ios),
           onPressed: () => {
             Get.back(),
           },
         ),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
         key: _formKey,
         height: MediaQuery.of(context).size.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(bottom: 11.h),
               child: Text(
                 '제목',
-                style: TextStyle(fontSize: 16),
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
             TextFormField(
@@ -88,28 +103,29 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
+                contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                 hintText: '제목을 입력해주세요(15자 이내)',
               ),
             ),
             SizedBox(
-              height: 16.0,
+              height: 20.h,
             ),
             Container(
-              padding: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.only(bottom: 11.h),
               child: Text(
                 '공지사항',
-                style: TextStyle(fontSize: 16),
+                style: Theme.of(context).textTheme.headline4,
               ),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.2,
-              padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
+              height: 104.h,
+              padding: EdgeInsets.fromLTRB(15.w, 1.h, 10.w, 0.h),
               decoration: BoxDecoration(
                 shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(5.r)),
                 border: Border.all(
                   color: Colors.grey,
-                  width: 0.7,
+                  width: 1,
                 ),
               ),
               child: TextField(
@@ -126,72 +142,152 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               ),
             ),
             SizedBox(
-              height: 16.0,
+              height: 15.0.h,
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 10),
-              child: Text(
-                '카테고리',
-                style: TextStyle(fontSize: 16),
+            Padding(
+              padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
+              child: Row(
+                children: [
+                  Text(
+                    '카테고리',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Expanded(child: Container()),
+                  GestureDetector(
+                    onTap: null,
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/reload.png', width: 11.w,),
+                        SizedBox(width: 6.w,),
+                        Text('초기화'),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
-            Row(
-              children: List.generate(categoryList.length, (index) {
-                return Center(
-                  child: Container(
-                    padding: EdgeInsets.all(3),
-                    child: ChoiceChip(
-                      label: Text(
-                        categoryList[index],
-                      ),
-                      labelStyle: TextStyle(color: Colors.black),
-                      shape: StadiumBorder(
-                          side: BorderSide(color: Colors.grey, width: 0.5)),
-                      backgroundColor: Colors.white,
-                      selected: _index == index,
-                      selectedColor: Colors.grey[500],
-                      onSelected: (value) {
-
-                        print('value: ${value.toString()}');
-                        print('index: ${index.toString()}');
-                        print('_index: ${_index.toString()}');
-
-                        setState(() {
-                          _index = value ? index : _index;
-                          print(_index = value ? index : _index);
-                        });
-                        print('value: ${value.toString()}');
-                        print('index: ${index.toString()}');
-                        print('_index: ${_index.toString()}');
-                      },
-                      // backgroundColor: color,
-                    ),
-                  ),
-                );
-              }),
+            Obx(() => categorySelectList(),),
+            Padding(
+              padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
+              child: Text('* 카테고리는 최대 3개까지 선택 가능합니다.', style: Theme.of(context).textTheme.bodyText2,),
             ),
             SizedBox(
-              height: 32.0,
+              height: 32.0.h,
             ),
             SizedBox(
+              height: 44.h,
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   onJoin();
                 },
-                child: Text('방만들기'),
+                child: Text('완료'),
               ),
             ),
             Column(
               children: [
                 SizedBox(
-                  height: 32.0,
+                  height: 44.0,
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget categorySelectList() {
+    return Column(
+      children: [
+        Row(
+          children: List.generate(4, (i) =>
+              Padding(
+                padding: EdgeInsets.only(left: 13.0.w),
+                child: ActionChip(
+                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i])? Theme.of(context).colorScheme.primary : Colors.white,
+                  avatar: Image.asset(categoryIconList[i], width: 13.w,),
+                  label: Text(
+                    categoryTextList[i],
+                    style: TextStyle(
+                      color: agoraController.selectedCategoryList.contains(categoryTextList[i])? Colors.white : Theme.of(context).colorScheme.primary,
+                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                    )),
+                  onPressed: () {
+                    if(agoraController.selectedCategoryList.contains(categoryTextList[i]))
+                      agoraController.selectedCategoryList.remove(categoryTextList[i]);
+                    else if(agoraController.selectedCategoryList.length < 3)
+                      agoraController.selectedCategoryList.add(categoryTextList[i]);
+                  },
+                ),
+              ),
+          ),
+        ),
+        Row(
+          children: List.generate(3, (i) =>
+              Padding(
+                padding: EdgeInsets.only(left: 13.0.w),
+                child: ActionChip(
+                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+4])? Theme.of(context).colorScheme.primary : Colors.white,
+                  avatar: Image.asset(categoryIconList[i+4], width: 13.w,),
+                  label: Text(
+                      categoryTextList[i+4],
+                      style: TextStyle(
+                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+4])? Colors.white : Theme.of(context).colorScheme.primary,
+                        fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                      )),
+                  onPressed: () {
+                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+4]))
+                      agoraController.selectedCategoryList.remove(categoryTextList[i+4]);
+                    else if(agoraController.selectedCategoryList.length < 3)
+                      agoraController.selectedCategoryList.add(categoryTextList[i+4]);
+                  },
+                ),
+              ),
+          ),
+        ),
+        Row(
+          children: List.generate(3, (i) =>
+              Padding(
+                padding: EdgeInsets.only(left: 13.0.w),
+                child: ActionChip(
+                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
+                    borderRadius: BorderRadius.circular(20.r),
+                  ),
+                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+7])? Theme.of(context).colorScheme.primary : Colors.white,
+                  avatar: Image.asset(categoryIconList[i+7], width: 13.w,),
+                  label: Text(
+                      categoryTextList[i+7],
+                      style: TextStyle(
+                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+7])? Colors.white : Theme.of(context).colorScheme.primary,
+                        fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                      )),
+                  onPressed: () {
+                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+7]))
+                        agoraController.selectedCategoryList.remove(categoryTextList[i+7]);
+                    else if(agoraController.selectedCategoryList.length < 3)
+                        agoraController.selectedCategoryList.add(categoryTextList[i+7]);
+                  },
+                ),
+              ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -208,7 +304,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       UserController.to.myProfile.value,
       _title.text,
       _notice.text,
-      categoryList[_index],
+      agoraController.selectedCategoryList,
       _docId,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
