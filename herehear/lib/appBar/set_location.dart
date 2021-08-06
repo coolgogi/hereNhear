@@ -1,19 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/searchBar.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
-
-import 'package:herehear/etc/delete/contest/contest.dart';
-import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/controller/user_controller.dart';
-// import 'package:material_floating_search_bar/material_floating_search_bar.dart';
-
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -104,7 +96,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
               ],
             ),
             child: ElevatedButton(
-              onPressed: null,
+              onPressed: (){},
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(

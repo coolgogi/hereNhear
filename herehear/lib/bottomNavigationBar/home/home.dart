@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/setLocation.dart';
+import 'package:herehear/appBar/set_location.dart';
 
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
@@ -13,7 +13,7 @@ import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import '../../broadcast/data/broadcast_model.dart' as types;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
