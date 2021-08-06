@@ -72,7 +72,7 @@ ListView broadcastRoomList(BuildContext context,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 8.0.w, right: 6.0.w),
+                        padding: EdgeInsets.only(left: 8.0.w, right: 4.0.w),
                         child: Container(
                           width: 40.0.w,
                           height: 40.0.h,
@@ -85,14 +85,12 @@ ListView broadcastRoomList(BuildContext context,
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 45.0.w),
-                        child: Text('유리한 녀석들', style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13.sp,
-                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                        )),
-                      ),
+                      Text('유리한 녀석들', style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                        fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                      )),
+                      Expanded(child: Container()),
                       Icon(
                         Icons.people,
                         size: 17.w,
@@ -114,12 +112,15 @@ ListView broadcastRoomList(BuildContext context,
                         size: 14.w,
                         color: Colors.white,
                       ),
-                      Text(
-                        ' ${room.like.toString()}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                      Padding(
+                        padding: EdgeInsets.only(right: 10.0.w),
+                        child: Text(
+                          ' ${room.like.toString()}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
+                            fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          ),
                         ),
                       ),
                     ],

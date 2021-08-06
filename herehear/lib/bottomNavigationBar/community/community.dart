@@ -410,7 +410,7 @@ class CommunityPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 12.0.w, right: 15.0.w,),
-                    child: Image.asset('assets/images/sing.png'),
+                    child: Image.asset('assets/images/gamer.png'),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
