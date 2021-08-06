@@ -33,19 +33,19 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
-    'asmr', '홍보', '판매', '음악', '독서', '고민상담', '수다/챗', '힐링', '유머', '일상'
+    '독서', '고민상담', '수다/챗', '유머', '홍보', '판매', '음악', '힐링', 'asmr', '일상'
   ];
   List<String> categoryIconList = [
-    'assets/images/mike2.png',
-    'assets/icons/advertise.png',
-    'assets/icons/sale.png',
-    'assets/icons/music.png',
     'assets/icons/book.png',
     'assets/icons/eyes.png',
     'assets/icons/talk.png',
-    'assets/icons/healing.png',
     'assets/icons/smile.png',
+    'assets/icons/advertise.png',
+    'assets/icons/sale.png',
     'assets/icons/music.png',
+    'assets/icons/healing.png',
+    'assets/images/mike2.png',
+    'assets/icons/tree.png',
   ];
 
   final agoraController = Get.put(AgoraCreateController());
@@ -154,15 +154,15 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   ),
                   Expanded(child: Container()),
                   GestureDetector(
-                    onTap: null,
+                    onTap: () => agoraController.selectedCategoryList.removeRange(0, 3),
                     child: Row(
                       children: [
-                        Image.asset('assets/icons/reload.png', width: 11.w,),
+                        Image.asset('assets/icons/reload.png', width: 13.w,),
                         SizedBox(width: 6.w,),
                         Text('초기화'),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -201,7 +201,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     return Column(
       children: [
         Row(
-          children: List.generate(4, (i) =>
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(3, (i) =>
               Padding(
                 padding: EdgeInsets.only(left: 13.0.w),
                 child: ActionChip(
@@ -230,7 +231,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
           ),
         ),
         Row(
-          children: List.generate(3, (i) =>
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(4, (i) =>
               Padding(
                 padding: EdgeInsets.only(left: 13.0.w),
                 child: ActionChip(
@@ -239,26 +241,27 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+4])? Theme.of(context).colorScheme.primary : Colors.white,
-                  avatar: Image.asset(categoryIconList[i+4], width: 13.w,),
+                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+3])? Theme.of(context).colorScheme.primary : Colors.white,
+                  avatar: Image.asset(categoryIconList[i+3], width: 13.w,),
                   label: Text(
-                      categoryTextList[i+4],
+                      categoryTextList[i+3],
                       style: TextStyle(
-                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+4])? Colors.white : Theme.of(context).colorScheme.primary,
+                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+3])? Colors.white : Theme.of(context).colorScheme.primary,
                         fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
                         fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
                       )),
                   onPressed: () {
-                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+4]))
-                      agoraController.selectedCategoryList.remove(categoryTextList[i+4]);
+                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+3]))
+                      agoraController.selectedCategoryList.remove(categoryTextList[i+3]);
                     else if(agoraController.selectedCategoryList.length < 3)
-                      agoraController.selectedCategoryList.add(categoryTextList[i+4]);
+                      agoraController.selectedCategoryList.add(categoryTextList[i+3]);
                   },
                 ),
               ),
           ),
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(3, (i) =>
               Padding(
                 padding: EdgeInsets.only(left: 13.0.w),
