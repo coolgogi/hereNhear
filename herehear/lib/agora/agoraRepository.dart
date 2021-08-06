@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/broadcast/broadcast_model.dart';
+import '../broadcast/data/broadcast_model.dart';
 import 'package:herehear/groupCall/group_call_model.dart';
 
 

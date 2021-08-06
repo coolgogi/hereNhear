@@ -1,7 +1,7 @@
 // import 'message.dart' show Status;
 // import 'user.dart' show Role;
 import 'package:flutter_chat_types/flutter_chat_types.dart';
-import 'package:herehear/broadcast/broadcast_model.dart' show MyRoomType;
+import '../broadcast/data/broadcast_model.dart' show MyRoomType;
 import 'package:herehear/users/data/user_model.dart' show MyRole;
 import 'package:herehear/chatting/src/class/my_message.dart';
 
