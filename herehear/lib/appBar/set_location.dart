@@ -6,6 +6,7 @@ import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -57,7 +58,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
               children: <Widget>[
                 Text('당신의 ', style: Theme.of(context).textTheme.headline3),
                 Text('HERE', style: Theme.of(context).textTheme.headline1),
-                Text('은 어디인가요?', style: Theme.of(context).textTheme.headline3),
+                Text('는 어디인가요?', style: Theme.of(context).textTheme.headline3),
               ],
             ),
           ),
@@ -96,7 +97,9 @@ class _SetLocationPageState extends State<SetLocationPage> {
               ],
             ),
             child: ElevatedButton(
-              onPressed: (){},
+              onPressed: () async {
+              searchController.textController.value.text =  locationController.location.value;
+              },
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
