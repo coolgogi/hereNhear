@@ -7,11 +7,10 @@ import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
 import 'package:herehear/chatting/util.dart' as types;
 
-
 /// Fetches user from Firebase and returns a promise
 Future<types.UserModel> fetchUser(String userId, {types.MyRole? role}) async {
   final doc =
-  await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
   return processUserDocument(doc, role: role);
 }
@@ -19,27 +18,22 @@ Future<types.UserModel> fetchUser(String userId, {types.MyRole? role}) async {
 /// Returns a list of [types.Room] created from Firebase query.
 /// If room has 2 participants, sets correct room name and image.
 Future<List<types.BroadcastModel>> processRoomsQuery(
-    User firebaseUser,
-    QuerySnapshot<Map<String, dynamic>> query,
-    ) async {
+  User firebaseUser,
+  QuerySnapshot<Map<String, dynamic>> query,
+) async {
   final futures = query.docs.map(
-        (doc) => processRoomDocument(doc, firebaseUser),
+    (doc) => processRoomDocument(doc, firebaseUser),
   );
-
-
-
 
   return await Future.wait(futures);
 }
 
 /// Returns a [types.Room] created from Firebase document
 Future<types.BroadcastModel> processRoomDocument(
-    DocumentSnapshot<Map<String, dynamic>> doc,
-    User firebaseUser,
-    ) async {
+  DocumentSnapshot<Map<String, dynamic>> doc,
+  User firebaseUser,
+) async {
   final LocationController locationController = Get.find();
-
-
 
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
   var imageUrl = doc.data()?['imageUrl'] as String?;
@@ -53,46 +47,44 @@ Future<types.BroadcastModel> processRoomDocument(
   final hostInfo = await fetchUser(doc.data()?['hostUid']);
   final title = doc.data()!['title'] as String;
   final List roomCategory = doc.data()!['roomCategory'] as List;
-  final roomInfo = RoomInfoModel(hostInfo: hostInfo, title: title, roomCategory: roomCategory, docId: docId);
-print("This is host info !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111");
-  print(hostInfo);
-  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  final roomInfo = RoomInfoModel(
+      hostInfo: hostInfo,
+      title: title,
+      roomCategory: roomCategory,
+      docId: docId);
 
   final users = await Future.wait(
     userIds.map(
-          (userId) => fetchUser(
+      (userId) => fetchUser(
         userId as String,
         role: types.getMyRoleFromString(userRoles?[userId] as String?),
       ),
     ),
   );
 
-
-
   final room = await types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
-    like : like,
-   // createdAt: createdAt?.millisecondsSinceEpoch,
+    like: like,
+    // createdAt: createdAt?.millisecondsSinceEpoch,
     id: docId,
     docId: docId,
     imageUrl: imageUrl,
     metadata: metadata,
-    location:locationController.location.value ,
+    location: locationController.location.value,
     type: types.getMyRoomTypeFromString(type),
-   // updatedAt: updatedAt?.millisecondsSinceEpoch,
+    // updatedAt: updatedAt?.millisecondsSinceEpoch,
     users: users,
   );
-
 
   return room;
 }
 
 /// Returns a [types.User] created from Firebase document
 types.UserModel processUserDocument(
-    DocumentSnapshot<Map<String, dynamic>> doc, {
-      types.MyRole? role,
-    }) {
+  DocumentSnapshot<Map<String, dynamic>> doc, {
+  types.MyRole? role,
+}) {
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
   final firstName = doc.data()?['firstName'] as String?;
   final imageUrl = doc.data()?['imageUrl'] as String?;
@@ -102,14 +94,9 @@ types.UserModel processUserDocument(
   final roleString = doc.data()?['role'] as String?;
   final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
 
-print('host info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
   final nickName = doc.data()?['nickName'] as String?;
-      final uid = doc.data()?['uid'] as String?;
+  final uid = doc.data()?['uid'] as String?;
   final profile = doc.data()?['profile'] as String?;
-  print(nickName);
-  print(uid);
-  print(profile);
-  print('host info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
 
   final user = types.UserModel(
     nickName: nickName,

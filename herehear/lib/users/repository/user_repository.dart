@@ -10,8 +10,6 @@ class FirebaseUserRepository {
     // users collection에서 현재 firebaseUser.uid인 user만 가져와서 이를 data에 옮김
     QuerySnapshot data = await users.where('uid', isEqualTo: uid).get();
     // 여기서 data.size가 0이면 결국 같은 uid를 가진 user가 없다는 뜻.
-    print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEUUUUUUUUUUUUUUU');
-    print(data.docs[0].data());
     if (data.size == 0) {
       return null;
     } else {
