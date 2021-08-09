@@ -97,7 +97,7 @@ ListView broadcastRoomList(BuildContext context,
                       Text(
                         room.users ==null
                             ? ' 0'
-                            : ' ${room.users!.length.toString()}',
+                            : ' ${room.users.length.toString()}',
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           color: Colors.white,
                           fontSize: 13.sp,

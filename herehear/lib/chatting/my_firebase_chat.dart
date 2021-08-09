@@ -199,7 +199,7 @@ roomCategory: roomInfo.roomCategory,
               (previousValue, element) {
             final data = element.data();
             print(room.users);
-            final author = room.users!.firstWhere(
+            final author = room.users.firstWhere(
                   (u) => u.id == data['authorId'],
               orElse: () => types.UserModel(id: data['authorId'] as String),
             );
