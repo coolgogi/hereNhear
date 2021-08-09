@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
-import 'package:herehear/broadcast/broadcast_model.dart';
+import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 
 import 'package:herehear/groupCall/groupcallList.dart';

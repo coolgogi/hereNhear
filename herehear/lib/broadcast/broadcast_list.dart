@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/broadcast/broadcast_model.dart';
+import 'data/broadcast_model.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/bottomNavigationBar/home/home.dart';
 

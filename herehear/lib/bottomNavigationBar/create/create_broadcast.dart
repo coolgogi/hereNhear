@@ -8,7 +8,7 @@ import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tags/flutter_tags.dart';
+
 
 import 'broadcastInfoController/broadcast_info_controller.dart';
 

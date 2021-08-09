@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/searchBar.dart';
+import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';

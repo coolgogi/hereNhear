@@ -11,7 +11,7 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/theme/colors.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
