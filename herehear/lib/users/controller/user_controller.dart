@@ -25,7 +25,7 @@ class UserController extends GetxController {
         "this is user======================================================================");
     print(firebaseUser!.uid);
     UserModel? firebaseUserdata =
-        await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
+        await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
 
     print(firebaseUserdata);
 

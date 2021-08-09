@@ -37,8 +37,6 @@ class ChatPage extends StatefulWidget {
   ChatPage.withData( types.BroadcastModel roomD) {
   //  roomData = data;
     room = roomD;
-    print('gkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-    print(room.docId);
 
   }
   @override
@@ -60,6 +58,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("check______________________________________________________");
+    print(widget.room);
+    print(widget.room.docId);
     return Scaffold(
       body:
       StreamBuilder<types.BroadcastModel>(
@@ -71,11 +72,7 @@ class _ChatPageState extends State<ChatPage> {
                 initialData: const [],
                 stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
                 builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-                    print(snapshot.data);
                     return
-
                       MyChat(
                         isAttachmentUploading: _isAttachmentUploading,
                         messages: snapshot.data ?? [],
@@ -89,29 +86,19 @@ class _ChatPageState extends State<ChatPage> {
                         ),
                       );
                   }
-                  else return Text('no');
 
-                   // print(snapshot.data);
-
-
-                  // else {
-                  //   return Center(child: CircularProgressIndicator());
-                  // }
-                }
 
             );
+         }
+          else {
+            return Center(child: CircularProgressIndicator());
           }
-          else return Center(child: CircularProgressIndicator());
+
+
         }
       ),
     );
   }
-  //
-  // void _addMessage(types.Message message) {
-  //   setState(() {
-  //     _messages.insert(0, message);
-  //   });
-  // }
 
   //+ button
   void _handleAtachmentPressed() {

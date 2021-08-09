@@ -14,13 +14,16 @@ ListView broadcastRoomList(BuildContext context,
   final _userData = UserController.to.myProfile.value;
   return ListView
       .builder(scrollDirection: Axis.horizontal, itemCount: snapshot.data!.length, itemBuilder: (context, index) {
+        print('This is room snapshot###################################3');
     final room = snapshot.data![index];
+        print('This is room snapshot###################################3');
+    print(room);
     return Padding(
       padding: EdgeInsets.only(right: 16.0.w),
       child: GestureDetector(
         onTap: () async {
           await firestore.collection('broadcast').doc(room.docId).update({
-            'currentListener': FieldValue.arrayUnion([_userData.uid]),
+            'userIds': FieldValue.arrayUnion([_userData.uid]),
             'userNickName': FieldValue.arrayUnion([_userData.nickName]),
             'userProfile': FieldValue.arrayUnion([_userData.profile]),
           });
@@ -30,10 +33,10 @@ ListView broadcastRoomList(BuildContext context,
           await Get.to(
                 () =>
                 BroadCastPage.myaudience(
-                    channelName: room.docId!,
-                    userData: _userData,
+                 //   channelName: room.docId!,
+                   // userData: _userData,
                     role: ClientRole.Audience,
-                    room: room
+                    roomData: room
                 ),
           );
         },

@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/users/controller/user_controller.dart';
+import 'package:herehear/users/data/user_model.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/my_util.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
@@ -33,21 +35,54 @@ class MyFirebaseChatCore {
   /// a group name. Add an optional [imageUrl] that will be a group avatar
   /// and [metadata] for any additional custom data.
   Future<types.BroadcastModel> createGroupRoom({
-    String? imageUrl,
-    Map<String, dynamic>? metadata,
-    required String name,
-    required List<types.UserModel> users,
+    required RoomInfoModel roomInfo,
+    required UserModel hostInfo,
   }) async {
     if (firebaseUser == null) return Future.error('User does not exist');
 
-    final currentUser = await fetchUser(firebaseUser!.uid);
-    final roomUsers = [currentUser] + users;
+    final currentUser = await fetchUser(hostInfo.uid!);
+    final roomUsers = [currentUser];
 
-    final room = await FirebaseFirestore.instance.collection('broadcast').add({
-      'createdAt': FieldValue.serverTimestamp(),
-      'imageUrl': imageUrl,
-      'metadata': metadata,
-      'name': name,
+    //
+    // required types.UserModel hostInfo,
+    //     required String title,
+    //     String? notice,
+    // required List<String> roomCategory,
+    // String? imageUrl,
+    // required String docId,
+    // required String location,
+    //
+    //
+    // id: docId,
+    // hostInfo: userData,
+    // title: title,
+    // notice: notice,
+    // channelName: docId,
+    // docId: docId,
+    // thumbnail: 'assets/images/mic1.jpg',
+    // location: location,
+    // createdTime: DateTime.now(),
+    // like: 0,
+    // type: types.MyRoomType.group,
+
+
+    final room = await FirebaseFirestore.instance.collection('broadcast').doc(roomInfo.docId).set({
+      'id' : roomInfo.docId,
+      'title' : roomInfo.title,
+      'notice' : roomInfo.notice,
+      'channelName' : roomInfo.docId,
+      'docId' :  roomInfo.docId,
+      'roomCategory' : roomInfo.roomCategory,
+      'thumbnail' : roomInfo.thumbnail,
+      'location' : roomInfo.hostInfo.location,
+      'hostNickname' : roomInfo.hostInfo.nickName,
+      'hostProfile' :roomInfo.hostInfo.profile,
+      'hostUid' : roomInfo.hostInfo.uid,
+      'like' : 0,
+      'createdTime' :FieldValue.serverTimestamp(),
+      //'createdAt': FieldValue.serverTimestamp(),
+     // 'imageUrl': imageUrl,
+     // 'name': name,
       'type': types.RoomType.group.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
       'userIds': roomUsers.map((u) => u.id).toList(),
@@ -61,63 +96,75 @@ class MyFirebaseChatCore {
     });
 
     return types.BroadcastModel(
-      id: room.id,
-      imageUrl: imageUrl,
-      metadata: metadata,
-      name: name,
-      type: types.MyRoomType.group,
-      users: roomUsers,
+roomInfo: roomInfo,
+      id: roomInfo.docId,
+    hostInfo: roomInfo.hostInfo,
+    //   imageUrl: imageUrl,
+roomCategory: roomInfo.roomCategory,
+     title: roomInfo.title,
+     notice: roomInfo.notice,
+     docId: roomInfo.docId,
+     channelName: roomInfo.docId,
+
+      //
+      // id: room.id,
+      // imageUrl: imageUrl,
+      // metadata: metadata,
+      // name: name,
+       type: types.MyRoomType.group,
+       users: roomUsers,
     );
   }
 
   /// Creates a direct chat for 2 people. Add [metadata] for any additional
   /// custom data.
-  Future<types.BroadcastModel> createRoom(
-      types.User otherUser, {
-        Map<String, dynamic>? metadata,
-      }) async {
-    if (firebaseUser == null) return Future.error('User does not exist');
-
-    final query = await FirebaseFirestore.instance
-        .collection('broadcast')
-      //  .where('userIds', arrayContains: firebaseUser!.uid)
-        .get();
-
-    final rooms = await processRoomsQuery(firebaseUser!, query);
-
-    try {
-      return rooms.firstWhere((room) {
-        if (room.type == types.MyRoomType.group) return false;
-
-        final userIds = room.users!.map((u) => u.id);
-        return userIds.contains(firebaseUser!.uid) &&
-            userIds.contains(otherUser.id);
-      });
-    } catch (e) {
-      // Do nothing if room does not exist
-      // Create a new room instead
-    }
-
-    final currentUser = await fetchUser(firebaseUser!.uid);
-    final users = [currentUser, otherUser];
-
-    final room = await FirebaseFirestore.instance.collection('broadcast').add({
-      'createdAt': FieldValue.serverTimestamp(),
-      'imageUrl': null,
-      'metadata': metadata,
-      'name': null,
-      'type': types.RoomType.direct.toShortString(),
-      'updatedAt': FieldValue.serverTimestamp(),
-      'userIds': null,
-      'userRoles': null,
-    });
-
-    return types.BroadcastModel(
-      id: room.id,
-      metadata: metadata,
-      type: types.MyRoomType.direct,
-    );
-  }
+  // Future<types.BroadcastModel> createRoom(
+  //     types.User otherUser, {
+  //       Map<String, dynamic>? metadata,
+  //     }) async {
+  //   if (firebaseUser == null) return Future.error('User does not exist');
+  //
+  //   final query = await FirebaseFirestore.instance
+  //       .collection('broadcast')
+  //     //  .where('userIds', arrayContains: firebaseUser!.uid)
+  //       .get();
+  //
+  //   final rooms = await processRoomsQuery(firebaseUser!, query);
+  //
+  //   try {
+  //     return rooms.firstWhere((room) {
+  //       if (room.type == types.MyRoomType.group) return false;
+  //
+  //       final userIds = room.users!.map((u) => u.id);
+  //       return userIds.contains(firebaseUser!.uid) &&
+  //           userIds.contains(otherUser.id);
+  //     });
+  //   } catch (e) {
+  //     // Do nothing if room does not exist
+  //     // Create a new room instead
+  //   }
+  //
+  //   final currentUser = await fetchUser(firebaseUser!.uid);
+  //   final users = [currentUser, otherUser];
+  //
+  //   final room = await FirebaseFirestore.instance.collection('broadcast').add({
+  //     'createdAt': FieldValue.serverTimestamp(),
+  //     'imageUrl': null,
+  //     'metadata': metadata,
+  //     'name': null,
+  //     'type': types.RoomType.direct.toShortString(),
+  //     'updatedAt': FieldValue.serverTimestamp(),
+  //     'userIds': null,
+  //     'userRoles': null,
+  //   });
+  //
+  //   return types.BroadcastModel(
+  //     id: room.id,
+  //     metadata: metadata,
+  //     type: types.MyRoomType.direct,
+  //     users: users,
+  //   );
+  // }
 
   /// Creates [types.User] in Firebase to store name and avatar used on
   /// rooms list
@@ -237,6 +284,9 @@ class MyFirebaseChatCore {
     if (firebaseUser == null) return;
 
     types.MyMessage? message;
+    //DateTime createdTime = DateTime.now();
+  Timestamp createdTime = Timestamp.now();
+  String docId = (10000000000000 - createdTime.millisecondsSinceEpoch).toString();
 
     if (partialMessage is types.PartialFile) {
       message = types.MyFileMessage.fromPartial(
@@ -262,12 +312,13 @@ class MyFirebaseChatCore {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
       messageMap['authorId'] = firebaseUser!.uid;
-      messageMap['createdAt'] = FieldValue.serverTimestamp();
+      messageMap['createdAt'] = createdTime;
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
 
       await FirebaseFirestore.instance
           .collection('broadcast/$roomId/messages')
-          .add(messageMap);
+      .doc(docId)
+          .set(messageMap);
     }
   }
 

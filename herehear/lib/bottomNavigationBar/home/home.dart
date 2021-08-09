@@ -136,10 +136,14 @@ class HomePage extends StatelessWidget {
                       initialData: const [],
                       builder: (context, snapshot) {
                         if (!snapshot.hasData)
-                          return Center(
-                              child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
-                          ));
+                          {
+                            print('This is home snapshot&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+                            print(snapshot);
+                            return Center(
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ));
+                          }
 
                         if (snapshot.data!
                                 .isEmpty && //snapshot.data!.docs.length == 0
