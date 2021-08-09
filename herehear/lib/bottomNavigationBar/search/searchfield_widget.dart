@@ -25,7 +25,9 @@ class SearchTextField extends StatelessWidget {
             searchController.text.value = searchController.textController.value.text;
           },
           autofocus: true,
-          style: TextStyle(fontSize: 16.sp, color: Colors.grey[600],),
+          style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
           decoration: InputDecoration(
             filled: true,
             fillColor: Color(0xFFE9E9E9),

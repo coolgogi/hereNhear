@@ -157,64 +157,60 @@ TextTheme _buildClosetTextTheme(TextTheme base) {
       .copyWith(
     headline1: base.headline1!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 17.sp,
+      fontSize: 19.sp,
       fontFamily: 'Noto Sans CJK kr-bold',
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
     ),
     headline2: base.headline2!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 17.sp,
+      fontSize: 19.sp,
       fontFamily: 'Noto Sans CJK kr-medium',
       fontWeight: FontWeight.w500,
     ),
     headline3: base.headline3!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 20.sp,
-      fontFamily: 'Noto Sans CJK kr-bold',
-      fontWeight: FontWeight.w700,
+      fontSize: 19.sp,
+      fontFamily: 'Noto Sans CJK kr-regular',
+      fontWeight: FontWeight.normal,
     ),
     headline4: base.headline4!.copyWith(
       color: OnBackgroundLight,
-      fontSize: 17.sp,
-      fontFamily: 'Noto Sans CJK kr-regular',
-      fontWeight: FontWeight.w400,
+      fontSize: 14.sp,
+      fontFamily: 'Noto Sans CJK kr-bold',
+      fontWeight: FontWeight.bold,
     ),
     headline5: base.headline5!.copyWith(
-      color: OnBackgroundLight,
-      fontSize: 20.sp,
+      fontSize: 14.0.sp,
       fontFamily: 'Noto Sans CJK kr-regular',
-      fontWeight: FontWeight.w400,
+      fontWeight: FontWeight.normal,
     ),
     headline6: base.headline6!.copyWith(
       fontSize: 12.0.sp,
-      fontFamily: 'Roboto',
-      fontWeight: FontWeight.w700,
-    ),
-    caption: base.caption!.copyWith(
-      fontWeight: FontWeight.w400,
-      fontSize: 14.0.sp,
+      fontFamily: 'Noto Sans CJK kr-regular',
+      fontWeight: FontWeight.normal,
     ),
     subtitle1: base.subtitle1!.copyWith(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.normal,
       fontSize: 14.0.sp,
-      fontFamily: 'Roboto',
+      fontFamily: 'Noto Sans CJK kr-regular',
+    ),
+    subtitle2: base.subtitle2!.copyWith(
+      fontWeight: FontWeight.bold,
+      fontSize: 11.0.sp,
+      fontFamily: 'Noto Sans CJK kr-bold',
     ),
     bodyText1: base.bodyText1!.copyWith(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w200,
       color: OnSurfaceLight,
-      fontSize: 15.0.sp,
-      fontFamily: 'Noto Sans CJK KR-bold',
+      fontSize: 11.0.sp,
+      fontFamily: 'Noto Sans-extraLight',
     ),
-    bodyText2: base.bodyText2!.copyWith(
-      fontWeight: FontWeight.w500,
-      color: OnSurfaceLight,
-      fontSize: 12.0.sp,
+    caption: base.caption!.copyWith(
+      fontWeight: FontWeight.normal,
+      fontSize: 24.0.sp,
       fontFamily: 'Noto Sans CJK KR-regular',
     ),
   );
-  // .apply(
-  //   displayColor: OnSecondaryLight,
-  // );
 }
 
 AppBarTheme buildClosetAppBarTheme(AppBarTheme base) {

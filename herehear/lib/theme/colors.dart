@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 const PrimaryColorLight = Color(0xFF2B7BF8);
-const OnPrimaryLight = Color(0xFFFFD9C3);
-const PrimaryVariantLight = Color(0xFFC1E1B0);
+const OnPrimaryLight = Color(0xFFFFFFFF);
+const PrimaryVariantLight = Color(0xFF4A4A4A);
 const SecondaryLight = Color(0xFFFFD9C3);
 const SecondaryVariantLight = Color(0xFFFF6172);
-const OnSecondaryLight = Color(0xFFFFFFFF);
+const OnSecondaryLight = Color(0xFFE9E9E9);
 const BackgroundLight = Color(0xFFFFFFFF);
 const OnBackgroundLight = Color(0xFF000000);
 const SurfaceLight = Color(0xFFFFFFFF);
 const OnSurfaceLight = Color(0xFF4A4A4A);
-const ErrorLight = Color(0xFFB00020);
+const ErrorLight = Color(0xFFF2565A);
 const OnErrorLight = Color(0xFFFFFFFF);
 
 const PrimaryColorDark = Color(0xFFBE6DFA);
