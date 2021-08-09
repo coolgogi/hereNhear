@@ -31,7 +31,7 @@ class BroadcastModel extends Equatable {
     this.name,
     required this.type,
     this.updatedAt,
-    this.users,
+    required this.users,
 
     this.hostInfo,
     this.title,
@@ -173,9 +173,9 @@ class BroadcastModel extends Equatable {
   final String? thumbnail; //image
   final String? location;
   final DateTime? createdTime;
-  final List<String>? roomCategory; //category
+  final List<dynamic>? roomCategory; //category
   final int? like;
-  final List<UserModel>? users; //userNickname, userProfile
+  final List<UserModel> users; //userNickname, userProfile
 
 
   /// Created room timestamp, in ms

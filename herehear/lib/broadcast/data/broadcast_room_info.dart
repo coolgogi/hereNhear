@@ -5,7 +5,7 @@ import 'package:herehear/users/data/user_model.dart';
 class RoomInfoModel {
   UserModel hostInfo;
   String title;
-  List<String> roomCategory;
+  List<dynamic> roomCategory;
   String docId;
   String? notice;
   String? thumbnail;

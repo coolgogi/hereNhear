@@ -51,7 +51,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
         //required this.room,
         required this.roomData}) {
     agoraController = Get.put(
-        AgoraEventController.broadcast(channelName: roomData.channelName!, role: role));
+        AgoraEventController.broadcast(channelName: roomData.docId!, role: role));
   }
   //
   // BroadCastPage.broadcaster(
@@ -119,7 +119,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       ),
       backgroundColor: Colors.white,
       title: Text(
-        roomData.title!,
+        roomData.roomInfo!.title!,
         style: Theme.of(context).textTheme.subtitle1,
       ),
       // backgroundColor: black,

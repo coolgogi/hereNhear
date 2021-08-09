@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
@@ -26,6 +27,8 @@ Future<List<types.BroadcastModel>> processRoomsQuery(
   );
 
 
+
+
   return await Future.wait(futures);
 }
 
@@ -37,17 +40,23 @@ Future<types.BroadcastModel> processRoomDocument(
   final LocationController locationController = Get.find();
 
 
+
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
-  var name = doc.data()?['name'] as String?;
   final type = doc.data()!['type'] as String;
   final docId = doc.data()!['docId'] as String;
   final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
-  final userIds = doc.data()!['currentListener'] as List<dynamic>;
+  final userIds = doc.data()!['userIds'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
   final like = doc.data()?['like'] as int?;
   final hostInfo = await fetchUser(doc.data()?['hostUid']);
+  final title = doc.data()!['title'] as String;
+  final List roomCategory = doc.data()!['roomCategory'] as List;
+  final roomInfo = RoomInfoModel(hostInfo: hostInfo, title: title, roomCategory: roomCategory, docId: docId);
+print("This is host info !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111");
+  print(hostInfo);
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
   final users = await Future.wait(
     userIds.map(
@@ -58,32 +67,20 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
-  if (type == types.MyRoomType.direct.toShortString()) {
-    try {
-      final otherUser = users.firstWhere(
-            (u) => u.id != firebaseUser.uid,
-      );
 
-      imageUrl = otherUser.imageUrl;
-      name = '${otherUser.firstName ?? ''} ${otherUser.lastName ?? ''}'.trim();
-    } catch (e) {
-      // Do nothing if other user is not found, because he should be found.
-      // Consider falling back to some default values.
-    }
-  }
 
-  final room = types.BroadcastModel(
-    hostInfo:hostInfo ,
+  final room = await types.BroadcastModel(
+    hostInfo: hostInfo,
+    roomInfo: roomInfo,
     like : like,
-    createdAt: createdAt?.millisecondsSinceEpoch,
+   // createdAt: createdAt?.millisecondsSinceEpoch,
     id: docId,
     docId: docId,
     imageUrl: imageUrl,
     metadata: metadata,
-    name: name,
     location:locationController.location.value ,
     type: types.getMyRoomTypeFromString(type),
-    updatedAt: updatedAt?.millisecondsSinceEpoch,
+   // updatedAt: updatedAt?.millisecondsSinceEpoch,
     users: users,
   );
 
@@ -105,7 +102,19 @@ types.UserModel processUserDocument(
   final roleString = doc.data()?['role'] as String?;
   final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
 
+print('host info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
+  final nickName = doc.data()?['nickName'] as String?;
+      final uid = doc.data()?['uid'] as String?;
+  final profile = doc.data()?['profile'] as String?;
+  print(nickName);
+  print(uid);
+  print(profile);
+  print('host info @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
+
   final user = types.UserModel(
+    nickName: nickName,
+    uid: uid,
+    profile: profile,
     createdAt: createdAt?.millisecondsSinceEpoch,
     firstName: firstName,
     id: doc.id,

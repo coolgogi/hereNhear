@@ -378,7 +378,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     userList.add(UserController.to.myProfile.value);
 
 
-    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, users: userList);
+    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
 
     // agoraController.createBroadcastRoom(
     //   UserController.to.myProfile.value,
