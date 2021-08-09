@@ -4,7 +4,7 @@
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 pod 'Firebase/Analytics'
-
+pod 'GoogleSignIn'
 # post_install do |installer|
 #     installer.pods_project.targets.each do |target|
 #       target.build_configurations.each do |config|
