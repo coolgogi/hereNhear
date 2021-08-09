@@ -83,18 +83,23 @@ class LoginPage extends StatelessWidget {
             Container(
               height: 44.h,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.all(Radius.circular(14.r)),
               ),
               child: ElevatedButton(
-                onPressed: null,
+                onPressed: () => controller.loginWithGoogle(),
                 child: Text(
                   '로그인',
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary
                   )),
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                  elevation: MaterialStateProperty.all(0),
+                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.primary),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14.0),
+                            side: BorderSide(color: Theme.of(context).colorScheme.primary)
+                        )
+                    )
                 ),
               ),
             ),
