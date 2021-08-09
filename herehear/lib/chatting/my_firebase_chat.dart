@@ -12,7 +12,6 @@ import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_image_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_file_message.dart' as types;
 
-
 /// Provides access to Firebase chat data. Singleton, use
 /// FirebaseChatCore.instance to aceess methods.
 class MyFirebaseChatCore {
@@ -28,7 +27,7 @@ class MyFirebaseChatCore {
 
   /// Singleton instance
   static final MyFirebaseChatCore instance =
-  MyFirebaseChatCore._privateConstructor();
+      MyFirebaseChatCore._privateConstructor();
 
   /// Creates a chat group room with [users]. Creator is automatically
   /// added to the group. [name] is required and will be used as
@@ -43,52 +42,32 @@ class MyFirebaseChatCore {
     final currentUser = await fetchUser(hostInfo.uid!);
     final roomUsers = [currentUser];
 
-    //
-    // required types.UserModel hostInfo,
-    //     required String title,
-    //     String? notice,
-    // required List<String> roomCategory,
-    // String? imageUrl,
-    // required String docId,
-    // required String location,
-    //
-    //
-    // id: docId,
-    // hostInfo: userData,
-    // title: title,
-    // notice: notice,
-    // channelName: docId,
-    // docId: docId,
-    // thumbnail: 'assets/images/mic1.jpg',
-    // location: location,
-    // createdTime: DateTime.now(),
-    // like: 0,
-    // type: types.MyRoomType.group,
-
-
-    final room = await FirebaseFirestore.instance.collection('broadcast').doc(roomInfo.docId).set({
-      'id' : roomInfo.docId,
-      'title' : roomInfo.title,
-      'notice' : roomInfo.notice,
-      'channelName' : roomInfo.docId,
-      'docId' :  roomInfo.docId,
-      'roomCategory' : roomInfo.roomCategory,
-      'thumbnail' : roomInfo.thumbnail,
-      'location' : roomInfo.hostInfo.location,
-      'hostNickname' : roomInfo.hostInfo.nickName,
-      'hostProfile' :roomInfo.hostInfo.profile,
-      'hostUid' : roomInfo.hostInfo.uid,
-      'like' : 0,
-      'createdTime' :FieldValue.serverTimestamp(),
+    final room = await FirebaseFirestore.instance
+        .collection('broadcast')
+        .doc(roomInfo.docId)
+        .set({
+      'id': roomInfo.docId,
+      'title': roomInfo.title,
+      'notice': roomInfo.notice,
+      'channelName': roomInfo.docId,
+      'docId': roomInfo.docId,
+      'roomCategory': roomInfo.roomCategory,
+      'thumbnail': roomInfo.thumbnail,
+      'location': roomInfo.hostInfo.location,
+      'hostNickname': roomInfo.hostInfo.nickName,
+      'hostProfile': roomInfo.hostInfo.profile,
+      'hostUid': roomInfo.hostInfo.uid,
+      'like': 0,
+      'createdTime': FieldValue.serverTimestamp(),
       //'createdAt': FieldValue.serverTimestamp(),
-     // 'imageUrl': imageUrl,
-     // 'name': name,
+      // 'imageUrl': imageUrl,
+      // 'name': name,
       'type': types.RoomType.group.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
       'userIds': roomUsers.map((u) => u.id).toList(),
       'userRoles': roomUsers.fold<Map<String, String?>>(
         {},
-            (previousValue, element) => {
+        (previousValue, element) => {
           ...previousValue,
           element.id!: element.role.toString().split('.').last,
         },
@@ -96,23 +75,23 @@ class MyFirebaseChatCore {
     });
 
     return types.BroadcastModel(
-roomInfo: roomInfo,
+      roomInfo: roomInfo,
       id: roomInfo.docId,
-    hostInfo: roomInfo.hostInfo,
-    //   imageUrl: imageUrl,
-roomCategory: roomInfo.roomCategory,
-     title: roomInfo.title,
-     notice: roomInfo.notice,
-     docId: roomInfo.docId,
-     channelName: roomInfo.docId,
+      hostInfo: roomInfo.hostInfo,
+      //   imageUrl: imageUrl,
+      roomCategory: roomInfo.roomCategory,
+      title: roomInfo.title,
+      notice: roomInfo.notice,
+      docId: roomInfo.docId,
+      channelName: roomInfo.docId,
 
       //
       // id: room.id,
       // imageUrl: imageUrl,
       // metadata: metadata,
       // name: name,
-       type: types.MyRoomType.group,
-       users: roomUsers,
+      type: types.MyRoomType.group,
+      users: roomUsers,
     );
   }
 
@@ -193,14 +172,14 @@ roomCategory: roomInfo.roomCategory,
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
-          (snapshot) {
+      (snapshot) {
         return snapshot.docs.fold<List<types.MyMessage>>(
           [],
-              (previousValue, element) {
+          (previousValue, element) {
             final data = element.data();
             print(room.users);
             final author = room.users.firstWhere(
-                  (u) => u.id == data['authorId'],
+              (u) => u.id == data['authorId'],
               orElse: () => types.UserModel(id: data['authorId'] as String),
             );
             print('***********************************');
@@ -245,36 +224,29 @@ roomCategory: roomInfo.roomCategory,
   /// 3) Create an Index (Firestore Database -> Indexes tab) where collection ID
   /// is `rooms`, field indexed are `userIds` (type Arrays) and `updatedAt`
   /// (type Descending), query scope is `Collection`
-  Stream<List<types.BroadcastModel>> roomsWithLocation({bool orderByUpdatedAt = false}) {
+  Stream<List<types.BroadcastModel>> roomsWithLocation(
+      {bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {
       return const Stream.empty();
     }
-      final collection =
-      FirebaseFirestore.instance
-          .collection('broadcast')
-          .where('location',
-          isEqualTo: UserController.to.myProfile.value.location);
+    final collection = FirebaseFirestore.instance.collection('broadcast').where(
+        'location',
+        isEqualTo: UserController.to.myProfile.value.location);
 
-
-      return collection
-          .snapshots()
-          .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
-
+    return collection
+        .snapshots()
+        .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
   }
 
   Stream<List<types.BroadcastModel>> rooms({bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {
       return const Stream.empty();
     }
-    final collection =
-    FirebaseFirestore.instance
-        .collection('broadcast');
-
+    final collection = FirebaseFirestore.instance.collection('broadcast');
 
     return collection
         .snapshots()
         .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
-
   }
 
   /// Sends a message to the Firestore. Accepts any partial message and a
@@ -285,8 +257,9 @@ roomCategory: roomInfo.roomCategory,
 
     types.MyMessage? message;
     //DateTime createdTime = DateTime.now();
-  Timestamp createdTime = Timestamp.now();
-  String docId = (10000000000000 - createdTime.millisecondsSinceEpoch).toString();
+    Timestamp createdTime = Timestamp.now();
+    String docId =
+        (10000000000000 - createdTime.millisecondsSinceEpoch).toString();
 
     if (partialMessage is types.PartialFile) {
       message = types.MyFileMessage.fromPartial(
@@ -317,7 +290,7 @@ roomCategory: roomInfo.roomCategory,
 
       await FirebaseFirestore.instance
           .collection('broadcast/$roomId/messages')
-      .doc(docId)
+          .doc(docId)
           .set(messageMap);
     }
   }
@@ -343,13 +316,13 @@ roomCategory: roomInfo.roomCategory,
     if (firebaseUser == null) return const Stream.empty();
     return FirebaseFirestore.instance.collection('users').snapshots().map(
           (snapshot) => snapshot.docs.fold<List<types.UserModel>>(
-        [],
+            [],
             (previousValue, element) {
-          if (firebaseUser!.uid == element.id) return previousValue;
+              if (firebaseUser!.uid == element.id) return previousValue;
 
-          return [...previousValue, processUserDocument(element)];
-        },
-      ),
-    );
+              return [...previousValue, processUserDocument(element)];
+            },
+          ),
+        );
   }
 }

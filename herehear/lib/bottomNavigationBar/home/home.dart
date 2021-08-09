@@ -137,8 +137,7 @@ class HomePage extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (!snapshot.hasData)
                           {
-                            print('This is home snapshot&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
-                            print(snapshot);
+
                             return Center(
                                 child: CircularProgressIndicator(
                                   color: Theme.of(context).colorScheme.primary,

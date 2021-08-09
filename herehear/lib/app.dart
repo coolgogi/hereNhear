@@ -83,8 +83,6 @@ class App extends GetView<UserController> {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
                 UserController.to.authStateChanges(snapshot.data);
-                print('UUUUUUUUUUUUUUUUUUUUUUUUUUSSSSSSSSSSSSSSSSSSSSSSSER');
-                print(UserController.to.myProfile.value.uid);
                 return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
