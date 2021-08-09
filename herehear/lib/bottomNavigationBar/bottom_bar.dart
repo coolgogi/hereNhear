@@ -121,13 +121,13 @@ class BottomBar extends StatelessWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 18.0.h),
-                            child: Text('HERE 라이브', style: Theme.of(context).textTheme.bodyText1),
+                            child: Text('HERE 라이브', style: Theme.of(context).textTheme.headline4),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 11.0.h),
-                            child: Text('HERE 라이브를 통해', style: Theme.of(context).textTheme.bodyText2),
+                            child: Text('HERE 라이브를 통해', style: Theme.of(context).textTheme.headline6),
                           ),
-                          Text('원하는 주제로 대화해보세요!', style: Theme.of(context).textTheme.bodyText2),
+                          Text('원하는 주제로 대화해보세요!', style: Theme.of(context).textTheme.headline6),
                           Padding(
                             padding:EdgeInsets.only(top: 13.h),
                             child: Image.asset('assets/images/liveImage.png', width: 57.w),
@@ -150,13 +150,13 @@ class BottomBar extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 18.0.h),
-                          child: Text('HERE CHAT',  style: Theme.of(context).textTheme.bodyText1),
+                          child: Text('HERE CHAT',  style: Theme.of(context).textTheme.headline4),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 11.0.h),
-                          child: Text('사람들과 자유로운 대화를', style: Theme.of(context).textTheme.bodyText2),
+                          child: Text('사람들과 자유로운 대화를', style: Theme.of(context).textTheme.headline6),
                         ),
-                        Text('즐겨보세요!', style: Theme.of(context).textTheme.bodyText2),
+                        Text('즐겨보세요!', style: Theme.of(context).textTheme.headline6),
                         Padding(
                           padding: EdgeInsets.only(top: 13.0.h),
                           child: Row(

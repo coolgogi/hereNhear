@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/broadcast/broadcast_model.dart';
+import '../broadcast/data/broadcast_model.dart';
 import 'package:herehear/groupCall/group_call_model.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'agoraRepository.dart';
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import '../broadcast/data/broadcast_model.dart' as types;
 
 
 class AgoraCreateController extends GetxController {
@@ -13,7 +13,6 @@ class AgoraCreateController extends GetxController {
 
   late Rx<BroadcastModel> newBroadcastRoom;
   Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
-  RxList<String> selectedCategoryList = <String>[].obs;
 
   Future<void> createBroadcastRoom(
       UserModel userData,

@@ -8,6 +8,7 @@ class BroadcastInfoController extends GetxController {
   bool x = true;
   int index = -1.obs;
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
+  RxList<String> selectedCategoryList = <String>[].obs;
 
   int setCategory(bool value, int categoryIndex){
     index = value ? categoryIndex : index;

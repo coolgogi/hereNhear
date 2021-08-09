@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
+  RxBool is_obscureText = true.obs;
 
   Future<void> loginWithGoogle() async {
     try {

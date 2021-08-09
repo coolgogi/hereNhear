@@ -22,7 +22,9 @@ class FreeBoardPage extends StatelessWidget {
         //   onPressed: null,
         // ),
         centerTitle: true,
-        title: Text('HEAR 게시판', style: Theme.of(context).appBarTheme.titleTextStyle),
+        title: Text('HEAR 게시판', style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(
+          fontWeight: FontWeight.w700,
+        )),
         actions: <Widget>[
           IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
@@ -37,21 +39,55 @@ class FreeBoardPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '당신의 하루를 위로할 HEAR',
-                  // style: Theme.of(context).textTheme.headline1,
-                  style: TextStyle(
-                      fontSize: 13.sp,
-                      fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily),
+                  style: Theme.of(context).textTheme.headline4,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w),
-                  child: Image.asset('assets/icons/leaf2.png', width: 13.0.w,),
+                  padding: EdgeInsets.only(left: 6.0.w, bottom: 2.h),
+                  child: Image.asset('assets/icons/leaf2.png', width: 15.0.w,),
                 ),
+                Expanded(child: Container()),
+                Padding(
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 0,
+                          blurRadius: 4,
+                          offset: Offset(0, 4), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints.tightFor(width: 92.w, height: 27.h),
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                        ),
+                        onPressed: null,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset('assets/icons/pen.png', width: 18.w),
+                            SizedBox(width: 3.w),
+                            Text('글쓰기', style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 13.5.sp,
+                            ))
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: 20.0.w, top: 32.0.h),
+                left: 20.0.w, top: 27.0.h),
             child: postList(context),
           ),
         ],
@@ -111,12 +147,7 @@ class FreeBoardPage extends StatelessWidget {
               image: AssetImage('assets/images/sora.jpg'),
               fit: BoxFit.cover
             ),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
         Container(
@@ -132,12 +163,7 @@ class FreeBoardPage extends StatelessWidget {
                 Color(0xFF747474).withOpacity(0.0),
               ],
             ),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
             boxShadow: [
               BoxShadow(
                 color: Colors.white.withOpacity(0.3),
@@ -155,10 +181,8 @@ class FreeBoardPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 51.0.h),
                   child: Center(child: Text(
                       '연애 상담 해드려요.',
-                      style: TextStyle(
-                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                          fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
-                          color: Colors.white
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white
                       ))),
                 ),
                 Expanded(child: Container()),
@@ -177,10 +201,8 @@ class FreeBoardPage extends StatelessWidget {
                         //     ? ' 0'
                         //     : ' ${_roomData['currentListener'].length.toString()}',
                         ' 26',
-                        style: TextStyle(
-                            fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                            fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                            color: Colors.white
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Colors.white
                         )
                       ),
                       SizedBox(width: 8.0.w),

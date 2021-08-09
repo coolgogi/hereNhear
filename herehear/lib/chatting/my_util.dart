@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
 import 'package:herehear/chatting/util.dart' as types;
@@ -25,7 +25,6 @@ Future<List<types.BroadcastModel>> processRoomsQuery(
         (doc) => processRoomDocument(doc, firebaseUser),
   );
 
-  print(Future.wait(futures));
 
   return await Future.wait(futures);
 }
@@ -45,9 +44,7 @@ Future<types.BroadcastModel> processRoomDocument(
   final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
   final userIds = doc.data()!['currentListener'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
-
-  print("000000000000000000000000000000000");
-  print(userIds);
+  final like = doc.data()?['like'] as int?;
 
   final users = await Future.wait(
     userIds.map(
@@ -73,7 +70,8 @@ Future<types.BroadcastModel> processRoomDocument(
   }
 
   final room = types.BroadcastModel(
-   // createdAt: createdAt?.millisecondsSinceEpoch,
+    like : like,
+    createdAt: createdAt?.millisecondsSinceEpoch,
     id: docId,
     docId: docId,
     imageUrl: imageUrl,
@@ -81,11 +79,10 @@ Future<types.BroadcastModel> processRoomDocument(
     name: name,
     location:locationController.location.value ,
     type: types.getMyRoomTypeFromString(type),
-   // updatedAt: updatedAt?.millisecondsSinceEpoch,
+    updatedAt: updatedAt?.millisecondsSinceEpoch,
     users: users,
   );
-  print("############################room###########################");
-  print(room);
+
 
   return room;
 }

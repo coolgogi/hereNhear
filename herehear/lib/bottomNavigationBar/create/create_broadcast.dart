@@ -8,7 +8,9 @@ import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tags/flutter_tags.dart';
+
+
+import 'broadcastInfoController/broadcast_info_controller.dart';
 
 class CreateBroadcastPage extends StatefulWidget {
   late UserModel userData;
@@ -48,6 +50,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     'assets/icons/tree.png',
   ];
 
+  final broadcastInfoController = Get.put(BroadcastInfoController());
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
@@ -154,7 +157,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   ),
                   Expanded(child: Container()),
                   GestureDetector(
-                    onTap: () => agoraController.selectedCategoryList.removeRange(0, 3),
+                    onTap: () => broadcastInfoController.selectedCategoryList.removeRange(0, 3),
                     child: Row(
                       children: [
                         Image.asset('assets/icons/reload.png', width: 13.w,),
@@ -184,13 +187,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 child: Text('완료'),
               ),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 44.0,
-                ),
-              ],
-            ),
           ],
         ),
       ),
@@ -211,20 +207,20 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i])? Theme.of(context).colorScheme.primary : Colors.white,
+                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i])? Theme.of(context).colorScheme.primary : Colors.white,
                   avatar: Image.asset(categoryIconList[i], width: 13.w,),
                   label: Text(
                     categoryTextList[i],
                     style: TextStyle(
-                      color: agoraController.selectedCategoryList.contains(categoryTextList[i])? Colors.white : Theme.of(context).colorScheme.primary,
+                      color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i])? Colors.white : Theme.of(context).colorScheme.primary,
                       fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
                       fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
                     )),
                   onPressed: () {
-                    if(agoraController.selectedCategoryList.contains(categoryTextList[i]))
-                      agoraController.selectedCategoryList.remove(categoryTextList[i]);
-                    else if(agoraController.selectedCategoryList.length < 3)
-                      agoraController.selectedCategoryList.add(categoryTextList[i]);
+                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i]))
+                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i]);
+                    else if(broadcastInfoController.selectedCategoryList.length < 3)
+                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i]);
                   },
                 ),
               ),
@@ -241,20 +237,20 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+3])? Theme.of(context).colorScheme.primary : Colors.white,
+                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3])? Theme.of(context).colorScheme.primary : Colors.white,
                   avatar: Image.asset(categoryIconList[i+3], width: 13.w,),
                   label: Text(
                       categoryTextList[i+3],
                       style: TextStyle(
-                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+3])? Colors.white : Theme.of(context).colorScheme.primary,
+                        color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3])? Colors.white : Theme.of(context).colorScheme.primary,
                         fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
                         fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
                       )),
                   onPressed: () {
-                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+3]))
-                      agoraController.selectedCategoryList.remove(categoryTextList[i+3]);
-                    else if(agoraController.selectedCategoryList.length < 3)
-                      agoraController.selectedCategoryList.add(categoryTextList[i+3]);
+                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3]))
+                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i+3]);
+                    else if(broadcastInfoController.selectedCategoryList.length < 3)
+                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i+3]);
                   },
                 ),
               ),
@@ -271,20 +267,20 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                     side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
-                  backgroundColor: agoraController.selectedCategoryList.contains(categoryTextList[i+7])? Theme.of(context).colorScheme.primary : Colors.white,
+                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7])? Theme.of(context).colorScheme.primary : Colors.white,
                   avatar: Image.asset(categoryIconList[i+7], width: 13.w,),
                   label: Text(
                       categoryTextList[i+7],
                       style: TextStyle(
-                        color: agoraController.selectedCategoryList.contains(categoryTextList[i+7])? Colors.white : Theme.of(context).colorScheme.primary,
+                        color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7])? Colors.white : Theme.of(context).colorScheme.primary,
                         fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
                         fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
                       )),
                   onPressed: () {
-                    if(agoraController.selectedCategoryList.contains(categoryTextList[i+7]))
-                        agoraController.selectedCategoryList.remove(categoryTextList[i+7]);
-                    else if(agoraController.selectedCategoryList.length < 3)
-                        agoraController.selectedCategoryList.add(categoryTextList[i+7]);
+                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7]))
+                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i+7]);
+                    else if(broadcastInfoController.selectedCategoryList.length < 3)
+                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i+7]);
                   },
                 ),
               ),
@@ -307,7 +303,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       UserController.to.myProfile.value,
       _title.text,
       _notice.text,
-      agoraController.selectedCategoryList,
+      broadcastInfoController.selectedCategoryList,
       _docId,
       List<String>.filled(0, '', growable: true),
       locationController.location.value,

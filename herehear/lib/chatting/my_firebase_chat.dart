@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:herehear/users/controller/user_controller.dart';
-import 'package:herehear/broadcast/broadcast_model.dart' as types;
+import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/my_util.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
 import 'src/class/my_message.dart' as types;
