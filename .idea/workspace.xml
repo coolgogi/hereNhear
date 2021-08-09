@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a38cba2-4532-4a6b-b045-b217dfa724e3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/agora/agoraCreateController.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/agora/agoraCreateController.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/create/create_broadcast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/create/create_broadcast.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/home/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/bottomNavigationBar/home/home.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/broadcast/broadcast.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/broadcast/broadcast.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/broadcast/broadcast_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/broadcast/broadcast_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/broadcast/data/broadcast_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/broadcast/data/broadcast_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/broadcast/data/broadcast_room_info.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/broadcast/data/broadcast_room_info.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/chatting/ChatPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/chatting/ChatPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/chatting/my_firebase_chat.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/chatting/my_firebase_chat.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/chatting/my_util.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/chatting/my_util.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/lib/users/controller/user_controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/users/controller/user_controller.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,14 +44,18 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/herehear" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
     <property name="settings.editor.splitter.proportion" value="0.24799196" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="9a38cba2-4532-4a6b-b045-b217dfa724e3" name="Default Changelist" comment="" />
@@ -55,5 +68,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="902" y="238" key="FileChooserDialogImpl" timestamp="1628500765703">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="902" y="238" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1628500765703" />
   </component>
 </project>

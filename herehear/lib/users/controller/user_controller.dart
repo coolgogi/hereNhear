@@ -21,11 +21,9 @@ class UserController extends GetxController {
 
   // firebase storage에 데이터를 보내는 과정.
   void authStateChanges(User? firebaseUser) async {
-    print(
-        "this is user======================================================================");
-    print(firebaseUser!.uid);
+    firebaseUser!.uid;
     UserModel? firebaseUserdata =
-        await FirebaseUserRepository.findUserByUid(firebaseUser!.uid);
+        await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
 
     print(firebaseUserdata);
 
@@ -44,7 +42,6 @@ class UserController extends GetxController {
     } else {
       // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
       myProfile.value = firebaseUserdata;
-      //FirebaseUserRepository.updateLoginTime(firebaseUserdata.docId);
     }
   }
 

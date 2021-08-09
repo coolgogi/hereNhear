@@ -23,20 +23,10 @@ class AgoraCreateController extends GetxController {
       List<String> uNickname,
       String location) async {
     if (userData != null) {
-      print("==============================");
-      print('create broadcast room///////');
-      print("==============================");
-
-      print("Uuuuuuuuuuuuuuuuuuuuuuuuuu");
-      print(userData.uid);
-      print(userData.profile);
-      print(title);
-      print(notice);
-      print(docId);
-      print(location);
-
+      final users = [userData];
 
       newBroadcastRoom.value = BroadcastModel(
+        users: users ,
         id: docId,
         hostInfo: userData,
         title: title,

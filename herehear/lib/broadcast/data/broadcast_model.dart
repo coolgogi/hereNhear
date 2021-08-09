@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart';
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/chatting/util.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:meta/meta.dart';
@@ -21,6 +22,7 @@ extension MyRoomTypeToShortString on MyRoomType {
 class BroadcastModel extends Equatable {
   /// Creates a [BroadcastModel]
   const BroadcastModel({
+    this.roomInfo,
     this.createdAt,
     required this.id,
     this.imageUrl,
@@ -29,8 +31,8 @@ class BroadcastModel extends Equatable {
     this.name,
     required this.type,
     this.updatedAt,
-    this.users,
-    //
+    required this.users,
+
     this.hostInfo,
     this.title,
     this.notice,
@@ -61,6 +63,7 @@ class BroadcastModel extends Equatable {
   /// Creates room from a map (decoded JSON).
   BroadcastModel.fromJson(Map<String, dynamic> json)
       : createdAt = json['createdAt'] as int?,
+
         id = json['id'] as String,
         imageUrl = json['imageUrl'] as String?,
         lastMessages = (json['lastMessages'] as List<Map<String, dynamic>>?)
@@ -72,6 +75,7 @@ class BroadcastModel extends Equatable {
         updatedAt = json['updatedAt'] as int?,
 
 //
+        roomInfo = RoomInfoModel.fromJson(json['roomInfo'] as Map<String, dynamic>),
         hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
         title = json['title'] as String,
         notice = json['notice'] as String,
@@ -110,7 +114,7 @@ class BroadcastModel extends Equatable {
     'createdTime' : createdTime,
     'roomCategory' : roomCategory,
     'like' : like,
-    'users' : users?.map((e)=>e.toJson()).toList(),
+    'users' : users.map((e)=>e.toJson()).toList(),
 
 
   };
@@ -160,7 +164,7 @@ class BroadcastModel extends Equatable {
     //
   ];
 
-
+  final RoomInfoModel? roomInfo;
   final UserModel? hostInfo; //hostUid, hostNickname, hostProfile
   final String? title;
   final String? notice;
@@ -169,12 +173,14 @@ class BroadcastModel extends Equatable {
   final String? thumbnail; //image
   final String? location;
   final DateTime? createdTime;
-  final List<String>? roomCategory; //category
+  final List<dynamic>? roomCategory; //category
   final int? like;
-  final List<UserModel>? users; //userNickname, userProfile
+  final List<UserModel> users; //userNickname, userProfile
 
 
   /// Created room timestamp, in ms
+
+
   final int? createdAt;
 
   /// Room's unique ID
