@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a38cba2-4532-4a6b-b045-b217dfa724e3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/lib/etc/sh/push1.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/ios/Podfile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/herehear/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/herehear/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
