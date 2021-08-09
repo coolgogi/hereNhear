@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
+import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
@@ -184,13 +185,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 child: Text('완료'),
               ),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 44.0,
-                ),
-              ],
-            ),
           ],
         ),
       ),
@@ -312,6 +306,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       List<String>.filled(0, '', growable: true),
       locationController.location.value,
     );
+
 
     Get.off(
       () => BroadCastPage.broadcaster(

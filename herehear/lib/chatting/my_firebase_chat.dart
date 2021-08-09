@@ -33,9 +33,17 @@ class MyFirebaseChatCore {
   /// a group name. Add an optional [imageUrl] that will be a group avatar
   /// and [metadata] for any additional custom data.
   Future<types.BroadcastModel> createGroupRoom({
+    required types.UserModel hostInfo,
+    required String title,
+    String? notice,
+  required List<String> roomCategory,
     String? imageUrl,
-    Map<String, dynamic>? metadata,
-    required String name,
+  required String docId,
+  required String location,
+
+
+    //Map<String, dynamic>? metadata,
+   // required String name,
     required List<types.UserModel> users,
   }) async {
     if (firebaseUser == null) return Future.error('User does not exist');
@@ -43,11 +51,44 @@ class MyFirebaseChatCore {
     final currentUser = await fetchUser(firebaseUser!.uid);
     final roomUsers = [currentUser] + users;
 
+    //
+    // required types.UserModel hostInfo,
+    //     required String title,
+    //     String? notice,
+    // required List<String> roomCategory,
+    // String? imageUrl,
+    // required String docId,
+    // required String location,
+    //
+    //
+    // id: docId,
+    // hostInfo: userData,
+    // title: title,
+    // notice: notice,
+    // channelName: docId,
+    // docId: docId,
+    // thumbnail: 'assets/images/mic1.jpg',
+    // location: location,
+    // createdTime: DateTime.now(),
+    // like: 0,
+    // type: types.MyRoomType.group,
+
+
     final room = await FirebaseFirestore.instance.collection('broadcast').add({
-      'createdAt': FieldValue.serverTimestamp(),
-      'imageUrl': imageUrl,
-      'metadata': metadata,
-      'name': name,
+      'title' : title,
+      'notice' : notice,
+      'channelName' : docId,
+      'docId' : docId,
+      'thumbnail' :'assets/images/mic1.jpg',
+      'location' : hostInfo.location,
+      'hostNickname' : hostInfo.nickName,
+      'hostProfile' :hostInfo.profile,
+      'hostUid' : hostInfo.uid,
+      'like' : 0,
+      'createdTime' :FieldValue.serverTimestamp(),
+      //'createdAt': FieldValue.serverTimestamp(),
+     // 'imageUrl': imageUrl,
+     // 'name': name,
       'type': types.RoomType.group.toShortString(),
       'updatedAt': FieldValue.serverTimestamp(),
       'userIds': roomUsers.map((u) => u.id).toList(),
@@ -63,10 +104,19 @@ class MyFirebaseChatCore {
     return types.BroadcastModel(
       id: room.id,
       imageUrl: imageUrl,
-      metadata: metadata,
-      name: name,
-      type: types.MyRoomType.group,
-      users: roomUsers,
+    hostInfo: hostInfo,
+    title: title,
+    notice: notice,
+    docId: docId,
+    channelName: docId,
+
+      //
+      // id: room.id,
+      // imageUrl: imageUrl,
+      // metadata: metadata,
+      // name: name,
+       type: types.MyRoomType.group,
+       users: roomUsers,
     );
   }
 
