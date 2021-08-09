@@ -51,12 +51,7 @@ ListView broadcastRoomList(BuildContext context,
                       image: AssetImage("assets/images/groupcall/fish.jpg")
                   ),
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15)
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
@@ -85,11 +80,11 @@ ListView broadcastRoomList(BuildContext context,
                           ),
                         ),
                       ),
-                      Text('유리한 녀석들', style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 13.sp,
-                        fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                      )),
+                      Text('유리한 녀석들',
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 13.sp,
+                          )),
                       Expanded(child: Container()),
                       Icon(
                         Icons.people,
@@ -100,10 +95,9 @@ ListView broadcastRoomList(BuildContext context,
                         room.users ==null
                             ? ' 0'
                             : ' ${room.users!.length.toString()}',
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
                           color: Colors.white,
-                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          fontSize: 13.sp,
                         ),
                       ),
                       SizedBox(width: 8.sp),
@@ -113,13 +107,12 @@ ListView broadcastRoomList(BuildContext context,
                         color: Colors.white,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(right: 10.0.w),
+                        padding: EdgeInsets.only(right: 13.5.w),
                         child: Text(
                           ' ${room.like.toString()}',
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             color: Colors.white,
-                            fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                            fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                            fontSize: 13.sp,
                           ),
                         ),
                       ),
@@ -130,7 +123,7 @@ ListView broadcastRoomList(BuildContext context,
             ),
             Padding(
               padding: EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-              child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.bodyText1),
+              child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.headline4),
             ),
           ],
         ),

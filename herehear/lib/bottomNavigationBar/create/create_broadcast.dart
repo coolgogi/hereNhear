@@ -187,13 +187,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 child: Text('완료'),
               ),
             ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 44.0,
-                ),
-              ],
-            ),
           ],
         ),
       ),

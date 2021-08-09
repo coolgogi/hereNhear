@@ -38,7 +38,6 @@ class CommunityPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   'HEAR 게시판',
-                  // style: Theme.of(context).textTheme.headline1,
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 Expanded(child: Container()),
@@ -129,12 +128,7 @@ class CommunityPage extends StatelessWidget {
         onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
             color: Color(0xFFE9E9E9),
           ),
           height: 33.0.h,
@@ -172,12 +166,7 @@ class CommunityPage extends StatelessWidget {
                 image: AssetImage('assets/images/sora.jpg'),
                 fit: BoxFit.cover
             ),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
         Container(
@@ -193,12 +182,7 @@ class CommunityPage extends StatelessWidget {
                 Color(0xFF747474).withOpacity(0.0),
               ],
             ),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
             boxShadow: [
               BoxShadow(
                 color: Colors.white.withOpacity(0.3),
@@ -216,10 +200,8 @@ class CommunityPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 51.0.h),
                   child: Center(child: Text(
                       '연애 상담 해드려요.',
-                      style: TextStyle(
-                          fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                          fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
-                          color: Colors.white
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Colors.white,
                       ))),
                 ),
                 Expanded(child: Container()),
@@ -238,10 +220,8 @@ class CommunityPage extends StatelessWidget {
                         //     ? ' 0'
                         //     : ' ${_roomData['currentListener'].length.toString()}',
                           ' 26',
-                          style: TextStyle(
-                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                              color: Colors.white
+                          style: Theme.of(context).textTheme.headline6!.copyWith(
+                            color: Colors.white
                           )
                       ),
                       SizedBox(width: 8.0.w),
@@ -253,9 +233,7 @@ class CommunityPage extends StatelessWidget {
                       Text(
                         // ' ${_roomData['like'].toString()}',
                           ' 35',
-                          style: TextStyle(
-                              fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                              fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          style: Theme.of(context).textTheme.headline6!.copyWith(
                               color: Colors.white
                           )
                       ),
@@ -281,12 +259,7 @@ class CommunityPage extends StatelessWidget {
             height: 95.0.h,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
@@ -301,8 +274,8 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 15.0.w,),
-                    child: Image.asset('assets/images/sing.png'),
+                    padding: EdgeInsets.only(left: 12.0.w, right: 18.0.w,),
+                    child: Image.asset('assets/images/sing.png', width: 125.w,),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -311,7 +284,7 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                            Text('노래방', style: Theme.of(context).textTheme.bodyText1),
+                            Text('노래방', style: Theme.of(context).textTheme.headline4),
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
                               child: Image.asset('assets/images/mike.png', width: 13.0.w,),
@@ -321,7 +294,7 @@ class CommunityPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('당신의 실력을 맘껏 뽐내보세요.', style: Theme.of(context).textTheme.bodyText2)),
+                        child: Center(child: Text('당신의 실력을 맘껏 뽐내보세요.', style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),
@@ -330,17 +303,12 @@ class CommunityPage extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 15.0.h, right: 16.0.w),
+            margin: EdgeInsets.only(bottom: 15.0.h, right: 10.0.w),
             width: 327.0.w,
             height: 95.0.h,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
@@ -355,7 +323,7 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 15.0.w,),
+                    padding: EdgeInsets.only(left: 12.0.w, right: 7.0.w,),
                     child: Image.asset('assets/images/voiceCopy.png'),
                   ),
                   Column(
@@ -365,7 +333,7 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                          Text('성대모사', style: Theme.of(context).textTheme.bodyText1),
+                          Text('성대모사', style: Theme.of(context).textTheme.headline4),
                           Padding(
                             padding: EdgeInsets.only(left: 4.0.w),
                             child: Image.asset('assets/images/mike2.png', width: 13.0.w,),
@@ -375,7 +343,7 @@ class CommunityPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('1번 테이블에 봉골레 파스타 하나.', style: Theme.of(context).textTheme.bodyText2)),
+                        child: Center(child: Text('1번 테이블에 봉골레 파스타 하나.', style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),
@@ -389,12 +357,7 @@ class CommunityPage extends StatelessWidget {
             height: 95.0.h,
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15),
-                  topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15),
-                  bottomRight: Radius.circular(15)
-              ),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.2),
@@ -409,7 +372,7 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 15.0.w,),
+                    padding: EdgeInsets.only(left: 12.0.w, right: 31.0.w,),
                     child: Image.asset('assets/images/gamer.png'),
                   ),
                   Column(
@@ -419,7 +382,7 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                            Text('레크레이션', style: Theme.of(context).textTheme.bodyText1),
+                            Text('레크레이션', style: Theme.of(context).textTheme.headline4),
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
                               child: Image.asset('assets/images/game.png', width: 13.0.w,),
@@ -429,7 +392,7 @@ class CommunityPage extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('다양한 게임을 즐겨보아요.', style: Theme.of(context).textTheme.bodyText2)),
+                        child: Center(child: Text('다양한 게임을 즐겨보아요.', style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),

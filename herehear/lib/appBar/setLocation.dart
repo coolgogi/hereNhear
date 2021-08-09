@@ -65,7 +65,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
               children: <Widget>[
                 Text('당신의 ', style: Theme.of(context).textTheme.headline3),
                 Text('HERE', style: Theme.of(context).textTheme.headline1),
-                Text('는 어디인가요?', style: Theme.of(context).textTheme.headline3),
+                Text('은 어디인가요?', style: Theme.of(context).textTheme.headline3),
               ],
             ),
           ),

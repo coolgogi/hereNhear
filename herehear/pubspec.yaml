@@ -153,6 +153,8 @@ flutter:
     - assets/icons/music.png
     - assets/icons/sale.png
     - assets/icons/advertise.png
+    - assets/icons/pen.png
+    - assets/icons/bigEye.png
     - assets/images/game.png
     - assets/images/gamer.png
     - assets/images/sora.jpg
@@ -226,6 +228,9 @@ flutter:
     - family: Noto Sans CJK kr-regular
       fonts:
         - asset: fonts/NotoSansCJKkr-Regular.ttf
+    - family: Noto Sans-extraLight
+      fonts:
+          - asset: fonts/NotoSans-ExtraLight.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -19,12 +19,7 @@ List<Widget> groupcallRoomList(
           height: 69.0.h,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-                bottomRight: Radius.circular(15)
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(15)),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.2),
@@ -94,14 +89,14 @@ List<Widget> groupcallRoomList(
                   children: <Widget>[
                     Text(
                       _roomData['title'],
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                     SizedBox(
                       height: 7.0.h,
                     ),
                     Text(
                       _roomData['notice'],
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.headline6,
                     )
                   ],
                 )
