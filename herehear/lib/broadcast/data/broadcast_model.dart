@@ -114,7 +114,7 @@ class BroadcastModel extends Equatable {
     'createdTime' : createdTime,
     'roomCategory' : roomCategory,
     'like' : like,
-    'users' : users?.map((e)=>e.toJson()).toList(),
+    'users' : users.map((e)=>e.toJson()).toList(),
 
 
   };

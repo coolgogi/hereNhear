@@ -119,7 +119,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       ),
       backgroundColor: Colors.white,
       title: Text(
-        roomData.roomInfo!.title!,
+        roomData.roomInfo!.title,
         style: Theme.of(context).textTheme.subtitle1,
       ),
       // backgroundColor: black,
