@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/post.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,10 +18,10 @@ class FreeBoardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back_ios),
-        //   onPressed: null,
-        // ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Get.back(),
+        ),
         centerTitle: true,
         title: Text('HEAR 게시판', style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(
           fontWeight: FontWeight.w700,
@@ -66,7 +67,7 @@ class FreeBoardPage extends StatelessWidget {
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                         ),
-                        onPressed: null,
+                        onPressed: () => Get.to(PostPage()),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
