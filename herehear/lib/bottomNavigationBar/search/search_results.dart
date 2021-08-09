@@ -86,7 +86,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               Text(
                 '최근 본 HEAR',
                 // style: Theme.of(context).textTheme.headline1,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               Expanded(child: Container()),
               IconButton(
@@ -123,16 +123,24 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         padding: EdgeInsets.only(right: 6.0.w),
                         child: Image.asset('assets/icons/history.png', width: 20.w, height: 17.h,),
                       ),
-                      Text('같이 대화하면서 놀아요!'),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.0.h),
+                        child: Text('같이 대화하면서 놀아요!', style: Theme.of(context).textTheme.headline6),
+                      ),
                       Expanded(child: Container()),
-                      Text('HERO 정보', style: TextStyle(
-                          fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                          fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                          color: Theme.of(context).colorScheme.primary
-                      )),
-                      IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.navigate_next, size: 18.w))
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 3.0.h),
+                        child: Text('HERO 정보', style: Theme.of(context).textTheme.headline6!.copyWith(
+                            color: Theme.of(context).colorScheme.primary
+                          )
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 2.0.h),
+                        child: IconButton(
+                            onPressed: null,
+                            icon: Icon(Icons.navigate_next, size: 18.w)),
+                      )
                     ]
                 );
               },
@@ -149,7 +157,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
           padding: EdgeInsets.fromLTRB(25.0.w, 10.h, 30.w, 15.h),
           child: Text(
             '최근 검색어',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: Theme.of(context).textTheme.headline4,
           ),
         ),
         Column(
@@ -165,7 +173,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                         children: [
                           Text(
                             searchHistoryExample![index],
-                            style: Theme.of(context).textTheme.bodyText2,
+                            style: Theme.of(context).textTheme.headline6,
                           ),
                           Expanded(child: Container()),
                           IconButton(
