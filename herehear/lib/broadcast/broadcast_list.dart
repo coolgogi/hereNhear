@@ -30,10 +30,10 @@ ListView broadcastRoomList(BuildContext context,
           await Get.to(
                 () =>
                 BroadCastPage.myaudience(
-                    channelName: room.docId!,
-                    userData: _userData,
+                 //   channelName: room.docId!,
+                   // userData: _userData,
                     role: ClientRole.Audience,
-                    room: room
+                    roomData: room
                 ),
           );
         },

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
+import 'package:herehear/broadcast/data/broadcast_model.dart' as types;
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 import 'broadcastInfoController/broadcast_info_controller.dart';
 
@@ -32,11 +33,21 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   String _docId = '';
+
   //unused variable
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
-    '독서', '고민상담', '수다/챗', '유머', '홍보', '판매', '음악', '힐링', 'asmr', '일상'
+    '독서',
+    '고민상담',
+    '수다/챗',
+    '유머',
+    '홍보',
+    '판매',
+    '음악',
+    '힐링',
+    'asmr',
+    '일상'
   ];
   List<String> categoryIconList = [
     'assets/icons/book.png',
@@ -158,11 +169,17 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   ),
                   Expanded(child: Container()),
                   GestureDetector(
-                    onTap: () => broadcastInfoController.selectedCategoryList.removeRange(0, 3),
+                    onTap: () => broadcastInfoController.selectedCategoryList
+                        .removeRange(0, 3),
                     child: Row(
                       children: [
-                        Image.asset('assets/icons/reload.png', width: 13.w,),
-                        SizedBox(width: 6.w,),
+                        Image.asset(
+                          'assets/icons/reload.png',
+                          width: 13.w,
+                        ),
+                        SizedBox(
+                          width: 6.w,
+                        ),
                         Text('초기화'),
                       ],
                     ),
@@ -170,10 +187,15 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 ],
               ),
             ),
-            Obx(() => categorySelectList(),),
+            Obx(
+              () => categorySelectList(),
+            ),
             Padding(
               padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
-              child: Text('* 카테고리는 최대 3개까지 선택 가능합니다.', style: Theme.of(context).textTheme.bodyText2,),
+              child: Text(
+                '* 카테고리는 최대 3개까지 선택 가능합니다.',
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
             ),
             SizedBox(
               height: 32.0.h,
@@ -199,92 +221,137 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(3, (i) =>
-              Padding(
-                padding: EdgeInsets.only(left: 13.0.w),
-                child: ActionChip(
-                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i])? Theme.of(context).colorScheme.primary : Colors.white,
-                  avatar: Image.asset(categoryIconList[i], width: 13.w,),
-                  label: Text(
-                    categoryTextList[i],
+          children: List.generate(
+            3,
+            (i) => Padding(
+              padding: EdgeInsets.only(left: 13.0.w),
+              child: ActionChip(
+                labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                backgroundColor: broadcastInfoController.selectedCategoryList
+                        .contains(categoryTextList[i])
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
+                avatar: Image.asset(
+                  categoryIconList[i],
+                  width: 13.w,
+                ),
+                label: Text(categoryTextList[i],
                     style: TextStyle(
-                      color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i])? Colors.white : Theme.of(context).colorScheme.primary,
+                      color: broadcastInfoController.selectedCategoryList
+                              .contains(categoryTextList[i])
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primary,
                       fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                      fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
+                      fontFamily:
+                          Theme.of(context).textTheme.bodyText1!.fontFamily,
                     )),
-                  onPressed: () {
-                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i]))
-                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i]);
-                    else if(broadcastInfoController.selectedCategoryList.length < 3)
-                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i]);
-                  },
-                ),
+                onPressed: () {
+                  if (broadcastInfoController.selectedCategoryList
+                      .contains(categoryTextList[i]))
+                    broadcastInfoController.selectedCategoryList
+                        .remove(categoryTextList[i]);
+                  else if (broadcastInfoController.selectedCategoryList.length <
+                      3)
+                    broadcastInfoController.selectedCategoryList
+                        .add(categoryTextList[i]);
+                },
               ),
+            ),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(4, (i) =>
-              Padding(
-                padding: EdgeInsets.only(left: 13.0.w),
-                child: ActionChip(
-                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3])? Theme.of(context).colorScheme.primary : Colors.white,
-                  avatar: Image.asset(categoryIconList[i+3], width: 13.w,),
-                  label: Text(
-                      categoryTextList[i+3],
-                      style: TextStyle(
-                        color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3])? Colors.white : Theme.of(context).colorScheme.primary,
-                        fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
-                      )),
-                  onPressed: () {
-                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+3]))
-                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i+3]);
-                    else if(broadcastInfoController.selectedCategoryList.length < 3)
-                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i+3]);
-                  },
+          children: List.generate(
+            4,
+            (i) => Padding(
+              padding: EdgeInsets.only(left: 13.0.w),
+              child: ActionChip(
+                labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
+                backgroundColor: broadcastInfoController.selectedCategoryList
+                        .contains(categoryTextList[i + 3])
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
+                avatar: Image.asset(
+                  categoryIconList[i + 3],
+                  width: 13.w,
+                ),
+                label: Text(categoryTextList[i + 3],
+                    style: TextStyle(
+                      color: broadcastInfoController.selectedCategoryList
+                              .contains(categoryTextList[i + 3])
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primary,
+                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontFamily:
+                          Theme.of(context).textTheme.bodyText1!.fontFamily,
+                    )),
+                onPressed: () {
+                  if (broadcastInfoController.selectedCategoryList
+                      .contains(categoryTextList[i + 3]))
+                    broadcastInfoController.selectedCategoryList
+                        .remove(categoryTextList[i + 3]);
+                  else if (broadcastInfoController.selectedCategoryList.length <
+                      3)
+                    broadcastInfoController.selectedCategoryList
+                        .add(categoryTextList[i + 3]);
+                },
               ),
+            ),
           ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(3, (i) =>
-              Padding(
-                padding: EdgeInsets.only(left: 13.0.w),
-                child: ActionChip(
-                  labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  backgroundColor: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7])? Theme.of(context).colorScheme.primary : Colors.white,
-                  avatar: Image.asset(categoryIconList[i+7], width: 13.w,),
-                  label: Text(
-                      categoryTextList[i+7],
-                      style: TextStyle(
-                        color: broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7])? Colors.white : Theme.of(context).colorScheme.primary,
-                        fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
-                        fontFamily: Theme.of(context).textTheme.bodyText1!.fontFamily,
-                      )),
-                  onPressed: () {
-                    if(broadcastInfoController.selectedCategoryList.contains(categoryTextList[i+7]))
-                      broadcastInfoController.selectedCategoryList.remove(categoryTextList[i+7]);
-                    else if(broadcastInfoController.selectedCategoryList.length < 3)
-                      broadcastInfoController.selectedCategoryList.add(categoryTextList[i+7]);
-                  },
+          children: List.generate(
+            3,
+            (i) => Padding(
+              padding: EdgeInsets.only(left: 13.0.w),
+              child: ActionChip(
+                labelPadding: EdgeInsets.fromLTRB(0.w, 0.h, 6.w, 0.h),
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      color: Theme.of(context).colorScheme.primary, width: 1.5),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
+                backgroundColor: broadcastInfoController.selectedCategoryList
+                        .contains(categoryTextList[i + 7])
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.white,
+                avatar: Image.asset(
+                  categoryIconList[i + 7],
+                  width: 13.w,
+                ),
+                label: Text(categoryTextList[i + 7],
+                    style: TextStyle(
+                      color: broadcastInfoController.selectedCategoryList
+                              .contains(categoryTextList[i + 7])
+                          ? Colors.white
+                          : Theme.of(context).colorScheme.primary,
+                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontFamily:
+                          Theme.of(context).textTheme.bodyText1!.fontFamily,
+                    )),
+                onPressed: () {
+                  if (broadcastInfoController.selectedCategoryList
+                      .contains(categoryTextList[i + 7]))
+                    broadcastInfoController.selectedCategoryList
+                        .remove(categoryTextList[i + 7]);
+                  else if (broadcastInfoController.selectedCategoryList.length <
+                      3)
+                    broadcastInfoController.selectedCategoryList
+                        .add(categoryTextList[i + 7]);
+                },
               ),
+            ),
           ),
         ),
       ],
@@ -300,22 +367,35 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     _docId =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
-    agoraController.createBroadcastRoom(
-      UserController.to.myProfile.value,
-      _title.text,
-      _notice.text,
-      broadcastInfoController.selectedCategoryList,
-      _docId,
-      List<String>.filled(0, '', growable: true),
-      locationController.location.value,
-    );
+    RoomInfoModel roomInfo = RoomInfoModel(
+        hostInfo: UserController.to.myProfile.value,
+        title: _title.text,
+        roomCategory: broadcastInfoController.selectedCategoryList,
+        docId: _docId,
+        notice: _notice.text,
+        thumbnail: 'assets/images/mic1.jpg');
+    late List<UserModel> userList = [];
+    userList.add(UserController.to.myProfile.value);
 
+
+    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, users: userList);
+
+    // agoraController.createBroadcastRoom(
+    //   UserController.to.myProfile.value,
+    //   _title.text,
+    //   _notice.text,
+    //   broadcastInfoController.selectedCategoryList,
+    //   _docId,
+    //   List<String>.filled(0, '', growable: true),
+    //   locationController.location.value,
+    // );
 
     Get.off(
-      () => BroadCastPage.broadcaster(
-        channelName: _docId,
+      () => BroadCastPage.myBroadcaster(
+      //  channelName: _docId,
         role: ClientRole.Broadcaster,
-        userData: UserController.to.myProfile.value,
+      roomData : roomData,
+      //  userData: UserController.to.myProfile.value,
       ),
     );
   }

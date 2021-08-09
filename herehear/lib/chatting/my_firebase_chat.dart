@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/my_util.dart';
@@ -33,13 +34,14 @@ class MyFirebaseChatCore {
   /// a group name. Add an optional [imageUrl] that will be a group avatar
   /// and [metadata] for any additional custom data.
   Future<types.BroadcastModel> createGroupRoom({
-    required types.UserModel hostInfo,
-    required String title,
-    String? notice,
-  required List<String> roomCategory,
-    String? imageUrl,
-  required String docId,
-  required String location,
+   // required types.UserModel hostInfo,
+    required RoomInfoModel roomInfo,
+   // required String title,
+   // String? notice,
+ // required List<String> roomCategory,
+  //  String? imageUrl,
+ // required String docId,
+ // required String location,
 
 
     //Map<String, dynamic>? metadata,
@@ -75,15 +77,15 @@ class MyFirebaseChatCore {
 
 
     final room = await FirebaseFirestore.instance.collection('broadcast').add({
-      'title' : title,
-      'notice' : notice,
-      'channelName' : docId,
-      'docId' : docId,
-      'thumbnail' :'assets/images/mic1.jpg',
-      'location' : hostInfo.location,
-      'hostNickname' : hostInfo.nickName,
-      'hostProfile' :hostInfo.profile,
-      'hostUid' : hostInfo.uid,
+      'title' : roomInfo.title,
+      'notice' : roomInfo.notice,
+      'channelName' : roomInfo.docId,
+      'docId' :  roomInfo.docId,
+      'thumbnail' : roomInfo.thumbnail,
+      'location' : roomInfo.hostInfo.location,
+      'hostNickname' : roomInfo.hostInfo.nickName,
+      'hostProfile' :roomInfo.hostInfo.profile,
+      'hostUid' : roomInfo.hostInfo.uid,
       'like' : 0,
       'createdTime' :FieldValue.serverTimestamp(),
       //'createdAt': FieldValue.serverTimestamp(),
@@ -102,13 +104,15 @@ class MyFirebaseChatCore {
     });
 
     return types.BroadcastModel(
+    //  roomInfo: roomInfo,
       id: room.id,
-      imageUrl: imageUrl,
-    hostInfo: hostInfo,
-    title: title,
-    notice: notice,
-    docId: docId,
-    channelName: docId,
+    hostInfo: roomInfo.hostInfo,
+    //   imageUrl: imageUrl,
+
+     title: roomInfo.title,
+     notice: roomInfo.notice,
+     docId: roomInfo.docId,
+     channelName: roomInfo.docId,
 
       //
       // id: room.id,

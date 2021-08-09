@@ -32,17 +32,17 @@ class RoomInfoModel {
     };
   }
   //
-  // RoomInfoModel.fromJson(Map<String, dynamic> json, String hostUid)
-  //     : hostUid = json['uid'] as String,
-  //       title = json['title'] as String,
-  //       notice = json['notice'] as String,
-  //       channelName = json['channelName'] as String,
-  //       docId = json['docId'] as String,
-  //       image = json['image'] as String,
-  //       createdTime = json['createdTime'].toDate(),
-  //       //only broadcast
-  //       category = json['category'] as String,
-  //       like = json['like'] as int;
+  RoomInfoModel.fromJson(Map<String, dynamic> json)
+      : hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
+        title = json['title'] as String,
+        roomCategory = json['roomCategory'] as List<String>,
+        docId = json['docId'] as String,
+        notice = json['notice'] as String,
+        thumbnail = json['thumbnail'] as String;
+        // createdTime = json['createdTime'].toDate(),
+        // //only broadcast
+        // category = json['category'] as String,
+        // like = json['like'] as int;
 }
 
 // Map<String, dynamic> toJson() => {

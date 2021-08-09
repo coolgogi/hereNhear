@@ -37,8 +37,6 @@ class ChatPage extends StatefulWidget {
   ChatPage.withData( types.BroadcastModel roomD) {
   //  roomData = data;
     room = roomD;
-    print('gkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-    print(room.docId);
 
   }
   @override

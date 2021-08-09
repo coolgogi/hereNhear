@@ -35,6 +35,8 @@ Future<types.BroadcastModel> processRoomDocument(
     User firebaseUser,
     ) async {
   final LocationController locationController = Get.find();
+
+
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
@@ -45,6 +47,7 @@ Future<types.BroadcastModel> processRoomDocument(
   final userIds = doc.data()!['currentListener'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
   final like = doc.data()?['like'] as int?;
+  final hostInfo = await fetchUser(doc.data()?['hostUid']);
 
   final users = await Future.wait(
     userIds.map(
@@ -70,6 +73,7 @@ Future<types.BroadcastModel> processRoomDocument(
   }
 
   final room = types.BroadcastModel(
+    hostInfo:hostInfo ,
     like : like,
     createdAt: createdAt?.millisecondsSinceEpoch,
     id: docId,
