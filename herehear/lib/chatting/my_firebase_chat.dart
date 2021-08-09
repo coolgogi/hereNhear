@@ -96,7 +96,7 @@ class MyFirebaseChatCore {
     });
 
     return types.BroadcastModel(
-
+roomInfo: roomInfo,
       id: roomInfo.docId,
     hostInfo: roomInfo.hostInfo,
     //   imageUrl: imageUrl,
