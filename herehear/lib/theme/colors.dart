@@ -9,7 +9,7 @@ const OnSecondaryLight = Color(0xFFE9E9E9);
 const BackgroundLight = Color(0xFFFFFFFF);
 const OnBackgroundLight = Color(0xFF000000);
 const SurfaceLight = Color(0xFFFFFFFF);
-const OnSurfaceLight = Color(0xFF4A4A4A);
+const OnSurfaceLight = Color(0xFFB8B8B8);
 const ErrorLight = Color(0xFFF2565A);
 const OnErrorLight = Color(0xFFFFFFFF);
 

@@ -165,6 +165,14 @@ flutter:
     - assets/icons/more_grey.png
     - assets/icons/line_short.png
     - assets/icons/record.png
+    - assets/icons/lock_white.png
+    - assets/icons/lock_grey.png
+    - assets/icons/unlock_white.png
+    - assets/icons/unlock_grey.png
+    - assets/icons/clock_black.png
+    - assets/icons/clock_white.png
+    - assets/icons/clock_grey.png
+    - assets/icons/friends.png
     - assets/icons/play.png
     - assets/images/game.png
     - assets/images/gamer.png
