@@ -103,10 +103,9 @@ types.UserModel processUserDocument(
     uid: uid,
     profile: profile,
     createdAt: createdAt?.millisecondsSinceEpoch,
-    firstName: firstName,
     id: doc.id,
     imageUrl: imageUrl,
-    lastName: lastName,
+
     lastSeen: lastSeen?.millisecondsSinceEpoch,
     metadata: metadata,
     role: role ?? types.getMyRoleFromString(roleString),

@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
-import 'package:herehear/groupCall/group_call.dart';
+import '../../groupCall/group_call.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
