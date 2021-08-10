@@ -40,7 +40,7 @@ class AgoraCreateController extends GetxController {
         type: types.MyRoomType.group,
       );
 
-      await AgoraRepository.BroadcastToFirebase(newBroadcastRoom.value);
+      await AgoraRepository.broadcastToFirebase(newBroadcastRoom.value);
     } else {
       print("no user, please sign in");
       Get.to(LoginPage());
@@ -66,7 +66,7 @@ class AgoraCreateController extends GetxController {
         createdTime: DateTime.now(), type: MyGroupCallRoomType.group,
       );
 
-      await AgoraRepository.GroupCallToFirebase(newGroupCallRoom.value);
+      await AgoraRepository.groupCallToFirebase(newGroupCallRoom.value);
     } else {
       print("no user, please sign in");
       Get.to(LoginPage());

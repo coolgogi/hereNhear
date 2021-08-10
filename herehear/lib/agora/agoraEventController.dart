@@ -130,7 +130,7 @@ class AgoraEventController extends GetxController {
     ));
   }
 
-  void move_watcher_to_participant() {
+  void moveWatcherToParticipant() {
     users.removeWhere((element) => element == currentUid);
     participants.add(currentUid);
     isParticipate = true.obs;

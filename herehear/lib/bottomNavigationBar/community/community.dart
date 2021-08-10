@@ -13,7 +13,6 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CommunityPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
-  String current_uid = '';
 
 
   @override

@@ -160,7 +160,7 @@ class _CommentPageState extends State<CommentPage> {
                             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                                 snapshot2) {
                           if (!snapshot2.hasData) return Container();
-                          print("댓글 다는 유저: ${currentUserDisplayName}");
+                          print("댓글 다는 유저: $currentUserDisplayName");
 
                           return SingleChildScrollView(
                             child: Column(

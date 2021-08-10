@@ -35,12 +35,10 @@ Future<types.BroadcastModel> processRoomDocument(
 ) async {
   final LocationController locationController = Get.find();
 
-  final createdAt = doc.data()?['createdAt'] as Timestamp?;
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final type = doc.data()!['type'] as String;
   final docId = doc.data()!['docId'] as String;
-  final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
   final userIds = doc.data()!['userIds'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
   final like = doc.data()?['like'] as int?;
@@ -103,7 +101,6 @@ types.UserModel processUserDocument(
     createdAt: createdAt?.millisecondsSinceEpoch,
     id: doc.id,
     imageUrl: imageUrl,
-
     lastSeen: lastSeen?.millisecondsSinceEpoch,
     metadata: metadata,
     role: role ?? types.getMyRoleFromString(roleString),

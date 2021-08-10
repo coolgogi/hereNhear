@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/create/create_broadcast.dart';
 import 'package:herehear/appBar/search_bar.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // class Controller extends GetxController {

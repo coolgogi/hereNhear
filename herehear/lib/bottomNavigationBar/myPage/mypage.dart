@@ -6,7 +6,7 @@ import 'package:herehear/etc/sh/push1.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import '../../login/signIn.dart';
 
-class myPage extends GetView<UserController> {
+class MyPage extends GetView<UserController> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 

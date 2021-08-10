@@ -272,7 +272,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
               onTap: (() {
                 setState(() {
                   if (alreadyJoin == false)
-                    controller.move_watcher_to_participant();
+                    controller.moveWatcherToParticipant();
 
                   alreadyJoin = true;
                 });
