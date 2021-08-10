@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:herehear/users/data/user_model.dart' as types;
@@ -14,89 +12,62 @@ import 'package:image_picker/image_picker.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
-import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'src/class/my_message.dart' as types;
 import 'src/widgets/my_chat.dart';
-import 'src/class/my_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_file_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
-
-
 import 'package:path_provider/path_provider.dart';
-
 
 class ChatPage extends StatefulWidget {
   ChatPage({Key? key}) : super(key: key);
 
   late final docId;
+
   //late final roomData;
   late final room;
 
- // late final Map<String, dynamic> roomData;
-  ChatPage.withData( types.BroadcastModel roomD) {
-  //  roomData = data;
+  // late final Map<String, dynamic> roomData;
+  ChatPage.withData(types.BroadcastModel roomD) {
+    //  roomData = data;
     room = roomD;
-
   }
+
   @override
   _ChatPageState createState() => _ChatPageState();
 }
 
 class _ChatPageState extends State<ChatPage> {
-  //FirebaseFirestore firebase = FirebaseFirestore.instance;
   bool _isAttachmentUploading = false;
- // List<types.Message> _messages = [];
-  // final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
-  //final _user = const types.User(id: 'guest');
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loadMessages();
-  // }
 
   @override
   Widget build(BuildContext context) {
-    print("check______________________________________________________");
-    print(widget.room);
-    print(widget.room.docId);
     return Scaffold(
-      body:
-      StreamBuilder<types.BroadcastModel>(
-        initialData: widget.room,
-        stream: MyFirebaseChatCore.instance.room(widget.room.docId),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return StreamBuilder<List<types.MyMessage>>(
-                initialData: const [],
-                stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
-                builder: (context, snapshot) {
-                    return
-                      MyChat(
-                        isAttachmentUploading: _isAttachmentUploading,
-                        messages: snapshot.data ?? [],
-                        onAttachmentPressed: _handleAtachmentPressed,
-                      //  onMessageTap: _handleMessageTap,
-                       // onPreviewDataFetched: _handlePreviewDataFetched,
-                        onSendPressed: _handleSendPressed,
-                        user: types.UserModel(
-                          id: MyFirebaseChatCore.instance.firebaseUser?.uid ??
-                              '',
-                        ),
-                      );
-                  }
-
-
-            );
-         }
-          else {
-            return Center(child: CircularProgressIndicator());
-          }
-
-
-        }
-      ),
+      body: StreamBuilder<types.BroadcastModel>(
+          initialData: widget.room,
+          stream: MyFirebaseChatCore.instance.room(widget.room.docId),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return StreamBuilder<List<types.MyMessage>>(
+                  initialData: const [],
+                  stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
+                  builder: (context, snapshot) {
+                    return MyChat(
+                      isAttachmentUploading: _isAttachmentUploading,
+                      messages: snapshot.data ?? [],
+                      onAttachmentPressed: _handleAtachmentPressed,
+                      onMessageTap: _handleMessageTap,
+                      onPreviewDataFetched: _handlePreviewDataFetched,
+                      onSendPressed: _handleSendPressed,
+                      user: types.UserModel(
+                        id: MyFirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                      ),
+                    );
+                  });
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 
@@ -145,7 +116,6 @@ class _ChatPageState extends State<ChatPage> {
       },
     );
   }
-
 
   void _handleFileSelection() async {
     final result = await FilePicker.platform.pickFiles(
@@ -198,7 +168,7 @@ class _ChatPageState extends State<ChatPage> {
       final size = file.lengthSync();
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final name = result.path;//.name;
+      final name = result.path; //.name;
 
       try {
         final reference = FirebaseStorage.instance.ref(name);
@@ -246,11 +216,10 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-
   void _handlePreviewDataFetched(
-      types.MyTextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.MyTextMessage message,
+    types.PreviewData previewData,
+  ) {
     final updatedMessage = message.copyWith(previewData: previewData);
 
     MyFirebaseChatCore.instance.updateMessage(updatedMessage, widget.room.id);
@@ -264,26 +233,12 @@ class _ChatPageState extends State<ChatPage> {
     );
     print('complete!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }
+
   void _setAttachmentUploading(bool uploading) {
     setState(() {
       _isAttachmentUploading = uploading;
     });
   }
-
-  // void _loadMessages() async {
-  //   final response = await rootBundle.loadString('assets/messages.json');
-  //   // FirebaseFirestore.instance.collection('broadcast').doc()
-  //
-  //   final messages = (jsonDecode(response) as List)
-  //       .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
-  //       .toList();
-  //
-  //   setState(() {
-  //     _messages = messages;
-  //   });
-  // }
-
-
 }
 
 @immutable

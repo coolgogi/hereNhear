@@ -21,25 +21,28 @@ class BottomBar extends StatelessWidget {
         Get.put(BottomBarController(), permanent: false);
     return SafeArea(
         child: Scaffold(
-      bottomNavigationBar:
+          bottomNavigationBar:
           buildBottomNavigationMenu(context, bottomBarController),
-      body: Obx(() => IndexedStack(
+          body: Obx(() => IndexedStack(
             index: bottomBarController.tabIndex.value,
             children: [
               HomePage(),
               SearchPage(),
               Container(),
               CommunityPage(),
-              myPage(),
+              MyPage(),
             ],
           )),
-      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-          FloatingActionButtonLocation.centerDocked, 0, 15),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          elevation: 0.0,
-          child: Image.asset('assets/icons/add.png', width: 23.0.w,),
-          onPressed: () => {
+          floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+              FloatingActionButtonLocation.centerDocked, 0, 15),
+          floatingActionButton: FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              elevation: 0.0,
+              child: Image.asset(
+                'assets/icons/add.png',
+                width: 23.0.w,
+              ),
+              onPressed: () => {
                 print(
                     '*******************************************************************************8'),
                 print(userController.myProfile.value.uid),
@@ -70,23 +73,23 @@ class BottomBar extends StatelessWidget {
     );
   }
 
-  Future<void> _showMyDialog2() async {
-    return Get.defaultDialog(
-      title: '정보를 불러오고 있습니다!',
-      content: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            TextButton(
-                child: Text(
-                  '확인',
-                  style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-                ),
-                onPressed: () => Get.back()),
-          ],
-        ),
-      ),
-    );
-  }
+  // Future<void> _showMyDialog2() async {
+  //   return Get.defaultDialog(
+  //     title: '정보를 불러오고 있습니다!',
+  //     content: SingleChildScrollView(
+  //       child: Column(
+  //         children: <Widget>[
+  //           TextButton(
+  //               child: Text(
+  //                 '확인',
+  //                 style: TextStyle(fontSize: 18.sp, color: Colors.black87),
+  //               ),
+  //               onPressed: () => Get.back()),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Future<dynamic> showCreateOption(BuildContext context) async {
     return Get.dialog(
@@ -121,16 +124,20 @@ class BottomBar extends StatelessWidget {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 18.0.h),
-                            child: Text('HERE 라이브', style: Theme.of(context).textTheme.headline4),
+                            child: Text('HERE 라이브',
+                                style: Theme.of(context).textTheme.headline4),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 11.0.h),
-                            child: Text('HERE 라이브를 통해', style: Theme.of(context).textTheme.headline6),
+                            child: Text('HERE 라이브를 통해',
+                                style: Theme.of(context).textTheme.headline6),
                           ),
-                          Text('원하는 주제로 대화해보세요!', style: Theme.of(context).textTheme.headline6),
+                          Text('원하는 주제로 대화해보세요!',
+                              style: Theme.of(context).textTheme.headline6),
                           Padding(
-                            padding:EdgeInsets.only(top: 13.h),
-                            child: Image.asset('assets/images/streamer.png', width: 57.w),
+                            padding: EdgeInsets.only(top: 13.h),
+                            child: Image.asset('assets/images/streamer.png',
+                                width: 57.w),
                           ),
                         ],
                       ),
@@ -150,20 +157,27 @@ class BottomBar extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 18.0.h),
-                          child: Text('HERE CHAT',  style: Theme.of(context).textTheme.headline4),
+                          child: Text('HERE CHAT',
+                              style: Theme.of(context).textTheme.headline4),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 11.0.h),
-                          child: Text('사람들과 자유로운 대화를', style: Theme.of(context).textTheme.headline6),
+                          child: Text('사람들과 자유로운 대화를',
+                              style: Theme.of(context).textTheme.headline6),
                         ),
-                        Text('즐겨보세요!', style: Theme.of(context).textTheme.headline6),
+                        Text('즐겨보세요!',
+                            style: Theme.of(context).textTheme.headline6),
                         Padding(
                           padding: EdgeInsets.only(top: 13.0.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset('assets/images/voiceCopy.png', width: 85.w,),
-                              Image.asset('assets/images/liveImage.png', width: 48.5.w),
+                              Image.asset(
+                                'assets/images/voiceCopy.png',
+                                width: 85.w,
+                              ),
+                              Image.asset('assets/images/liveImage.png',
+                                  width: 48.5.w),
                             ],
                           ),
                         )
@@ -177,69 +191,6 @@ class BottomBar extends StatelessWidget {
         ),
       ),
     );
-    return showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                height: 35.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.record_voice_over,
-                          size: 50.w,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        // podcasts
-                        Text('개인 라이브',
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    onTap: () => Get.off(() => CreateBroadcastPage()),
-                  ),
-                  InkWell(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.connect_without_contact,
-                          size: 50.w,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Text('그룹 대화',
-                            style: TextStyle(
-                                fontSize: 18.sp,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    onTap: () => Get.off(() => CreateGroupCallPage()),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 35.h,
-              ),
-            ],
-          );
-        });
   }
 
   // Future<dynamic> showCreateOption(BuildContext context) async {

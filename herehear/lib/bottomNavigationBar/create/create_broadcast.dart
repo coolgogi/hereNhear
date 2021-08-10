@@ -28,14 +28,12 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   String _docId = '';
 
   //unused variable
-  ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
     '독서',

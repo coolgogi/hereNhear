@@ -34,7 +34,7 @@ class LocationController extends GetxController {
   Future<String> getLocation() async {
     Position? position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    debugPrint('location: ${position}');
+    debugPrint('location: $position');
     final coordinates = new Coordinates(position.latitude, position.longitude);
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);

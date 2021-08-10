@@ -20,8 +20,6 @@ import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_image_message.dart' as types;
 import 'package:herehear/chatting/src/widgets/input.dart' as myInput;
 
-
-
 /// Entry widget, represents the complete chat
 class MyChat extends StatefulWidget {
   /// Creates a chat widget
@@ -110,7 +108,7 @@ class MyChat extends StatefulWidget {
 
   /// See [Message.onPreviewDataFetched]
   final void Function(types.MyTextMessage, types.PreviewData)?
-  onPreviewDataFetched;
+      onPreviewDataFetched;
 
   /// See [myInput.Input.onSendPressed]
   final void Function(types.PartialText) onSendPressed;
@@ -166,7 +164,6 @@ class _ChatState extends State<MyChat> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.messages.isNotEmpty) {
-      print('NOT EMMPTY@#%^&*(');
       final result = calculateChatMessages(
         widget.messages,
         widget.user,
@@ -179,11 +176,6 @@ class _ChatState extends State<MyChat> {
 
       _chatMessages = result[0] as List<Object>;
       _gallery = result[1] as List<PreviewImage>;
-      print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-      print(_chatMessages);
-      print(_gallery);
-
-      print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
     }
   }
 
@@ -197,8 +189,8 @@ class _ChatState extends State<MyChat> {
           PhotoViewGallery.builder(
             builder: (BuildContext context, int index) =>
                 PhotoViewGalleryPageOptions(
-                  imageProvider: Conditional().getProvider(_gallery[index].uri),
-                ),
+              imageProvider: Conditional().getProvider(_gallery[index].uri),
+            ),
             itemCount: _gallery.length,
             loadingBuilder: (context, event) =>
                 _imageGalleryLoadingBuilder(context, event),
@@ -240,9 +232,9 @@ class _ChatState extends State<MyChat> {
       final map = object as Map<String, Object>;
       final message = map['message']! as types.MyMessage;
       final _messageWidth =
-      widget.showUserAvatars && message.author.id != widget.user.id
-          ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
-          : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
+          widget.showUserAvatars && message.author.id != widget.user.id
+              ? min(MediaQuery.of(context).size.width * 0.72, 440).floor()
+              : min(MediaQuery.of(context).size.width * 0.78, 440).floor();
 
       return MyMessage(
         key: ValueKey(message.id),
@@ -261,7 +253,7 @@ class _ChatState extends State<MyChat> {
         onPreviewDataFetched: _onPreviewDataFetched,
         roundBorder: map['nextMessageInGroup'] == true,
         showAvatar:
-        widget.showUserAvatars && map['nextMessageInGroup'] == false,
+            widget.showUserAvatars && map['nextMessageInGroup'] == false,
         showName: map['showName'] == true,
         showStatus: map['showStatus'] == true,
         showUserAvatars: widget.showUserAvatars,
@@ -271,9 +263,9 @@ class _ChatState extends State<MyChat> {
   }
 
   Widget _imageGalleryLoadingBuilder(
-      BuildContext context,
-      ImageChunkEvent? event,
-      ) {
+    BuildContext context,
+    ImageChunkEvent? event,
+  ) {
     return Center(
       child: SizedBox(
         width: 20.0,
@@ -296,7 +288,7 @@ class _ChatState extends State<MyChat> {
   void _onImagePressed(types.MyImageMessage message) {
     setState(() {
       _imageViewIndex = _gallery.indexWhere(
-            (element) => element.id == message.id && element.uri == message.uri,
+        (element) => element.id == message.id && element.uri == message.uri,
       );
       _isImageViewVisible = true;
     });
@@ -309,20 +301,14 @@ class _ChatState extends State<MyChat> {
   }
 
   void _onPreviewDataFetched(
-      types.MyTextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.MyTextMessage message,
+    types.PreviewData previewData,
+  ) {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
   @override
   Widget build(BuildContext context) {
-    print('USERSERSERSESDSDG');
-    print(widget.user);
-    print(widget.isAttachmentUploading);
-    print(widget.onAttachmentPressed);
-    print(widget.onSendPressed);
-    print(widget.onTextChanged);
     return InheritedUser(
       user: widget.user,
       child: InheritedChatTheme(
@@ -340,42 +326,39 @@ class _ChatState extends State<MyChat> {
                       Flexible(
                         child: widget.messages.isEmpty
                             ? SizedBox.expand(
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                            ),
-                            child: Text(
-                              widget.l10n.emptyChatPlaceholder,
-                              style: widget
-                                  .theme.emptyChatPlaceholderTextStyle,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        )
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                  ),
+                                  child: Text(
+                                    widget.l10n.emptyChatPlaceholder,
+                                    style: widget
+                                        .theme.emptyChatPlaceholderTextStyle,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )
                             : GestureDetector(
-                          onTap: () => FocusManager.instance.primaryFocus
-                              ?.unfocus(),
-                          child:
-                          MyChatList(
-                            isLastPage: widget.isLastPage,
-                            itemBuilder: (item, index) =>
-                                _buildMessage(item),
-                            items: _chatMessages,
-                            onEndReached: widget.onEndReached,
-                            onEndReachedThreshold:
-                            widget.onEndReachedThreshold,
-                          ),
-                        ),
+                                onTap: () => FocusManager.instance.primaryFocus
+                                    ?.unfocus(),
+                                child: MyChatList(
+                                  isLastPage: widget.isLastPage,
+                                  itemBuilder: (item, index) =>
+                                      _buildMessage(item),
+                                  items: _chatMessages,
+                                  onEndReached: widget.onEndReached,
+                                  onEndReachedThreshold:
+                                      widget.onEndReachedThreshold,
+                                ),
+                              ),
                       ),
-
-
                       myInput.Input(
-                       isAttachmentUploading: widget.isAttachmentUploading,
+                        isAttachmentUploading: widget.isAttachmentUploading,
                         onAttachmentPressed: widget.onAttachmentPressed,
-                         onSendPressed: widget.onSendPressed,
+                        onSendPressed: widget.onSendPressed,
                         onTextChanged: widget.onTextChanged,
-                     ),
+                      ),
                     ],
                   ),
                 ),

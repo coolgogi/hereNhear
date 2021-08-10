@@ -2,15 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:herehear/etc/sh/function_1.dart';
 import 'package:herehear/etc/sh/push1.dart';
-import '../../appBar/notification/push_notification.dart';
-import 'package:herehear/bottomNavigationBar/subscribed/subscribed.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../login/signIn.dart';
 
-class myPage extends GetView<UserController> {
+class MyPage extends GetView<UserController> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 

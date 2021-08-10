@@ -3,8 +3,21 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:get/get.dart';
 import 'package:herehear/utils/AppID.dart';
 
-final int GROUPCALL = 0;
-final int BROADCAST = 1;
+// final int GROUPCALL = 0;
+// final int BROADCAST = 1;
+//
+// final int GROUPCALL = 0;
+// final int BROADCAST = 1;
+
+enum RoomType { groupcall, broadcast }
+
+/// Extension with one [toShortString] method
+extension RoomTypeToShortString on RoomType {
+  /// Converts enum to the string equal to enum's name
+  String toShortString() {
+    return toString().split('.').last;
+  }
+}
 
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
@@ -15,19 +28,19 @@ class AgoraEventController extends GetxController {
   late RtcEngine _engine;
   var activeSpeaker = 10.obs;
   int currentUid = 0;
-  RxBool is_participate = false.obs;
+  RxBool isParticipate = false.obs;
   final String channelName;
   final ClientRole role;
-  late final int type;
+  late final String type;
 
   AgoraEventController.groupcall(
       {required this.channelName, required this.role}) {
-    this.type = GROUPCALL;
+    this.type = RoomType.groupcall.toShortString();
   }
 
   AgoraEventController.broadcast(
       {required this.channelName, required this.role}) {
-    this.type = BROADCAST;
+    this.type = RoomType.broadcast.toShortString();
   }
   //
 
@@ -71,7 +84,7 @@ class AgoraEventController extends GetxController {
     await _engine.disableVideo();
     await _engine.enableAudio();
 
-    if (this.type == BROADCAST) {
+    if (this.type == 'broadcast') {
       await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
       await _engine.setClientRole(role);
     }
@@ -117,10 +130,10 @@ class AgoraEventController extends GetxController {
     ));
   }
 
-  void move_watcher_to_participant() {
+  void moveWatcherToParticipant() {
     users.removeWhere((element) => element == currentUid);
     participants.add(currentUid);
-    is_participate = true.obs;
+    isParticipate = true.obs;
     print('?!?!?: ${participants.length}');
   }
 

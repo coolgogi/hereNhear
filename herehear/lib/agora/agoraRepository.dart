@@ -1,22 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../broadcast/data/broadcast_model.dart';
-import 'package:herehear/groupCall/group_call_model.dart';
+import '../groupCall/data/group_call_model.dart';
 
 
 class AgoraRepository {
-  static Future<void> BroadcastToFirebase(BroadcastModel newRoom) async {
+  static Future<void> broadcastToFirebase(BroadcastModel newRoom) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('broadcast');
 
     await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
-  static Future<void> GroupCallToFirebase(GroupCallModel newRoom) async {
+  static Future<void> groupCallToFirebase(GroupCallModel newRoom) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('groupcall');
 
-    await users.doc(newRoom.docId).set(newRoom.toMap());
+    await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
   static void updateLoginTime(String docId) {
