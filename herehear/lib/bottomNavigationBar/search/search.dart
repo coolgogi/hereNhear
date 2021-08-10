@@ -1,19 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
 import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
-
-import 'package:herehear/groupCall/groupcallList.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/controller/user_controller.dart';
-import 'package:search_widget/search_widget.dart';
-
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchPage extends StatelessWidget {

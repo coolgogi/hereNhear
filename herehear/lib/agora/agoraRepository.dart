@@ -16,7 +16,7 @@ class AgoraRepository {
     CollectionReference users =
         FirebaseFirestore.instance.collection('groupcall');
 
-    await users.doc(newRoom.docId).set(newRoom.toMap());
+    await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
   static void updateLoginTime(String docId) {

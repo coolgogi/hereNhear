@@ -54,13 +54,13 @@ class LoginPage extends StatelessWidget {
               padding: EdgeInsets.only(top: 10.0.h, bottom: 17.h),
               child: TextFormField(
                 controller: pwdController,
-                obscureText: controller.is_obscureText.value,
+                obscureText: controller.isObscureText.value,
                 decoration: InputDecoration(
                   hintText: "비밀번호를 입력하세요.",
                   // isDense: true,
                   // contentPadding: EdgeInsets.fromLTRB(0, 0.h, 0, 0.h),
                   suffixIcon: IconButton(
-                    onPressed: () => controller.is_obscureText.value = !(controller.is_obscureText.value),
+                    onPressed: () => controller.isObscureText.value = !(controller.isObscureText.value),
                     icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
                   ),
                 ),

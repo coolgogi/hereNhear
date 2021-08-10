@@ -23,7 +23,7 @@ class FirebaseUserRepository {
   }
 
   static Future<void> platformUpdate(String uid, String? platform) async{
-    final user = FirebaseFirestore.instance.collection('users').doc(uid).update(
+   FirebaseFirestore.instance.collection('users').doc(uid).update(
         {'platform' : platform  });
   }
 

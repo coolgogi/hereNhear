@@ -4,7 +4,6 @@ import 'package:meta/meta.dart';
 import 'my_message.dart';
 import '../../util.dart';
 
-import '../util.dart' show getStatusFromString;
 
 /// A class that represents unsupported message. Used for backwards
 /// compatibility. If chat's end user doesn't update to a new version

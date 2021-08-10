@@ -12,8 +12,8 @@ class AgoraCreateController extends GetxController {
   static AgoraCreateController get to => Get.find();
 
   late Rx<BroadcastModel> newBroadcastRoom;
-  Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
-
+ // Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
+  late Rx<GroupCallModel> newGroupCallRoom;
   Future<void> createBroadcastRoom(
       UserModel userData,
       String title,
@@ -60,10 +60,10 @@ class AgoraCreateController extends GetxController {
         title: title,
         notice: notice,
         docId: docId,
-        image: 'assets/images/mic2.jpg',
+        thumbnail: 'assets/images/mic2.jpg',
         channelName: docId,
         location: location,
-        createdTime: DateTime.now(),
+        createdTime: DateTime.now(), type: MyGroupCallRoomType.group,
       );
 
       await AgoraRepository.GroupCallToFirebase(newGroupCallRoom.value);

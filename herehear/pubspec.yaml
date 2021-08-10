@@ -57,7 +57,6 @@ dependencies:
   flutter_pagewise: ^2.0.1
   sms_autofill: ^2.0.0
   badges: ^2.0.1
-  just_audio: ^0.9.2
   flutter_local_notifications: ^6.1.0
   firebase_messaging: ^10.0.4
   overlay_support: ^1.2.1
@@ -67,6 +66,9 @@ dependencies:
   provider: ^5.0.0
   logger: ^1.0.0
   flutter_tags: ^0.4.9+1
+  record: ^3.0.0
+  just_audio: ^0.8.0
+  #  just_audio: ^0.9.2
 
 
 
@@ -155,6 +157,23 @@ flutter:
     - assets/icons/advertise.png
     - assets/icons/pen.png
     - assets/icons/bigEye.png
+    - assets/icons/heart.png
+    - assets/icons/heart_grey.png
+    - assets/icons/heart_fill.png
+    - assets/icons/chat.png
+    - assets/icons/chat_grey.png
+    - assets/icons/more_grey.png
+    - assets/icons/line_short.png
+    - assets/icons/record.png
+    - assets/icons/lock_white.png
+    - assets/icons/lock_grey.png
+    - assets/icons/unlock_white.png
+    - assets/icons/unlock_grey.png
+    - assets/icons/clock_black.png
+    - assets/icons/clock_white.png
+    - assets/icons/clock_grey.png
+    - assets/icons/friends.png
+    - assets/icons/play.png
     - assets/images/game.png
     - assets/images/gamer.png
     - assets/images/sora.jpg
@@ -178,6 +197,7 @@ flutter:
     - assets/images/sample3.jpg
     - assets/images/sample4.jpg
     - assets/images/liveImage.png
+    - assets/images/streamer.png
     - assets/audio/girlVoice.mp3
     - assets/audio/vj.mp3
     - assets/audio/loveRain.mp3

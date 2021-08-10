@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final ThemeData light_theme = buildClosetTheme_light();
-final ThemeData dark_theme = buildClosetTheme_dark();
+// final ThemeData light_theme = buildClosetTheme_light();
+// final ThemeData dark_theme = buildClosetTheme_dark();
 
-ThemeData buildClosetTheme_light() {
+final ThemeData lightTheme = buildClosetThemeLight();
+final ThemeData darkTheme = buildClosetThemeDark();
+
+ThemeData buildClosetThemeLight() {
   final ThemeData base = ThemeData.light();
 
   return base.copyWith(
@@ -71,7 +74,7 @@ ThemeData buildClosetTheme_light() {
 //     scaffoldBackgroundColor: Color(0xfff1f1f1));
 // // scaffoldBackgroundColor: Color(0xff6200EE));
 
-ThemeData buildClosetTheme_dark() {
+ThemeData buildClosetThemeDark() {
   final ThemeData base = ThemeData.dark();
 
   return base.copyWith(

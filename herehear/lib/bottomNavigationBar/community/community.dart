@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-
 import 'free_board/free_board.dart';
 
 
@@ -245,7 +243,7 @@ class CommunityPage extends StatelessWidget {
           ),
         ),
       ],
-    );;
+    );
   }
 
   Widget playThemeList(BuildContext context) {
@@ -274,8 +272,8 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 18.0.w,),
-                    child: Image.asset('assets/images/sing.png', width: 125.w,),
+                    padding: EdgeInsets.only(left: 5.0.w, right: 11.0.w,),
+                    child: Image.asset('assets/images/sing.png'),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,7 +285,7 @@ class CommunityPage extends StatelessWidget {
                             Text('노래방', style: Theme.of(context).textTheme.headline4),
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
-                              child: Image.asset('assets/images/mike.png', width: 13.0.w,),
+                              child: Image.asset('assets/images/mike.png', width: 12.0.w,),
                             )
                           ],
                         ),
@@ -323,8 +321,8 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 7.0.w,),
-                    child: Image.asset('assets/images/voiceCopy.png'),
+                    padding: EdgeInsets.only(left: 14.0.w, right: 30.0.w, top: 8.h),
+                    child: Image.asset('assets/images/voiceCopy.png', height: 87.0.h,),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -372,7 +370,7 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0.w, right: 31.0.w,),
+                    padding: EdgeInsets.only(left: 7.0.w, right: 31.0.w,),
                     child: Image.asset('assets/images/gamer.png'),
                   ),
                   Column(

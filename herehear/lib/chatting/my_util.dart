@@ -62,7 +62,7 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
-  final room = await types.BroadcastModel(
+  final room = types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
     like: like,
@@ -86,9 +86,7 @@ types.UserModel processUserDocument(
   types.MyRole? role,
 }) {
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
-  final firstName = doc.data()?['firstName'] as String?;
   final imageUrl = doc.data()?['imageUrl'] as String?;
-  final lastName = doc.data()?['lastName'] as String?;
   final lastSeen = doc.data()?['lastSeen'] as Timestamp?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final roleString = doc.data()?['role'] as String?;
