@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-
 import 'free_board/free_board.dart';
 
 
@@ -245,7 +243,7 @@ class CommunityPage extends StatelessWidget {
           ),
         ),
       ],
-    );;
+    );
   }
 
   Widget playThemeList(BuildContext context) {

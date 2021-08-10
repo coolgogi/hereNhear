@@ -35,7 +35,6 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   String _docId = '';
 
   //unused variable
-  ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
     '독서',

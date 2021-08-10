@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../broadcast/data/broadcast_model.dart';
-import 'package:herehear/groupCall/group_call_model.dart';
+import '../groupCall/data/group_call_model.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
@@ -12,8 +12,8 @@ class AgoraCreateController extends GetxController {
   static AgoraCreateController get to => Get.find();
 
   late Rx<BroadcastModel> newBroadcastRoom;
-  Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
-
+ // Rx<GroupCallModel> newGroupCallRoom = GroupCallModel().obs;
+  late Rx<GroupCallModel> newGroupCallRoom;
   Future<void> createBroadcastRoom(
       UserModel userData,
       String title,
@@ -40,7 +40,6 @@ class AgoraCreateController extends GetxController {
         type: types.MyRoomType.group,
       );
 
-      print("gooooooooooooooooooooooood");
       await AgoraRepository.BroadcastToFirebase(newBroadcastRoom.value);
     } else {
       print("no user, please sign in");
@@ -61,10 +60,10 @@ class AgoraCreateController extends GetxController {
         title: title,
         notice: notice,
         docId: docId,
-        image: 'assets/images/mic2.jpg',
+        thumbnail: 'assets/images/mic2.jpg',
         channelName: docId,
         location: location,
-        createdTime: DateTime.now(),
+        createdTime: DateTime.now(), type: MyGroupCallRoomType.group,
       );
 
       await AgoraRepository.GroupCallToFirebase(newGroupCallRoom.value);

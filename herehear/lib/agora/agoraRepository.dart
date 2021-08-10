@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../broadcast/data/broadcast_model.dart';
-import 'package:herehear/groupCall/group_call_model.dart';
+import '../groupCall/data/group_call_model.dart';
 
 
 class AgoraRepository {
@@ -16,7 +16,7 @@ class AgoraRepository {
     CollectionReference users =
         FirebaseFirestore.instance.collection('groupcall');
 
-    await users.doc(newRoom.docId).set(newRoom.toMap());
+    await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
   static void updateLoginTime(String docId) {

@@ -35,7 +35,6 @@ class CreateGroupCallPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
-  int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
