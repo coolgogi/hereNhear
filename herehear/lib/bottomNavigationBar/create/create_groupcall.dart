@@ -1,6 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:async';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/data/broadcast_model.dart' as types;
@@ -14,11 +15,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'broadcastInfoController/broadcast_info_controller.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+
 
 class TempController extends GetxController {
   RxBool isPrivate = false.obs;
   RxBool isReserve = false.obs;
   RxList tagList = [].obs;
+  var selectedDate = DateTime.now().add(Duration(days: 1)).obs;
+  var selectedTime = DateTime.now().add(Duration(days: 1)).obs;
 }
 
 class CreateGroupCallPage extends StatefulWidget {
@@ -42,7 +47,8 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
   String _docId = '';
 
-  //unused variable
+
+  //unused variableselectedDate
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
@@ -201,13 +207,13 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
               ],
             )),
             SizedBox(height: 17.h),
-            Row(
+            Obx(() => Row(
               children: [
                 Container(
-                  width: 83.w,
+                  width: 110.w,
                   height: 30.h,
                   child: ElevatedButton(
-                    onPressed: () => controller.isReserve.value = true,
+                    onPressed: () => controller.isReserve.value = !(controller.isReserve.value),
                     child: Row(
                       children: [
                         Image.asset(
@@ -216,58 +222,68 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                                 : 'assets/icons/clock_grey.png',
                             width: 18.w),
                         Padding(
-                          padding: EdgeInsets.only(left: 6.0.w, right: 14.w),
+                          padding: EdgeInsets.only(left: 6.0.w),
                           child: Text('예약 설정',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline6!
                                   .copyWith(
-                                      color: controller.isPrivate.value
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onSurface)),
+                                  color: controller.isReserve.value
+                                      ? Theme.of(context)
+                                      .colorScheme
+                                      .onPrimary
+                                      : Theme.of(context)
+                                      .colorScheme
+                                      .onSurface)),
                         ),
                       ],
                     ),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all<Color>(
-                            controller.isPrivate.value
+                            controller.isReserve.value
                                 ? Theme.of(context).colorScheme.primary
                                 : Theme.of(context).colorScheme.background),
                         shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(
-                                        color: controller.isPrivate.value
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .background)))),
+                        MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                side: BorderSide(
+                                    color: controller.isReserve.value
+                                        ? Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        : Theme.of(context)
+                                        .colorScheme
+                                        .background)))),
                   ),
                 ),
+                SizedBox(width: 10.w),
                 GestureDetector(
                   onTap: () => controller.isReserve.value? showDialog() : null,
                   child: Container(
                     width: 188.w,
-                    height: 25.h,
+                    height: 30.h,
                     child: Row(
                       children: [
                         SizedBox(width: 35.w,),
                         Text(
-                            DateFormat('yyyy-MM-dd  00:00').format(DateTime.now()),
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
-                                    : Theme.of(context).colorScheme.onSurface
-                            ),
+                          DateFormat('yyyy-MM-dd  ').format(controller.selectedDate.value),
+                          style: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                                  : Theme.of(context).colorScheme.onSurface
+                          ),
+                        ),
+                        Text(
+                          DateFormat('kk:mm').format(controller.selectedTime.value),
+                          style: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                                  : Theme.of(context).colorScheme.onSurface
+                          ),
                         ),
                         SizedBox(width: 16.w,),
-                        Icon(Icons.expand_more),
+                        Icon(Icons.expand_more, color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                            : Theme.of(context).colorScheme.onSurface
+                        ),
                       ],
                     ),
                     decoration: BoxDecoration(
@@ -285,7 +301,7 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                   ),
                 ),
               ],
-            ),
+            )),
             Container(
               padding: EdgeInsets.only(top: 40.h, bottom: 11.h),
               child: Text(
@@ -614,23 +630,77 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                     ],
                   ),
                   SizedBox(height: 40.h),
-                  Row(
+                  Obx(() => Row(
                     children: [
                       Image.asset('assets/icons/clock_black.png', width: 26.w),
                       Padding(
-                        padding: EdgeInsets.only(left: 14.0.w, right: 76.w),
+                        padding: EdgeInsets.only(left: 14.0.w, right: 26.w),
                         child: Text('시간 설정', style: Theme.of(context).textTheme.headline5),
                       ),
-                      Text(
-                          DateFormat('yyyy-MM-dd  kk:mm').format(DateTime.now()),
-                          style: Theme.of(context).textTheme.headline5
+                      GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: Container(
+                          width: 100.w,
+                          height: 30.h,
+                          child: Center(
+                            child: Text(
+                              DateFormat('yyyy-MM-dd').format(controller.selectedDate.value),
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                  color: Theme.of(context).colorScheme.onBackground
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: Offset(0, 4), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      GestureDetector(
+                        onTap: () => Get.defaultDialog(
+                          title: 'SELECT TIME',
+                          content: _selectTime(),
+                        ),
+                        child: Container(
+                          width: 54.w,
+                          height: 30.h,
+                          child: Center(
+                            child: Text(
+                              DateFormat('kk:mm').format(controller.selectedTime.value),
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                  color: Theme.of(context).colorScheme.onBackground
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: Offset(0, 4), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: 24.h),
+                  )),
+                  SizedBox(height: 30.h),
                   Row(
                     children: [
-                      Image.asset('assets/icons/friends.png', width: 24.w),
+                      Image.asset('assets/icons/addFriend.png', width: 24.w),
                       Padding(
                         padding: EdgeInsets.only(left: 15.0.w),
                         child: Text('친구 초대', style: Theme.of(context).textTheme.headline5),
@@ -638,7 +708,9 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                     ],
                   ),
                   SizedBox(height: 10.h),
-                  Material(child: createTagList()),
+                  Material(
+                    color: Theme.of(context).colorScheme.background,
+                    child: createTagList()),
                 ],
               ),
             ),
@@ -648,249 +720,106 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
   }
 
   Widget createTagList() {
-    return Tags(
-      key:_tagStateKey,
-      textField: TagsTextField(
-        autofocus: false,
-        inputDecoration: InputDecoration(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.fromLTRB(7.w, 3.h, 0.w, 0.h),
-          focusColor: Theme.of(context).colorScheme.background,
-        ),
-        textStyle: Theme.of(context).textTheme.headline5,
-        // constraintSuggestion: true,
-        // suggestions: [],
-        onSubmitted: (String str) {
-          // Add item to the data source.
-          setState(() {
-            // required
-            controller.tagList.add(str);
-          });
-        },
-      ),
-      itemCount: controller.tagList.length, // required
-      itemBuilder: (int index){
-        final item = controller.tagList[index];
-
-        return ItemTags(
-          // Each ItemTags must contain a Key. Keys allow Flutter to
-          // uniquely identify widgets.
-          key: Key(index.toString()),
-          index: index, // required
-          title: item.title,
-          active: item.active,
-          customData: item.customData,
-          textStyle: Theme.of(context).textTheme.headline5,
-          combine: ItemTagsCombine.withTextBefore,
-          icon: ItemTagsIcon(
-            icon: Icons.add,
-          ), // OR null,
-          removeButton: ItemTagsRemoveButton(
-            onRemoved: (){
-              // Remove the item from the data source.
+    return Obx(() => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Tags(
+          key:_tagStateKey,
+          textField: TagsTextField(
+            hintText: '친구 이름을 입력하세요',
+            autofocus: false,
+            inputDecoration: InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.fromLTRB(7.w, 3.h, 0.w, 0.h),
+              focusColor: Theme.of(context).colorScheme.background,
+            ),
+            textStyle: Theme.of(context).textTheme.headline5,
+            // constraintSuggestion: true,
+            // suggestions: [],
+            onSubmitted: (String str) {
+              // Add item to the data source.
               setState(() {
                 // required
-                controller.tagList.removeAt(index);
+                controller.tagList.add(str);
               });
-              //required
-              return true;
             },
-          ), // OR null,
-          onPressed: (item) => print(item),
-          onLongPressed: (item) => print(item),
-        );
+          ),
+        ),
+        SizedBox(height: 15.h),
+        Tags(
+          itemCount: controller.tagList.length, // required
+          itemBuilder: (int index){
+            final Item currentItem = Item(title:controller.tagList[index]);
 
-      },
+            return ItemTags(
+              index: index,
+              title: currentItem.title,
+              customData: currentItem.customData,
+              textColor: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.primary,
+              activeColor: Theme.of(context).colorScheme.background,
+              textActiveColor: Theme.of(context).colorScheme.primary,
+              elevation: 0,
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0.w
+              ),
+              active: true,
+              pressEnabled: false,
+              textStyle: TextStyle(fontSize: 14),
+              combine: ItemTagsCombine.withTextBefore,
+              removeButton: ItemTagsRemoveButton(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.primary,
+                  onRemoved: () {
+                    setState(() {
+                      controller.tagList.removeAt(index);
+                    });
+                    return true;
+                  }
+              ),
+            );
+          },
+        ),
+        // Expanded(child: Container()),
+        // GestureDetector(
+        //   onTap: ,
+        //   child: Container(
+        //     child: Text('확인'),
+        //   ),
+        // )
+      ],
+    ));
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: controller.selectedDate.value,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != controller.selectedDate.value)
+      setState(() {
+        controller.selectedDate.value = picked;
+      });
+  }
+
+  Widget _selectTime() {
+    return TimePickerSpinner(
+
+      is24HourMode: true,
+      normalTextStyle: Theme.of(context).textTheme.headline3!.copyWith(
+          fontSize: 26,
+          color: Theme.of(context).colorScheme.onSurface
+      ),
+      highlightedTextStyle: Theme.of(context).textTheme.headline3!.copyWith(
+          fontSize: 32,
+          color: Theme.of(context).colorScheme.onBackground
+      ),
+      spacing: 50,
+      itemHeight: 80,
+      isForce2Digits: true,
+      onTimeChange: (time) => controller.selectedTime.value = time,
     );
   }
 }
-
-
-
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:herehear/agora/agoraCreateController.dart';
-// import 'package:herehear/groupCall/group_call.dart';
-// import 'package:herehear/location/controller/location_controller.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'dart:async';
-//
-// class CreateGroupCallPage extends StatefulWidget {
-//   @override
-//   _CreateGroupCallPageState createState() => _CreateGroupCallPageState();
-// }
-//
-// class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
-//   User? user = FirebaseAuth.instance.currentUser;
-//   final _title = TextEditingController();
-//   final _notice = TextEditingController();
-//   String? _docId;
-//   DateTime selectedDate = DateTime.now();
-//   final controller = Get.put(AgoraCreateController());
-//   final locationController = Get.put(LocationController());
-//
-//   //unused variable
-//   String? _selectedTime;
-//   bool _validateError = false;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       appBar: AppBar(
-//         centerTitle: true,
-//         title: Text('새 그룹 대화방',
-//             style: Theme.of(context).appBarTheme.titleTextStyle),
-//         leading: IconButton(
-//           icon: Icon(Icons.close),
-//           onPressed: () => {
-//             Get.back(),
-//           },
-//         ),
-//       ),
-//       body: Container(
-//         padding: EdgeInsets.all(20),
-//         height: MediaQuery.of(context).size.height,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '시작시간 예약하기',
-//                 style: TextStyle(fontSize: 16),
-//               ),
-//             ),
-//             Row(
-//               children: <Widget>[
-//                 Container(
-//                     padding: EdgeInsets.only(bottom: 10, right: 15),
-//                     child: GestureDetector(
-//                         onTap: () {
-//                           _selectDate(context);
-//                         },
-//                         child: Icon(Icons.calendar_today, size: 30))),
-//                 Container(
-//                     padding: EdgeInsets.only(bottom: 10),
-//                     child: GestureDetector(
-//                         onTap: () {
-//                           Future<TimeOfDay?> selectedTime = showTimePicker(
-//                               context: context, initialTime: TimeOfDay.now());
-//                           selectedTime.then((timeOfDay) {
-//                             setState(() {
-//                               _selectedTime =
-//                                   '${timeOfDay!.hour}: ${timeOfDay.minute}';
-//                             });
-//                           });
-//                         },
-//                         child: Icon(Icons.access_time, size: 30))),
-//               ],
-//             ),
-//             SizedBox(
-//               height: 16.0,
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '제목',
-//                 style: TextStyle(fontSize: 16),
-//               ),
-//             ),
-//             TextFormField(
-//               controller: _title,
-//               validator: (value) {
-//                 if (value!.trim().isEmpty) {
-//                   return '제목을 입력해주세요.';
-//                 }
-//                 return null;
-//               },
-//               decoration: InputDecoration(
-//                 border: OutlineInputBorder(),
-//                 contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
-//                 hintText: '제목을 입력해주세요(15자 이내)',
-//               ),
-//             ),
-//             SizedBox(
-//               height: 16.0,
-//             ),
-//             SizedBox(
-//               height: 16.0,
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '공지사항',
-//                 style: TextStyle(fontSize: 16),
-//               ),
-//             ),
-//             Container(
-//               height: MediaQuery.of(context).size.height * 0.2,
-//               padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
-//               decoration: BoxDecoration(
-//                 shape: BoxShape.rectangle,
-//                 border: Border.all(
-//                   color: Colors.grey,
-//                   width: 0.7,
-//                 ),
-//               ),
-//               child: TextField(
-//                 cursorColor: Theme.of(context).primaryColor,
-//                 textInputAction: TextInputAction.newline,
-//                 keyboardType: TextInputType.multiline,
-//                 maxLines: null,
-//                 controller: _notice,
-//                 textAlign: TextAlign.left,
-//                 decoration: InputDecoration(
-//                   hintText: '공지를 입력해주세요(100자 이내)',
-//                   border: InputBorder.none,
-//                 ),
-//               ),
-//             ),
-//             SizedBox(
-//               height: 32.0,
-//             ),
-//             Align(
-//               alignment: Alignment.bottomCenter,
-//               child: SizedBox(
-//                 width: double.infinity,
-//                 child: ElevatedButton(
-//                   onPressed: () {
-//                     onJoin();
-//                   },
-//                   child: Text('방만들기'),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Future<Null> _selectDate(BuildContext context) async {
-//     final DateTime? picked = await showDatePicker(
-//         context: context,
-//         initialDate: selectedDate,
-//         firstDate: DateTime(2015, 8),
-//         lastDate: DateTime(2101));
-//     if (picked != null && picked != selectedDate)
-//       setState(() {
-//         selectedDate = picked;
-//       });
-//   }
-//
-//   Future<void> onJoin() async {
-//     setState(() {
-//       _title.text.isEmpty ? _validateError = true : _validateError = false;
-//     });
-//     await Permission.microphone.request();
-//
-//     _docId =
-//         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-//     controller.createGroupCallRoom(user, _title.text, _notice.text, _docId,
-//         locationController.location.value);
-//
-//     Get.off(() => GroupCallPage(_title.text), arguments: _docId);
-//   }
-// }
