@@ -30,7 +30,7 @@ class BottomBar extends StatelessWidget {
               SearchPage(),
               Container(),
               CommunityPage(),
-              myPage(),
+              MyPage(),
             ],
           )),
           floatingActionButtonLocation: CustomFloatingActionButtonLocation(

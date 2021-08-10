@@ -5,14 +5,14 @@ import '../groupCall/data/group_call_model.dart';
 
 
 class AgoraRepository {
-  static Future<void> BroadcastToFirebase(BroadcastModel newRoom) async {
+  static Future<void> broadcastToFirebase(BroadcastModel newRoom) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('broadcast');
 
     await users.doc(newRoom.docId).set(newRoom.toJson());
   }
 
-  static Future<void> GroupCallToFirebase(GroupCallModel newRoom) async {
+  static Future<void> groupCallToFirebase(GroupCallModel newRoom) async {
     CollectionReference users =
         FirebaseFirestore.instance.collection('groupcall');
 

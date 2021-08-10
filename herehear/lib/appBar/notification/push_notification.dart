@@ -50,7 +50,7 @@ class PushNotificationState extends State<PushNotification> {
     print("===========================");
   }
 
-  String push_token =
+  String pushToken =
       'eVa6RLgkQYCWxRVOipcJj9:APA91bHGQFzTEWc4E36BYdSoubWkVNFLZvDxYMmFN6RrYUsEpjvj8iPoNB6sr42IxORdvVEj8XJIO9FDozZXmWio5miPApaeeFn_bKu8fADpKk9U57lFh2YltPJSe3S3X482aHG0b38x';
   Map<String, String> _data = {'title': 'Hello', 'body': 'I\'m suhyun'};
 
@@ -58,9 +58,9 @@ class PushNotificationState extends State<PushNotification> {
   String? _messageType;
   String _collapseKey = 'com.hgu.herehear';
 
-  void send_Message(String msg) async {
+  void sendMessage(String msg) async {
     FirebaseMessaging.instance.sendMessage(
-        to: push_token,
+        to: pushToken,
         data: _data,
         collapseKey: _collapseKey,
         messageId: _messageId,
@@ -125,7 +125,7 @@ class PushNotificationState extends State<PushNotification> {
               : Container(),
           TextButton(
               onPressed: () {
-                send_Message('');
+                sendMessage('');
               },
               child: Text('msg send')),
         ],

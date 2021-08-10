@@ -28,7 +28,6 @@ class CreateBroadcastPage extends StatefulWidget {
 }
 
 class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
-  int _index = -1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();

@@ -19,9 +19,6 @@ class _SetLocationPageState extends State<SetLocationPage> {
   final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
 
-  String current_uid = '';
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -35,7 +32,6 @@ class _SetLocationPageState extends State<SetLocationPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,8 +41,12 @@ class _SetLocationPageState extends State<SetLocationPage> {
           onPressed: () => Get.back(),
         ),
         actions: <Widget>[
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
@@ -63,12 +63,13 @@ class _SetLocationPageState extends State<SetLocationPage> {
           ),
           SearchTextField(),
           Obx(() {
-            if(searchController.text.value.isEmpty) {
-              print('searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
+            if (searchController.text.value.isEmpty) {
+              print(
+                  'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
               return searchHistory();
-            }
-            else {
-              print('searchController.textController.value??????????????? : ${searchController.textController.value.text}');
+            } else {
+              print(
+                  'searchController.textController.value??????????????? : ${searchController.textController.value.text}');
               return Container(child: Center(child: Text('SomeThing..!!')));
             }
           })
@@ -97,27 +98,35 @@ class _SetLocationPageState extends State<SetLocationPage> {
             ),
             child: ElevatedButton(
               onPressed: () async {
-              searchController.textController.value.text =  locationController.location.value;
+                searchController.textController.value.text =
+                    locationController.location.value;
               },
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      // side: BorderSide(color: Colors.red)
-                    )
-                  ),
-                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary)),
+                    borderRadius: BorderRadius.circular(10.0),
+                    // side: BorderSide(color: Colors.red)
+                  )),
+                  backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).colorScheme.primary)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icons/location.png', width: 17.w,),
+                  Image.asset(
+                    'assets/icons/location.png',
+                    width: 17.w,
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 5.0.w),
-                    child: Text('현 위치로 주소 설정', style: TextStyle(
-                      fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                      fontFamily: Theme.of(context).textTheme.bodyText2!.fontFamily,
-                      color: Colors.white
-                    ),),
+                    child: Text(
+                      '현 위치로 주소 설정',
+                      style: TextStyle(
+                          fontSize:
+                              Theme.of(context).textTheme.bodyText1!.fontSize,
+                          fontFamily:
+                              Theme.of(context).textTheme.bodyText2!.fontFamily,
+                          color: Colors.white),
+                    ),
                   )
                 ],
               ),
@@ -138,31 +147,35 @@ class _SetLocationPageState extends State<SetLocationPage> {
           ),
         ),
         Column(
-          children: List.generate(locationHistoryExample!.length, (index) =>
-              Padding(
-                padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
-                child: Column(
-                  children: [
-                    GestureDetector(
-                      onTap: null,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            locationHistoryExample![index],
-                            style: Theme.of(context).textTheme.bodyText2,
-                          ),
-                          Expanded(child: Container()),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.clear, size: 15.w)),
-                        ],
-                      ),
+          children: List.generate(
+            locationHistoryExample!.length,
+            (index) => Padding(
+              padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: null,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          locationHistoryExample![index],
+                          style: Theme.of(context).textTheme.bodyText2,
+                        ),
+                        Expanded(child: Container()),
+                        IconButton(
+                            onPressed: null,
+                            icon: Icon(Icons.clear, size: 15.w)),
+                      ],
                     ),
-                    Divider(thickness: 1, height: 2.h,),
-                  ],
-                ),
+                  ),
+                  Divider(
+                    thickness: 1,
+                    height: 2.h,
+                  ),
+                ],
               ),
+            ),
           ),
         )
       ],
@@ -175,4 +188,3 @@ class _SetLocationPageState extends State<SetLocationPage> {
     locationController.getLocation().obs;
   }
 }
-
