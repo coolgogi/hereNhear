@@ -105,7 +105,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               padding: EdgeInsets.only(bottom: 11.h),
               child: Text(
                 '제목',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headline3,
               ),
             ),
             TextFormField(
@@ -129,7 +129,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               padding: EdgeInsets.only(bottom: 11.h),
               child: Text(
                 '공지사항',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headline3,
               ),
             ),
             Container(
@@ -165,24 +165,31 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 children: [
                   Text(
                     '카테고리',
-                    style: Theme.of(context).textTheme.headline4,
+                    style: Theme.of(context).textTheme.headline3,
                   ),
                   Expanded(child: Container()),
                   GestureDetector(
                     onTap: () => broadcastInfoController.selectedCategoryList
-                        .removeRange(0, 3),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/reload.png',
-                          width: 13.w,
-                        ),
-                        SizedBox(
-                          width: 6.w,
-                        ),
-                        Text('초기화'),
-                      ],
-                    ),
+                        .removeRange(0, broadcastInfoController.selectedCategoryList.length),
+                    child: Container(
+                      width: 70.w,
+                      height: 32.h,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/icons/reload.png',
+                            width: 15.w,
+                          ),
+                          SizedBox(
+                            width: 6.w,
+                          ),
+                          Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                          )),
+                        ],
+                      ),
+                    )
                   ),
                 ],
               ),
@@ -194,7 +201,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
               child: Text(
                 '* 카테고리는 최대 3개까지 선택 가능합니다.',
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
             ),
             SizedBox(
@@ -246,9 +255,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                               .contains(categoryTextList[i])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
-                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontSize: Theme.of(context).textTheme.headline4!.fontSize,
                       fontFamily:
-                          Theme.of(context).textTheme.bodyText1!.fontFamily,
+                          Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
                   if (broadcastInfoController.selectedCategoryList
@@ -291,9 +300,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                               .contains(categoryTextList[i + 3])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
-                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontSize: Theme.of(context).textTheme.headline4!.fontSize,
                       fontFamily:
-                          Theme.of(context).textTheme.bodyText1!.fontFamily,
+                          Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
                   if (broadcastInfoController.selectedCategoryList
@@ -336,9 +345,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                               .contains(categoryTextList[i + 7])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
-                      fontSize: Theme.of(context).textTheme.bodyText2!.fontSize,
+                      fontSize: Theme.of(context).textTheme.headline4!.fontSize,
                       fontFamily:
-                          Theme.of(context).textTheme.bodyText1!.fontFamily,
+                          Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
                   if (broadcastInfoController.selectedCategoryList

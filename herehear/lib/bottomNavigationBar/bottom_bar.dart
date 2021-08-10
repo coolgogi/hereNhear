@@ -130,7 +130,7 @@ class BottomBar extends StatelessWidget {
                           Text('원하는 주제로 대화해보세요!', style: Theme.of(context).textTheme.headline6),
                           Padding(
                             padding:EdgeInsets.only(top: 13.h),
-                            child: Image.asset('assets/images/liveImage.png', width: 57.w),
+                            child: Image.asset('assets/images/streamer.png', width: 57.w),
                           ),
                         ],
                       ),
