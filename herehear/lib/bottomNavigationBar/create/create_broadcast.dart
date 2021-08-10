@@ -114,8 +114,14 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 }
                 return null;
               },
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                border: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                ),
                 contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                 hintText: '제목을 입력해주세요(15자 이내)',
               ),
@@ -132,25 +138,19 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
             ),
             Container(
               height: 104.h,
-              padding: EdgeInsets.fromLTRB(15.w, 1.h, 10.w, 0.h),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1,
-                ),
-              ),
-              child: TextField(
-                cursorColor: Theme.of(context).primaryColor,
-                textInputAction: TextInputAction.newline,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
+              child: TextFormField(
+                keyboardType: TextInputType.text,
                 controller: _notice,
+                maxLines: 15,
                 textAlign: TextAlign.left,
                 decoration: InputDecoration(
                   hintText: '공지를 입력해주세요(100자 이내)',
-                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                  ),
                 ),
               ),
             ),
