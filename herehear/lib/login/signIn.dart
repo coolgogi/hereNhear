@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/login/siginIn_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/login/signUp.dart';
 
 
 
@@ -27,34 +28,42 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
+            Obx(() => Text(
               "아이디",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: controller.isIdActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
               ),
-            ),
+            )),
             Padding(
               padding: EdgeInsets.only(top: 10.0.h, bottom: 43.0.h),
               child: TextFormField(
                 controller: idController,
+                onTap: () {
+                  controller.isIdActive.value = true;
+                  controller.isPwdActive.value = false;
+                },
                 decoration: InputDecoration(
                   hintText: "아이디를 입력하세요.",
                 ),
               ),
             ),
-            Text(
+            Obx(() => Text(
               "패스워드",
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
+                color: controller.isPwdActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w400,
               ),
-            ),
+            )),
             Obx(() => Padding(
               padding: EdgeInsets.only(top: 10.0.h, bottom: 17.h),
               child: TextFormField(
                 controller: pwdController,
                 obscureText: controller.isObscureText.value,
+                onTap: () {
+                  controller.isPwdActive.value = true;
+                  controller.isIdActive.value = false;
+                },
                 decoration: InputDecoration(
                   hintText: "비밀번호를 입력하세요.",
                   // isDense: true,
@@ -104,12 +113,12 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 9.0.h, bottom: 18.h),
+              padding: EdgeInsets.only(top: 15.0.h, bottom: 15.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: null,
+                    onTap: () => Get.to(RegisterPage()),
                     child: Text('계정 생성', style: Theme.of(context).textTheme.headline6!.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     )),
@@ -118,7 +127,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 100.0.w, right: 100.w, bottom: 18.h),
+              padding: EdgeInsets.only(left: 100.0.w, right: 100.w, bottom: 15.h),
               child: Divider(thickness: 0.6.h,),
             ),
             Center(

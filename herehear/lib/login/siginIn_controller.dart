@@ -6,6 +6,8 @@ class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   RxBool isObscureText = true.obs;
+  RxBool isIdActive = false.obs;
+  RxBool isPwdActive = false.obs;
 
   Future<void> loginWithGoogle() async {
     try {
