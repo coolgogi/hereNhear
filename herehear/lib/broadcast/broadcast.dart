@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
-import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'data/broadcast_model.dart' as types;
-import 'data/broadcast_model.dart';
-import 'package:herehear/chatting/ChatPage.dart';
+import 'package:herehear/chatting/chat.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/users/data/user_model.dart';
 
 class BroadCastPage extends GetView<AgoraEventController> {
   // final String channelName;
@@ -26,33 +22,34 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   BroadCastPage(
       {
-        //required this.channelName,
-     // required this.userData,
+      //required this.channelName,
+      // required this.userData,
       required this.role,
       required this.roomData}) {
-    agoraController = Get.put(
-        AgoraEventController.broadcast(channelName: roomData.channelName!, role: role));
+    agoraController = Get.put(AgoraEventController.broadcast(
+        channelName: roomData.channelName!, role: role));
   }
 
   BroadCastPage.myBroadcaster(
       { //required this.channelName,
-        required this.role,
-        // required this.userData,
-        required this.roomData}) {
-    agoraController = Get.put(
-        AgoraEventController.broadcast(channelName: roomData.channelName!, role: role));
+      required this.role,
+      // required this.userData,
+      required this.roomData}) {
+    agoraController = Get.put(AgoraEventController.broadcast(
+        channelName: roomData.channelName!, role: role));
   }
 
   BroadCastPage.myaudience(
       {
-        //required this.channelName,
-        //required this.userData,
-        required this.role,
-        //required this.room,
-        required this.roomData}) {
-    agoraController = Get.put(
-        AgoraEventController.broadcast(channelName: roomData.docId!, role: role));
+      //required this.channelName,
+      //required this.userData,
+      required this.role,
+      //required this.room,
+      required this.roomData}) {
+    agoraController = Get.put(AgoraEventController.broadcast(
+        channelName: roomData.docId!, role: role));
   }
+
   //
   // BroadCastPage.broadcaster(
   //     { //required this.channelName,
@@ -62,10 +59,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
   //   agoraController = Get.put(
   //       AgoraEventController.broadcast(channelName: roomInfo.docId, role: role));
   // }
-
-
-
-
 
   // BroadCastPage.audience(
   //     {required this.channelName,
@@ -85,10 +78,10 @@ class BroadCastPage extends GetView<AgoraEventController> {
         stream: documentStream.doc(roomData.docId).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
-              return Scaffold(
-                appBar: profileAppBar(context),
-                body: ChatPage.withData(roomData),
-              );
+            return Scaffold(
+              appBar: profileAppBar(context),
+              body: ChatPage.withData(roomData),
+            );
           } else {
             return Center(child: CircularProgressIndicator());
           }

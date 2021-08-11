@@ -35,12 +35,10 @@ Future<types.BroadcastModel> processRoomDocument(
 ) async {
   final LocationController locationController = Get.find();
 
-  final createdAt = doc.data()?['createdAt'] as Timestamp?;
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final type = doc.data()!['type'] as String;
   final docId = doc.data()!['docId'] as String;
-  final updatedAt = doc.data()?['updatedAt'] as Timestamp?;
   final userIds = doc.data()!['userIds'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
   final like = doc.data()?['like'] as int?;
@@ -62,7 +60,7 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
-  final room = await types.BroadcastModel(
+  final room = types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
     like: like,
@@ -86,9 +84,7 @@ types.UserModel processUserDocument(
   types.MyRole? role,
 }) {
   final createdAt = doc.data()?['createdAt'] as Timestamp?;
-  final firstName = doc.data()?['firstName'] as String?;
   final imageUrl = doc.data()?['imageUrl'] as String?;
-  final lastName = doc.data()?['lastName'] as String?;
   final lastSeen = doc.data()?['lastSeen'] as Timestamp?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final roleString = doc.data()?['role'] as String?;
@@ -103,10 +99,8 @@ types.UserModel processUserDocument(
     uid: uid,
     profile: profile,
     createdAt: createdAt?.millisecondsSinceEpoch,
-    firstName: firstName,
     id: doc.id,
     imageUrl: imageUrl,
-    lastName: lastName,
     lastSeen: lastSeen?.millisecondsSinceEpoch,
     metadata: metadata,
     role: role ?? types.getMyRoleFromString(roleString),

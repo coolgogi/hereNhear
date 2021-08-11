@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/users/data/user_model.dart';
 import 'package:herehear/users/repository/user_repository.dart';
@@ -18,6 +18,7 @@ class UserController extends GetxController {
   Rx<UserModel> myProfile = UserModel().obs;
   String? docId;
   String? token;
+  String? platform;
 
   // firebase storage에 데이터를 보내는 과정.
   void authStateChanges(User? firebaseUser) async {
@@ -25,11 +26,10 @@ class UserController extends GetxController {
     UserModel? firebaseUserdata =
         await FirebaseUserRepository.findUserByUid(firebaseUser.uid);
 
-    print(firebaseUserdata);
-
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
       myProfile.value = UserModel(
+        platform: await _checkPlatform(),
         id:firebaseUser.uid,
         token: await _token(),
         nickName: 'Nickname',
@@ -42,8 +42,34 @@ class UserController extends GetxController {
     } else {
       // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
       myProfile.value = firebaseUserdata;
+      token = await _token();
+      platform = await _checkPlatform();
+      if(token != myProfile.value.token){
+        await FirebaseUserRepository.tokenUpdate(myProfile.value.uid!, token);
+       myProfile.value.token = token;
+      }
+
+      if(platform != myProfile.value.platform){
+        await FirebaseUserRepository.platformUpdate(myProfile.value.uid!,platform);
+        myProfile.value.platform = platform;
+      }
     }
   }
+
+  Future<String?> _checkPlatform() async {
+    if (Platform.isAndroid){
+      return 'android';
+    }
+    else if(Platform.isIOS){
+      return 'ios';
+    }
+    else{
+      return 'not supported platform';
+    }
+
+  }
+
+
 
   Future<String?> _token() async {
     return FirebaseMessaging.instance.getToken();

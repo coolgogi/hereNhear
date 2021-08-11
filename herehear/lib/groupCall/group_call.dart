@@ -19,7 +19,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
 
   final String channelName = Get.arguments;
 
-  bool already_join = false;
+  bool alreadyJoin = false;
 
   late final controller = Get.put(AgoraEventController.groupcall(
       channelName: channelName, role: ClientRole.Broadcaster));
@@ -134,7 +134,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
   //HARD
   List<Widget> _getParticipantsImageList() {
     final List<Widget> list = [];
-    if (controller.is_participate.value) {
+    if (controller.isParticipate.value) {
       list.add(Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -152,7 +152,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
             child: Text(
               'USER',
               style: TextStyle(
-                  color: controller.is_participate.value
+                  color: controller.isParticipate.value
                       ? Colors.white
                       : Color(0xFF618051)),
             ),
@@ -166,7 +166,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
   //HARD
   List<Widget> _getWatcherImageList() {
     final List<Widget> list = [];
-    if (controller.is_participate.value == false) {
+    if (controller.isParticipate.value == false) {
       list.add(Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -184,7 +184,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
             child: Text(
               'USER',
               style: TextStyle(
-                  color: controller.is_participate.value
+                  color: controller.isParticipate.value
                       ? Colors.white
                       : Color(0xFF618051)),
             ),
@@ -244,7 +244,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
                         : Colors.white,
                     child: Icon(
                       controller.muted.value ? Icons.mic_off : Icons.mic,
-                      color: !already_join
+                      color: !alreadyJoin
                           ? Colors.grey
                           : controller.muted.value
                               ? Colors.white
@@ -253,7 +253,7 @@ class _GroupCallPageState extends State<GroupCallPage> {
                     ),
                   ),
                   onTap: (() {
-                    if (already_join == true) controller.onToggleMute();
+                    if (alreadyJoin == true) controller.onToggleMute();
                   }),
                 ),
               )),
@@ -271,10 +271,10 @@ class _GroupCallPageState extends State<GroupCallPage> {
               ),
               onTap: (() {
                 setState(() {
-                  if (already_join == false)
-                    controller.move_watcher_to_participant();
+                  if (alreadyJoin == false)
+                    controller.moveWatcherToParticipant();
 
-                  already_join = true;
+                  alreadyJoin = true;
                 });
               }),
             ),

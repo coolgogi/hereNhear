@@ -17,6 +17,16 @@ class FirebaseUserRepository {
     }
   }
 
+  static Future<void> tokenUpdate(String uid, String? token) async{
+    FirebaseFirestore.instance.collection('users').doc(uid).update(
+        {'token' : token  });
+  }
+
+  static Future<void> platformUpdate(String uid, String? platform) async{
+   FirebaseFirestore.instance.collection('users').doc(uid).update(
+        {'platform' : platform  });
+  }
+
 
   static Future<void> saveUserToFirebase(UserModel firebaseUser) async {
     CollectionReference users = FirebaseFirestore.instance.collection('users');

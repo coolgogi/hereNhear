@@ -18,44 +18,36 @@ extension MyRoleToShortString on MyRole {
 @immutable
 class UserModel extends Equatable {
   /// Creates a user.
-  const UserModel({
-    this.createdAt,
-    this.firstName,
-     this.id,
-    this.imageUrl,
-    this.lastName,
-    this.lastSeen,
-    this.metadata,
-    this.role,
-    this.updatedAt,
-    //
-    this.token,
-        this.uid,
-
+  UserModel(
+      {this.createdAt,
+      this.id,
+      this.imageUrl,
+      this.lastSeen,
+      this.metadata,
+      this.role,
+      this.updatedAt,
+      //
+      this.platform,
+      this.token,
+      this.uid,
       this.nickName,
       this.name,
       this.location,
-
       this.profile,
-
-      this.subscribe
-  });
+      this.subscribe});
 
   /// Creates user from a map (decoded JSON).
   UserModel.fromJson(Map<String, dynamic> json)
-      :
-
-        createdAt = json['createdAt'] as int?,
-        firstName = json['firstName'] as String?,
+      : createdAt = json['createdAt'] as int?,
         id = json['id'] as String,
         imageUrl = json['imageUrl'] as String?,
-        lastName = json['lastName'] as String?,
         lastSeen = json['lastSeen'] as int?,
         metadata = json['metadata'] as Map<String, dynamic>?,
         role = getMyRoleFromString(json['role'] as String?),
         updatedAt = json['updatedAt'] as int?,
-  //
-          token = json['token'] as String,
+        //
+        platform = json['platform'] as String,
+        token = json['token'] as String,
         uid = json['uid'] as String,
         name = json['name'] as String,
         nickName = json['nickName'] as String,
@@ -65,24 +57,25 @@ class UserModel extends Equatable {
 
   /// Converts user to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => {
-    'createdAt': createdAt,
-    'firstName': firstName,
-    'id': id,
-    'imageUrl': imageUrl,
-    'lastName': lastName,
-    'lastSeen': lastSeen,
-    'metadata': metadata,
-    'role': role?.toShortString(),
-    'updatedAt': updatedAt,
-    //
-    'token' : this.token,
-      'uid': this.uid,
-      'name': this.name,
-      'location': this.location,
-      'nickName': this.nickName,
-      'profile': this.profile,
-      'subscribe' : this.subscribe,
-  };
+        'createdAt': createdAt,
+
+        'id': id,
+        'imageUrl': imageUrl,
+
+        'lastSeen': lastSeen,
+        'metadata': metadata,
+        'role': role?.toShortString(),
+        'updatedAt': updatedAt,
+        //
+        'platform': this.platform,
+        'token': this.token,
+        'uid': this.uid,
+        'name': this.name,
+        'location': this.location,
+        'nickName': this.nickName,
+        'profile': this.profile,
+        'subscribe': this.subscribe,
+      };
 
   /// Creates a copy of the user with an updated data.
   /// [firstName], [imageUrl], [lastName], [lastSeen], [role] and [updatedAt]
@@ -100,17 +93,15 @@ class UserModel extends Equatable {
     int? updatedAt,
   }) {
     return UserModel(
-      firstName: firstName,
       id: id,
       imageUrl: imageUrl,
-      lastName: lastName,
       lastSeen: lastSeen,
       metadata: metadata == null
           ? null
           : {
-        ...this.metadata ?? {},
-        ...metadata,
-      },
+              ...this.metadata ?? {},
+              ...metadata,
+            },
       role: role,
       updatedAt: updatedAt,
     );
@@ -118,17 +109,8 @@ class UserModel extends Equatable {
 
   /// Equatable props
   @override
-  List<Object?> get props => [
-    createdAt,
-    firstName,
-    id,
-    imageUrl,
-    lastName,
-    lastSeen,
-    metadata,
-    role,
-    updatedAt
-  ];
+  List<Object?> get props =>
+      [createdAt, id, imageUrl, lastSeen, metadata, role, updatedAt];
 
   //   String? token;
 //   String? uid;
@@ -143,7 +125,7 @@ class UserModel extends Equatable {
 //   String? number;
 //   List<dynamic>? subscribe;
 
-  final String? token;
+  String? token;
   final String? uid;
   final String? nickName;
   final String? name;
@@ -151,12 +133,12 @@ class UserModel extends Equatable {
   final String? profile;
   final List<dynamic>? subscribe;
 
+  String? platform;
 
   /// Created user timestamp, in ms
   final int? createdAt;
 
   /// First name of the user
-  final String? firstName;
 
   /// Unique ID of the user
   final String? id;
@@ -165,7 +147,6 @@ class UserModel extends Equatable {
   final String? imageUrl;
 
   /// Last name of the user
-  final String? lastName;
 
   /// Timestamp when user was last visible, in ms
   final int? lastSeen;
@@ -179,27 +160,6 @@ class UserModel extends Equatable {
   /// Updated user timestamp, in ms
   final int? updatedAt;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //
 //

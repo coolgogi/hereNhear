@@ -68,6 +68,7 @@ dependencies:
   flutter_tags: ^0.4.9+1
   record: ^3.0.0
   just_audio: ^0.8.0
+  flutter_time_picker_spinner: ^2.0.0
   #  just_audio: ^0.9.2
 
 
@@ -173,7 +174,16 @@ flutter:
     - assets/icons/clock_white.png
     - assets/icons/clock_grey.png
     - assets/icons/friends.png
+    - assets/icons/addFriend.png
     - assets/icons/play.png
+    - assets/icons/kakao.png
+    - assets/icons/naver.png
+    - assets/icons/facebook.png
+    - assets/icons/google.png
+    - assets/icons/apple.png
+    - assets/icons/camera.png
+    - assets/icons/camera_blue.png
+    - assets/icons/gallery.png
     - assets/images/game.png
     - assets/images/gamer.png
     - assets/images/sora.jpg

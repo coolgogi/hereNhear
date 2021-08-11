@@ -1,6 +1,7 @@
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:async';
 import 'package:herehear/agora/agoraCreateController.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/data/broadcast_model.dart' as types;
@@ -14,12 +15,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'broadcastInfoController/broadcast_info_controller.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
-class TempController extends GetxController {
-  RxBool isPrivate = false.obs;
-  RxBool isReserve = false.obs;
-  RxList tagList = [].obs;
-}
+import 'groupCallInfocontroller.dart';
+
 
 class CreateGroupCallPage extends StatefulWidget {
   late UserModel userData;
@@ -31,11 +30,10 @@ class CreateGroupCallPage extends StatefulWidget {
   CreateGroupCallPage();
 
   @override
-  _CreateBroadcastPageState createState() => _CreateBroadcastPageState();
+  _CreateGroupCallPageState createState() => _CreateGroupCallPageState();
 }
 
-class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
-  int _index = -1;
+class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
@@ -43,7 +41,8 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
   String _docId = '';
 
-  //unused variable
+
+  //unused variableselectedDate
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
   List<String> categoryTextList = [
@@ -71,7 +70,7 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
-  final controller = Get.put(TempController());
+  final controller = Get.put(GroupCallInfoController());
 
   @override
   void dispose() {
@@ -114,235 +113,15 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
-            Obx(() => Row(
-              children: [
-                Container(
-                  width: 83.w,
-                  height: 30.h,
-                  child: ElevatedButton(
-                    onPressed: () => controller.isPrivate.value = false,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image.asset(controller.isPrivate.value? 'assets/icons/unlock_grey.png' : 'assets/icons/unlock_white.png', width: 18.w),
-                        Text(
-                            '공개',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: controller.isPrivate.value? Theme.of(context).colorScheme.onSurface
-                                    : Theme.of(context).colorScheme.onPrimary
-                            )),
-                      ],
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.background
-                            : Theme.of(context).colorScheme.primary),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.background
-                                    : Theme.of(context).colorScheme.primary)
-                            )
-                        )
-                    ),
-                  ),
-                ),
-                SizedBox(width: 13.w),
-                Container(
-                  width: 83.w,
-                  height: 30.h,
-                  child: ElevatedButton(
-                    onPressed: () => controller.isPrivate.value = true,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Image.asset(controller.isPrivate.value?  'assets/icons/lock_white.png' : 'assets/icons/lock_grey.png', width: 18.w),
-                        Text(
-                            '비공개',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: controller.isPrivate.value? Theme.of(context).colorScheme.onPrimary
-                                    : Theme.of(context).colorScheme.onSurface
-                            )),
-                      ],
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.background),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5.0),
-                                side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context).colorScheme.background)
-                            )
-                        )
-                    ),
-                  ),
-                ),
-                SizedBox(width: 13.w),
-                Text('비밀번호 ', style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: controller.isPrivate.value? Theme.of(context).colorScheme.onBackground
-                        : Theme.of(context).colorScheme.onSurface
-                )),
-                SizedBox(width: 7.w),
-                Container(
-                  width: 80.w,
-                  height: 20.h,
-                  child: TextField(
-                    controller: _privatePwd,
-                    enabled: controller.isPrivate.value,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.fromLTRB(7.w, 3.h, 0.w, 0.h),
-                      hintStyle: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface
-                      ),
-                      hintText: '4자리 숫자',
-                    ),
-                  ),
-                ),
-              ],
-            )),
+
+            Obx(() => privateOption()),
             SizedBox(height: 17.h),
-            Row(
-              children: [
-                Container(
-                  width: 83.w,
-                  height: 30.h,
-                  child: ElevatedButton(
-                    onPressed: () => controller.isReserve.value = true,
-                    child: Row(
-                      children: [
-                        Image.asset(
-                            controller.isReserve.value
-                                ? 'assets/icons/clock_white.png'
-                                : 'assets/icons/clock_grey.png',
-                            width: 18.w),
-                        Padding(
-                          padding: EdgeInsets.only(left: 6.0.w, right: 14.w),
-                          child: Text('예약 설정',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline6!
-                                  .copyWith(
-                                      color: controller.isPrivate.value
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onSurface)),
-                        ),
-                      ],
-                    ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            controller.isPrivate.value
-                                ? Theme.of(context).colorScheme.primary
-                                : Theme.of(context).colorScheme.background),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(
-                                        color: controller.isPrivate.value
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                            : Theme.of(context)
-                                                .colorScheme
-                                                .background)))),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => controller.isReserve.value? showDialog() : null,
-                  child: Container(
-                    width: 188.w,
-                    height: 25.h,
-                    child: Row(
-                      children: [
-                        SizedBox(width: 35.w,),
-                        Text(
-                            DateFormat('yyyy-MM-dd  00:00').format(DateTime.now()),
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
-                                    : Theme.of(context).colorScheme.onSurface
-                            ),
-                        ),
-                        SizedBox(width: 16.w,),
-                        Icon(Icons.expand_more),
-                      ],
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.all(Radius.circular(4.r)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.3),
-                          spreadRadius: 0,
-                          blurRadius: 4,
-                          offset: Offset(0, 4), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 40.h, bottom: 11.h),
-              child: Text(
-                '제목',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            TextFormField(
-              controller: _title,
-              validator: (value) {
-                if (value!.trim().isEmpty) {
-                  return '제목을 입력해주세요.';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                hintText: '제목을 입력해주세요(15자 이내)',
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            Container(
-              padding: EdgeInsets.only(bottom: 11.h),
-              child: Text(
-                '공지사항',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            Container(
-              height: 104.h,
-              padding: EdgeInsets.fromLTRB(15.w, 1.h, 10.w, 0.h),
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 1,
-                ),
-              ),
-              child: TextField(
-                cursorColor: Theme.of(context).primaryColor,
-                keyboardType: TextInputType.number,
-                controller: _notice,
-                textAlign: TextAlign.left,
-                decoration: InputDecoration(
-                  hintText: '방의 공지를 입력해주세요(100자 이내)',
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15.0.h,
-            ),
+
+            Obx(() => timeReserveOption()),
+
+            titleAndNoticeInfo(),
+
+            //카테고리 선택 part
             Padding(
               padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
               child: Row(
@@ -378,9 +157,7 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                 ],
               ),
             ),
-            Obx(
-                  () => categorySelectList(),
-            ),
+            Obx(() => categorySelectList()),
             Padding(
               padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
               child: Text(
@@ -406,6 +183,266 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget privateOption() {
+    return Row(
+      children: [
+        Container(
+          width: 83.w,
+          height: 30.h,
+          child: ElevatedButton(
+            onPressed: () => controller.isPrivate.value = false,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(controller.isPrivate.value? 'assets/icons/unlock_grey.png' : 'assets/icons/unlock_white.png', width: 18.w),
+                Text(
+                    '공개',
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: controller.isPrivate.value? Theme.of(context).colorScheme.onSurface
+                            : Theme.of(context).colorScheme.onPrimary
+                    )),
+              ],
+            ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.background
+                    : Theme.of(context).colorScheme.primary),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.background
+                            : Theme.of(context).colorScheme.primary)
+                    )
+                )
+            ),
+          ),
+        ),
+        SizedBox(width: 13.w),
+        Container(
+          width: 83.w,
+          height: 30.h,
+          child: ElevatedButton(
+            onPressed: () => controller.isPrivate.value = true,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset(controller.isPrivate.value?  'assets/icons/lock_white.png' : 'assets/icons/lock_grey.png', width: 18.w),
+                Text(
+                    '비공개',
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                        color: controller.isPrivate.value? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface
+                    )),
+              ],
+            ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.background),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.background)
+                    )
+                )
+            ),
+          ),
+        ),
+        SizedBox(width: 13.w),
+        Text('비밀번호 ', style: Theme.of(context).textTheme.headline6!.copyWith(
+            color: controller.isPrivate.value? Theme.of(context).colorScheme.onBackground
+                : Theme.of(context).colorScheme.onSurface
+        )),
+        SizedBox(width: 7.w),
+        Container(
+          width: 80.w,
+          height: 20.h,
+          child: TextField(
+            controller: _privatePwd,
+            enabled: controller.isPrivate.value,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              enabledBorder: OutlineInputBorder(
+                borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+              ),
+              contentPadding: EdgeInsets.fromLTRB(7.w, 0.h, 0.w, 0.h),
+              hintStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurface
+              ),
+              hintText: '4자리 숫자',
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget timeReserveOption() {
+    return Row(
+      children: [
+        Container(
+          width: 110.w,
+          height: 30.h,
+          child: ElevatedButton(
+            onPressed: () => controller.isReserve.value = !(controller.isReserve.value),
+            child: Row(
+              children: [
+                Image.asset(
+                    controller.isReserve.value
+                        ? 'assets/icons/clock_white.png'
+                        : 'assets/icons/clock_grey.png',
+                    width: 18.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 6.0.w),
+                  child: Text('예약 설정',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6!
+                          .copyWith(
+                          color: controller.isReserve.value
+                              ? Theme.of(context)
+                              .colorScheme
+                              .onPrimary
+                              : Theme.of(context)
+                              .colorScheme
+                              .onSurface)),
+                ),
+              ],
+            ),
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    controller.isReserve.value
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(context).colorScheme.background),
+                shape:
+                MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                        side: BorderSide(
+                            color: controller.isReserve.value
+                                ? Theme.of(context)
+                                .colorScheme
+                                .primary
+                                : Theme.of(context)
+                                .colorScheme
+                                .background)))),
+          ),
+        ),
+        SizedBox(width: 10.w),
+        GestureDetector(
+          onTap: () => controller.isReserve.value? showDialog() : null,
+          child: Container(
+            width: 188.w,
+            height: 30.h,
+            child: Row(
+              children: [
+                SizedBox(width: 35.w,),
+                Text(
+                  DateFormat('yyyy-MM-dd  ').format(controller.selectedDate.value),
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                          : Theme.of(context).colorScheme.onSurface
+                  ),
+                ),
+                Text(
+                  DateFormat('kk:mm').format(controller.selectedTime.value),
+                  style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                          : Theme.of(context).colorScheme.onSurface
+                  ),
+                ),
+                SizedBox(width: 16.w,),
+                Icon(Icons.expand_more, color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                    : Theme.of(context).colorScheme.onSurface
+                ),
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(0, 4), // changes position of shadow
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget titleAndNoticeInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 40.h, bottom: 11.h),
+          child: Text(
+            '제목',
+            style: Theme.of(context).textTheme.headline3,
+          ),
+        ),
+        TextFormField(
+          controller: _title,
+          validator: (value) {
+            if (value!.trim().isEmpty) {
+              return '제목을 입력해주세요.';
+            }
+            return null;
+          },
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+            ),
+            contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+            hintText: '제목을 입력해주세요(15자 이내)',
+          ),
+        ),
+        SizedBox(
+          height: 20.h,
+        ),
+        Container(
+          padding: EdgeInsets.only(bottom: 11.h),
+          child: Text(
+            '공지사항',
+            style: Theme.of(context).textTheme.headline3,
+          ),
+        ),
+        Container(
+          height: 104.h,
+          child: TextFormField(
+            keyboardType: TextInputType.text,
+            controller: _notice,
+            maxLines: 15,
+            textAlign: TextAlign.left,
+            decoration: InputDecoration(
+              hintText: '방의 공지를 입력해주세요(100자 이내)',
+              enabledBorder: OutlineInputBorder(
+                borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 15.0.h,
+        ),
+      ],
     );
   }
 
@@ -615,23 +652,77 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                     ],
                   ),
                   SizedBox(height: 40.h),
-                  Row(
+                  Obx(() => Row(
                     children: [
                       Image.asset('assets/icons/clock_black.png', width: 26.w),
                       Padding(
-                        padding: EdgeInsets.only(left: 14.0.w, right: 76.w),
+                        padding: EdgeInsets.only(left: 14.0.w, right: 26.w),
                         child: Text('시간 설정', style: Theme.of(context).textTheme.headline5),
                       ),
-                      Text(
-                          DateFormat('yyyy-MM-dd  kk:mm').format(DateTime.now()),
-                          style: Theme.of(context).textTheme.headline5
+                      GestureDetector(
+                        onTap: () => _selectDate(context),
+                        child: Container(
+                          width: 100.w,
+                          height: 30.h,
+                          child: Center(
+                            child: Text(
+                              DateFormat('yyyy-MM-dd').format(controller.selectedDate.value),
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                  color: Theme.of(context).colorScheme.onBackground
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: Offset(0, 4), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      GestureDetector(
+                        onTap: () => Get.defaultDialog(
+                          title: 'SELECT TIME',
+                          content: _selectTime(),
+                        ),
+                        child: Container(
+                          width: 54.w,
+                          height: 30.h,
+                          child: Center(
+                            child: Text(
+                              DateFormat('kk:mm').format(controller.selectedTime.value),
+                              style: Theme.of(context).textTheme.headline5!.copyWith(
+                                  color: Theme.of(context).colorScheme.onBackground
+                              ),
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.all(Radius.circular(4.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: Offset(0, 4), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
-                  ),
-                  SizedBox(height: 24.h),
+                  )),
+                  SizedBox(height: 30.h),
                   Row(
                     children: [
-                      Image.asset('assets/icons/friends.png', width: 24.w),
+                      Image.asset('assets/icons/addFriend.png', width: 24.w),
                       Padding(
                         padding: EdgeInsets.only(left: 15.0.w),
                         child: Text('친구 초대', style: Theme.of(context).textTheme.headline5),
@@ -639,7 +730,9 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
                     ],
                   ),
                   SizedBox(height: 10.h),
-                  Material(child: createTagList()),
+                  Material(
+                    color: Theme.of(context).colorScheme.background,
+                    child: createTagList()),
                 ],
               ),
             ),
@@ -649,59 +742,106 @@ class _CreateBroadcastPageState extends State<CreateGroupCallPage> {
   }
 
   Widget createTagList() {
-    return Tags(
-      key:_tagStateKey,
-      textField: TagsTextField(
-        autofocus: false,
-        inputDecoration: InputDecoration(
-          border: OutlineInputBorder(),
-          contentPadding: EdgeInsets.fromLTRB(7.w, 3.h, 0.w, 0.h),
-          focusColor: Theme.of(context).colorScheme.background,
-        ),
-        textStyle: Theme.of(context).textTheme.headline5,
-        // constraintSuggestion: true,
-        // suggestions: [],
-        onSubmitted: (String str) {
-          // Add item to the data source.
-          setState(() {
-            // required
-            controller.tagList.add(str);
-          });
-        },
-      ),
-      itemCount: controller.tagList.length, // required
-      itemBuilder: (int index){
-        final item = controller.tagList[index];
-
-        return ItemTags(
-          // Each ItemTags must contain a Key. Keys allow Flutter to
-          // uniquely identify widgets.
-          key: Key(index.toString()),
-          index: index, // required
-          title: item.title,
-          active: item.active,
-          customData: item.customData,
-          textStyle: Theme.of(context).textTheme.headline5,
-          combine: ItemTagsCombine.withTextBefore,
-          icon: ItemTagsIcon(
-            icon: Icons.add,
-          ), // OR null,
-          removeButton: ItemTagsRemoveButton(
-            onRemoved: (){
-              // Remove the item from the data source.
+    return Obx(() => Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Tags(
+          key:_tagStateKey,
+          textField: TagsTextField(
+            hintText: '친구 이름을 입력하세요',
+            autofocus: false,
+            inputDecoration: InputDecoration(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.fromLTRB(7.w, 3.h, 0.w, 0.h),
+              focusColor: Theme.of(context).colorScheme.background,
+            ),
+            textStyle: Theme.of(context).textTheme.headline5,
+            // constraintSuggestion: true,
+            // suggestions: [],
+            onSubmitted: (String str) {
+              // Add item to the data source.
               setState(() {
                 // required
-                controller.tagList.removeAt(index);
+                controller.tagList.add(str);
               });
-              //required
-              return true;
             },
-          ), // OR null,
-          onPressed: (item) => print(item),
-          onLongPressed: (item) => print(item),
-        );
+          ),
+        ),
+        SizedBox(height: 15.h),
+        Tags(
+          itemCount: controller.tagList.length, // required
+          itemBuilder: (int index){
+            final Item currentItem = Item(title:controller.tagList[index]);
 
-      },
+            return ItemTags(
+              index: index,
+              title: currentItem.title,
+              customData: currentItem.customData,
+              textColor: Theme.of(context).colorScheme.onPrimary,
+              color: Theme.of(context).colorScheme.primary,
+              activeColor: Theme.of(context).colorScheme.background,
+              textActiveColor: Theme.of(context).colorScheme.primary,
+              elevation: 0,
+              border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1.0.w
+              ),
+              active: true,
+              pressEnabled: false,
+              textStyle: TextStyle(fontSize: 14),
+              combine: ItemTagsCombine.withTextBefore,
+              removeButton: ItemTagsRemoveButton(
+                  backgroundColor: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.primary,
+                  onRemoved: () {
+                    setState(() {
+                      controller.tagList.removeAt(index);
+                    });
+                    return true;
+                  }
+              ),
+            );
+          },
+        ),
+        // Expanded(child: Container()),
+        // GestureDetector(
+        //   onTap: ,
+        //   child: Container(
+        //     child: Text('확인'),
+        //   ),
+        // )
+      ],
+    ));
+  }
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: controller.selectedDate.value,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != controller.selectedDate.value)
+      setState(() {
+        controller.selectedDate.value = picked;
+      });
+  }
+
+  Widget _selectTime() {
+    return TimePickerSpinner(
+
+      is24HourMode: true,
+      normalTextStyle: Theme.of(context).textTheme.headline3!.copyWith(
+          fontSize: 26,
+          color: Theme.of(context).colorScheme.onSurface
+      ),
+      highlightedTextStyle: Theme.of(context).textTheme.headline3!.copyWith(
+          fontSize: 32,
+          color: Theme.of(context).colorScheme.onBackground
+      ),
+      spacing: 50,
+      itemHeight: 80,
+      isForce2Digits: true,
+      onTimeChange: (time) => controller.selectedTime.value = time,
     );
   }
 }

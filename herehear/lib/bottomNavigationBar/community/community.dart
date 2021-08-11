@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/appBar/search_bar.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-
 import 'free_board/free_board.dart';
+import 'free_board/post.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -15,7 +14,6 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CommunityPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
-  String current_uid = '';
 
 
   @override
@@ -169,83 +167,86 @@ class CommunityPage extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
-        Container(
-          margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
-          width: 160.0.w,
-          height: 135.0.h,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF000000).withOpacity(0.5),
-                Color(0xFF747474).withOpacity(0.0),
+        GestureDetector(
+          onTap: () => Get.to(PostPage()),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 16.0.h, right: 15.0.w),
+            width: 160.0.w,
+            height: 135.0.h,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF000000).withOpacity(0.5),
+                  Color(0xFF747474).withOpacity(0.0),
+                ],
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.3),
+                  spreadRadius: 0,
+                  blurRadius: 4,
+                  offset: Offset(1, 4), // changes position of shadow
+                ),
               ],
             ),
-            borderRadius: BorderRadius.all(Radius.circular(15)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.3),
-                spreadRadius: 0,
-                blurRadius: 4,
-                offset: Offset(1, 4), // changes position of shadow
-              ),
-            ],
-          ),
-          child: InkWell(
-            onTap: null,
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 51.0.h),
-                  child: Center(child: Text(
-                      '연애 상담 해드려요.',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                        color: Colors.white,
-                      ))),
-                ),
-                Expanded(child: Container()),
-                Padding(
-                  padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.people,
-                        size: 14.w,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        // _roomData['currentListener'] == null
-                        //     ? ' 0'
-                        //     : ' ${_roomData['currentListener'].length.toString()}',
-                          ' 26',
-                          style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Colors.white
-                          )
-                      ),
-                      SizedBox(width: 8.0.w),
-                      Icon(
-                        Icons.favorite,
-                        size: 12.w,
-                        color: Colors.white,
-                      ),
-                      Text(
-                        // ' ${_roomData['like'].toString()}',
-                          ' 35',
-                          style: Theme.of(context).textTheme.headline6!.copyWith(
-                              color: Colors.white
-                          )
-                      ),
-                    ],
+            child: InkWell(
+              onTap: null,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 51.0.h),
+                    child: Center(child: Text(
+                        '연애 상담 해드려요.',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: Colors.white,
+                        ))),
                   ),
-                ),
-              ],
+                  Expanded(child: Container()),
+                  Padding(
+                    padding: EdgeInsets.only(right: 11.0.w, bottom: 11.0.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.people,
+                          size: 14.w,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          // _roomData['currentListener'] == null
+                          //     ? ' 0'
+                          //     : ' ${_roomData['currentListener'].length.toString()}',
+                            ' 26',
+                            style: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: Colors.white
+                            )
+                        ),
+                        SizedBox(width: 8.0.w),
+                        Icon(
+                          Icons.favorite,
+                          size: 12.w,
+                          color: Colors.white,
+                        ),
+                        Text(
+                          // ' ${_roomData['like'].toString()}',
+                            ' 35',
+                            style: Theme.of(context).textTheme.headline6!.copyWith(
+                                color: Colors.white
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ],
-    );;
+    );
   }
 
   Widget playThemeList(BuildContext context) {

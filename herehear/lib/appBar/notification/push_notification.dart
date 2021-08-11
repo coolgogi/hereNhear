@@ -1,19 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:herehear/appBar/notification/data/notification_model.dart';
 import 'package:overlay_support/overlay_support.dart';
 
-class pushNotification extends StatefulWidget {
+class PushNotification extends StatefulWidget {
   @override
-  _pushNotificationState createState() => _pushNotificationState();
+  PushNotificationState createState() => PushNotificationState();
 }
 
-class _pushNotificationState extends State {
+class PushNotificationState extends State<PushNotification> {
   late int _totalNotifications;
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  PushNotification? _notificationInfo;
+  PushNotificationModel? _notificationInfo;
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _pushNotificationState extends State {
       print(message.category); //null
       print(message.collapseKey); //com.hgu.herehear
       print("===================");
-      PushNotification notification = PushNotification(
+      PushNotificationModel notification = PushNotificationModel(
         title: message.notification?.title,
         body: message.notification?.body,
         dataTitle: message.data['title'],
@@ -50,18 +50,17 @@ class _pushNotificationState extends State {
     print("===========================");
   }
 
-  String push_token =
+  String pushToken =
       'eVa6RLgkQYCWxRVOipcJj9:APA91bHGQFzTEWc4E36BYdSoubWkVNFLZvDxYMmFN6RrYUsEpjvj8iPoNB6sr42IxORdvVEj8XJIO9FDozZXmWio5miPApaeeFn_bKu8fADpKk9U57lFh2YltPJSe3S3X482aHG0b38x';
   Map<String, String> _data = {'title': 'Hello', 'body': 'I\'m suhyun'};
 
   String _messageId = DateTime.now().millisecond.toString();
   String? _messageType;
-  String? _category;
   String _collapseKey = 'com.hgu.herehear';
 
-  void send_Message(String msg) async {
+  void sendMessage(String msg) async {
     FirebaseMessaging.instance.sendMessage(
-        to: push_token,
+        to: pushToken,
         data: _data,
         collapseKey: _collapseKey,
         messageId: _messageId,
@@ -126,7 +125,7 @@ class _pushNotificationState extends State {
               : Container(),
           TextButton(
               onPressed: () {
-                send_Message('');
+                sendMessage('');
               },
               child: Text('msg send')),
         ],
@@ -155,7 +154,7 @@ class _pushNotificationState extends State {
       // TODO: handle the received notifications
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         // Parse the message received
-        PushNotification notification = PushNotification(
+        PushNotificationModel notification = PushNotificationModel(
           title: message.notification?.title,
           body: message.notification?.body,
           dataTitle: message.data['title'],
@@ -190,7 +189,7 @@ class _pushNotificationState extends State {
         await FirebaseMessaging.instance.getInitialMessage();
 
     if (initialMessage != null) {
-      PushNotification notification = PushNotification(
+      PushNotificationModel notification = PushNotificationModel(
         title: initialMessage.notification?.title,
         body: initialMessage.notification?.body,
         dataTitle: initialMessage.data['title'],
@@ -231,19 +230,6 @@ class NotificationBadge extends StatelessWidget {
   }
 }
 
-class PushNotification {
-  PushNotification({
-    this.title,
-    this.body,
-    this.dataTitle,
-    this.dataBody,
-  });
-
-  String? title;
-  String? body;
-  String? dataTitle;
-  String? dataBody;
-}
 
 Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
