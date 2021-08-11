@@ -32,13 +32,13 @@ class LocationController extends GetxController {
   }
 
   Future<String> getLocation() async {
-    if (await Geolocator.checkPermission() == LocationPermission.denied) {
-      await Geolocator.requestPermission();
-    }
-    if (await Geolocator.checkPermission() ==
-        LocationPermission.deniedForever) {
-      await Geolocator.requestPermission();
-    }
+    // if (await Geolocator.checkPermission() == LocationPermission.denied) {
+    //   await Geolocator.requestPermission();
+    // }
+    // if (await Geolocator.checkPermission() ==
+    //     LocationPermission.deniedForever) {
+    //   await Geolocator.requestPermission();
+    // }
 
     Position? position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
