@@ -17,14 +17,8 @@ import 'broadcastInfoController/broadcast_info_controller.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
+import 'groupCallInfocontroller.dart';
 
-class TempController extends GetxController {
-  RxBool isPrivate = false.obs;
-  RxBool isReserve = false.obs;
-  RxList tagList = [].obs;
-  var selectedDate = DateTime.now().add(Duration(days: 1)).obs;
-  var selectedTime = DateTime.now().add(Duration(days: 1)).obs;
-}
 
 class CreateGroupCallPage extends StatefulWidget {
   late UserModel userData;
@@ -76,7 +70,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
-  final controller = Get.put(TempController());
+  final controller = Get.put(GroupCallInfoController());
 
   @override
   void dispose() {
