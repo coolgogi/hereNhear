@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/notification/notification.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
@@ -12,7 +13,6 @@ import 'bottomNavigationBar/bottom_bar.dart';
 import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
               theme: value.isDarkTheme.value ? dark_theme : light_theme,
               debugShowCheckedModeBanner: false,
               initialBinding: BindingsBuilder(() {
-                Get.lazyPut<UserController>(() => UserController()); //이 부분을 추가하면 된다.
+                Get.lazyPut<UserController>(
+                    () => UserController()); //이 부분을 추가하면 된다.
               }),
               title: 'Here & Hear',
               home: App(),
@@ -60,10 +61,9 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class App extends GetView<UserController> {
   final locationController = Get.put(LocationController());
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -74,6 +74,7 @@ class App extends GetView<UserController> {
             child: Text('Firebase load fail'), // 에러 대응
           );
         }
+
         if (snapshot.connectionState == ConnectionState.done) {
           return StreamBuilder<User?>(
             stream: FirebaseAuth.instance
@@ -87,17 +88,17 @@ class App extends GetView<UserController> {
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        print(snapshot.data.toString());
                         return BottomBar();
                       } else {
+                        print("no data");
                         return Center(child: CircularProgressIndicator());
                       }
-                    });// data가 있으면 MainPage로
+                    }); // data가 있으면 MainPage로
               }
             },
           );
-
         } else {
+          print("no data under");
           return Center(
             child: CircularProgressIndicator(),
           );
