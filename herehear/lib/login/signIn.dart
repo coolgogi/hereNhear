@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
         child: ListView(
           children: [
             Padding(
-              padding: EdgeInsets.only(top: 100.0.h, bottom: 60.0.h),
+              padding: EdgeInsets.only(top: 85.0.h, bottom: 50.0.h),
               child: Text(
                 "반갑습니다.",
                 style: Theme.of(context).textTheme.caption!.copyWith(
@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 10.0.h, bottom: 60.0.h),
+              padding: EdgeInsets.only(top: 10.0.h, bottom: 43.0.h),
               child: TextFormField(
                 controller: idController,
                 decoration: InputDecoration(
@@ -67,7 +67,7 @@ class LoginPage extends StatelessWidget {
               ),
             )),
             Padding(
-              padding: EdgeInsets.only(bottom: 65.0.h),
+              padding: EdgeInsets.only(bottom: 55.0.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -104,7 +104,7 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16.0.h),
+              padding: EdgeInsets.only(top: 9.0.h, bottom: 18.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -116,7 +116,48 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 100.0.w, right: 100.w, bottom: 18.h),
+              child: Divider(thickness: 0.6.h,),
+            ),
+            Center(
+              child: Text('또는 다른 서비스 계정으로 로그인', style: Theme.of(context).textTheme.headline6!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              )),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 27.h, bottom: 20.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: null,
+                    child: Image.asset('assets/icons/kakao.png', width: 40.w),
+                  ),
+                  SizedBox(width: 15.w),
+                  GestureDetector(
+                    onTap: null,
+                    child: Image.asset('assets/icons/naver.png', width: 40.w),
+                  ),
+                  SizedBox(width: 15.w),
+                  GestureDetector(
+                    onTap: null,
+                    child: Image.asset('assets/icons/facebook.png', width: 40.w),
+                  ),
+                  SizedBox(width: 15.w),
+                  GestureDetector(
+                    onTap: () => controller.loginWithGoogle(),
+                    child: Image.asset('assets/icons/google.png', width: 40.w),
+                  ),
+                  SizedBox(width: 15.w),
+                  GestureDetector(
+                    onTap: null,
+                    child: Image.asset('assets/icons/apple.png', width: 40.w),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
