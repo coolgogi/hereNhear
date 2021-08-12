@@ -13,7 +13,6 @@ import 'location/controller/location_controller.dart';
 import 'theme/theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
   @override
@@ -28,7 +27,8 @@ class MyApp extends StatelessWidget {
               theme: value.isDarkTheme.value ? darkTheme : lightTheme,
               debugShowCheckedModeBanner: false,
               initialBinding: BindingsBuilder(() {
-                Get.lazyPut<UserController>(() => UserController()); //이 부분을 추가하면 된다.
+                Get.lazyPut<UserController>(
+                    () => UserController()); //이 부분을 추가하면 된다.
               }),
               title: 'Here & Hear',
               home: App(),
@@ -60,8 +60,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class App extends GetView<UserController> {
   final locationController = Get.put(LocationController());
   @override
@@ -86,17 +84,19 @@ class App extends GetView<UserController> {
                 return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
+                      // locationController.
+                      locationController.locationPermission();
+                      print(locationController.)
                       if (snapshot.hasData) {
                         print(snapshot.data.toString());
                         return BottomBar();
                       } else {
                         return Center(child: CircularProgressIndicator());
                       }
-                    });// data가 있으면 MainPage로
+                    }); // data가 있으면 MainPage로
               }
             },
           );
-
         } else {
           return Center(
             child: CircularProgressIndicator(),

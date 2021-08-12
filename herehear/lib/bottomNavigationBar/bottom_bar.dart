@@ -100,10 +100,13 @@ class BottomBar extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Padding(
-                //   padding: EdgeInsets.only(right: 16.0.w),
-                //   child: IconButton(onPressed: null, icon: Icon(Icons.close)),
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Icon(Icons.close, size: 25.w, color: Colors.white,)
+                    )
+                ),
               ],
             ),
             Row(
@@ -137,7 +140,7 @@ class BottomBar extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(top: 13.h),
                             child: Image.asset('assets/images/streamer.png',
-                                width: 57.w),
+                                width: 87.w),
                           ),
                         ],
                       ),
@@ -168,16 +171,16 @@ class BottomBar extends StatelessWidget {
                         Text('즐겨보세요!',
                             style: Theme.of(context).textTheme.headline6),
                         Padding(
-                          padding: EdgeInsets.only(top: 13.0.h),
+                          padding: EdgeInsets.only(top: 18.0.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Image.asset(
                                 'assets/images/voiceCopy.png',
-                                width: 85.w,
+                                width: 67.w,
                               ),
                               Image.asset('assets/images/liveImage.png',
-                                  width: 48.5.w),
+                                  width: 53.w),
                             ],
                           ),
                         )
@@ -187,6 +190,7 @@ class BottomBar extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 13.h)
           ],
         ),
       ),

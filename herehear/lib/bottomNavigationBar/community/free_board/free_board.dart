@@ -5,6 +5,8 @@ import 'package:herehear/bottomNavigationBar/community/free_board/post.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'createPost.dart';
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class FreeBoardPage extends StatelessWidget {
@@ -74,7 +76,7 @@ class FreeBoardPage extends StatelessWidget {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
                         ),
-                        onPressed: () => Get.to(PostPage()),
+                        onPressed: () => Get.to(CreatePostPage()),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
