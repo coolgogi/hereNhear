@@ -26,23 +26,34 @@ class LocationController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static LocationController get to => Get.find();
   RxString location = ''.obs;
+  late LocationPermission permission;
 
   Future<void> locationPermission() async {
     await Geolocator.requestPermission();
   }
 
+/*
+user가 permission denied했을 경우를 대비하여 try, catch로 잡았음
+getCurrentPosition이 permission denied일 경우에는 error throw하기 때문
+ */
   Future<String> getLocation() async {
-    Position? position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    debugPrint('location: $position');
-    final coordinates = new Coordinates(position.latitude, position.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    print("detail address : ${first.addressLine}");
-    // print("needed address data : ${first.locality} ${first.subLocality}");
-    location = '${first.locality} ${first.subLocality}'.obs;
-    print('location: $location');
-    return location.value;
+    try {
+      Position? position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      debugPrint('location: $position');
+      final coordinates =
+          new Coordinates(position.latitude, position.longitude);
+      var addresses =
+          await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      print("detail address : ${first.addressLine}");
+      // print("needed address data : ${first.locality} ${first.subLocality}");
+      location = '${first.locality} ${first.subLocality}'.obs;
+      print('location: $location');
+      print(location.value);
+      return location.value;
+    } catch (e) {
+      return "포항시 북구";
+    }
   }
 }
