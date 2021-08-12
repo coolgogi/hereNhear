@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_box/comment/comment.dart';
 import 'package:get/get.dart';
@@ -351,7 +350,6 @@ class _CommentPageState extends State<CommentPage> {
           '좋아요 ${doc['likeNum']}개',
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         );
-
       }
     }
     return Text(
