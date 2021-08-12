@@ -44,13 +44,11 @@ class MyFirebaseChatCore {
 
     final room = await FirebaseFirestore.instance
         .collection('broadcast')
-        .doc(roomInfo.docId)
+        .doc(roomInfo.channelName)
         .set({
-      'id': roomInfo.docId,
       'title': roomInfo.title,
       'notice': roomInfo.notice,
-      'channelName': roomInfo.docId,
-      'docId': roomInfo.docId,
+      'channelName': roomInfo.channelName,
       'roomCategory': roomInfo.roomCategory,
       'thumbnail': roomInfo.thumbnail,
       'location': roomInfo.hostInfo.location,
@@ -76,14 +74,12 @@ class MyFirebaseChatCore {
 
     return types.BroadcastModel(
       roomInfo: roomInfo,
-      id: roomInfo.docId,
+      channelName: roomInfo.channelName,
       hostInfo: roomInfo.hostInfo,
       //   imageUrl: imageUrl,
       roomCategory: roomInfo.roomCategory,
       title: roomInfo.title,
       notice: roomInfo.notice,
-      docId: roomInfo.docId,
-      channelName: roomInfo.docId,
 
       //
       // id: room.id,
@@ -168,7 +164,7 @@ class MyFirebaseChatCore {
   /// Returns a stream of messages from Firebase for a given room
   Stream<List<types.MyMessage>> messages(types.BroadcastModel room) {
     return FirebaseFirestore.instance
-        .collection('broadcast/${room.docId}/messages')
+        .collection('broadcast/${room.channelName}/messages')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
@@ -182,10 +178,6 @@ class MyFirebaseChatCore {
               (u) => u.id == data['authorId'],
               orElse: () => types.UserModel(id: data['authorId'] as String),
             );
-            print('***********************************');
-            print(room.docId);
-            print(author);
-            print(element.id);
 
             data['author'] = author.toJson();
             data['id'] = element.id;
@@ -258,7 +250,7 @@ class MyFirebaseChatCore {
     types.MyMessage? message;
     //DateTime createdTime = DateTime.now();
     Timestamp createdTime = Timestamp.now();
-    String docId =
+    String channelName =
         (10000000000000 - createdTime.millisecondsSinceEpoch).toString();
 
     if (partialMessage is types.PartialFile) {
@@ -290,7 +282,7 @@ class MyFirebaseChatCore {
 
       await FirebaseFirestore.instance
           .collection('broadcast/$roomId/messages')
-          .doc(docId)
+          .doc(channelName)
           .set(messageMap);
     }
   }

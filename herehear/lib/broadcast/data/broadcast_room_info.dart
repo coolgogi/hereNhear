@@ -6,7 +6,7 @@ class RoomInfoModel {
   UserModel hostInfo;
   String title;
   List<dynamic> roomCategory;
-  String docId;
+  String channelName;
   String? notice;
   String? thumbnail;
 
@@ -15,7 +15,7 @@ class RoomInfoModel {
     required this.hostInfo,
     required this.title,
     required this.roomCategory,
-    required this.docId,
+    required this.channelName,
     this.notice,
     this.thumbnail,
   });
@@ -26,7 +26,7 @@ class RoomInfoModel {
       'hostInfo': this.hostInfo,
       'title': this.title,
       'roomCategory': this.roomCategory,
-      'docId': this.docId,
+      'docId': this.channelName,
       'notice': this.notice,
       'thumbnail': this.thumbnail,
     };
@@ -36,7 +36,7 @@ class RoomInfoModel {
       : hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
         title = json['title'] as String,
         roomCategory = json['roomCategory'] as List<String>,
-        docId = json['docId'] as String,
+        channelName = json['channelName'] as String,
         notice = json['notice'] as String,
         thumbnail = json['thumbnail'] as String;
         // createdTime = json['createdTime'].toDate(),
