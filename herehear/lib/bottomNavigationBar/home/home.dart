@@ -2,18 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/set_location.dart';
-
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
-
 import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
-
 import 'package:herehear/groupCall/groupcall_list.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/login/signIn.dart';
 import 'package:herehear/users/controller/user_controller.dart';
-
 import '../../broadcast/data/broadcast_model.dart' as types;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -56,18 +52,19 @@ class HomePage extends StatelessWidget {
                   icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
             ],
           ),
-
-
-      body: SingleChildScrollView(
-        controller: _scrollController.scrollController.value,
-            child: Column(
-                children: <Widget>[
-                  Obx(() => AnimatedOpacity(
+          body: SingleChildScrollView(
+              controller: _scrollController.scrollController.value,
+              child: Column(children: <Widget>[
+                Obx(() => AnimatedOpacity(
                     // key: widgetKey,
                     duration: Duration(milliseconds: 1),
                     opacity: _scrollController.opacity.value,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 25.0.w, top: 23.0.h, right: 26.0.w, bottom: 38.h),
+                      padding: EdgeInsets.only(
+                          left: 25.0.w,
+                          top: 23.0.h,
+                          right: 26.0.w,
+                          bottom: 38.h),
                       child: Row(
                         children: [
                           Column(
@@ -76,15 +73,27 @@ class HomePage extends StatelessWidget {
                             children: <Widget>[
                               Row(
                                 children: [
-                                  Text('안녕하세요 ', style: Theme.of(context).textTheme.headline3),
-                                  Text('${UserController.to.myProfile.value.nickName!}님', style: Theme.of(context).textTheme.headline1),
+                                  Text('안녕하세요 ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3),
+                                  Text(
+                                      '${UserController.to.myProfile.value.nickName!}님',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline1),
                                 ],
                               ),
-
                               Row(
                                 children: [
-                                  Text('오늘도 좋은 하루 되세요. ', style: Theme.of(context).textTheme.headline3),
-                                  Image(image: AssetImage('assets/icons/leaf.png'), width: 20.0.w,),
+                                  Text('오늘도 좋은 하루 되세요. ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline3),
+                                  Image(
+                                    image: AssetImage('assets/icons/leaf.png'),
+                                    width: 20.0.w,
+                                  ),
                                 ],
                               ),
                             ],
@@ -92,10 +101,10 @@ class HomePage extends StatelessWidget {
                           Expanded(child: Container()),
                           CircleAvatar(
                             radius: 21.r,
-                            backgroundImage: AssetImage(UserController.to.myProfile.value.profile!),
+                            backgroundImage: AssetImage(
+                                UserController.to.myProfile.value.profile!),
                           ),
                         ],
-
                       ),
                     ))),
                 Container(
@@ -135,14 +144,12 @@ class HomePage extends StatelessWidget {
                       stream: MyFirebaseChatCore.instance.roomsWithLocation(),
                       initialData: const [],
                       builder: (context, snapshot) {
-                        if (!snapshot.hasData)
-                          {
-
-                            return Center(
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ));
-                          }
+                        if (!snapshot.hasData) {
+                          return Center(
+                              child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primary,
+                          ));
+                        }
 
                         if (snapshot.data!
                                 .isEmpty && //snapshot.data!.docs.length == 0
