@@ -35,7 +35,7 @@ class BroadcastModel extends Equatable {
     this.hostInfo,
     this.title,
     this.notice,
-    this.channelName,
+    required this.channelName,
     this.thumbnail,
     this.location,
     this.createdTime,
@@ -149,7 +149,7 @@ class BroadcastModel extends Equatable {
   final UserModel? hostInfo; //hostUid, hostNickname, hostProfile
   final String? title;
   final String? notice;
-  final String? channelName;
+  final String channelName;
   final String? thumbnail; //image
   final String? location;
   final DateTime? createdTime;
