@@ -84,7 +84,7 @@ class App extends GetView<UserController> {
                 return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
-                      locationController.locationPermission()
+                      locationController.locationPermission();
                       if (snapshot.hasData) {
                         print(snapshot.data.toString());
                         return BottomBar();
