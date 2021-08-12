@@ -100,10 +100,13 @@ class BottomBar extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                // Padding(
-                //   padding: EdgeInsets.only(right: 16.0.w),
-                //   child: IconButton(onPressed: null, icon: Icon(Icons.close)),
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Icon(Icons.close, size: 25.w, color: Colors.white,)
+                    )
+                ),
               ],
             ),
             Row(
@@ -187,6 +190,7 @@ class BottomBar extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(height: 13.h)
           ],
         ),
       ),

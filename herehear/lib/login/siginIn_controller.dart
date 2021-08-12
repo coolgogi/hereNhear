@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -6,6 +7,42 @@ class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   RxBool isObscureText = true.obs;
+  RxBool isIdActive = false.obs;
+  RxBool isPwdActive = false.obs;
+
+  Rx<FocusNode> idFocus = FocusNode().obs;
+  Rx<FocusNode> pwdFocus = FocusNode().obs;
+
+  final validNumbers = RegExp(r'(\d+)');
+  final validAlphabet = RegExp(r'[a-zA-Z]');
+  final validSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+
+  String? checkId(String value) {
+    if (value.isEmpty) {
+      idFocus.value.requestFocus();
+      return '아이디를 입력해주세요.';
+    }
+    //6~12자인지 확인
+    if ((12 <= value.length) || (value.length <= 6) || validSpecial.hasMatch(value)) {
+      idFocus.value.requestFocus();
+      return '잘못된 아이디입니다.';
+    }
+    return null;
+  }
+
+  String? checkPassword(String value) {
+    if (value.isEmpty) {
+      pwdFocus.value.requestFocus();
+      return '비밀번호를 입력해주세요.';
+    }
+    //8~21자인지 확인
+    if ((12 <= value.length) || (value.length <= 8) || !validSpecial.hasMatch(value) || !validAlphabet.hasMatch(value) ||
+        !validNumbers.hasMatch(value)) {
+      pwdFocus.value.requestFocus();
+      return '잘못된 비밀번호입니다.';
+    }
+    return null;
+  }
 
   Future<void> loginWithGoogle() async {
     try {
