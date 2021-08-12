@@ -147,8 +147,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
     if (role == ClientRole.Broadcaster) {
       await changeState(roomData.channelName);
     }
-    print("channel@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    print(roomData.channelName);
     await fireStore.collection('broadcast').doc(roomData.channelName).update({
       'userIds': FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
     });

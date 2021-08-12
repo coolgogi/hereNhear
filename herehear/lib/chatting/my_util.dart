@@ -59,19 +59,16 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
-  print('cccccccccccccccccccccccccccccc');
 print(channelName);
   final room = types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
     like: like,
     channelName: channelName,
-    // createdAt: createdAt?.millisecondsSinceEpoch,
     imageUrl: imageUrl,
     metadata: metadata,
     location: locationController.location.value,
     type: types.getMyRoomTypeFromString(type),
-    // updatedAt: updatedAt?.millisecondsSinceEpoch,
     users: users,
   );
 
