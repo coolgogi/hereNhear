@@ -184,6 +184,8 @@ flutter:
     - assets/icons/camera.png
     - assets/icons/camera_blue.png
     - assets/icons/gallery.png
+    - assets/icons/expand_grey.png
+    - assets/icons/expand_black.png
     - assets/images/game.png
     - assets/images/gamer.png
     - assets/images/sora.jpg

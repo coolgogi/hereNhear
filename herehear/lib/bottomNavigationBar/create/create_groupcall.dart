@@ -41,7 +41,6 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
   String _docId = '';
 
-
   //unused variableselectedDate
   ClientRole _role = ClientRole.Broadcaster;
   bool _validateError = false;
@@ -70,7 +69,8 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
 
-  final controller = Get.put(GroupCallInfoController());
+  final groupCallController = Get.put(GroupCallInfoController());
+
 
   @override
   void dispose() {
@@ -100,89 +100,100 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
           },
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
+      body: Obx(() => Form(
         key: _formKey,
-        height: MediaQuery.of(context).size.height,
-        child: ListView(
-          children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 14.h),
-              child: Text(
-                '방 설정',
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-
-            Obx(() => privateOption()),
-            SizedBox(height: 17.h),
-
-            Obx(() => timeReserveOption()),
-
-            titleAndNoticeInfo(),
-
-            //카테고리 선택 part
-            Padding(
-              padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
-              child: Row(
-                children: [
-                  Text(
-                    '카테고리',
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  Expanded(child: Container()),
-                  GestureDetector(
-                      onTap: () => broadcastInfoController.selectedCategoryList
-                          .removeRange(0, broadcastInfoController.selectedCategoryList.length),
-                      child: Container(
-                        width: 70.w,
-                        height: 32.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/icons/reload.png',
-                              width: 15.w,
-                            ),
-                            SizedBox(
-                              width: 6.w,
-                            ),
-                            Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                            )),
-                          ],
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ),
-            Obx(() => categorySelectList()),
-            Padding(
-              padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
-              child: Text(
-                '* 카테고리는 최대 3개까지 선택 가능합니다.',
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
+        child: Container(
+          padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
+          height: MediaQuery.of(context).size.height,
+          child: ListView(
+            children: [
+              Container(
+                padding: EdgeInsets.only(bottom: 14.h),
+                child: Text(
+                  '방 설정',
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
-            ),
-            SizedBox(
-              height: 32.0.h,
-            ),
-            SizedBox(
-              height: 44.h,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  onJoin();
-                },
-                child: Text('완료'),
+
+              privateOption(),
+              SizedBox(height: 17.h),
+
+              timeReserveOption(),
+
+              titleAndNoticeInfo(),
+
+              //카테고리 선택 part
+              Padding(
+                padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
+                child: Row(
+                  children: [
+                    Text(
+                      '카테고리',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Expanded(child: Container()),
+                    GestureDetector(
+                        onTap: () => groupCallController.selectedCategoryList
+                            .removeRange(0, groupCallController.selectedCategoryList.length),
+                        child: Container(
+                          width: 70.w,
+                          height: 32.h,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/icons/reload.png',
+                                width: 15.w,
+                              ),
+                              SizedBox(
+                                width: 6.w,
+                              ),
+                              Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
+                                color: Theme.of(context).colorScheme.onSurface,
+                              )),
+                            ],
+                          ),
+                        )
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              categorySelectList(),
+              Padding(
+                padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
+                child: Text(
+                  '* 카테고리는 최대 3개까지 선택 가능합니다.',
+                  style: Theme.of(context).textTheme.headline5!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 32.0.h,
+              ),
+              SizedBox(
+                height: 44.h,
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if(_formKey.currentState!.validate())
+                      onJoin();
+                  },
+                  style: ButtonStyle(
+                    elevation: MaterialStateProperty.all(0),
+                    backgroundColor: (_title.text.isEmpty || groupCallController.selectedCategoryList.isEmpty)? MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary)
+                        : MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                  ),
+                  child: Text('완료'),
+                ),
+              ),
+              SizedBox(
+                height: 10.0.h,
+              ),
+            ],
+          ),
         ),
-      ),
+      ))
     );
   }
 
@@ -190,78 +201,82 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     return Row(
       children: [
         Container(
-          width: 83.w,
+          width: 90.w,
           height: 30.h,
           child: ElevatedButton(
-            onPressed: () => controller.isPrivate.value = false,
+            onPressed: () => groupCallController.isPrivate.value = false,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(controller.isPrivate.value? 'assets/icons/unlock_grey.png' : 'assets/icons/unlock_white.png', width: 18.w),
+                Image.asset(groupCallController.isPrivate.value? 'assets/icons/unlock_grey.png' : 'assets/icons/unlock_white.png', width: 18.w),
+                SizedBox(width: 4.h),
                 Text(
                     '공개',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: controller.isPrivate.value? Theme.of(context).colorScheme.onSurface
+                        color: groupCallController.isPrivate.value? Theme.of(context).colorScheme.onSurface
                             : Theme.of(context).colorScheme.onPrimary
                     )),
               ],
             ),
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.background
+                padding: MaterialStateProperty.all(EdgeInsets.only(left: 7.0.w, right: 7.0.w)),
+                backgroundColor: MaterialStateProperty.all<Color>(groupCallController.isPrivate.value? Theme.of(context).colorScheme.background
                     : Theme.of(context).colorScheme.primary),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.background
+                        side: BorderSide(color: groupCallController.isPrivate.value? Theme.of(context).colorScheme.background
                             : Theme.of(context).colorScheme.primary)
                     )
                 )
             ),
           ),
         ),
-        SizedBox(width: 13.w),
+        SizedBox(width: 9.w),
         Container(
-          width: 83.w,
+          width: 90.w,
           height: 30.h,
           child: ElevatedButton(
-            onPressed: () => controller.isPrivate.value = true,
+            onPressed: () => groupCallController.isPrivate.value = true,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(controller.isPrivate.value?  'assets/icons/lock_white.png' : 'assets/icons/lock_grey.png', width: 18.w),
+                Image.asset(groupCallController.isPrivate.value?  'assets/icons/lock_white.png' : 'assets/icons/lock_grey.png', width: 18.w),
+                SizedBox(width: 4.h),
                 Text(
                     '비공개',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
-                        color: controller.isPrivate.value? Theme.of(context).colorScheme.onPrimary
+                        color: groupCallController.isPrivate.value? Theme.of(context).colorScheme.onPrimary
                             : Theme.of(context).colorScheme.onSurface
                     )),
               ],
             ),
             style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(controller.isPrivate.value? Theme.of(context).colorScheme.primary
+                padding: MaterialStateProperty.all(EdgeInsets.only(left: 7.0.w, right: 7.0.w)),
+                backgroundColor: MaterialStateProperty.all<Color>(groupCallController.isPrivate.value? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.background),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
-                        side: BorderSide(color: controller.isPrivate.value? Theme.of(context).colorScheme.primary
+                        side: BorderSide(color: groupCallController.isPrivate.value? Theme.of(context).colorScheme.primary
                             : Theme.of(context).colorScheme.background)
                     )
                 )
             ),
           ),
         ),
-        SizedBox(width: 13.w),
+        SizedBox(width: 11.w),
         Text('비밀번호 ', style: Theme.of(context).textTheme.headline6!.copyWith(
-            color: controller.isPrivate.value? Theme.of(context).colorScheme.onBackground
+            color: groupCallController.isPrivate.value? Theme.of(context).colorScheme.onBackground
                 : Theme.of(context).colorScheme.onSurface
         )),
-        SizedBox(width: 7.w),
+        SizedBox(width: 5.w),
         Container(
-          width: 80.w,
+          width: 60.w,
           height: 20.h,
           child: TextField(
             controller: _privatePwd,
-            enabled: controller.isPrivate.value,
+            enabled: groupCallController.isPrivate.value,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               enabledBorder: OutlineInputBorder(
@@ -272,6 +287,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
               ),
               contentPadding: EdgeInsets.fromLTRB(7.w, 0.h, 0.w, 0.h),
               hintStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontSize: 10.sp,
                   color: Theme.of(context).colorScheme.onSurface
               ),
               hintText: '4자리 숫자',
@@ -286,25 +302,26 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     return Row(
       children: [
         Container(
-          width: 110.w,
+          width: 90.w,
           height: 30.h,
           child: ElevatedButton(
-            onPressed: () => controller.isReserve.value = !(controller.isReserve.value),
+            onPressed: () => groupCallController.isReserve.value = !(groupCallController.isReserve.value),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                    controller.isReserve.value
+                    groupCallController.isReserve.value
                         ? 'assets/icons/clock_white.png'
                         : 'assets/icons/clock_grey.png',
                     width: 18.w),
                 Padding(
-                  padding: EdgeInsets.only(left: 6.0.w),
+                  padding: EdgeInsets.only(left: 5.0.w, right: 5.0.w),
                   child: Text('예약 설정',
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
                           .copyWith(
-                          color: controller.isReserve.value
+                          color: groupCallController.isReserve.value
                               ? Theme.of(context)
                               .colorScheme
                               .onPrimary
@@ -315,8 +332,9 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
               ],
             ),
             style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.only(left: 5.0.w)),
                 backgroundColor: MaterialStateProperty.all<Color>(
-                    controller.isReserve.value
+                    groupCallController.isReserve.value
                         ? Theme.of(context).colorScheme.primary
                         : Theme.of(context).colorScheme.background),
                 shape:
@@ -324,7 +342,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
                         side: BorderSide(
-                            color: controller.isReserve.value
+                            color: groupCallController.isReserve.value
                                 ? Theme.of(context)
                                 .colorScheme
                                 .primary
@@ -333,47 +351,41 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                                 .background)))),
           ),
         ),
-        SizedBox(width: 10.w),
-        GestureDetector(
-          onTap: () => controller.isReserve.value? showDialog() : null,
-          child: Container(
-            width: 188.w,
-            height: 30.h,
+        SizedBox(width: 9.w),
+        Container(
+          width: 212.w,
+          height: 30.h,
+          child: ElevatedButton(
+            onPressed: () => groupCallController.isReserve.value? showDialog() : null,
             child: Row(
               children: [
-                SizedBox(width: 35.w,),
+                SizedBox(width: 50.w,),
                 Text(
-                  DateFormat('yyyy-MM-dd  ').format(controller.selectedDate.value),
+                  DateFormat('yyyy-MM-dd  ').format(groupCallController.selectedDate.value),
                   style: Theme.of(context).textTheme.headline6!.copyWith(
-                      color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                      color: groupCallController.isReserve.value? Theme.of(context).colorScheme.onBackground
                           : Theme.of(context).colorScheme.onSurface
                   ),
                 ),
                 Text(
-                  DateFormat('kk:mm').format(controller.selectedTime.value),
+                  DateFormat('kk:mm').format(groupCallController.selectedTime.value),
                   style: Theme.of(context).textTheme.headline6!.copyWith(
-                      color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
+                      color: groupCallController.isReserve.value? Theme.of(context).colorScheme.onBackground
                           : Theme.of(context).colorScheme.onSurface
                   ),
                 ),
-                SizedBox(width: 16.w,),
-                Icon(Icons.expand_more, color: controller.isReserve.value? Theme.of(context).colorScheme.onBackground
-                    : Theme.of(context).colorScheme.onSurface
-                ),
+                SizedBox(width: 40.w,),
+                groupCallController.isReserve.value? Image.asset('assets/icons/expand_black.png', width: 12.w) : Image.asset('assets/icons/expand_grey.png', width: 12.w)
               ],
             ),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0,
-                  blurRadius: 4,
-                  offset: Offset(0, 4), // changes position of shadow
-                ),
-              ],
-            ),
+            style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.only(left: 0.0.w)),
+                backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.background),
+                shape:
+                MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                        ))),
           ),
         ),
       ],
@@ -402,9 +414,11 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
           keyboardType: TextInputType.text,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
               borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
             ),
             focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
               borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
             ),
             contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
@@ -431,9 +445,11 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
             decoration: InputDecoration(
               hintText: '방의 공지를 입력해주세요(100자 이내)',
               enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
                 borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
               ),
               focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
                 borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
               ),
             ),
@@ -462,7 +478,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       color: Theme.of(context).colorScheme.primary, width: 1.5),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: broadcastInfoController.selectedCategoryList
+                backgroundColor: groupCallController.selectedCategoryList
                     .contains(categoryTextList[i])
                     ? Theme.of(context).colorScheme.primary
                     : Colors.white,
@@ -472,7 +488,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
                 label: Text(categoryTextList[i],
                     style: TextStyle(
-                      color: broadcastInfoController.selectedCategoryList
+                      color: groupCallController.selectedCategoryList
                           .contains(categoryTextList[i])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
@@ -481,13 +497,13 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
-                  if (broadcastInfoController.selectedCategoryList
+                  if (groupCallController.selectedCategoryList
                       .contains(categoryTextList[i]))
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .remove(categoryTextList[i]);
-                  else if (broadcastInfoController.selectedCategoryList.length <
+                  else if (groupCallController.selectedCategoryList.length <
                       3)
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .add(categoryTextList[i]);
                 },
               ),
@@ -507,7 +523,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       color: Theme.of(context).colorScheme.primary, width: 1.5),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: broadcastInfoController.selectedCategoryList
+                backgroundColor: groupCallController.selectedCategoryList
                     .contains(categoryTextList[i + 2])
                     ? Theme.of(context).colorScheme.primary
                     : Colors.white,
@@ -517,7 +533,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
                 label: Text(categoryTextList[i + 2],
                     style: TextStyle(
-                      color: broadcastInfoController.selectedCategoryList
+                      color: groupCallController.selectedCategoryList
                           .contains(categoryTextList[i + 2])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
@@ -526,13 +542,13 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
-                  if (broadcastInfoController.selectedCategoryList
+                  if (groupCallController.selectedCategoryList
                       .contains(categoryTextList[i + 2]))
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .remove(categoryTextList[i + 2]);
-                  else if (broadcastInfoController.selectedCategoryList.length <
+                  else if (groupCallController.selectedCategoryList.length <
                       3)
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .add(categoryTextList[i + 2]);
                 },
               ),
@@ -552,7 +568,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       color: Theme.of(context).colorScheme.primary, width: 1.5),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
-                backgroundColor: broadcastInfoController.selectedCategoryList
+                backgroundColor: groupCallController.selectedCategoryList
                     .contains(categoryTextList[i + 5])
                     ? Theme.of(context).colorScheme.primary
                     : Colors.white,
@@ -562,7 +578,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                 ),
                 label: Text(categoryTextList[i + 5],
                     style: TextStyle(
-                      color: broadcastInfoController.selectedCategoryList
+                      color: groupCallController.selectedCategoryList
                           .contains(categoryTextList[i + 5])
                           ? Colors.white
                           : Theme.of(context).colorScheme.primary,
@@ -571,13 +587,13 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                       Theme.of(context).textTheme.headline4!.fontFamily,
                     )),
                 onPressed: () {
-                  if (broadcastInfoController.selectedCategoryList
+                  if (groupCallController.selectedCategoryList
                       .contains(categoryTextList[i + 5]))
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .remove(categoryTextList[i + 5]);
-                  else if (broadcastInfoController.selectedCategoryList.length <
+                  else if (groupCallController.selectedCategoryList.length <
                       3)
-                    broadcastInfoController.selectedCategoryList
+                    groupCallController.selectedCategoryList
                         .add(categoryTextList[i + 5]);
                 },
               ),
@@ -649,6 +665,11 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text('예약 설정', style: Theme.of(context).textTheme.headline2),
+                      Expanded(child: Container()),
+                      GestureDetector(
+                          onTap: () => Get.back(),
+                          child: Icon(Icons.close, size: 25.w, color: Theme.of(context).colorScheme.onBackground,)
+                      ),
                     ],
                   ),
                   SizedBox(height: 40.h),
@@ -666,13 +687,14 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                           height: 30.h,
                           child: Center(
                             child: Text(
-                              DateFormat('yyyy-MM-dd').format(controller.selectedDate.value),
+                              DateFormat('yyyy-MM-dd').format(groupCallController.selectedDate.value),
                               style: Theme.of(context).textTheme.headline5!.copyWith(
                                   color: Theme.of(context).colorScheme.onBackground
                               ),
                             ),
                           ),
                           decoration: BoxDecoration(
+                            // shape: BoxShape.rectangle,
                             color: Theme.of(context).colorScheme.background,
                             borderRadius: BorderRadius.all(Radius.circular(4.r)),
                             boxShadow: [
@@ -697,7 +719,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                           height: 30.h,
                           child: Center(
                             child: Text(
-                              DateFormat('kk:mm').format(controller.selectedTime.value),
+                              DateFormat('kk:mm').format(groupCallController.selectedTime.value),
                               style: Theme.of(context).textTheme.headline5!.copyWith(
                                   color: Theme.of(context).colorScheme.onBackground
                               ),
@@ -759,19 +781,15 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
             // constraintSuggestion: true,
             // suggestions: [],
             onSubmitted: (String str) {
-              // Add item to the data source.
-              setState(() {
-                // required
-                controller.tagList.add(str);
-              });
+              groupCallController.tagList.add(str);
             },
           ),
         ),
         SizedBox(height: 15.h),
         Tags(
-          itemCount: controller.tagList.length, // required
+          itemCount: groupCallController.tagList.length, // required
           itemBuilder: (int index){
-            final Item currentItem = Item(title:controller.tagList[index]);
+            final Item currentItem = Item(title:groupCallController.tagList[index]);
 
             return ItemTags(
               index: index,
@@ -794,9 +812,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
                   backgroundColor: Theme.of(context).colorScheme.background,
                   color: Theme.of(context).colorScheme.primary,
                   onRemoved: () {
-                    setState(() {
-                      controller.tagList.removeAt(index);
-                    });
+                    groupCallController.tagList.removeAt(index);
                     return true;
                   }
               ),
@@ -817,13 +833,11 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: controller.selectedDate.value,
+        initialDate: groupCallController.selectedDate.value,
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != controller.selectedDate.value)
-      setState(() {
-        controller.selectedDate.value = picked;
-      });
+    if (picked != null && picked != groupCallController.selectedDate.value)
+      groupCallController.selectedDate.value = picked;
   }
 
   Widget _selectTime() {
@@ -841,7 +855,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
       spacing: 50,
       itemHeight: 80,
       isForce2Digits: true,
-      onTimeChange: (time) => controller.selectedTime.value = time,
+      onTimeChange: (time) => groupCallController.selectedTime.value = time,
     );
   }
 }

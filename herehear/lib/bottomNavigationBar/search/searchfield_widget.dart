@@ -30,21 +30,13 @@ class SearchTextField extends StatelessWidget {
             fillColor: Color(0xFFE9E9E9),
             hintText: '검색어를 입력하세요',
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(
                 color: Color(0xFFE9E9E9),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  topRight: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(
                 color: Color(0xFFE9E9E9),
               ),
