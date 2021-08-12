@@ -3,21 +3,19 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/chat.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BroadCastPage extends GetView<AgoraEventController> {
-  // final String channelName;
-  //final RoomInfoModel roomInfo;
-  // final UserModel userData;
   final ClientRole role;
   final types.BroadcastModel roomData;
   late final agoraController;
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
-
+  final fireStore = FirebaseFirestore.instance;
   //Map<String, dynamic> roomData = new Map();
 
   BroadCastPage(
@@ -41,7 +39,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   BroadCastPage.myaudience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.docId!, role: role));
+        channelName: roomData.channelName!, role: role));
   }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
@@ -49,7 +47,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: documentStream.doc(roomData.docId).snapshots(),
+        stream: documentStream.doc(roomData.channelName).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -147,19 +145,22 @@ class BroadCastPage extends GetView<AgoraEventController> {
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
     if (role == ClientRole.Broadcaster) {
-      await changeState(roomData.docId!);
+      await changeState(roomData.channelName!);
     }
+    await fireStore.collection('broadcast').doc(roomData.channelName!).update({
+      'userIds': FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
+    });
     controller.onClose();
     Get.back();
   }
 
   Future<void> changeState(String docID) async {
-    var fields = await FirebaseFirestore.instance
+    var fields = await fireStore
         .collection('broadcast')
         .doc(docID)
         .get();
 
-    FirebaseFirestore.instance
+    fireStore
         .collection('closed')
         .doc(docID)
         .set(fields.data()!);

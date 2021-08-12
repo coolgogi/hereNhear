@@ -65,7 +65,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
           ),
           SearchTextField(),
           Obx(() {
-            if (searchController.textController.value.text.isEmpty) {
+            if (searchController.text.isEmpty) {
               print(
                   'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
               return searchHistory();

@@ -31,7 +31,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
-  String _docId = '';
+  String channelName = '';
 
   //unused variable
   bool _validateError = false;
@@ -117,10 +117,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
-                  borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onSurface),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onBackground),
                 ),
                 contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                 hintText: '제목을 입력해주세요(15자 이내)',
@@ -146,10 +148,12 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                 decoration: InputDecoration(
                   hintText: '공지를 입력해주세요(100자 이내)',
                   enabledBorder: OutlineInputBorder(
-                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.onSurface),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.onBackground),
                   ),
                 ),
               ),
@@ -167,28 +171,36 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   ),
                   Expanded(child: Container()),
                   GestureDetector(
-                    onTap: () => broadcastInfoController.selectedCategoryList
-                        .removeRange(0, broadcastInfoController.selectedCategoryList.length),
-                    child: Container(
-                      width: 70.w,
-                      height: 32.h,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/icons/reload.png',
-                            width: 15.w,
-                          ),
-                          SizedBox(
-                            width: 6.w,
-                          ),
-                          Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          )),
-                        ],
-                      ),
-                    )
-                  ),
+                      onTap: () => broadcastInfoController.selectedCategoryList
+                          .removeRange(
+                              0,
+                              broadcastInfoController
+                                  .selectedCategoryList.length),
+                      child: Container(
+                        width: 70.w,
+                        height: 32.h,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/icons/reload.png',
+                              width: 15.w,
+                            ),
+                            SizedBox(
+                              width: 6.w,
+                            ),
+                            Text('초기화',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    )),
+                          ],
+                        ),
+                      )),
                 ],
               ),
             ),
@@ -200,8 +212,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
               child: Text(
                 '* 카테고리는 최대 3개까지 선택 가능합니다.',
                 style: Theme.of(context).textTheme.headline5!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
               ),
             ),
             SizedBox(
@@ -371,38 +383,29 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
 
-    _docId =
+    channelName =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
     RoomInfoModel roomInfo = RoomInfoModel(
         hostInfo: UserController.to.myProfile.value,
         title: _title.text,
         roomCategory: broadcastInfoController.selectedCategoryList,
-        docId: _docId,
+        channelName: channelName,
         notice: _notice.text,
         thumbnail: 'assets/images/mic1.jpg');
     late List<UserModel> userList = [];
     userList.add(UserController.to.myProfile.value);
 
-
-    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
-
-    // agoraController.createBroadcastRoom(
-    //   UserController.to.myProfile.value,
-    //   _title.text,
-    //   _notice.text,
-    //   broadcastInfoController.selectedCategoryList,
-    //   _docId,
-    //   List<String>.filled(0, '', growable: true),
-    //   locationController.location.value,
-    // );
+    types.BroadcastModel roomData = await MyFirebaseChatCore.instance
+        .createGroupRoom(
+            roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
 
     Get.off(
       () => BroadCastPage.myBroadcaster(
-      //  channelName: _docId,
+        //  channelName: _docId,
         role: ClientRole.Broadcaster,
-      roomData : roomData,
-      //  userData: UserController.to.myProfile.value,
+        roomData: roomData,
+        //  userData: UserController.to.myProfile.value,
       ),
     );
   }

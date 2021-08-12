@@ -24,7 +24,6 @@ class BroadcastModel extends Equatable {
   const BroadcastModel({
     this.roomInfo,
     this.createdAt,
-    required this.id,
     this.imageUrl,
     this.lastMessages,
     this.metadata,
@@ -37,7 +36,6 @@ class BroadcastModel extends Equatable {
     this.title,
     this.notice,
     this.channelName,
-    this.docId,
     this.thumbnail,
     this.location,
     this.createdTime,
@@ -48,23 +46,11 @@ class BroadcastModel extends Equatable {
 
   });
 
-  // final UserModel hostInfo; //hostUid, hostNickname, hostProfile
-  // final String title;
-  // final String? notice;
-  // final String channelName;
-  // final String docId;
-  // String? thumbnail; //image
-  // final String location;
-  // final DateTime createdTime;
-  // final List<String?>? roomCategory; //category
-  // int? like;
-  // final List<UserModel>? users; //userNickname, userProfile
-
   /// Creates room from a map (decoded JSON).
   BroadcastModel.fromJson(Map<String, dynamic> json)
       : createdAt = json['createdAt'] as int?,
 
-        id = json['id'] as String,
+        channelName = json['channelName'] as String,
         imageUrl = json['imageUrl'] as String?,
         lastMessages = (json['lastMessages'] as List<Map<String, dynamic>>?)
             ?.map((e) => Message.fromJson(e))
@@ -79,8 +65,6 @@ class BroadcastModel extends Equatable {
         hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
         title = json['title'] as String,
         notice = json['notice'] as String,
-        channelName = json['channelName'] as String,
-        docId = json['docId'] as String,
         thumbnail =json['thumbnail'] as String,
         location = json['location'] as String,
         createdTime = json['createdTime'].toDate(),
@@ -96,7 +80,6 @@ class BroadcastModel extends Equatable {
   /// Converts room to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => {
     'createdAt': createdAt,
-    'id': id,
     'imageUrl': imageUrl,
     'lastMessages': lastMessages?.map((e) => e.toJson()).toList(),
     'metadata': metadata,
@@ -108,7 +91,6 @@ class BroadcastModel extends Equatable {
     'title' : title,
     'notice' : notice,
     'channelName': channelName,
-    'docId' : docId,
     'thumbnail' : thumbnail,
     'location' : location,
     'createdTime' : createdTime,
@@ -154,7 +136,6 @@ class BroadcastModel extends Equatable {
   @override
   List<Object?> get props => [
     createdAt,
-    id,
     imageUrl,
     lastMessages,
     metadata,
@@ -169,7 +150,6 @@ class BroadcastModel extends Equatable {
   final String? title;
   final String? notice;
   final String? channelName;
-  final String? docId;
   final String? thumbnail; //image
   final String? location;
   final DateTime? createdTime;
@@ -184,7 +164,6 @@ class BroadcastModel extends Equatable {
   final int? createdAt;
 
   /// Room's unique ID
-  final String id;
 
   /// Room's image. In case of the [RoomType.direct] - avatar of the second person,
   /// otherwise a custom image [RoomType.group].
