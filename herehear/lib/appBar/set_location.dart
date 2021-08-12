@@ -6,6 +6,7 @@ import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -19,9 +20,10 @@ class _SetLocationPageState extends State<SetLocationPage> {
   final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
 
+  //Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -63,7 +65,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
           ),
           SearchTextField(),
           Obx(() {
-            if (searchController.text.value.isEmpty) {
+            if (searchController.textController.value.text.isEmpty) {
               print(
                   'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
               return searchHistory();
@@ -148,23 +150,31 @@ class _SetLocationPageState extends State<SetLocationPage> {
         ),
         Column(
           children: List.generate(
-            locationHistoryExample!.length,
+            searchController.history.length,
+            //   locationHistoryExample!.length,
             (index) => Padding(
               padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: null,
+                    onTap: () {
+                      searchController.textController.value.text =
+                          searchController.history[index];
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          locationHistoryExample![index],
+                          searchController.history[index],
+                          //locationHistoryExample![index],
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                         Expanded(child: Container()),
                         IconButton(
-                            onPressed: null,
+                            onPressed: () {
+                              searchController.history.removeAt(index);
+                              searchController.saveHistory();
+                            },
                             icon: Icon(Icons.clear, size: 15.w)),
                       ],
                     ),
