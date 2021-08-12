@@ -17,7 +17,6 @@ ListView broadcastRoomList(
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
-
       return Padding(
         padding: EdgeInsets.only(right: 16.0.w),
         child: GestureDetector(
