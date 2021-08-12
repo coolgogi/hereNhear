@@ -38,7 +38,7 @@ Future<types.BroadcastModel> processRoomDocument(
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final type = doc.data()!['type'] as String;
-  final docId = doc.data()!['docId'] as String;
+  final channelName = doc.data()!['channelName'] as String;
   final userIds = doc.data()!['userIds'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
   final like = doc.data()?['like'] as int?;
@@ -49,7 +49,7 @@ Future<types.BroadcastModel> processRoomDocument(
       hostInfo: hostInfo,
       title: title,
       roomCategory: roomCategory,
-      docId: docId);
+      channelName: channelName);
 
   final users = await Future.wait(
     userIds.map(
@@ -64,9 +64,8 @@ Future<types.BroadcastModel> processRoomDocument(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
     like: like,
+    channelName: channelName,
     // createdAt: createdAt?.millisecondsSinceEpoch,
-    id: docId,
-    docId: docId,
     imageUrl: imageUrl,
     metadata: metadata,
     location: locationController.location.value,

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +6,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/login/agreeToS.dart';
 import 'package:herehear/login/signUp.dart';
 import 'package:herehear/login/signUp_controller.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 
-class CertificationPage extends StatelessWidget {
+class CertificationPage extends StatefulWidget {
+  @override
+  _CertificationPageState createState() => _CertificationPageState();
+}
+
+class _CertificationPageState extends State<CertificationPage> {
   TextEditingController phoneNumController = TextEditingController();
-
+  String? _verificationId;
   TextEditingController certificationController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final registerController = Get.put(RegisterController());
 
@@ -19,6 +27,20 @@ class CertificationPage extends StatelessWidget {
   final  validNumbers = RegExp(r'(\d+)');
   final  validAlphabet = RegExp(r'[a-zA-Z]');
   final  validSpecial = RegExp(r'[!@#$%^&*(),.?":{}|<>]');
+  final SmsAutoFill _autoFill = SmsAutoFill();
+
+
+  autoFill() async{
+    phoneNumController.text =
+    (await _autoFill.hint)!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  autoFill();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +95,7 @@ class CertificationPage extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
+                            verifyPhoneNumber();
                             registerController.isPhoneNumActive.value = true;
                             registerController.isCertificationNumActive.value = false;
                           },
@@ -177,6 +200,56 @@ class CertificationPage extends StatelessWidget {
         ),
       )),
     );
+  }
+
+  void verifyPhoneNumber() async {
+    PhoneVerificationCompleted verificationCompleted =
+        (PhoneAuthCredential credential) async {
+      // ANDROID ONLY!
+
+      // Sign the user in (or link) with the auto-generated credential
+      await _auth.signInWithCredential(credential);
+     // showSnackbar("Phone number automatically verified and user signed in: ${_auth.currentUser!.uid}");
+    };
+
+    PhoneVerificationFailed verificationFailed =
+        (FirebaseAuthException e){
+          if (e.code == 'invalid-phone-number'){
+ //     showSnackbar('Phone number verification failed. Code: ${e.code}. Message: ${e.message}');
+          }
+    };
+
+    PhoneCodeSent codeSent =
+
+        (String verificationId, int? resendToken) async {
+      // Update the UI - wait for the user to enter the SMS code
+      String smsCode = 'xxxx';
+
+      // Create a PhoneAuthCredential with the code
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+      _verificationId = verificationId;
+      // Sign the user in (or link) with the credential
+      await _auth.signInWithCredential(credential);
+    };
+
+
+    PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
+        (String verificationId) {
+     // showSnackbar("verification code: " + verificationId);
+      _verificationId = verificationId;
+    };
+
+    try {
+      await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNumController.text,
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+          timeout: const Duration(seconds: 50),
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    } catch (e) {
+      print('Failed to Verify Phone Number: $e');
+    }
   }
 }
 
