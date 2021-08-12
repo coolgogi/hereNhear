@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
 import 'package:herehear/bottomNavigationBar/community/record_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,7 +36,7 @@ class PostPage extends StatelessWidget {
                 )),
         actions: <Widget>[
           IconButton(
-              onPressed: null,
+              onPressed: () => Get.to(recordingPage()),
               icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(
               onPressed: null,
@@ -159,7 +161,7 @@ class PostPage extends StatelessWidget {
                       suffixIcon: Padding(
                         padding: EdgeInsets.fromLTRB(0.w, 7.h, 0.w, 7.h),
                         child: GestureDetector(
-                          onTap: () => null,
+                          onTap: () => textToSpeech(comment.text),
                           child: Container(
                             width: 32.0.w,
                             height: 32.0.h,
@@ -205,7 +207,6 @@ class PostPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        test_Padding(context),
         commentCard(context),
         commentCard(context),
         commentCard(context),
@@ -309,7 +310,7 @@ class PostPage extends StatelessWidget {
     locationController.getLocation().obs;
   }
 
-  void textToSpeach(String text) async {
+  void textToSpeech(String text) async {
     if (UserController.to.myProfile.value.platform == 'ios') {
       print("hello ios");
       await f_tts.setSharedInstance(true);
@@ -327,100 +328,5 @@ class PostPage extends StatelessWidget {
     bool permission = await _audioRecorder.hasPermission();
     if (permission) {
     } else {}
-  }
-
-  void recording() async {
-    bool result = await _audioRecorder.hasPermission();
-    if (UserController.to.myProfile.value.platform == 'ios') {
-      print("hello ios");
-    }
-    if (result) {
-      _audioRecorder.start();
-    } else {}
-    await f_tts.speak(text);
-  }
-
-  Widget test_Padding(BuildContext context) {
-    TextEditingController comment = TextEditingController();
-    return Padding(
-      padding: EdgeInsets.only(left: 30.0, top: 17.h),
-      child: Row(
-        children: [
-          Container(
-            width: 32.0.w,
-            height: 32.0.h,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/you.png'),
-                fit: BoxFit.cover,
-              ),
-              shape: BoxShape.circle,
-            ),
-          ),
-          SizedBox(width: 10.w),
-          Container(
-            height: 41.h,
-            width: 280.w,
-            padding: EdgeInsets.fromLTRB(10.w, 1.h, 1.w, 0.h),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(10.r)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0,
-                  blurRadius: 8,
-                  offset: Offset(1, 4), // changes position of shadow
-                ),
-              ],
-            ),
-            child: TextField(
-              cursorColor: Theme.of(context).primaryColor,
-              textInputAction: TextInputAction.newline,
-              keyboardType: TextInputType.multiline,
-              maxLines: 150,
-              controller: comment,
-              textAlign: TextAlign.left,
-              decoration: InputDecoration(
-                hintStyle: Theme.of(context).textTheme.headline6,
-                // suffixStyle: ,
-                hintText: 'TTS 테스트',
-                border: InputBorder.none,
-                suffixText: 'TTS 시작',
-                suffixIcon: Padding(
-                  padding: EdgeInsets.fromLTRB(0.w, 7.h, 0.w, 7.h),
-                  child: GestureDetector(
-                    onTap: () => textToSpeach(comment.text),
-                    child: Container(
-                      width: 32.0.w,
-                      height: 32.0.h,
-                      child: Padding(
-                        padding: EdgeInsets.all(3.0.w),
-                        child: Image.asset(
-                          'assets/icons/record.png',
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.background,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.3),
-                            spreadRadius: 0,
-                            blurRadius: 8,
-                            offset: Offset(0, 4), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
