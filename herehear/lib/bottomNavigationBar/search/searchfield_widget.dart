@@ -28,6 +28,7 @@ class SearchTextField extends StatelessWidget {
           decoration: InputDecoration(
             filled: true,
             fillColor: Color(0xFFE9E9E9),
+
             hintText: '검색어를 입력하세요',
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -47,12 +48,14 @@ class SearchTextField extends StatelessWidget {
             ),
             suffixIcon: Padding(
               padding: EdgeInsets.only(right: 13.w),
-              child: InkWell(child: Image.asset('assets/icons/search.png'),
-              onTap: (){
-                searchController.history.insert(0,searchController.textController.value.text);
-                searchController.saveHistory();
-                searchController.textController.value.clear();
-              },),
+              child: Obx(() => InkWell(
+                  child: searchController.text.isEmpty? Image.asset('assets/icons/search.png') 
+                      : Icon(Icons.close, color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.5), size: 20.w),
+                  onTap: (){
+                    searchController.history.insert(0, searchController.textController.value.text);
+                    searchController.saveHistory();
+                    searchController.textController.value.clear();
+                  })),
             ),
             contentPadding: EdgeInsets.only(
               left: 16.w,
