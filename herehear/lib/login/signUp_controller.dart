@@ -38,7 +38,6 @@ class RegisterController extends GetxController {
   String? checkNickname(String value) {
     if (value.isEmpty) {
       nickNameFocus.value.requestFocus();
-      print('77');
       return '닉네임을 입력해주세요.';
     }
     return null;
@@ -47,20 +46,16 @@ class RegisterController extends GetxController {
   String? checkPossibleId(String value) {
     if (value.isEmpty) {
       idFocus.value.requestFocus();
-      print('6');
       return '아이디를 입력해주세요.';
     }
     //6~12자인지 확인
-    if ((12 <= value.length) && (value.length <= 6)) {
+    if ((12 <= value.length) || (value.length <= 6)) {
       idFocus.value.requestFocus();
-      print('7: ${value.length}');
-      // hasCorrectLength.value = true;
       return '아이디는 6~12자 이내여야 합니다.';
     }
     //특수기호가 있는지 확인
     if (validSpecial.hasMatch(value)) {
       idFocus.value.requestFocus();
-      print('8');
       return '아이디는 영문자,숫자만 입력 가능합니다.';
     }
     return null;
@@ -69,20 +64,17 @@ class RegisterController extends GetxController {
   String? checkPossiblePassword(String value) {
     if (value.isEmpty) {
       pwdFocus.value.requestFocus();
-      print('1');
       return '비밀번호를 입력해주세요.';
     }
     //8~21자인지 확인
-    if ((12 <= value.length) && (value.length <= 8)) {
+    if ((12 <= value.length) || (value.length <= 8)) {
       pwdFocus.value.requestFocus();
-      print('2');
       return '비밀번호는 8~20자 이내여야 합니다.';
     }
     //특수기호가 있는지 확인
     if (!validSpecial.hasMatch(value) || !validAlphabet.hasMatch(value) ||
         !validNumbers.hasMatch(value)) {
       pwdFocus.value.requestFocus();
-      print('3');
       return '비밀번호는 영문자,숫자,특수문자를 모두 포함해야 합니다.';
     }
     return null;
@@ -123,11 +115,6 @@ class RegisterController extends GetxController {
       confirmPwdFocus.value.requestFocus();
       return '인증번호를 입력해주세요.';
     }
-    //8~21자인지 확인
-    // if (//전화 번호 인증 조건//) {
-    //   _confirmPwdFocus.value.requestFocus();
-    //   return '잘못된 형식이거나 유효하지 않은 번호입니다.';
-    // }
     return null;
   }
 }
