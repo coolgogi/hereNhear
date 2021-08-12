@@ -31,7 +31,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
-  String _docId = '';
+  String channelName = '';
 
   //unused variable
   bool _validateError = false;
@@ -386,38 +386,29 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     });
     await Permission.microphone.request();
 
-    _docId =
+    channelName =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
     RoomInfoModel roomInfo = RoomInfoModel(
         hostInfo: UserController.to.myProfile.value,
         title: _title.text,
         roomCategory: broadcastInfoController.selectedCategoryList,
-        docId: _docId,
+        channelName: channelName,
         notice: _notice.text,
         thumbnail: 'assets/images/mic1.jpg');
     late List<UserModel> userList = [];
     userList.add(UserController.to.myProfile.value);
 
-
-    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
-
-    // agoraController.createBroadcastRoom(
-    //   UserController.to.myProfile.value,
-    //   _title.text,
-    //   _notice.text,
-    //   broadcastInfoController.selectedCategoryList,
-    //   _docId,
-    //   List<String>.filled(0, '', growable: true),
-    //   locationController.location.value,
-    // );
+    types.BroadcastModel roomData = await MyFirebaseChatCore.instance
+        .createGroupRoom(
+            roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
 
     Get.off(
       () => BroadCastPage.myBroadcaster(
-      //  channelName: _docId,
+        //  channelName: _docId,
         role: ClientRole.Broadcaster,
-      roomData : roomData,
-      //  userData: UserController.to.myProfile.value,
+        roomData: roomData,
+        //  userData: UserController.to.myProfile.value,
       ),
     );
   }

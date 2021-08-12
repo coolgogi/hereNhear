@@ -22,7 +22,8 @@ ListView broadcastRoomList(
         padding: EdgeInsets.only(right: 16.0.w),
         child: GestureDetector(
           onTap: () async {
-            await firestore.collection('broadcast').doc(room.docId).update({
+            //room.users.add(UserController.to.myProfile.value);
+            await firestore.collection('broadcast').doc(room.channelName).update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),

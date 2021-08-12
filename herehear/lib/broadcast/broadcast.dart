@@ -3,21 +3,19 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/chat.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BroadCastPage extends GetView<AgoraEventController> {
-  // final String channelName;
-  //final RoomInfoModel roomInfo;
-  // final UserModel userData;
   final ClientRole role;
   final types.BroadcastModel roomData;
   late final agoraController;
   bool muted = false;
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
-
+  final fireStore = FirebaseFirestore.instance;
   //Map<String, dynamic> roomData = new Map();
 
   BroadCastPage(
@@ -39,43 +37,17 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.channelName!, role: role));
   }
 
-  BroadCastPage.myaudience(
-      {
-      //required this.channelName,
-      //required this.userData,
-      required this.role,
-      //required this.room,
-      required this.roomData}) {
+  BroadCastPage.myaudience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.docId!, role: role));
+        channelName: roomData.channelName!, role: role));
   }
-
-  //
-  // BroadCastPage.broadcaster(
-  //     { //required this.channelName,
-  //     required this.role,
-  //     //required this.userData,
-  //     required this.roomData}) {
-  //   agoraController = Get.put(
-  //       AgoraEventController.broadcast(channelName: roomInfo.docId, role: role));
-  // }
-
-  // BroadCastPage.audience(
-  //     {required this.channelName,
-  //     required this.userData,
-  //     required this.role,
-  //     required this.roomData,
-  //     required this.roomInfo}) {
-  //   agoraController = Get.put(
-  //       AgoraEventController.broadcast(channelName: channelName, role: role));
-  // }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: documentStream.doc(roomData.docId).snapshots(),
+        stream: documentStream.doc(roomData.channelName).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -88,14 +60,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
         });
   }
 
-  PreferredSizeWidget profileAppBar(
-    BuildContext context,
-  ) {
-    print(
-        '^^^^^^^^^^^^^^^^^^^^^^^^dbData^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6');
-    print(roomData.hostInfo!.nickName);
-    print(roomData.title);
-    print(roomData.hostInfo!.profile);
+  PreferredSizeWidget profileAppBar(BuildContext context) {
     return AppBar(
       leading: Card(
         margin: EdgeInsets.only(left: 0.0.w),
@@ -111,37 +76,26 @@ class BroadCastPage extends GetView<AgoraEventController> {
         ),
       ),
       backgroundColor: Colors.white,
-      title: Text(
-        roomData.roomInfo!.title,
-        style: Theme.of(context).textTheme.subtitle1,
-      ),
+      title: Text(roomData.roomInfo!.title,
+          style: Theme.of(context).textTheme.subtitle1),
       // backgroundColor: black,
       actions: <Widget>[
         IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
+          icon: Icon(Icons.add, color: Colors.black),
           onPressed: () {
             inviteDialog(context);
           },
         ),
         IconButton(
-          icon: Image.asset(
-            'assets/icons/groupBlack.png',
-            width: 23.w,
-            color: Colors.black,
-          ),
+          icon: Image.asset('assets/icons/groupBlack.png',
+              width: 23.w, color: Colors.black),
           onPressed: () {
             peopleDialog(context);
           },
         ),
         IconButton(
-          icon: Image.asset(
-            'assets/icons/exit.png',
-            width: 23.w,
-            color: Colors.red,
-          ),
+          icon: Image.asset('assets/icons/exit.png',
+              width: 23.w, color: Colors.red),
           onPressed: () => _onCallEnd(),
         ),
       ],
@@ -191,19 +145,22 @@ class BroadCastPage extends GetView<AgoraEventController> {
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
     if (role == ClientRole.Broadcaster) {
-      await changeState(roomData.docId!);
+      await changeState(roomData.channelName!);
     }
+    await fireStore.collection('broadcast').doc(roomData.channelName!).update({
+      'userIds': FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
+    });
     controller.onClose();
-    Get.off(() => BottomBar());
+    Get.back();
   }
 
   Future<void> changeState(String docID) async {
-    var fields = await FirebaseFirestore.instance
+    var fields = await fireStore
         .collection('broadcast')
         .doc(docID)
         .get();
 
-    FirebaseFirestore.instance
+    fireStore
         .collection('closed')
         .doc(docID)
         .set(fields.data()!);

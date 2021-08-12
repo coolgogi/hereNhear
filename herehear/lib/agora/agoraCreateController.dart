@@ -19,7 +19,7 @@ class AgoraCreateController extends GetxController {
       String title,
       String notice,
       List<String> category,
-      String docId,
+      String channelName,
       List<String> uNickname,
       String location) async {
     if (userData != null) {
@@ -27,12 +27,10 @@ class AgoraCreateController extends GetxController {
 
       newBroadcastRoom.value = BroadcastModel(
         users: users ,
-        id: docId,
         hostInfo: userData,
         title: title,
         notice: notice,
-        channelName: docId,
-        docId: docId,
+        channelName: channelName,
         thumbnail: 'assets/images/mic1.jpg',
         location: location,
         createdTime: DateTime.now(),

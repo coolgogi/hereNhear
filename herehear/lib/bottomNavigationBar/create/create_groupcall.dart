@@ -39,7 +39,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
   TextEditingController _notice = TextEditingController();
   TextEditingController _privatePwd = TextEditingController();
   final GlobalKey<TagsState> _tagStateKey = GlobalKey<TagsState>();
-  String _docId = '';
+  String channelName = '';
 
   //unused variableselectedDate
   ClientRole _role = ClientRole.Broadcaster;
@@ -610,14 +610,14 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     });
     await Permission.microphone.request();
 
-    _docId =
+    channelName =
         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
     RoomInfoModel roomInfo = RoomInfoModel(
         hostInfo: UserController.to.myProfile.value,
         title: _title.text,
         roomCategory: broadcastInfoController.selectedCategoryList,
-        docId: _docId,
+        channelName: channelName,
         notice: _notice.text,
         thumbnail: 'assets/images/mic1.jpg');
     late List<UserModel> userList = [];

@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: StreamBuilder<types.BroadcastModel>(
           initialData: widget.room,
-          stream: MyFirebaseChatCore.instance.room(widget.room.docId),
+          stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return StreamBuilder<List<types.MyMessage>>(
@@ -229,7 +229,7 @@ class _ChatPageState extends State<ChatPage> {
     print('send');
     MyFirebaseChatCore.instance.sendMessage(
       message,
-      widget.room.docId,
+      widget.room.channelName,
     );
     print('complete!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }

@@ -11,7 +11,7 @@ class GroupCallInfoController extends GetxController {
   @override
   void onClose() {
     // TODO: implement onClose
-    selectedCategoryList!.value.removeRange(0, selectedCategoryList!.length);
+    selectedCategoryList.value.removeRange(0, selectedCategoryList.length);
     super.onClose();
   }
 }

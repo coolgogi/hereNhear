@@ -70,7 +70,7 @@ class BroadcastInfoController extends GetxController {
   void onClose() {
     title.dispose();
     notice.dispose();
-    selectedCategoryList!.value.removeRange(0, selectedCategoryList!.length);
+    selectedCategoryList.value.removeRange(0, selectedCategoryList.length);
     super.onClose();
   }
 }
