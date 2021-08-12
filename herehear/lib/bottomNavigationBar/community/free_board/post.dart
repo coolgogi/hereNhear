@@ -5,23 +5,14 @@ import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 
-
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class PostPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
   TextEditingController comment = TextEditingController();
-  String current_uid = '';
-
-
-
 
   ap.AudioSource? audioSource;
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +23,17 @@ class PostPage extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: Text('HEAR 게시판', style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(
-          fontWeight: FontWeight.w700,
-        )),
+        title: Text('HEAR 게시판',
+            style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(
+                  fontWeight: FontWeight.w700,
+                )),
         actions: <Widget>[
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
       body: ListView(
@@ -65,9 +61,10 @@ class PostPage extends StatelessWidget {
                       '유리한 녀석',
                       style: Theme.of(context).textTheme.headline4,
                     ),
-                    Text('업로드한 날짜', style: Theme.of(context).textTheme.headline6!.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    )),
+                    Text('업로드한 날짜',
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                            )),
                   ],
                 ),
               ],
@@ -81,24 +78,25 @@ class PostPage extends StatelessWidget {
                 Text('글 제목ㅇㅇㅇㅇ?', style: Theme.of(context).textTheme.headline1),
                 Padding(
                   padding: EdgeInsets.only(top: 13.0.h),
-                  child: Text(
-                      '글 내용 궁시렁 주저리 이러쿵 저러쿵',
+                  child: Text('글 내용 궁시렁 주저리 이러쿵 저러쿵',
                       maxLines: 300,
                       style: Theme.of(context).textTheme.subtitle1),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 35.0.h, bottom: 30.h),
-                  child: Row(
-                      children: [
-                        Image.asset('assets/icons/heart.png', width: 14.w),
-                        SizedBox(width: 3.w,),
-                        Text('0', style: Theme.of(context).textTheme.headline6),
-                        SizedBox(width: 10.w),
-                        Image.asset('assets/icons/chat.png', width: 14.w),
-                        SizedBox(width: 3.w,),
-                        Text('0', style: Theme.of(context).textTheme.headline6),
-                      ]
-                  ),
+                  child: Row(children: [
+                    Image.asset('assets/icons/heart.png', width: 14.w),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text('0', style: Theme.of(context).textTheme.headline6),
+                    SizedBox(width: 10.w),
+                    Image.asset('assets/icons/chat.png', width: 14.w),
+                    SizedBox(
+                      width: 3.w,
+                    ),
+                    Text('0', style: Theme.of(context).textTheme.headline6),
+                  ]),
                 ),
               ],
             ),
@@ -158,25 +156,28 @@ class PostPage extends StatelessWidget {
                         child: GestureDetector(
                           onTap: null,
                           child: Container(
-                              width: 32.0.w,
-                              height: 32.0.h,
-                              child: Padding(
-                                padding: EdgeInsets.all(3.0.w),
-                                child: Image.asset('assets/icons/record.png',),
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 0,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4), // changes position of shadow
-                                  ),
-                                ],
+                            width: 32.0.w,
+                            height: 32.0.h,
+                            child: Padding(
+                              padding: EdgeInsets.all(3.0.w),
+                              child: Image.asset(
+                                'assets/icons/record.png',
                               ),
                             ),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 8,
+                                  offset: Offset(
+                                      0, 4), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -186,8 +187,7 @@ class PostPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(
-                left: 20.0.w, top: 31.0.h),
+            padding: EdgeInsets.only(left: 20.0.w, top: 31.0.h),
             child: commentList(context),
           ),
         ],
@@ -242,17 +242,20 @@ class PostPage extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: null,
-                      child: Image.asset('assets/icons/heart_grey.png', width: 14.w),
+                      child: Image.asset('assets/icons/heart_grey.png',
+                          width: 14.w),
                     ),
                     Image.asset('assets/icons/line_short.png', height: 8.h),
                     GestureDetector(
                       onTap: null,
-                      child: Image.asset('assets/icons/chat_grey.png', width: 14.w),
+                      child: Image.asset('assets/icons/chat_grey.png',
+                          width: 14.w),
                     ),
                     Image.asset('assets/icons/line_short.png', height: 8.h),
                     GestureDetector(
                       onTap: null,
-                      child: Image.asset('assets/icons/more_grey.png', height: 10.h),
+                      child: Image.asset('assets/icons/more_grey.png',
+                          height: 10.h),
                     ),
                   ],
                 ),
@@ -264,10 +267,8 @@ class PostPage extends StatelessWidget {
           child: Row(
             children: [
               GestureDetector(
-                onTap: null,
-                child: Image.asset('assets/icons/play.png', width: 12.w)
-              ),
-
+                  onTap: null,
+                  child: Image.asset('assets/icons/play.png', width: 12.w)),
             ],
           ),
           decoration: BoxDecoration(
@@ -286,7 +287,10 @@ class PostPage extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(right: 19.0.w),
-          child: Divider(thickness: 1, height: 30.h,),
+          child: Divider(
+            thickness: 1,
+            height: 30.h,
+          ),
         ),
       ],
     );
@@ -298,5 +302,3 @@ class PostPage extends StatelessWidget {
     locationController.getLocation().obs;
   }
 }
-
-

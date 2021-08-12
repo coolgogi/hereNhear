@@ -160,7 +160,7 @@ class _SmsPage extends State<Sms> {
           // Auto-resolution timed out...
         },);
     } catch (e) {
-      showSnackbar("Failed to Verify Phone Number: ${e}");
+      showSnackbar('Failed to Verify Phone Number: $e');
     }
   }
 

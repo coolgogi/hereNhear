@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               return ScreenUtilInit(
                 designSize: Size(375, 667),
                 builder: () => GetMaterialApp(
-                  theme: value.isDarkTheme.value ? dark_theme : light_theme,
+                  theme: value.isDarkTheme.value ? darkTheme : lightTheme,
                   debugShowCheckedModeBanner: false,
                   initialBinding: BindingsBuilder(() {
                     Get.lazyPut<UserController>(
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
                     ),
                     GetPage(
                       name: '/myPage',
-                      page: () => myPage(),
+                      page: () => MyPage(),
                     ),
                     GetPage(
                       name: '/login',

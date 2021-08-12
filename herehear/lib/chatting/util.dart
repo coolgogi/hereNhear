@@ -4,6 +4,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart';
 import '../broadcast/data/broadcast_model.dart' show MyRoomType;
 import 'package:herehear/users/data/user_model.dart' show MyRole;
 import 'package:herehear/chatting/src/class/my_message.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart' show MyGroupCallRoomType;
 
 /// Converts [stringStatus] to the [Status] enum.
 MyStatus? getMyStatusFromString(String? stringStatus) {
@@ -27,7 +28,6 @@ MyRole? getMyRoleFromString(String? stringRole) {
   return null;
 }
 
-/// Converts [stringRoomType] to the [RoomType] enum.
 MyRoomType getMyRoomTypeFromString(String stringRoomType) {
   for (final myRoomType in MyRoomType.values) {
     if (myRoomType.toString() == 'MyRoomType.$stringRoomType') {
@@ -36,4 +36,17 @@ MyRoomType getMyRoomTypeFromString(String stringRoomType) {
   }
 
   return MyRoomType.unsupported;
+}
+
+
+
+/// Converts [stringRoomType] to the [RoomType] enum.
+MyGroupCallRoomType getMyGroupCallTypeFromString(String stringRoomType) {
+  for (final myRoomType in MyGroupCallRoomType.values) {
+    if (myRoomType.toString() == 'MyRoomType.$stringRoomType') {
+      return myRoomType;
+    }
+  }
+
+  return MyGroupCallRoomType.unsupported;
 }
