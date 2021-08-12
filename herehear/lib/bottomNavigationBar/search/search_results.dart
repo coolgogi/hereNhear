@@ -20,6 +20,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   final locationController = Get.put(LocationController());
 
   String current_uid = '';
+  FocusNode searchBarFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -30,12 +31,16 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   @override
   void dispose() {
     // 폼이 삭제되면 myFocusNode도 삭제됨
-    searchController.searchBarFocusNode.value.dispose();
+    // searchController.searchBarFocusNode.value.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print('searchController.isRoomSearch.value = ${searchController.isRoomSearch.value}');
+    print('searchController.isCommunitySearch.value = ${searchController.isCommunitySearch.value}');
+    print('searchController.isLocationSearch.value = ${searchController.isLocationSearch.value}');
+
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 25.0.w,
@@ -56,12 +61,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
           SearchTextField(),
           Obx(() {
             if (searchController.text.isEmpty) {
-              print(
-                  'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
               return searchHistory();
             } else {
-              print(
-                  'searchController.textController.value??????????????? : ${searchController.textController.value.text}');
+              print('searchController.textController.value??????????????? : ${searchController.text.value}');
               return Container(child: Center(child: Text('SomeThing..!!')));
             }
           })

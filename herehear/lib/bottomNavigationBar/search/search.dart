@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
 import '../../broadcast/data/broadcast_model.dart';
@@ -12,7 +13,9 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 class SearchPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
+  final searchController = Get.put(SearchBarController());
   String current_uid = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,14 +187,17 @@ class SearchPage extends StatelessWidget {
       padding:
           EdgeInsets.only(left: 25.0.w, top: 10.h, right: 22.0.w, bottom: 20.h),
       child: GestureDetector(
-        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
+        onTap: () {
+          searchController.isRoomSearch.value = true;
+          searchController.isLocationSearch.value = false;
+          searchController.isCommunitySearch.value = false;
+          searchController.isHistorySearch.value = false;
+          searchController.initialSearchText();
+          Get.to(SearchResultsPage(), duration: Duration.zero);
+        },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
             color: Color(0xFFE9E9E9),
           ),
           height: 33.0.h,
