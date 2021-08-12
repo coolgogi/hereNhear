@@ -334,6 +334,6 @@ class _GroupCallPageState extends State<GroupCallPage> {
 
   void _onCallEnd() {
     controller.onClose();
-    Get.off(() => BottomBar());
+    Get.back();
   }
 }
