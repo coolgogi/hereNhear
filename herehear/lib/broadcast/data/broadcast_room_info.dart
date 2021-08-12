@@ -26,7 +26,7 @@ class RoomInfoModel {
       'hostInfo': this.hostInfo,
       'title': this.title,
       'roomCategory': this.roomCategory,
-      'docId': this.channelName,
+      'channelName': this.channelName,
       'notice': this.notice,
       'thumbnail': this.thumbnail,
     };
@@ -39,10 +39,6 @@ class RoomInfoModel {
         channelName = json['channelName'] as String,
         notice = json['notice'] as String,
         thumbnail = json['thumbnail'] as String;
-        // createdTime = json['createdTime'].toDate(),
-        // //only broadcast
-        // category = json['category'] as String,
-        // like = json['like'] as int;
 }
 
 // Map<String, dynamic> toJson() => {

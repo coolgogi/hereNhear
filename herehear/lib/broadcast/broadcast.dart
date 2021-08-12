@@ -25,7 +25,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       required this.role,
       required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName!, role: role));
+        channelName: roomData.channelName, role: role));
   }
 
   BroadCastPage.myBroadcaster(
@@ -34,12 +34,12 @@ class BroadCastPage extends GetView<AgoraEventController> {
       // required this.userData,
       required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName!, role: role));
+        channelName: roomData.channelName, role: role));
   }
 
   BroadCastPage.myaudience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName!, role: role));
+        channelName: roomData.channelName, role: role));
   }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
@@ -145,9 +145,9 @@ class BroadCastPage extends GetView<AgoraEventController> {
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
     if (role == ClientRole.Broadcaster) {
-      await changeState(roomData.channelName!);
+      await changeState(roomData.channelName);
     }
-    await fireStore.collection('broadcast').doc(roomData.channelName!).update({
+    await fireStore.collection('broadcast').doc(roomData.channelName).update({
       'userIds': FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
     });
     controller.onClose();

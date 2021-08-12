@@ -55,7 +55,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         children: <Widget>[
           SearchTextField(),
           Obx(() {
-            if (searchController.text.value.isEmpty) {
+            if (searchController.text.isEmpty) {
               print(
                   'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
               return searchHistory();
