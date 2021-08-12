@@ -9,12 +9,8 @@ class SearchTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: 25.0.w,
-          top: 10.h,
-          right: 22.0.w,
-          bottom: 14.h
-      ),
+      padding:
+          EdgeInsets.only(left: 25.0.w, top: 10.h, right: 22.0.w, bottom: 14.h),
       child: Container(
         height: 33.0.h,
         child: TextField(
@@ -22,12 +18,13 @@ class SearchTextField extends StatelessWidget {
           controller: searchController.textController.value,
           focusNode: searchController.searchBarFocusNode.value,
           onChanged: (value) {
-            searchController.text.value = searchController.textController.value.text;
+            searchController.text.value =
+                searchController.textController.value.text;
           },
           autofocus: true,
           style: Theme.of(context).textTheme.headline6!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
           decoration: InputDecoration(
             filled: true,
             fillColor: Color(0xFFE9E9E9),
@@ -37,8 +34,7 @@ class SearchTextField extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)
-              ),
+                  bottomRight: Radius.circular(10)),
               borderSide: BorderSide(
                 color: Color(0xFFE9E9E9),
               ),
@@ -48,8 +44,7 @@ class SearchTextField extends StatelessWidget {
                   topLeft: Radius.circular(10),
                   topRight: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)
-              ),
+                  bottomRight: Radius.circular(10)),
               borderSide: BorderSide(
                 color: Color(0xFFE9E9E9),
               ),
@@ -60,7 +55,12 @@ class SearchTextField extends StatelessWidget {
             ),
             suffixIcon: Padding(
               padding: EdgeInsets.only(right: 13.w),
-              child: Image.asset('assets/icons/search.png'),
+              child: InkWell(child: Image.asset('assets/icons/search.png'),
+              onTap: (){
+                searchController.history.insert(0,searchController.textController.value.text);
+                searchController.saveHistory();
+                searchController.textController.value.clear();
+              },),
             ),
             contentPadding: EdgeInsets.only(
               left: 16.w,
