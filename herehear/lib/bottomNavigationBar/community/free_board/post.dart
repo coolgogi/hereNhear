@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:just_audio/just_audio.dart' as ap;
+import 'package:flutter_tts/flutter_tts.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -11,7 +13,7 @@ class PostPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
   TextEditingController comment = TextEditingController();
-
+  FlutterTts f_tts = FlutterTts();
   ap.AudioSource? audioSource;
 
   @override
@@ -154,7 +156,7 @@ class PostPage extends StatelessWidget {
                       suffixIcon: Padding(
                         padding: EdgeInsets.fromLTRB(0.w, 7.h, 0.w, 7.h),
                         child: GestureDetector(
-                          onTap: null,
+                          onTap: () => textToSpeach(comment.text),
                           child: Container(
                             width: 32.0.w,
                             height: 32.0.h,
@@ -300,5 +302,19 @@ class PostPage extends StatelessWidget {
     refreshKey.currentState?.show(atTop: false);
     await Future.delayed(Duration(seconds: 0)); //thread sleep 같은 역할을 함.
     locationController.getLocation().obs;
+  }
+
+  void textToSpeach(String text) async {
+    if (UserController.to.myProfile.value.platform == 'ios') {
+      print("hello ios");
+      await f_tts.setSharedInstance(true);
+      await f_tts
+          .setIosAudioCategory(IosTextToSpeechAudioCategory.playAndRecord, [
+        IosTextToSpeechAudioCategoryOptions.allowBluetooth,
+        IosTextToSpeechAudioCategoryOptions.allowBluetoothA2DP,
+        IosTextToSpeechAudioCategoryOptions.mixWithOthers
+      ]);
+    }
+    await f_tts.speak(text);
   }
 }
