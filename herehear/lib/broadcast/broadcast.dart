@@ -39,36 +39,10 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.channelName!, role: role));
   }
 
-  BroadCastPage.myaudience(
-      {
-      //required this.channelName,
-      //required this.userData,
-      required this.role,
-      //required this.room,
-      required this.roomData}) {
+  BroadCastPage.myaudience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
         channelName: roomData.docId!, role: role));
   }
-
-  //
-  // BroadCastPage.broadcaster(
-  //     { //required this.channelName,
-  //     required this.role,
-  //     //required this.userData,
-  //     required this.roomData}) {
-  //   agoraController = Get.put(
-  //       AgoraEventController.broadcast(channelName: roomInfo.docId, role: role));
-  // }
-
-  // BroadCastPage.audience(
-  //     {required this.channelName,
-  //     required this.userData,
-  //     required this.role,
-  //     required this.roomData,
-  //     required this.roomInfo}) {
-  //   agoraController = Get.put(
-  //       AgoraEventController.broadcast(channelName: channelName, role: role));
-  // }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
 
@@ -88,14 +62,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
         });
   }
 
-  PreferredSizeWidget profileAppBar(
-    BuildContext context,
-  ) {
-    print(
-        '^^^^^^^^^^^^^^^^^^^^^^^^dbData^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^6');
-    print(roomData.hostInfo!.nickName);
-    print(roomData.title);
-    print(roomData.hostInfo!.profile);
+  PreferredSizeWidget profileAppBar(BuildContext context) {
     return AppBar(
       leading: Card(
         margin: EdgeInsets.only(left: 0.0.w),
@@ -111,37 +78,26 @@ class BroadCastPage extends GetView<AgoraEventController> {
         ),
       ),
       backgroundColor: Colors.white,
-      title: Text(
-        roomData.roomInfo!.title,
-        style: Theme.of(context).textTheme.subtitle1,
-      ),
+      title: Text(roomData.roomInfo!.title,
+          style: Theme.of(context).textTheme.subtitle1),
       // backgroundColor: black,
       actions: <Widget>[
         IconButton(
-          icon: Icon(
-            Icons.add,
-            color: Colors.black,
-          ),
+          icon: Icon(Icons.add, color: Colors.black),
           onPressed: () {
             inviteDialog(context);
           },
         ),
         IconButton(
-          icon: Image.asset(
-            'assets/icons/groupBlack.png',
-            width: 23.w,
-            color: Colors.black,
-          ),
+          icon: Image.asset('assets/icons/groupBlack.png',
+              width: 23.w, color: Colors.black),
           onPressed: () {
             peopleDialog(context);
           },
         ),
         IconButton(
-          icon: Image.asset(
-            'assets/icons/exit.png',
-            width: 23.w,
-            color: Colors.red,
-          ),
+          icon: Image.asset('assets/icons/exit.png',
+              width: 23.w, color: Colors.red),
           onPressed: () => _onCallEnd(),
         ),
       ],
@@ -194,7 +150,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       await changeState(roomData.docId!);
     }
     controller.onClose();
-    Get.off(() => BottomBar());
+    Get.back();
   }
 
   Future<void> changeState(String docID) async {
