@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:record/record.dart';
 import '../record.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
@@ -21,6 +23,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
   Timer? _ampTimer;
   final _audioRecorder = Record();
   Amplitude? _amplitude;
+  late UploadTask _upload;
+  late String docId;
+  String recordId =
+      (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
 
   @override
   void initState() {
@@ -169,9 +175,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
     _timer?.cancel();
     _ampTimer?.cancel();
     final path = await _audioRecorder.stop();
-
     widget.onStop(path!);
-
+    File _file = File(path);
+    String recordPath = uploadFile(_file);
     setState(() => _isRecording = false);
   }
 
@@ -188,6 +194,29 @@ class _AudioRecorderState extends State<AudioRecorder> {
     await _audioRecorder.resume();
 
     setState(() => _isPaused = false);
+  }
+
+  String uploadFile(File file) {
+    print("==========");
+    print('upload');
+    if (file == null) {
+      print("null file exception");
+      return '';
+    } else {
+      var storageRef = FirebaseStorage.instance
+          .ref()
+          .child('community')
+          // .child(docId)
+          .child('$recordId.m4a');
+      var metadata = SettableMetadata(
+        contentType: 'audio/m4a',
+        customMetadata: <String, String>{'file': 'audio'},
+      );
+
+      _upload = storageRef.putFile(file, metadata);
+      _upload.whenComplete(() => {print("Complete")});
+      return storageRef.fullPath;
+    }
   }
 
   void _startTimer() {
