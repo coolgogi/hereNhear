@@ -34,7 +34,6 @@ Future<types.BroadcastModel> processRoomDocument(
   User firebaseUser,
 ) async {
   final LocationController locationController = Get.find();
-
   var imageUrl = doc.data()?['imageUrl'] as String?;
   final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
   final type = doc.data()!['type'] as String;
@@ -60,6 +59,8 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
+  print('cccccccccccccccccccccccccccccc');
+print(channelName);
   final room = types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,

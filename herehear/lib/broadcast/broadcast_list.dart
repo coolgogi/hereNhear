@@ -17,7 +17,8 @@ ListView broadcastRoomList(
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
-
+      print("room. channelName@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      print(snapshot.data![0].channelName);
       return Padding(
         padding: EdgeInsets.only(right: 16.0.w),
         child: GestureDetector(
