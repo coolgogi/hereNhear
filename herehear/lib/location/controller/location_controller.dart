@@ -26,6 +26,7 @@ class LocationController extends GetxController {
   // Get.find<ProfileController>()대신에 ProfileController.to ~ 라고 쓸 수 있음
   static LocationController get to => Get.find();
   RxString location = ''.obs;
+  late LocationPermission permission;
 
   Future<void> locationPermission() async {
     await Geolocator.requestPermission();
