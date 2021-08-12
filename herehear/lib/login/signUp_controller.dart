@@ -98,7 +98,7 @@ class RegisterController extends GetxController {
       confirmPwdFocus.value.requestFocus();
       return '휴대전화 번호를 입력해주세요.';
     }
-    if(value.isPhoneNumber) {
+    if(!(value.isPhoneNumber)) {
       confirmPwdFocus.value.requestFocus();
       return '잘못된 형식입니다';
     }

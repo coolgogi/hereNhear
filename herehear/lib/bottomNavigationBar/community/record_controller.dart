@@ -10,7 +10,9 @@ class RecordConroller extends GetxController {
   Timer? _timer;
   Timer? _ampTimer;
   var _audioRecorder = Record();
-  Amplitude? _amplitude;
+
+
+  RxBool isRecording = false.obs;
 
   @override
     void onInit() {
@@ -72,12 +74,12 @@ class RecordConroller extends GetxController {
     _ampTimer?.cancel();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      _recordDuration++;
+      _recordDuration.value++;
     });
 
-    _ampTimer =
-        Timer.periodic(const Duration(milliseconds: 200), (Timer t) async {
-          _amplitude = await _audioRecorder.getAmplitude();
-        });
+    // _ampTimer =
+    //     Timer.periodic(const Duration(milliseconds: 200), (Timer t) async {
+    //       _amplitude = await _audioRecorder.getAmplitude();
+    //     });
   }
 }

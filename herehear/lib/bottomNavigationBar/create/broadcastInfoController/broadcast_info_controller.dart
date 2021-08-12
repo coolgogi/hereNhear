@@ -10,6 +10,7 @@ class BroadcastInfoController extends GetxController {
   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
   RxList<String> selectedCategoryList = <String>[].obs;
 
+
   int setCategory(bool value, int categoryIndex){
     index = value ? categoryIndex : index;
     update();
@@ -69,6 +70,7 @@ class BroadcastInfoController extends GetxController {
   void onClose() {
     title.dispose();
     notice.dispose();
+    selectedCategoryList.value.removeRange(0, selectedCategoryList.length);
     super.onClose();
   }
 }
