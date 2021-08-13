@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
+import 'package:herehear/etc/delete/contest/contest.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class SetLocationPage extends StatefulWidget {
 
 class _SetLocationPageState extends State<SetLocationPage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
+  GlobalKey globalKey = GlobalKey();
   final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
 
@@ -25,17 +27,29 @@ class _SetLocationPageState extends State<SetLocationPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      // executes after build
+    });
   }
 
   @override
   void dispose() {
     // 폼이 삭제되면 myFocusNode도 삭제됨
-    searchController.searchBarFocusNode.value.dispose();
+    // searchController.searchBarFocusNode.value.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    searchController.isRoomSearch.value = false;
+    searchController.isLocationSearch.value = true;
+    searchController.isCommunitySearch.value = false;
+    searchController.isHistorySearch.value = false;
+    // searchController.text.value = '';
+    print('searchController.isRoomSearch.value = ${searchController.isRoomSearch.value}');
+    print('searchController.isCommunitySearch.value = ${searchController.isCommunitySearch.value}');
+    print('searchController.isLocationSearch.value = ${searchController.isLocationSearch.value}');
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -63,15 +77,15 @@ class _SetLocationPageState extends State<SetLocationPage> {
               ],
             ),
           ),
-          SearchTextField(),
+          SearchTextField(key: globalKey),
           Obx(() {
-            if (searchController.text.isEmpty) {
+            if (searchController.text.value.isEmpty) {
               print(
-                  'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.textController.value.text}');
+                  'searchController.textController.value!!!!!!!!!!!!!! : ${searchController.text.value}');
               return searchHistory();
             } else {
               print(
-                  'searchController.textController.value??????????????? : ${searchController.textController.value.text}');
+                  'searchController.textController.value??????????????? : ${searchController.text.value}');
               return Container(child: Center(child: Text('SomeThing..!!')));
             }
           })
@@ -100,7 +114,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
             ),
             child: ElevatedButton(
               onPressed: () async {
-                searchController.textController.value.text =
+                searchController.text.value =
                     locationController.location.value;
               },
               style: ButtonStyle(
@@ -156,10 +170,12 @@ class _SetLocationPageState extends State<SetLocationPage> {
               padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
               child: Column(
                 children: [
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
-                      searchController.textController.value.text =
+                      searchController.text.value =
                           searchController.history[index];
+                      searchController.isHistorySearch.value = true;
+                      searchController.initialSearchText();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,

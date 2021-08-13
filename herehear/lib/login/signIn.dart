@@ -43,6 +43,7 @@ class LoginPage extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0.h, bottom: 43.0.h),
                 child: TextFormField(
                   controller: idController,
+                  keyboardType: TextInputType.emailAddress,
                   onTap: () {
                     loginController.isIdActive.value = true;
                     loginController.isPwdActive.value = false;
@@ -84,9 +85,12 @@ class LoginPage extends StatelessWidget {
                     errorBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
                     ),
-                    suffixIcon: IconButton(
-                      onPressed: () => loginController.isObscureText.value = !(loginController.isObscureText.value),
-                      icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
+                    suffixIcon: Padding(
+                      padding: EdgeInsets.only(top: 1.h),
+                      child: IconButton(
+                        onPressed: () => loginController.isObscureText.value = !(loginController.isObscureText.value),
+                        icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
+                      ),
                     ),
                   ),
                 ),

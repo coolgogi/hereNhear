@@ -74,8 +74,7 @@ class _CreatePostPageState extends State<CreatePostPage> {
         child: ListView(
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
-              height: MediaQuery.of(context).size.height,
+              padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 30.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -346,36 +345,4 @@ class _CreatePostPageState extends State<CreatePostPage> {
         ],
       );
   }
-
-  // Future<void> onJoin() async {
-  //   setState(() {
-  //     _title.text.isEmpty ? _validateError = true : _validateError = false;
-  //   });
-  //   await Permission.microphone.request();
-  //
-  //   _docId =
-  //       (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-  //
-  //   RoomInfoModel roomInfo = RoomInfoModel(
-  //       hostInfo: UserController.to.myProfile.value,
-  //       title: _title.text,
-  //       roomCategory: broadcastInfoController.selectedCategoryList,
-  //       docId: _docId,
-  //       notice: _notice.text,
-  //       thumbnail: 'assets/images/mic1.jpg');
-  //   late List<UserModel> userList = [];
-  //   userList.add(UserController.to.myProfile.value);
-  //
-  //
-  //   types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
-  //
-  //   Get.off(
-  //         () => BroadCastPage.myBroadcaster(
-  //       //  channelName: _docId,
-  //       role: ClientRole.Broadcaster,
-  //       roomData : roomData,
-  //       //  userData: UserController.to.myProfile.value,
-  //     ),
-  //   );
-  // }
 }

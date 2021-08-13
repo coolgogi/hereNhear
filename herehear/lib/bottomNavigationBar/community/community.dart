@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ FirebaseFirestore firestore = FirebaseFirestore.instance;
 class CommunityPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
+  final searchController = Get.put(SearchBarController());
 
 
   @override
@@ -123,7 +125,14 @@ class CommunityPage extends StatelessWidget {
           bottom: 20.h
       ),
       child: GestureDetector(
-        onTap: (() => Get.to(SearchResultsPage(), duration: Duration.zero)),
+        onTap: () {
+          searchController.isRoomSearch.value = false;
+          searchController.isLocationSearch.value = false;
+          searchController.isCommunitySearch.value = true;
+          searchController.isHistorySearch.value = false;
+          searchController.initialSearchText();
+          Get.to(SearchResultsPage(), duration: Duration.zero);
+        },
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(10)),
