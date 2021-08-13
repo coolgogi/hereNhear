@@ -3,6 +3,13 @@ import 'package:get/get.dart';
 
 class RegisterController extends GetxController {
   RxBool isExistID = false.obs;
+  RxBool isExistNickname = false.obs;
+  RxBool isExistPhoneNumber = false.obs;
+  RxBool isCorrectCertificationNum = false.obs;
+  // 위 4개는 인증번호가 맞는지 여부, 아이디&닉네임&폰넘버가 이미 존재하는 건 아닌지 검사한 결과들로 사용될 것
+
+  RxBool isObscureText = true.obs;
+
   RxBool isNicknameActive = false.obs;
   RxBool isIdActive = false.obs;
   RxBool isPwdActive = false.obs;
@@ -40,6 +47,11 @@ class RegisterController extends GetxController {
       nickNameFocus.value.requestFocus();
       return '닉네임을 입력해주세요.';
     }
+    //띄어쓰기 여부 확인
+    if (value.contains(' ')) {
+      nickNameFocus.value.requestFocus();
+      return '띄어쓰기는 사용할 수 없습니다.';
+    }
     return null;
   }
 
@@ -49,7 +61,7 @@ class RegisterController extends GetxController {
       return '아이디를 입력해주세요.';
     }
     //6~12자인지 확인
-    if ((12 <= value.length) || (value.length <= 6)) {
+    if ((12 < value.length) || (value.length < 6)) {
       idFocus.value.requestFocus();
       return '아이디는 6~12자 이내여야 합니다.';
     }
@@ -57,6 +69,11 @@ class RegisterController extends GetxController {
     if (validSpecial.hasMatch(value)) {
       idFocus.value.requestFocus();
       return '아이디는 영문자,숫자만 입력 가능합니다.';
+    }
+    //띄어쓰기 여부 확인
+    if (value.contains(' ')) {
+      nickNameFocus.value.requestFocus();
+      return '띄어쓰기는 사용할 수 없습니다.';
     }
     return null;
   }
@@ -67,7 +84,7 @@ class RegisterController extends GetxController {
       return '비밀번호를 입력해주세요.';
     }
     //8~21자인지 확인
-    if ((12 <= value.length) || (value.length <= 8)) {
+    if ((12 < value.length) || (value.length < 8)) {
       pwdFocus.value.requestFocus();
       return '비밀번호는 8~20자 이내여야 합니다.';
     }
@@ -76,6 +93,11 @@ class RegisterController extends GetxController {
         !validNumbers.hasMatch(value)) {
       pwdFocus.value.requestFocus();
       return '비밀번호는 영문자,숫자,특수문자를 모두 포함해야 합니다.';
+    }
+    //띄어쓰기 여부 확인
+    if (value.contains(' ')) {
+      nickNameFocus.value.requestFocus();
+      return '띄어쓰기는 사용할 수 없습니다.';
     }
     return null;
   }

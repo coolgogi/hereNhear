@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/set_location.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final _scrollController = Get.put(ScrollOpacityController());
   final locationController = Get.put(LocationController());
+  final searchController = Get.put(SearchBarController());
   final UserController userController = Get.find();
   String current_uid = '';
 
@@ -27,7 +29,10 @@ class HomePage extends StatelessWidget {
           appBar: AppBar(
             titleSpacing: 22.5.w,
             title: GestureDetector(
-              onTap: (() => Get.to(SetLocationPage())),
+              onTap: (() {
+                searchController.initialSearchText();
+                Get.to(SetLocationPage());
+              }),
               child: Row(
                 children: <Widget>[
                   Icon(

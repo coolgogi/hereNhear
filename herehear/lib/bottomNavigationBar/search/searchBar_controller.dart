@@ -8,23 +8,43 @@ class SearchBarController extends GetxController {
   RxString text = ''.obs;
   RxList<String> history = [''].obs;
 
+  RxBool isLocationSearch = false.obs;
+  RxBool isRoomSearch = false.obs;
+  RxBool isCommunitySearch = false.obs;
+  RxBool isHistorySearch = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    loadHistory();
   }
 
-  Future<void> loadHistory() async {
+  @override
+  void onClose() {
+    // TODO: implement onInit
+    super.onClose();
+  }
+
+  void initialSearchText() {
+    if(!(isHistorySearch.value)) {
+      text.value = '';
+      print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: ${text.value}, ${isHistorySearch.value}');
+    }
+    textController.value.text = text.value;
+    textController.value.selection = TextSelection.fromPosition(TextPosition(offset: textController.value.text.length));
+    isHistorySearch.value = false;
+    print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: ${text.value}, ${isHistorySearch.value}');
+  }
+  Future<void> loadHistory(String category) async {
     print('_loadCounter()');
     final prefs = await SharedPreferences.getInstance();
-    history.value = (prefs.getStringList('history') ?? []);
+    history.value = (prefs.getStringList(category) ?? []);
   }
 
-  Future<void> saveHistory() async {
+  Future<void> saveHistory(String category) async {
     print('saveCounter');
     final prefs = await SharedPreferences.getInstance();
-      prefs.setStringList('history', history);
+    prefs.setStringList(category, history);
 
   }
 

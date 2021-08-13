@@ -51,72 +51,54 @@ class _CertificationPageState extends State<CertificationPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Obx(() => Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Padding(
-                    padding:
-                        EdgeInsets.only(left: 40.0.w, top: 75.h, right: 40.w),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "휴대번호",
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1!
-                                .copyWith(
-                                  color:
-                                      registerController.isNicknameActive.value
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .onBackground
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
-                                  fontWeight: FontWeight.w400,
+        key: _formKey,
+        child: Column(
+          children: [
+            Padding(
+                padding: EdgeInsets.only(left: 40.0.w, top: 75.h, right: 40.w),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "휴대번호",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          color: registerController.isPhoneNumActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 30.0.h),
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          controller: phoneNumController,
+                          decoration: InputDecoration(
+                            errorStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
+                            ),
+                            suffixIcon: Padding(
+                              padding: EdgeInsets.fromLTRB(0.w, 12.h, 3.w, 0.h),
+                              child: GestureDetector(
+                                onTap: () => {
+                                Get.defaultDialog(
+                                title: '',
+                                middleText: registerController.checkPhoneNumber(phoneNumController.text) != null? '유효하지 않은 번호입니다.'
+                                    : registerController.isExistPhoneNumber.value? '이미 가입한 번호입니다.' : '인증번호가 전송되었습니다.',
+                                textConfirm: '확인',
+                                buttonColor: Theme.of(context).colorScheme.background,
+                                confirmTextColor: Theme.of(context).colorScheme.onBackground,
+                                onConfirm: () => Get.back(),
                                 ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 30.0.h),
-                            child: TextFormField(
-                              keyboardType: TextInputType.phone,
-                              controller: phoneNumController,
-                              decoration: InputDecoration(
-                                errorStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
-                                ),
-                                suffixIcon: Padding(
-                                  padding:
-                                      EdgeInsets.fromLTRB(0.w, 12.h, 3.w, 0.h),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showLoading = true;
-                                      });
-                                      verifyPhoneNumber();
-                                    },
-                                    child: Text('인증받기',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            )),
-                                  ),
-                                ),
-                              ),
+                                setState(() {
+                                showLoading = true;
+                                }),
+                                  verifyPhoneNumber(),} ,
+                                child: Text('인증번호 받기', style:Theme.of(context).textTheme.headline6!.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                )),
+                              ))),
                               onTap: () {
                                 registerController.isPhoneNumActive.value =
                                     true;
@@ -127,77 +109,78 @@ class _CertificationPageState extends State<CertificationPage> {
                                   registerController.checkPhoneNumber(value!),
                             ),
                           ),
-                          Text(
-                            "인증번호 6자리",
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle1!
-                                .copyWith(
-                                  color: registerController.isIdActive.value
-                                      ? Theme.of(context)
+                      Text(
+                        "인증번호 6자리",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                          color: registerController.isCertificationNumActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 16.0.h),
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          controller: certificationController,
+                          decoration: InputDecoration(
+                              errorStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
+                              ),
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.fromLTRB(0.w, 12.h, 3.w, 0.h),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.defaultDialog(
+                                      title: '',
+                                      middleText: registerController
+                                          .checkCertificationNumber(
+                                          certificationController
+                                              .text) !=
+                                          null
+                                          ? '인증번호를 입력해주세요.'
+                                          : registerController
+                                          .isCorrectCertificationNum
+                                          .value
+                                          ? '인증번호가 틀렸습니다.'
+                                          : '인증이 완료되었습니다.',
+                                      textConfirm: '확인',
+                                      buttonColor: Theme.of(context)
                                           .colorScheme
-                                          .onBackground
-                                      : Theme.of(context).colorScheme.onSurface,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 16.0.h),
-                            child: TextFormField(
-                              keyboardType: TextInputType.number,
-                              controller: certificationController,
-                              decoration: InputDecoration(
-                                errorStyle: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
-                                errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Theme.of(context).colorScheme.error,
-                                  ),
-                                ),
-                                suffixIcon: Padding(
-                                  padding:
-                                      EdgeInsets.fromLTRB(0.w, 12.h, 3.w, 0.h),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      PhoneAuthCredential phoneAuthCredential =
-                                          PhoneAuthProvider.credential(
-                                              verificationId: _verificationId!,
-                                              smsCode:
-                                                  certificationController.text);
+                                          .background,
+                                      confirmTextColor: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                      onConfirm: () => Get.back(),
+                                    );
+                                    PhoneAuthCredential phoneAuthCredential =
+                                    PhoneAuthProvider.credential(
+                                        verificationId: _verificationId!,
+                                        smsCode:
+                                        certificationController.text);
 
-                                      signInWithPhoneAuthCredential(
-                                          phoneAuthCredential);
-                                    },
-                                    child: Text('확인',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline6!
-                                            .copyWith(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            )),
-                                  ),
+                                    signInWithPhoneAuthCredential(
+                                        phoneAuthCredential);
+                                  },
+                                  child: Text('인증확인', style:Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                  )),
                                 ),
                               ),
-                              onTap: () {
-                                registerController.isPhoneNumActive.value =
-                                    false;
-                                registerController
-                                    .isCertificationNumActive.value = true;
-                              },
-                              validator: (value) => registerController
-                                  .checkCertificationNumber(value!),
-                            ),
                           ),
-                          // registerController.
-
-                        ])),
+                          onTap: () {
+                            registerController.isPhoneNumActive.value =
+                            false;
+                            registerController
+                                .isCertificationNumActive.value = true;
+                          },
+                          validator: (value) => registerController
+                              .checkCertificationNumber(value!),
+                        ),
+                      ),
+                      // registerController.
+                    ])),
                 SizedBox(
                   height: 44.h,
                   ///////////////////////////////////////////////////////////////////////////
