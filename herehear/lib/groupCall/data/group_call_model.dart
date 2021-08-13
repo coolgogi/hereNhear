@@ -17,28 +17,16 @@ extension MyRoomTypeToShortString on MyGroupCallRoomType {
 /// A class that represents a room where 2 or more participants can chat
 @immutable
 class GroupCallModel extends Equatable {
-  /// Creates a [GroupCallModel]
-  ///   final String? hostUid;
-  //   final String? title;
-  //   final String? notice;
-  //   final String? channelName;
-  //   final String? docId;
-  //   final String? image;
-  //   final String? location;
-  //   final DateTime? createdTime;
-  //   final List<dynamic>? currentListener;
-  //   final List<dynamic>? participants;
   const GroupCallModel({
     this.hostUid,
     this.title,
     this.notice,
     this.channelName,
-    this.docId,
     this.thumbnail,
     this.location,
     this.createdTime,
     required this.type,
-    this.currentListener,
+    this.listener,
     this.participants,
   });
 
@@ -48,12 +36,11 @@ class GroupCallModel extends Equatable {
         title = json['title'] as String,
         notice = json['notice'] as String?,
         channelName = json['channelName'] as String?,
-        docId = json['docId'] as String?,
         thumbnail = json['thumbnail'] as String?,
         location = json['location'] as String,
         createdTime = json['createdTime'] as DateTime?,
         type = getMyGroupCallTypeFromString(json['type'] as String),
-        currentListener = json['currentListener'].toList(),
+        listener = json['listener'].toList(),
         participants = json['participants'].toList();
 
   /// Converts room to the map representation, encodable to JSON.
@@ -62,12 +49,11 @@ class GroupCallModel extends Equatable {
         'title': title,
         'notice': notice,
         'channelName': channelName,
-        'docId': docId,
         'thumbnail': thumbnail,
         'location': location,
         'createdTime': createdTime,
         'type': type.toShortString(),
-        'currentListener': currentListener,
+        'listener': listener,
         'participants': participants,
       };
 
@@ -75,11 +61,10 @@ class GroupCallModel extends Equatable {
   final String? title;
   final String? notice;
   final String? channelName;
-  final String? docId;
   final String? thumbnail;
   final String? location;
   final DateTime? createdTime;
-  final List<dynamic>? currentListener;
+  final List<dynamic>? listener;
   final List<dynamic>? participants;
   final MyGroupCallRoomType type;
 

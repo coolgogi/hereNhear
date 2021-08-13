@@ -27,10 +27,19 @@ class _SetLocationPageState extends State<SetLocationPage> {
   @override
   void initState() {
     super.initState();
+    loadHistory();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       // executes after build
     });
   }
+
+  Future<void> loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    searchController.history.value = (prefs.getStringList('history') ?? []);
+    print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+    print(searchController.history);
+  }
+
 
   @override
   void dispose() {
@@ -77,7 +86,7 @@ class _SetLocationPageState extends State<SetLocationPage> {
               ],
             ),
           ),
-          SearchTextField(key: globalKey),
+          SearchTextField(key: globalKey,category: 'history',),
           Obx(() {
             if (searchController.text.value.isEmpty) {
               print(
@@ -188,8 +197,11 @@ class _SetLocationPageState extends State<SetLocationPage> {
                         Expanded(child: Container()),
                         IconButton(
                             onPressed: () {
+                              print('****************************************************************');
                               searchController.history.removeAt(index);
-                              searchController.saveHistory();
+                              searchController.saveHistory('history');
+                              print(searchController.history);
+                              print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
                             },
                             icon: Icon(Icons.clear, size: 15.w)),
                       ],

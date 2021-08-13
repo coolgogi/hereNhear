@@ -70,6 +70,7 @@ dependencies:
   just_audio: ^0.8.0
   flutter_time_picker_spinner: ^2.0.0
   flutter_tts: ^3.2.2
+  fluttertoast: ^8.0.8
 
   #  just_audio: ^0.9.2
 

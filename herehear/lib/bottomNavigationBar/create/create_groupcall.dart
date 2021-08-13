@@ -637,7 +637,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     // );
 
     Get.off(
-          () => BroadCastPage.myBroadcaster(
+          () => BroadCastPage.broadcaster(
         //  channelName: _docId,
         role: ClientRole.Broadcaster,
         roomData : roomData,
