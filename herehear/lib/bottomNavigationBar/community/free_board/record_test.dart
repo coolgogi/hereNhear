@@ -176,8 +176,12 @@ class _AudioRecorderState extends State<AudioRecorder> {
     _ampTimer?.cancel();
     final path = await _audioRecorder.stop();
     widget.onStop(path!);
+
     File _file = File(path);
-    String recordPath = uploadFile(_file);
+    String recordPath = await uploadFile(_file);
+    print("=======recordPath=======");
+    print(recordPath);
+    print("========================");
     setState(() => _isRecording = false);
   }
 
@@ -196,26 +200,27 @@ class _AudioRecorderState extends State<AudioRecorder> {
     setState(() => _isPaused = false);
   }
 
-  String uploadFile(File file) {
+  Future<String> uploadFile(File file) async {
     print("==========");
     print('upload');
     if (file == null) {
       print("null file exception");
       return '';
     } else {
-      var storageRef = FirebaseStorage.instance
+      Reference storageRef = FirebaseStorage.instance
           .ref()
           .child('community')
           // .child(docId)
           .child('$recordId.m4a');
-      var metadata = SettableMetadata(
+
+      SettableMetadata metadata = SettableMetadata(
         contentType: 'audio/m4a',
         customMetadata: <String, String>{'file': 'audio'},
       );
 
       _upload = storageRef.putFile(file, metadata);
       _upload.whenComplete(() => {print("Complete")});
-      return storageRef.fullPath;
+      return await storageRef.getDownloadURL();
     }
   }
 
