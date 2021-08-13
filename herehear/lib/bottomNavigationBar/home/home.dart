@@ -146,7 +146,7 @@ class HomePage extends StatelessWidget {
                   child: Container(
                     height: 195.0.h,
                     child: StreamBuilder<List<types.BroadcastModel>>(
-                      stream: MyFirebaseChatCore.instance.roomsWithLocation(),
+                      stream: MyFirebaseChatCore.instance.broadcastRoomsWithLocation(),
                       initialData: const [],
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
@@ -194,8 +194,7 @@ class HomePage extends StatelessWidget {
                               isEqualTo:
                                   UserController.to.myProfile.value.location)
                           .snapshots(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                      builder: (context, snapshot) {
                         if (!snapshot.hasData)
                           return Center(
                               child: CircularProgressIndicator(

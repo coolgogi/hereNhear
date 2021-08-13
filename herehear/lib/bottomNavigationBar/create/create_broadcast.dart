@@ -404,11 +404,9 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
             roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
 
     Get.off(
-      () => BroadCastPage.myBroadcaster(
-        //  channelName: _docId,
+      () => BroadCastPage.broadcaster(
         role: ClientRole.Broadcaster,
         roomData: roomData,
-        //  userData: UserController.to.myProfile.value,
       ),
     );
   }

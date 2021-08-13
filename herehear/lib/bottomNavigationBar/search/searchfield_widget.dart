@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 
 class SearchTextField extends StatefulWidget {
-  const SearchTextField({Key? key}) : super(key: key);
+  var category;
+
+   SearchTextField({Key? key, required  this.category}) : super(key: key);
 
   @override
   _SearchTextFieldState createState() => _SearchTextFieldState();
@@ -60,7 +62,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                       : Icon(Icons.close, color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.5), size: 20.w),
                   onTap: (){
                     searchController.history.insert(0, searchController.textController.value.text);
-                    // searchController.saveHistory();
+                    searchController.saveHistory(widget.category);
                     searchController.textController.value.clear();
                     searchController.text.value = '';
                   })),

@@ -29,7 +29,7 @@ ListView broadcastRoomList(
             });
 
             await Get.to(
-              () => BroadCastPage.myaudience(
+              () => BroadCastPage.audience(
                   //   channelName: room.docId!,
                   // userData: _userData,
                   role: ClientRole.Audience,
@@ -90,9 +90,7 @@ ListView broadcastRoomList(
                           color: Colors.white,
                         ),
                         Text(
-                          room.users == null
-                              ? ' 0'
-                              : ' ${room.users.length.toString()}',
+                         ' ${room.users.length.toString()}',
                           style:
                               Theme.of(context).textTheme.subtitle1!.copyWith(
                                     color: Colors.white,
