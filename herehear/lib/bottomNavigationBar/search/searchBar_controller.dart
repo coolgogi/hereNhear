@@ -8,12 +8,35 @@ class SearchBarController extends GetxController {
   RxString text = ''.obs;
   RxList<String> history = [''].obs;
 
+  RxBool isLocationSearch = false.obs;
+  RxBool isRoomSearch = false.obs;
+  RxBool isCommunitySearch = false.obs;
+  RxBool isHistorySearch = false.obs;
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     loadHistory();
   }
+
+  @override
+  void onClose() {
+    // TODO: implement onInit
+    super.onClose();
+  }
+
+  void initialSearchText() {
+    if(!(isHistorySearch.value)) {
+      text.value = '';
+      print('EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE: ${text.value}, ${isHistorySearch.value}');
+    }
+    textController.value.text = text.value;
+    textController.value.selection = TextSelection.fromPosition(TextPosition(offset: textController.value.text.length));
+    isHistorySearch.value = false;
+    print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: ${text.value}, ${isHistorySearch.value}');
+  }
+
 
   Future<void> loadHistory() async {
     print('_loadCounter()');
