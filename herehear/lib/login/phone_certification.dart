@@ -61,7 +61,7 @@ class _CertificationPageState extends State<CertificationPage> {
                       Text(
                         "휴대번호",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          color: registerController.isNicknameActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
+                          color: registerController.isPhoneNumActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -82,13 +82,14 @@ class _CertificationPageState extends State<CertificationPage> {
                               child: GestureDetector(
                                 onTap: () => Get.defaultDialog(
                                   title: '',
-                                  middleText: registerController.isExistID.value? '이미 존재하는 아이디입니다.' : '사용 가능한 아이디입니다.',
+                                  middleText: registerController.checkPhoneNumber(phoneNumController.text) != null? '유효하지 않은 번호입니다.'
+                                          : registerController.isExistPhoneNumber.value? '이미 가입한 번호입니다.' : '인증번호가 전송되었습니다.',
                                   textConfirm: '확인',
                                   buttonColor: Theme.of(context).colorScheme.background,
                                   confirmTextColor: Theme.of(context).colorScheme.onBackground,
                                   onConfirm: () => Get.back(),
                                 ),
-                                child: Text('인증받기', style:Theme.of(context).textTheme.headline6!.copyWith(
+                                child: Text('인증번호 받기', style:Theme.of(context).textTheme.headline6!.copyWith(
                                   color: Theme.of(context).colorScheme.primary,
                                 )),
                               ),
@@ -105,7 +106,7 @@ class _CertificationPageState extends State<CertificationPage> {
                       Text(
                         "인증번호 6자리",
                         style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          color: registerController.isIdActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
+                          color: registerController.isCertificationNumActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -120,7 +121,24 @@ class _CertificationPageState extends State<CertificationPage> {
                               ),
                               errorBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
-                              )
+                              ),
+                              suffixIcon: Padding(
+                                padding: EdgeInsets.fromLTRB(0.w, 12.h, 3.w, 0.h),
+                                child: GestureDetector(
+                                  onTap: () => Get.defaultDialog(
+                                    title: '',
+                                    middleText: registerController.checkCertificationNumber(certificationController.text) != null? '인증번호를 입력해주세요.'
+                                        : registerController.isCorrectCertificationNum.value? '인증번호가 틀렸습니다.' : '인증이 완료되었습니다.',
+                                    textConfirm: '확인',
+                                    buttonColor: Theme.of(context).colorScheme.background,
+                                    confirmTextColor: Theme.of(context).colorScheme.onBackground,
+                                    onConfirm: () => Get.back(),
+                                  ),
+                                  child: Text('인증확인', style:Theme.of(context).textTheme.headline6!.copyWith(
+                                    color: Theme.of(context).colorScheme.primary,
+                                  )),
+                                ),
+                              ),
                           ),
                           onTap: () {
                             registerController.isPhoneNumActive.value = false;
