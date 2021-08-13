@@ -57,7 +57,6 @@ class AgoraCreateController extends GetxController {
         hostUid: firebaseUser.uid,
         title: title,
         notice: notice,
-        docId: docId,
         thumbnail: 'assets/images/mic2.jpg',
         channelName: docId,
         location: location,

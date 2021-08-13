@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
@@ -27,6 +28,7 @@ Future<List<types.BroadcastModel>> processRoomsQuery(
 
   return await Future.wait(futures);
 }
+
 
 /// Returns a [types.Room] created from Firebase document
 Future<types.BroadcastModel> processRoomDocument(
@@ -59,7 +61,6 @@ Future<types.BroadcastModel> processRoomDocument(
     ),
   );
 
-print(channelName);
   final room = types.BroadcastModel(
     hostInfo: hostInfo,
     roomInfo: roomInfo,
@@ -74,6 +75,68 @@ print(channelName);
 
   return room;
 }
+
+
+
+Future<List<GroupCallModel>> processGroupCallRoomsQuery(
+    User firebaseUser,
+    QuerySnapshot<Map<String, dynamic>> query,
+    ) async {
+  final futures = query.docs.map(
+        (doc) => processGroupCallRoomDocument(doc, firebaseUser),
+  );
+
+  return await Future.wait(futures);
+}
+
+/// Returns a [types.Room] created from Firebase document
+Future<GroupCallModel> processGroupCallRoomDocument(
+    DocumentSnapshot<Map<String, dynamic>> doc,
+    User firebaseUser,
+    ) async {
+  final LocationController locationController = Get.find();
+  var imageUrl = doc.data()?['imageUrl'] as String?;
+  final metadata = doc.data()?['metadata'] as Map<String, dynamic>?;
+  final type = doc.data()!['type'] as String;
+  final channelName = doc.data()!['channelName'] as String;
+  final userIds = doc.data()!['userIds'] as List<dynamic>;
+  final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
+  final like = doc.data()?['like'] as int?;
+  final hostInfo = await fetchUser(doc.data()?['hostUid']);
+  final title = doc.data()!['title'] as String;
+  final List roomCategory = doc.data()!['roomCategory'] as List;
+  final roomInfo = RoomInfoModel(
+      hostInfo: hostInfo,
+      title: title,
+      roomCategory: roomCategory,
+      channelName: channelName);
+
+  final users = await Future.wait(
+    userIds.map(
+          (userId) => fetchUser(
+        userId as String,
+        role: types.getMyRoleFromString(userRoles?[userId] as String?),
+      ),
+    ),
+  );
+
+
+  final room = GroupCallModel(
+    type: types.getMyGroupCallTypeFromString(type),
+    // hostInfo: hostInfo,
+    // roomInfo: roomInfo,
+    // like: like,
+    // channelName: channelName,
+    // imageUrl: imageUrl,
+    // metadata: metadata,
+    // location: locationController.location.value,
+    // type: types.getMyRoomTypeFromString(type),
+    // users: users,
+  );
+
+  return room;
+}
+
 
 /// Returns a [types.User] created from Firebase document
 types.UserModel processUserDocument(
