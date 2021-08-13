@@ -1,160 +1,560 @@
-// import 'package:agora_rtc_engine/rtc_engine.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:herehear/agora/agoraCreateController.dart';
-// import 'package:herehear/bottomNavigationBar/create/broadcastInfoController/broadcast_info_controller.dart';
-// import 'package:herehear/broadcast/broadcast.dart';
-// import 'package:herehear/location/controller/location_controller.dart';
-// import 'package:herehear/users/controller/user_controller.dart';
-// import 'package:permission_handler/permission_handler.dart';
+// import 'package:flutter/services.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
+//
+// class PhoneAuthTest extends StatefulWidget {
+//
+//   @override
+//   _PhoneAuthTestState createState() => _PhoneAuthTestState();
+// }
+//
+// class _PhoneAuthTestState extends State<PhoneAuthTest> {
+//
+//   TextEditingController emailController = TextEditingController();
+//   TextEditingController passwordController = TextEditingController();
+//   TextEditingController verifyPasswordController = TextEditingController();
+//   TextEditingController phoneNumberController1 = TextEditingController();
+//   TextEditingController phoneNumberController2 = TextEditingController();
+//   TextEditingController otpController = TextEditingController();
 //
 //
-//
-// class BroadcastInfoPage extends StatelessWidget {
-//   final BroadcastInfoController _broadcastInfoController = Get.put(BroadcastInfoController());
-//   final UserController _userController = Get.find();
-//   List<String> categoryList = ['소통', '힐링', 'ASMR', '연애', '음악'];
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//   String _docId = '';
+//   FocusNode passwordFocusNode=FocusNode();
+//   FocusNode verifyPasswordFocusNode=FocusNode();
+//   FocusNode phoneNumberFocusNode1=FocusNode();
+//   FocusNode phoneNumberFocusNode2=FocusNode();
+//   FocusNode otpFocusNode=FocusNode();
 //
 //
-//   final agoraController = Get.put(AgoraCreateController());
-//   final locationController = Get.put(LocationController());
+//   bool authOk=false;
+//
+//   bool passwordHide=true;
+//   bool requestedAuth=false;
+//   String verificationId;
+//   bool showLoading = false;
+//
+//   FirebaseAuth _auth = FirebaseAuth.instance;
+//   void signInWithPhoneAuthCredential(PhoneAuthCredential phoneAuthCredential) async {
+//     setState(() {
+//       showLoading = true;
+//     });
+//     try {
+//       final authCredential = await _auth.signInWithCredential(phoneAuthCredential);
+//       setState(() {
+//         showLoading = false;
+//       });
+//       if(authCredential?.user != null){
+//         setState(() {
+//           print("인증완료 및 로그인성공");
+//           authOk=true;
+//           requestedAuth=false;
+//         });
+//         await _auth.currentUser.delete();
+//         print("auth정보삭제");
+//         _auth.signOut();
+//         print("phone로그인된것 로그아웃");
+//       }
+//
+//     } on FirebaseAuthException catch (e) {
+//       setState(() {
+//         print("인증실패..로그인실패");
+//         showLoading = false;
+//       });
+//
+//       await Fluttertoast.showToast(
+//           msg: e.message,
+//           toastLength: Toast.LENGTH_SHORT,
+//           timeInSecForIosWeb: 1,
+//           backgroundColor: Colors.red,
+//           fontSize: 16.0
+//       );
+//
+//     }
+//   }
+//
+//   Future<UserCredential> signUpUserCredential({String email,String password}) async {
+//     try {
+//       return await _auth.createUserWithEmailAndPassword(email: email, password: password);
+//     } catch (e) {
+//       void errorToast(String message){
+//         Fluttertoast.showToast(
+//             msg: message,
+//             toastLength: Toast.LENGTH_SHORT,
+//             timeInSecForIosWeb: 1,
+//             backgroundColor: Colors.red,
+//             fontSize: 16.0
+//         );
+//       }
+//       switch (e.code) {
+//         case "email-already-in-use":
+//           errorToast("이미 사용중인 이메일입니다");
+//
+//           break;
+//         case "invalid-email":
+//           errorToast("잘못된 이메일 형식입니다");
+//           break;
+//         case "operation-not-allowed":
+//           errorToast("사용할 수 없는 방식입니다");
+//
+//           break;
+//         case "weak-password":
+//           errorToast("비밀번호 보안 수준이 너무 낮습니다");
+//
+//           break;
+//         default:
+//           errorToast("알수없는 오류가 발생했습니다");
+//       }
+//       return null;
+//     }
+//
+//   }
+//
 //
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       appBar: AppBar(
-//         centerTitle: true,
-//         title: Text('새 라이브 방송',
-//             style: Theme.of(context).appBarTheme.titleTextStyle),
-//         leading: IconButton(
-//           icon: Icon(Icons.close),
-//           onPressed: () => {
-//             Get.back(),
-//           },
-//         ),
-//       ),
-//       body: Container(
-//         padding: EdgeInsets.all(20),
-//         key: _formKey,
-//         height: MediaQuery.of(context).size.height,
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
+//         appBar: AppBar(title: Text('Firebase 폰인증 꼼수'),),
+//         body: Stack(
+//
 //           children: [
 //             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '제목',
-//                 style: TextStyle(fontSize: 16),
+//
+//               child: Column(
+//                 children: [
+//                   Row(
+//                     children: [
+//                       Expanded(
+//                           flex: 1,
+//                           child: Text("이메일")),
+//                       Expanded(
+//                         flex: 3,
+//                         child: Container(
+//                           child: TextFormField(
+//
+//                             style: TextStyle(
+//                               fontSize: 12,
+//                             ),
+//                             decoration: InputDecoration(
+//                               contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+//                               isDense: true,
+//                               hintText: "이메일 입력",
+//                               enabledBorder: OutlineInputBorder(
+//
+//                                 borderSide: BorderSide(color: Colors.grey),
+//                               ),
+//                               focusedBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(color: Colors.red),
+//                               ),
+//                             ),
+//                             textInputAction: TextInputAction.next,
+//                             onEditingComplete: () => FocusScope.of(context).requestFocus(passwordFocusNode),
+//                             keyboardType: TextInputType.emailAddress,
+//                             controller: emailController,
+//
+//                           ),
+//                         ),
+//                       ),
+//
+//                     ],
+//                   ),
+//                   SizedBox(height: 10,),
+//                   Row(
+//
+//                     children: [
+//                       Expanded(
+//                           flex: 1,
+//                           child: Text("비밀번호")),
+//                       Expanded(
+//                         flex: 3,
+//                         child: Container(
+//
+//                           child: TextFormField(
+//                             style: TextStyle(
+//                               fontSize: 12,
+//                             ),
+//                             decoration: InputDecoration(
+//                               contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+//                               isDense: true,
+//                               hintText: "비밀번호 입력",
+//                               enabledBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(color: Colors.grey),
+//                               ),
+//                               focusedBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(color: Colors.red),
+//                               ),
+//                             ),
+//                             textInputAction: TextInputAction.done,
+//                             keyboardType: TextInputType.visiblePassword,
+//                             onEditingComplete: () => FocusScope.of(context).requestFocus(verifyPasswordFocusNode),
+//                             focusNode:passwordFocusNode,
+//                             obscureText: passwordHide,
+//                             controller: passwordController,
+//
+//                           ),
+//                         ),
+//                       ),
+//
+//                     ],
+//                   ),
+//                   SizedBox(height: 5,),
+//                   Row(
+//
+//                     children: [
+//                       Expanded(
+//                           flex: 1,
+//                           child: Text("")),
+//                       Expanded(
+//                         flex: 3,
+//                         child: Container(
+//                           child: TextFormField(
+//                             style: TextStyle(
+//                               fontSize: 12,
+//                             ),
+//                             decoration: InputDecoration(
+//                               contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+//                               isDense: true,
+//                               hintText: "비밀번호 재입력",
+//                               enabledBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(color: Colors.grey),
+//                               ),
+//                               focusedBorder: OutlineInputBorder(
+//                                 borderSide: BorderSide(color: Colors.red),
+//                               ),
+//                             ),
+//                             textInputAction: TextInputAction.done,
+//                             keyboardType: TextInputType.visiblePassword,
+//                             focusNode:verifyPasswordFocusNode,
+//                             obscureText: passwordHide,
+//                             controller: verifyPasswordController,
+//
+//                           ),
+//                         ),
+//                       ),
+//
+//                     ],
+//                   ),
+//                   SizedBox(height: 10,),
+//                   Row(
+//
+//                     children: [
+//                       Expanded(
+//                           flex: 1,
+//                           child: Text("휴대폰")),
+//                       Expanded(
+//                         flex: 3,
+//                         child: Row(
+//
+//                           children: [
+//                             Expanded(
+//                                 child: Row(
+//                                   children: [
+//                                     Expanded(
+//                                         flex: 1,
+//                                         child: numberInsert(
+//                                           editAble: false,
+//                                           hintText: "010",
+//
+//                                         )),
+//                                     SizedBox(width: 5,),
+//                                     Expanded(
+//                                       flex: 1,
+//                                       child: numberInsert(
+//                                         editAble: authOk?false:true,
+//                                         hintText: "0000",
+//                                         focusNode: phoneNumberFocusNode1,
+//                                         controller: phoneNumberController1,
+//                                         textInputAction: TextInputAction.next,
+//                                         maxLegnth: 4,
+//                                         widgetFunction: (){
+//                                           FocusScope.of(context).requestFocus(phoneNumberFocusNode2);
+//                                         },
+//
+//                                       ),
+//                                     ),
+//
+//                                     SizedBox(width: 5,),
+//                                     Expanded(
+//                                       flex: 1,
+//                                       child: numberInsert(
+//                                         editAble: authOk?false:true,
+//                                         hintText: "0000",
+//                                         focusNode: phoneNumberFocusNode2,
+//                                         controller: phoneNumberController2,
+//                                         textInputAction: TextInputAction.done,
+//                                         maxLegnth: 4,
+//
+//                                       ),
+//                                     ),
+//                                   ],
+//                                 )
+//                             ),
+//                             SizedBox(width: 5,),
+//                             authOk?ElevatedButton(
+//
+//                                 child:Text("인증완료")):
+//                             phoneNumberController1.text.length==4&&phoneNumberController2.text.length==4
+//                                 ?
+//                             ElevatedButton(
+//                                 onPressed: ()async{
+//                                   setState(() {
+//                                     showLoading = true;
+//                                   });
+//                                   await _auth.verifyPhoneNumber(
+//                                     timeout: const Duration(seconds: 60),
+//                                     codeAutoRetrievalTimeout: (String verificationId) {
+//                                       // Auto-resolution timed out...
+//                                     },
+//                                     phoneNumber: "+8210"+phoneNumberController1.text.trim()+phoneNumberController2.text.trim(),
+//                                     verificationCompleted: (phoneAuthCredential) async {
+//                                       print("otp 문자옴");
+//                                     },
+//                                     verificationFailed: (verificationFailed) async {
+//                                       print(verificationFailed.code);
+//
+//                                       print("코드발송실패");
+//                                       setState(() {
+//                                         showLoading = false;
+//                                       });
+//                                     },
+//                                     codeSent: (verificationId, resendingToken) async {
+//                                       print("코드보냄");
+//                                       Fluttertoast.showToast(
+//                                           msg: "010-${phoneNumberController1.text}-${phoneNumberController2.text} 로 인증코드를 발송하였습니다. 문자가 올때까지 잠시만 기다려 주세요.",
+//                                           toastLength: Toast.LENGTH_SHORT,
+//                                           timeInSecForIosWeb: 1,
+//                                           backgroundColor: Colors.green,
+//                                           fontSize: 12.0
+//                                       );
+//                                       setState(() {
+//                                         requestedAuth=true;
+//                                         FocusScope.of(context).requestFocus(otpFocusNode);
+//                                         showLoading = false;
+//                                         this.verificationId = verificationId;
+//                                       });
+//                                     },
+//                                   );
+//
+//                                 },
+//                                 child:Text("인증요청"))
+//                                 :ElevatedButton(
+//
+//                                 child:Text("인증요청")),
+//                           ],
+//                         ),
+//                       ),
+//
+//
+//                     ],
+//                   ),
+//                   SizedBox(height: 5,),
+//                   authOk?SizedBox():Visibility(
+//                     visible: requestedAuth,
+//                     child: Row(
+//
+//                       children: [
+//                         Expanded(
+//                             flex: 1,
+//                             child: Text("")),
+//                         Expanded(
+//                           flex: 3,
+//                           child:Row(
+//
+//                             children: [
+//                               Expanded(
+//                                 child: numberInsert(
+//                                   editAble: true,
+//                                   hintText: "6자리 입력",
+//                                   focusNode: otpFocusNode,
+//                                   controller: otpController,
+//                                   textInputAction: TextInputAction.done,
+//                                   maxLegnth: 6,
+//
+//                                 ),
+//                               ),
+//                               SizedBox(width: 5,),
+//                               ElevatedButton(
+//                                   onPressed: (){
+//                                     PhoneAuthCredential phoneAuthCredential =
+//                                     PhoneAuthProvider.credential(
+//                                         verificationId: verificationId, smsCode: otpController.text);
+//
+//                                     signInWithPhoneAuthCredential(phoneAuthCredential);
+//                                   },
+//                                   child: Text("확인")),
+//                             ],
+//                           ),
+//                         ),
+//
+//                       ],
+//                     ),
+//                   ),
+//                   SizedBox(height: 10,),
+//                   ElevatedButton(
+//                     child: Text('가입하기'),
+//                     onPressed: ()async{
+//                       if(emailController.text.length>1&&passwordController.text.length>1&&verifyPasswordController.text.length>1){
+//                         if(passwordController.text==verifyPasswordController.text){
+//                           if(authOk){
+//                             setState(() {
+//                               showLoading=true;
+//                             });
+//
+//                             await signUpUserCredential(email:emailController.text ,password:passwordController.text );
+//
+//                             setState(() {
+//                               showLoading=false;
+//                             });
+//                           }else{
+//                             Fluttertoast.showToast(
+//                                 msg: "휴대폰 인증을 완료해주세요.",
+//                                 toastLength: Toast.LENGTH_SHORT,
+//                                 timeInSecForIosWeb: 1,
+//                                 backgroundColor: Colors.red,
+//                                 fontSize: 16.0
+//                             );
+//
+//                           }
+//                         }else{
+//                           Fluttertoast.showToast(
+//                               msg: "비밀번호를 확인해 주세요.",
+//                               toastLength: Toast.LENGTH_SHORT,
+//                               timeInSecForIosWeb: 1,
+//                               backgroundColor: Colors.red,
+//                               fontSize: 16.0
+//                           );
+//                         }
+//                       }
+//                       else{
+//
+//                         Fluttertoast.showToast(
+//                             msg: "이메일 및 비밀번호를 입력해 주세요.",
+//                             toastLength: Toast.LENGTH_SHORT,
+//                             timeInSecForIosWeb: 1,
+//                             backgroundColor: Colors.red,
+//                             fontSize: 16.0
+//                         );
+//                       }
+//
+//                     },
+//                     style: ElevatedButton.styleFrom(
+//                         primary: Colors.black,
+//                         padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+//                         minimumSize: Size(double.infinity,0),
+//
+//
+//
+//                         textStyle: TextStyle(
+//
+//                             fontWeight: FontWeight.bold)),
+//                   ),
+//                   SizedBox(height: 50,),
+//                 ],
 //               ),
 //             ),
-//             TextFormField(
-//               controller: _broadcastInfoController.title,
-//               validator: (value) {
-//                 if (value!.trim().isEmpty) {
-//                   return '제목을 입력해주세요.';
-//                 }
-//                 return null;
-//               },
-//               decoration: InputDecoration(
-//                 border: OutlineInputBorder(),
-//                 contentPadding: EdgeInsets.fromLTRB(10, 6, 0, 6),
-//                 hintText: '제목을 입력해주세요(15자 이내)',
+//
+//             Positioned.fill(
+//               child: Visibility(
+//                   visible: showLoading,
+//                   child: Container(
+//                       width: double.infinity,
+//                       height: double.infinity,
+//
+//                       child: Center(child: Container(
+//                           width: MediaQuery.of(context).size.width*0.9,
+//                           height: 80,
+//                           color: Colors.white,
+//                           child: Center(child: Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: [
+//                               SizedBox(
+//                                   width: 20,
+//                                   height: 20,
+//                                   child: CircularProgressIndicator()),
+//                               SizedBox(width: 20,),
+//                               Text("잠시만 기다려 주세요"),
+//                               SizedBox(width: 20,),
+//                               Opacity(
+//                                 opacity: 0,
+//                                 child: SizedBox(
+//                                     width: 20,
+//                                     height: 20,
+//                                     child: CircularProgressIndicator()),
+//                               ),
+//
+//
+//                             ],
+//                           ))))
+//
+//                   )
 //               ),
-//             ),
-//             SizedBox(
-//               height: 16.0,
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '공지사항',
-//                 style: TextStyle(fontSize: 16),
-//               ),
-//             ),
-//             Container(
-//               height: MediaQuery.of(context).size.height * 0.2,
-//               padding: EdgeInsets.fromLTRB(15, 1, 10, 0),
-//               decoration: BoxDecoration(
-//                 shape: BoxShape.rectangle,
-//                 border: Border.all(
-//                   color: Colors.grey,
-//                   width: 0.7,
-//                 ),
-//               ),
-//               child: TextField(
-//                 cursorColor: Theme.of(context).primaryColor,
-//                 textInputAction: TextInputAction.newline,
-//                 keyboardType: TextInputType.multiline,
-//                 maxLines: null,
-//                 controller: _broadcastInfoController.notice,
-//                 textAlign: TextAlign.left,
-//                 decoration: InputDecoration(
-//                   hintText: '공지를 입력해주세요(100자 이내)',
-//                   border: InputBorder.none,
-//                 ),
-//               ),
-//             ),
-//             SizedBox(
-//               height: 16.0,
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(bottom: 10),
-//               child: Text(
-//                 '카테고리',
-//                 style: TextStyle(fontSize: 16),
-//               ),
-//             ),
-//             _broadcastInfoController.category(),
-//             SizedBox(
-//               height: 32.0,
-//             ),
-//             SizedBox(
-//               width: double.infinity,
-//               child: ElevatedButton(
-//                 onPressed: () {
-//                   onJoin();
-//                 },
-//                 child: Text('방만들기'),
-//               ),
-//             ),
-//             Column(
-//               children: [
-//                 SizedBox(
-//                   height: 32.0,
-//                 ),
-//               ],
-//             ),
+//             )
 //           ],
-//         ),
-//       ),
+//         )
 //     );
 //   }
+//   Widget numberInsert(
+//       {
+//         bool editAble,
+//         String hintText,
+//         FocusNode focusNode,
+//         TextEditingController controller,
 //
-//   Future<void> onJoin() async {
-//     await Permission.microphone.request();
+//         TextInputAction textInputAction,
+//         Function widgetFunction,
+//         int maxLegnth,
 //
-//     _docId =
-//         (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
-//
-//     agoraController.createBroadcastRoom(
-//       _userController.myProfile.value,
-//       _broadcastInfoController.title.text,
-//       _broadcastInfoController.notice.text,
-//       categoryList[_broadcastInfoController.index],
-//       _docId,
-//       List<String>.filled(0, '', growable: true),
-//       locationController.location.value,
-//     );
-//
-//     Get.off(
-//           () => BroadCastPage.broadcaster(
-//         channelName: _docId,
-//         role: ClientRole.Broadcaster,
-//         userData: UserController.to.myProfile.value,
+//       }){
+//     return TextFormField(
+//       enabled: editAble,
+//       style: TextStyle(
+//         fontSize: 12,
 //       ),
+//       decoration: InputDecoration(
+//         contentPadding: new EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+//         isDense: true,
+//         counterText: "",
+//         hintText: hintText,
+//         enabledBorder: OutlineInputBorder(
+//           borderSide: BorderSide(color: Colors.grey),
+//         ),
+//         focusedBorder: OutlineInputBorder(
+//           borderSide: BorderSide(color: Colors.red),
+//         ),
+//         disabledBorder: OutlineInputBorder(
+//           borderSide: BorderSide(color: Colors.grey),
+//         ),
+//       ),
+//
+//       textInputAction: textInputAction,
+//       keyboardType: TextInputType.number,
+//       inputFormatters: [FilteringTextInputFormatter.digitsOnly,],
+//       focusNode:focusNode,
+//       controller: controller,
+//       maxLength: maxLegnth,
+//       onChanged: (value){
+//
+//         if(value.length>=maxLegnth){
+//           if(widgetFunction==null){
+//             print("noFunction");
+//           }else{
+//             widgetFunction();
+//           }
+//         }
+//         setState(() {
+//
+//         });
+//       },
+//
+//
+//       onEditingComplete: (){
+//         if(widgetFunction==null){
+//           print("noFunction");
+//         }else{
+//           widgetFunction();
+//         }
+//
+//       },
+//
 //     );
 //   }
 // }
