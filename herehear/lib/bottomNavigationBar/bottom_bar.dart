@@ -140,7 +140,7 @@ class BottomBar extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(top: 13.h),
                             child: Image.asset('assets/images/streamer.png',
-                                height: 75.h),
+                                height: 68.h),
                           ),
                         ],
                       ),
@@ -171,16 +171,19 @@ class BottomBar extends StatelessWidget {
                         Text('즐겨보세요!',
                             style: Theme.of(context).textTheme.headline6),
                         Padding(
-                          padding: EdgeInsets.only(top: 15.0.h),
+                          padding: EdgeInsets.only(top: 13.0.h),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                'assets/images/voiceCopy.png',
-                                height: 62.h,
+                              Padding(
+                                padding: EdgeInsets.only(top: 4.0.h),
+                                child: Image.asset(
+                                  'assets/images/voiceCopy.png',
+                                  height: 57.h,
+                                ),
                               ),
                               Image.asset('assets/images/liveImage.png',
-                                height: 65.h,),
+                                height: 62.h,),
                             ],
                           ),
                         )
