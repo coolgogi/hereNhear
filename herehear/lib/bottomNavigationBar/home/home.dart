@@ -186,7 +186,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 16.0.h),
+                  padding: EdgeInsets.only(top: 16.0.h, bottom: 50.h),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: firestore
                           .collection("groupcall")

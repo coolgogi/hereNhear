@@ -23,6 +23,7 @@ class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   RxBool muted = false.obs;
+  RxBool isChatActive = false.obs;
   var speakingUser = <int?>[].obs;
   var participants = <int>[].obs;
   late RtcEngine _engine;
@@ -32,6 +33,8 @@ class AgoraEventController extends GetxController {
   final String channelName;
   final ClientRole role;
   late final String type;
+
+  RxBool isGroupCallPageNow = false.obs;
 
   AgoraEventController.groupcall(
       {required this.channelName, required this.role}) {
@@ -133,13 +136,17 @@ class AgoraEventController extends GetxController {
   void moveWatcherToParticipant() {
     users.removeWhere((element) => element == currentUid);
     participants.add(currentUid);
-    isParticipate = true.obs;
+    isParticipate.value = true;
     print('?!?!?: ${participants.length}');
   }
 
   void onToggleMute() {
     muted.value = !muted.value;
     _engine.muteLocalAudioStream(muted.value);
+  }
+
+  void onToggleChatButton() {
+    isChatActive.value = !isChatActive.value;
   }
 
   void onSwitchCamera() {
