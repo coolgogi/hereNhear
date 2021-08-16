@@ -10,6 +10,7 @@ import 'package:herehear/groupCall/groupcall_list.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/login/signIn.dart';
+import 'package:herehear/participant_profile.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
 
@@ -114,7 +115,7 @@ class HomePage extends StatelessWidget {
                     ))),
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(width: 1.0, color: Colors.transparent),
+                      border: Border.all(width: 1.0.w, color: Colors.transparent),
                       //color is transparent so that it does not blend with the actual color specified
                       color: Colors
                           .transparent // Specifies the background color and the opacity

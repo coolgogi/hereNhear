@@ -1,7 +1,10 @@
 import 'dart:core';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart';
 import 'package:herehear/utils/AppID.dart';
+import 'dart:math';
 
 // final int GROUPCALL = 0;
 // final int BROADCAST = 1;
@@ -30,9 +33,31 @@ class AgoraEventController extends GetxController {
   var activeSpeaker = 10.obs;
   int currentUid = 0;
   RxBool isParticipate = false.obs;
+  RxBool NotGoOutRoom = false.obs;
   final String channelName;
   final ClientRole role;
   late final String type;
+
+  //////// temp data for distinguish each users//////////
+  int randomNumber = Random().nextInt(5);
+  int memberCount = 1;
+
+  List<String> profileList = [
+    'assets/images/me.jpg',
+    'assets/images/it2.jpg',
+    'assets/images/it.jpg',
+    'assets/images/you.png',
+    'assets/images/she2.jpeg'
+  ];
+  var profile = <String>[].obs;
+
+  GroupCallUserModel userExample = GroupCallUserModel();
+///////////////////////////////////////////////////////
+
+
+  RxList<Widget> participantsList = <Widget>[].obs;
+  RxList<Widget> listenersList = <Widget>[].obs;
+
 
   RxBool isGroupCallPageNow = false.obs;
 
@@ -49,8 +74,8 @@ class AgoraEventController extends GetxController {
 
   @override
   void onInit() {
-    initialize();
     super.onInit();
+    initialize();
   }
 
   @override
@@ -74,7 +99,7 @@ class AgoraEventController extends GetxController {
     await _initAgoraRtcEngine();
     _addAgoraEventHandlers();
     // await _engine.enableWebSdkInteroperability(true);
-    await _engine.enableAudioVolumeIndication(250, 2, true);
+    await _engine.enableAudioVolumeIndication(200, 3, true);
     // await getToken();
     // print('token : $token');
     // await _engine?.joinChannel(token, widget.channelName, null, 0);
@@ -86,6 +111,7 @@ class AgoraEventController extends GetxController {
     _engine = await RtcEngine.create(appID);
     await _engine.disableVideo();
     await _engine.enableAudio();
+    await _engine.enableLocalAudio(false);
 
     if (this.type == 'broadcast') {
       await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
@@ -103,41 +129,64 @@ class AgoraEventController extends GetxController {
       joinChannelSuccess: (channel, uid, elapsed) {
         final info = 'onJoinChannel: $channel, uid: $uid';
         currentUid = uid;
+        print('currentUid???: ${currentUid}');
         infoStrings.add(info);
+        NotGoOutRoom.value = true;
+        print('infoStrings: ${infoStrings}');
+        print('infoStrings: ${infoStrings}');
+
+        users.add(uid);
+
+        userExample.uid = currentUid;
       },
       leaveChannel: (stats) {
         infoStrings.add('onLeaveChannel');
         users.clear();
         participants.clear();
+        NotGoOutRoom.value = false;
       },
       userJoined: (uid, elapsed) {
         final info = 'userJoined: $uid';
-        currentUid = uid;
         infoStrings.add(info);
         users.add(uid);
+
+        print('uid: ${uid}');
+        print('uid: ${uid}');
       },
       userOffline: (uid, reason) {
         final info = 'userOffline: $uid , reason: $reason';
         infoStrings.add(info);
         users.remove(uid);
+        participants.remove(uid);
       },
       firstRemoteVideoFrame: (uid, width, height, elapsed) {
         final info = 'firstRemoteVideoFrame: $uid';
         infoStrings.add(info);
       },
+      activeSpeaker: (uid) {
+        speakingUser.clear();
+        speakingUser.add(uid);
+        // speakingUser
+        //     .addAll(speakers.obs.map((element) => element.uid).toList());
+        print('current Speakers: ${speakingUser.value}');
+      },
       audioVolumeIndication: (speakers, totalVolume) {
         speakingUser.clear();
         speakingUser
             .addAll(speakers.obs.map((element) => element.uid).toList());
+        print('current Speakers: ${speakingUser.length}, uid: ${speakingUser.first}, ${speakingUser.value.last}');
       },
     ));
   }
 
-  void moveWatcherToParticipant() {
+  Future<void> moveWatcherToParticipant() async {
+    print('currentUid???: ${currentUid}');
     users.removeWhere((element) => element == currentUid);
     participants.add(currentUid);
     isParticipate.value = true;
-    print('?!?!?: ${participants.length}');
+
+    await _engine.enableLocalAudio(true);
+    print('대화 참가자 수: ${participants.length}');
   }
 
   void onToggleMute() {

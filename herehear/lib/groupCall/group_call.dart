@@ -3,17 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/participant_profile.dart';
+
+
 
 class GroupCallPage extends StatelessWidget {
   String? _title;
   GroupCallPage(this._title);
   final String channelName = Get.arguments;
+  int participantNum = 0;
+  int listenerNum = 0;
+  List<int> lastSpeakingUser = [];
 
   bool alreadyJoin = false;
 
   late final controller = Get.put(AgoraEventController.groupcall(
       channelName: channelName, role: ClientRole.Broadcaster));
+
 
   @override
   Widget build(BuildContext context) {
@@ -103,14 +109,18 @@ class GroupCallPage extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Obx(() => _viewRows(_getParticipantsImageList(context))),
+                      Obx(() {
+                        _getParticipantsImageList(context);
+                        print('participants : ${controller.participants.value}');
+                        return _viewRows(controller.participantsList.value);
+                      }),
+                      // Obx(() => _viewRows(_getParticipantsImageList(context))),
                     ],
                   ),
                 ],
               ),
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(top: 25.0.h, left: 16.0.w, right: 16.w),
             child: Column(
@@ -128,7 +138,11 @@ class GroupCallPage extends StatelessWidget {
                 ),
                 Row(
                   children: <Widget>[
-                    Obx(() => _viewRows(_getWatcherImageList(context))),
+                    Obx(() {
+                      _getListenersImageList(context);
+                      print('users : ${controller.users.value}');
+                      return _viewRows(controller.listenersList.value);
+                    }),
                   ],
                 )
               ],
@@ -142,83 +156,125 @@ class GroupCallPage extends StatelessWidget {
 
   /// Helper function to get list of native views
   //HARD
-  List<Widget> _getParticipantsImageList(BuildContext context) {
-    final List<Widget> list = [];
-    if (controller.isParticipate.value) {
-      list.add(Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 17.0.h),
-            child: Container(
-              width: 83.h,
-              height: 83.h,
-              child: CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/images/you.png'),
+  void _getParticipantsImageList(BuildContext context) {
+    controller.participantsList.value = [];
+    if (controller.participants.length != participantNum || controller.speakingUser.value != lastSpeakingUser) {
+      controller.participants.forEach((uid) {
+        print('controller.speakingUser.contains(uid)?? : ${controller.speakingUser}');
+        controller.participantsList.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 17.0.h),
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: null,
+                      child: Container(
+                        width: 83.h,
+                        height: 83.h,
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: AssetImage('assets/images/you.png'),
+                        ),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          // border: Border.all(width: 3, color: controller.speakingUser.contains(0)? Theme.of(context).colorScheme.primary : Colors.transparent),
+                          border: Border.all(width: 3, color: controller.speakingUser.contains(uid)? Theme.of(context).colorScheme.primary : Colors.transparent),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: 65.0.w,
+                      right: 4.0.w,
+                      top: 52.0.h,
+                      bottom: 0.0.h,
+                      child: GestureDetector(
+                        onTap: () {
+                          // if(uid == controller.currentUid) <-- 자기꺼 아니면 음소거 못하게 하기(호스트 경우엔 이 조건 없애기ㅇㅇ
+                          controller.onToggleMute();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(left: controller.muted.value? 6.5.w : 7.7.w, right: controller.muted.value? 6.5.w : 7.7.w),
+                          width: 26.h,
+                          height: 26.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: controller.muted.value? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.primary,
+                          ),
+                          child: Image.asset(controller.muted.value? 'assets/icons/mic_off.png' : 'assets/icons/mic_fill2.png'),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    // 'NickName',
+                    uid.toString(),
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'NickName',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
-      ));
+          ],
+        ));
+      });
+      participantNum = controller.participants.length;
     }
-    return list;
   }
 
   //HARD
-  List<Widget> _getWatcherImageList(BuildContext context) {
-    final List<Widget> list = [];
-    if (controller.isParticipate.value == false) {
-      list.add(Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 17.0.h),
-            child: Container(
-              width: 68.h,
-              height: 68.h,
-              child: CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage('assets/images/you.png'),
+  void _getListenersImageList(BuildContext context) {
+    controller.listenersList.value = [];
+    print('!@#@@!@#@!@#@!@#!@#@!@#@!@#@!@#@!@#@# controller.users.length: ${controller.users.length}');
+    if (controller.users.length != listenerNum) {
+      controller.users.forEach((uid) {
+        controller.listenersList.add(Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(top: 17.0.h),
+              child: Container(
+                width: 68.h,
+                height: 68.h,
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage('assets/images/you.png'),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'NickName',
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                    color: Theme.of(context).colorScheme.primaryVariant,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              ],
+            Padding(
+              padding: EdgeInsets.only(top: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    // 'NickName',
+                    uid.toString(),
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: Theme.of(context).colorScheme.primaryVariant,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
-      ));
-      print(controller.users.obs);
+          ],
+        ));
+      });
+      listenerNum = controller.users.length;
+      print('controller.users.obs: ${controller.users.obs}');
     }
 
-    return list;
   }
 
   /// Video view wrapper

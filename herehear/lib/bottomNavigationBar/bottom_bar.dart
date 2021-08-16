@@ -20,7 +20,9 @@ class BottomBar extends StatelessWidget {
     final BottomBarController bottomBarController =
         Get.put(BottomBarController(), permanent: false);
     return SafeArea(
+
         child: Scaffold(
+          resizeToAvoidBottomInset: false,
           bottomNavigationBar:
           buildBottomNavigationMenu(context, bottomBarController),
           body: Obx(() => IndexedStack(
