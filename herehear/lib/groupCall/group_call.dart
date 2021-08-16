@@ -154,8 +154,6 @@ class GroupCallPage extends StatelessWidget {
     );
   }
 
-  /// Helper function to get list of native views
-  //HARD
   void _getParticipantsImageList(BuildContext context) {
     controller.participantsList.value = [];
     if (controller.participants.length != participantNum || controller.speakingUser.value != lastSpeakingUser) {
