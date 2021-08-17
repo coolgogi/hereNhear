@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'group_call.dart';
 import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/home/home.dart';
@@ -30,11 +31,12 @@ List<Widget> groupcallRoomList(
             ],
           ),
           child: InkWell(
-            onTap: () {
+            onTap: () async {
               firestore.collection('groupcall').doc(_roomData['docId']).update({
                 'currentListener':
                     FieldValue.arrayUnion([UserController.to.myProfile.value.uid]),
               });
+              await _handleCameraAndMic(Permission.microphone);
               Get.to(() => GroupCallPage(_roomData['title']),
                   arguments: _roomData['channelName']);
             },
@@ -107,4 +109,9 @@ List<Widget> groupcallRoomList(
       ],
     );
   }).toList();
+}
+
+Future<void> _handleCameraAndMic(Permission permission) async {
+  final status = await permission.request();
+  print(status);
 }

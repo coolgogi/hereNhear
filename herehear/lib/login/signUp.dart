@@ -196,7 +196,7 @@ class RegisterPage extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('비밀번호는 영문 대소문자, 숫자, 특수문자(.!@#%)를 혼합하여', style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                              Text('비밀번호는 영문, 숫자, 특수문자(.!@#%)를 혼합하여', style: Theme.of(context).textTheme.bodyText1!.copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               )),
                               Text('8~20자로 입력해 주세요.', style: Theme.of(context).textTheme.bodyText1!.copyWith(

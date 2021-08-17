@@ -66,6 +66,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
 
   @override
   void dispose() {
+    broadcastInfoController.selectedCategoryList.value.removeRange(0, broadcastInfoController.selectedCategoryList.length);
     _title.dispose();
     _notice.dispose();
     super.dispose();
@@ -94,146 +95,149 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
           },
         ),
       ),
-      body: Obx(() => Form(
-        key: _formKey,
-        child: Container(
-          padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.only(bottom: 11.h),
-                child: Text(
-                  '제목',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              TextFormField(
-                controller: _title,
-                validator: (value) {
-                  if (value!.trim().isEmpty) {
-                    return '제목을 입력해주세요.';
-                  }
-                  return null;
-                },
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                    borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                  ),
-                  contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                  hintText: '제목을 입력해주세요(15자 이내)',
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Container(
-                padding: EdgeInsets.only(bottom: 11.h),
-                child: Text(
-                  '공지사항',
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              Container(
-                height: 104.h,
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  controller: _notice,
-                  maxLines: 15,
-                  textAlign: TextAlign.left,
-                  decoration: InputDecoration(
-                    hintText: '공지를 입력해주세요(100자 이내)',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15.0.h,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
-                child: Row(
-                  children: [
-                    Text(
-                      '카테고리',
+      body: Obx(() => ListView(
+        children: [
+          Form(
+            key: _formKey,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(16.0.w, 20.h, 17.w, 0.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(bottom: 11.h),
+                    child: Text(
+                      '제목',
                       style: Theme.of(context).textTheme.headline3,
                     ),
-                    Expanded(child: Container()),
-                    GestureDetector(
-                        onTap: () => broadcastInfoController.selectedCategoryList
-                            .removeRange(0, broadcastInfoController.selectedCategoryList.length),
-                        child: Container(
-                          width: 70.w,
-                          height: 32.h,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/icons/reload.png',
-                                width: 15.w,
-                              ),
-                              SizedBox(
-                                width: 6.w,
-                              ),
-                              Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              )),
-                            ],
-                          ),
-                        )
+                  ),
+                  TextFormField(
+                    controller: _title,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return '제목을 입력해주세요.';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                        borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                      ),
+                      contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                      hintText: '제목을 입력해주세요(15자 이내)',
                     ),
-                  ],
-                ),
-              ),
-              categorySelectList(),
-              Padding(
-                padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
-                child: Text(
-                  '* 카테고리는 최대 3개까지 선택 가능합니다.',
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 32.0.h,
-              ),
-              SizedBox(
-                height: 44.h,
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if(_formKey.currentState!.validate())
-                      onJoin();
-                  },
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(0),
-                    backgroundColor: (_title.text.isEmpty || broadcastInfoController.selectedCategoryList.isEmpty)? MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary)
-                        : MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                  SizedBox(
+                    height: 20.h,
                   ),
-                  child: Text('완료'),
-                ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 11.h),
+                    child: Text(
+                      '공지사항',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                  Container(
+                    height: 104.h,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _notice,
+                      maxLines: 15,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                        hintText: '공지를 입력해주세요(100자 이내)',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15.0.h,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 22.0.h, bottom: 15.h),
+                    child: Row(
+                      children: [
+                        Text(
+                          '카테고리',
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                        Expanded(child: Container()),
+                        GestureDetector(
+                            onTap: () => broadcastInfoController.selectedCategoryList
+                                .removeRange(0, broadcastInfoController.selectedCategoryList.length),
+                            child: Container(
+                              width: 70.w,
+                              height: 32.h,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/reload.png',
+                                    width: 15.w,
+                                  ),
+                                  SizedBox(
+                                    width: 6.w,
+                                  ),
+                                  Text('초기화', style: Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Theme.of(context).colorScheme.onSurface,
+                                  )),
+                                ],
+                              ),
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+                  categorySelectList(),
+                  Padding(
+                    padding: EdgeInsets.only(left: 13.0.w, top: 10.h),
+                    child: Text(
+                      '* 카테고리는 최대 3개까지 선택 가능합니다.',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 32.0.h,
+                  ),
+                  SizedBox(
+                    height: 44.h,
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if(_formKey.currentState!.validate())
+                          onJoin();
+                      },
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor: (_title.text.isEmpty || broadcastInfoController.selectedCategoryList.isEmpty)? MaterialStateProperty.all(Theme.of(context).colorScheme.onSecondary)
+                            : MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                      ),
+                      child: Text('완료'),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.0.h,
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 10.0.h,
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ))
     );
   }
