@@ -17,28 +17,16 @@ extension MyRoomTypeToShortString on MyGroupCallRoomType {
 /// A class that represents a room where 2 or more participants can chat
 @immutable
 class GroupCallModel extends Equatable {
-  /// Creates a [GroupCallModel]
-  ///   final String? hostUid;
-  //   final String? title;
-  //   final String? notice;
-  //   final String? channelName;
-  //   final String? docId;
-  //   final String? image;
-  //   final String? location;
-  //   final DateTime? createdTime;
-  //   final List<dynamic>? currentListener;
-  //   final List<dynamic>? participants;
   const GroupCallModel({
     this.hostUid,
     this.title,
     this.notice,
     this.channelName,
-    this.docId,
     this.thumbnail,
     this.location,
     this.createdTime,
     required this.type,
-    this.currentListener,
+    this.listener,
     this.participants,
   });
 
@@ -48,12 +36,11 @@ class GroupCallModel extends Equatable {
         title = json['title'] as String,
         notice = json['notice'] as String?,
         channelName = json['channelName'] as String?,
-        docId = json['docId'] as String?,
         thumbnail = json['thumbnail'] as String?,
         location = json['location'] as String,
         createdTime = json['createdTime'] as DateTime?,
         type = getMyGroupCallTypeFromString(json['type'] as String),
-        currentListener = json['currentListener'].toList(),
+        listener = json['listener'].toList(),
         participants = json['participants'].toList();
 
   /// Converts room to the map representation, encodable to JSON.
@@ -62,12 +49,11 @@ class GroupCallModel extends Equatable {
         'title': title,
         'notice': notice,
         'channelName': channelName,
-        'docId': docId,
         'thumbnail': thumbnail,
         'location': location,
         'createdTime': createdTime,
         'type': type.toShortString(),
-        'currentListener': currentListener,
+        'listener': listener,
         'participants': participants,
       };
 
@@ -75,13 +61,50 @@ class GroupCallModel extends Equatable {
   final String? title;
   final String? notice;
   final String? channelName;
-  final String? docId;
   final String? thumbnail;
   final String? location;
   final DateTime? createdTime;
-  final List<dynamic>? currentListener;
+  final List<dynamic>? listener;
   final List<dynamic>? participants;
   final MyGroupCallRoomType type;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
+
+
+
+
+class GroupCallUserModel extends Equatable {
+  GroupCallUserModel({
+    this.nickname,
+    this.uid,
+    this.profileUrl,
+    this.isParticipate,
+  });
+
+  /// Creates room from a map (decoded JSON).
+  GroupCallUserModel.fromJson(Map<String, dynamic> json)
+      : nickname = json['nickname'] as String,
+        uid = json['uid'] as int,
+        profileUrl = json['profileUrl'] as String?,
+        isParticipate = json['isParticipate'] as bool?;
+
+  /// Converts room to the map representation, encodable to JSON.
+  Map<String, dynamic> toJson() => {
+    'nickname': nickname,
+    'uid': uid,
+    'profileUrl': profileUrl,
+    'isParticipate': isParticipate,
+  };
+
+  String? nickname;
+  int? uid;
+  String? profileUrl;
+  bool? isParticipate;
 
   @override
   // TODO: implement props

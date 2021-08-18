@@ -29,7 +29,7 @@ ListView broadcastRoomList(
             });
 
             await Get.to(
-              () => BroadCastPage.myaudience(
+              () => BroadCastPage.audience(
                   //   channelName: room.docId!,
                   // userData: _userData,
                   role: ClientRole.Audience,
@@ -49,7 +49,7 @@ ListView broadcastRoomList(
                         fit: BoxFit.fill,
                         image: AssetImage("assets/images/groupcall/fish.jpg")),
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
@@ -90,16 +90,14 @@ ListView broadcastRoomList(
                           color: Colors.white,
                         ),
                         Text(
-                          room.users == null
-                              ? ' 0'
-                              : ' ${room.users.length.toString()}',
+                         ' ${room.users.length.toString()}',
                           style:
                               Theme.of(context).textTheme.subtitle1!.copyWith(
                                     color: Colors.white,
                                     fontSize: 13.sp,
                                   ),
                         ),
-                        SizedBox(width: 8.sp),
+                        SizedBox(width: 8.w),
                         Icon(
                           Icons.favorite,
                           size: 14.w,

@@ -17,7 +17,6 @@ class SearchBarController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-    loadHistory();
   }
 
   @override
@@ -36,18 +35,16 @@ class SearchBarController extends GetxController {
     isHistorySearch.value = false;
     print('WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW: ${text.value}, ${isHistorySearch.value}');
   }
-
-
-  Future<void> loadHistory() async {
+  Future<void> loadHistory(String category) async {
     print('_loadCounter()');
     final prefs = await SharedPreferences.getInstance();
-    history.value = (prefs.getStringList('history') ?? []);
+    history.value = (prefs.getStringList(category) ?? []);
   }
 
-  Future<void> saveHistory() async {
+  Future<void> saveHistory(String category) async {
     print('saveCounter');
     final prefs = await SharedPreferences.getInstance();
-      prefs.setStringList('history', history);
+    prefs.setStringList(category, history);
 
   }
 

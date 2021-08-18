@@ -68,9 +68,9 @@ class BroadcastInfoController extends GetxController {
 
   @override
   void onClose() {
+    selectedCategoryList.value.removeRange(0, selectedCategoryList.length);
     title.dispose();
     notice.dispose();
-    selectedCategoryList.value.removeRange(0, selectedCategoryList.length);
     super.onClose();
   }
 }

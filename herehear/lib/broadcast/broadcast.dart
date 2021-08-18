@@ -28,7 +28,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.channelName, role: role));
   }
 
-  BroadCastPage.myBroadcaster(
+  BroadCastPage.broadcaster(
       { //required this.channelName,
       required this.role,
       // required this.userData,
@@ -37,7 +37,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.channelName, role: role));
   }
 
-  BroadCastPage.myaudience({required this.role, required this.roomData}) {
+  BroadCastPage.audience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
         channelName: roomData.channelName, role: role));
   }
@@ -154,16 +154,16 @@ class BroadCastPage extends GetView<AgoraEventController> {
     Get.back();
   }
 
-  Future<void> changeState(String docID) async {
+  Future<void> changeState(String channelName) async {
     var fields = await fireStore
         .collection('broadcast')
-        .doc(docID)
+        .doc(channelName)
         .get();
 
     fireStore
         .collection('closed')
-        .doc(docID)
+        .doc(channelName)
         .set(fields.data()!);
-    FirebaseFirestore.instance.collection('broadcast').doc(docID).delete();
+    FirebaseFirestore.instance.collection('broadcast').doc(channelName).delete();
   }
 }

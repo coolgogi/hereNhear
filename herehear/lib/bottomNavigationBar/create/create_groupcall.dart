@@ -74,6 +74,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
 
   @override
   void dispose() {
+    groupCallController.selectedCategoryList.value.removeRange(0, groupCallController.selectedCategoryList.length);
     _title.dispose();
     _notice.dispose();
     super.dispose();
@@ -103,8 +104,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
       body: Obx(() => Form(
         key: _formKey,
         child: Container(
-          padding: EdgeInsets.fromLTRB(16.0.w, 33.h, 17.w, 0.h),
-          height: MediaQuery.of(context).size.height,
+          padding: EdgeInsets.fromLTRB(16.0.w, 20.h, 17.w, 0.h),
           child: ListView(
             children: [
               Container(
@@ -637,7 +637,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     // );
 
     Get.off(
-          () => BroadCastPage.myBroadcaster(
+          () => BroadCastPage.broadcaster(
         //  channelName: _docId,
         role: ClientRole.Broadcaster,
         roomData : roomData,

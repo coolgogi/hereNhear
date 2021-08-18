@@ -6,6 +6,7 @@ import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -18,15 +19,22 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final searchController = Get.put(SearchBarController());
   final locationController = Get.put(LocationController());
+  final category = 'searchPageHistory';
 
-  String current_uid = '';
   FocusNode searchBarFocusNode = FocusNode();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    loadHistory();
   }
+  Future<void> loadHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    searchController.history.value = (prefs.getStringList(category) ?? []);
+    print(searchController.history);
+  }
+
 
   @override
   void dispose() {
@@ -58,7 +66,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       ),
       body: ListView(
         children: <Widget>[
-          SearchTextField(),
+          SearchTextField(category: category,),
           Obx(() {
             if (searchController.text.isEmpty) {
               return searchHistory();
@@ -163,23 +171,31 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
         ),
         Column(
           children: List.generate(
-            searchHistoryExample!.length,
+            searchController.history.length,
             (index) => Padding(
               padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: null,
+                    onTap: (){
+                      searchController.text.value =
+                      searchController.history[index];
+                      searchController.isHistorySearch.value = true;
+                      searchController.initialSearchText();
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          searchHistoryExample![index],
+                          searchController.history[index],
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         Expanded(child: Container()),
                         IconButton(
-                            onPressed: null,
+                            onPressed: (){
+                              searchController.history.removeAt(index);
+                              searchController.saveHistory(category);
+                            },
                             icon: Icon(Icons.clear, size: 15.w)),
                       ],
                     ),

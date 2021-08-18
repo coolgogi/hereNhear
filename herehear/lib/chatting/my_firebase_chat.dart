@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
@@ -209,7 +210,7 @@ class MyFirebaseChatCore {
   /// 3) Create an Index (Firestore Database -> Indexes tab) where collection ID
   /// is `rooms`, field indexed are `userIds` (type Arrays) and `updatedAt`
   /// (type Descending), query scope is `Collection`
-  Stream<List<types.BroadcastModel>> roomsWithLocation(
+  Stream<List<types.BroadcastModel>> broadcastRoomsWithLocation(
       {bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {
       return const Stream.empty();
@@ -221,6 +222,20 @@ class MyFirebaseChatCore {
     return collection
         .snapshots()
         .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
+  }
+
+  Stream<List<GroupCallModel>> groupCallRoomsWithLocation(
+      {bool orderByUpdatedAt = false}) {
+    if (firebaseUser == null) {
+      return const Stream.empty();
+    }
+    final collection = FirebaseFirestore.instance.collection('groupcall').where(
+        'location',
+        isEqualTo: UserController.to.myProfile.value.location);
+
+    return collection
+        .snapshots()
+        .asyncMap((query) => processGroupCallRoomsQuery(firebaseUser!, query));
   }
 
   Stream<List<types.BroadcastModel>> rooms({bool orderByUpdatedAt = false}) {
