@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 import 'groupCall/data/participantsProfile_controller.dart';
 
 
@@ -23,7 +25,7 @@ class ParticipantProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: Padding(
           padding: EdgeInsets.only(top: 15.0.h),
           child: AppBar(
@@ -168,8 +170,8 @@ class ParticipantProfilePage extends StatelessWidget {
                       padding: EdgeInsets.only(top: 15.0.h, bottom: 32.h),
                       child: Row(
                         children: [
-                          Container(
-                              width: 247.w,
+                          Obx(() => Container(
+                              width: 260.w,
                               height: 44.h,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).colorScheme.background,
@@ -183,14 +185,40 @@ class ParticipantProfilePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              child: Center(child: Container())),
-                          SizedBox(width: 16.w),
+                              child: Center(child: Container(
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                          onTap: () => profileController.toggleBlur(),
+                                          child: Container(
+                                              padding: EdgeInsets.only(left:5.w),
+                                              width: 50.w,
+                                              child: Center(child: Image.asset('assets/icons/playButton.png', height: 20.h)))),
+                                      _buildCard(
+                                        // backgroundColor: Theme.of(context).colorScheme.secondary,
+                                        config: CustomConfig(
+                                          colors: [
+                                            Color(0xFF4BACEF).withOpacity(0.2),
+                                            Color(0xFF4BACEF).withOpacity(0.1),
+                                            Color(0xFF634CED).withOpacity(0.1),
+                                            Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                                          ],
+                                          durations: [35000, 19440, 10800, 6000],
+                                          heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                                          blur: profileController.blur.value,
+                                        ),
+                                        height: 44.h,
+                                      ),
+                                    ],
+                                  )
+                              )))),
+                          SizedBox(width: 11.w),
                           Obx(() => Column(
                             children: [
-                              InkWell(
+                              GestureDetector(
                                 onTap: () => toggleIsFavoriteVoice(),
                                   child: Image.asset(profileController.isfavoriteVoice.value? 'assets/icons/heart_fill.png' : 'assets/icons/heart.png', height: 22.h)),
-                              Text('105', style: Theme.of(context).textTheme.headline6,)
+                              Text('105', style: Theme.of(context).textTheme.headline6,),
                             ],
                           )),
                         ],
@@ -216,6 +244,35 @@ class ParticipantProfilePage extends StatelessWidget {
         ],
       ),
       bottomSheet: bottomBar(context),
+    );
+  }
+
+  _buildCard({
+    Config? config,
+    Color backgroundColor = Colors.transparent,
+    DecorationImage? backgroundImage,
+    double height = 152.0,
+  }) {
+    return Container(
+      height: height,
+      width: 210.w,
+      child: Card(
+        elevation: 0.0,
+        margin: EdgeInsets.all(0),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0)
+            )),
+        child: WaveWidget(
+          config: config!,
+          backgroundColor: backgroundColor,
+          backgroundImage: backgroundImage,
+          size: Size(double.infinity, double.infinity),
+          waveAmplitude: 0,
+        ),
+      ),
     );
   }
 
@@ -270,7 +327,10 @@ class ParticipantProfilePage extends StatelessWidget {
                           Text('신고하기', style: Theme.of(context).textTheme.headline2),
                           Expanded(child: Container()),
                           InkWell(
-                              onTap: () => Get.back(),
+                              onTap: () {
+                                profileController.onClose();
+                                Get.back();
+                              },
                               child: Icon(Icons.close)),
                         ],
                       ),
