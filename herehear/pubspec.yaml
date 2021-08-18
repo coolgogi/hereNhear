@@ -140,6 +140,9 @@ flutter:
     - assets/icons/search.png
     - assets/icons/search2.png
     - assets/icons/notification.png
+    - assets/icons/crown_gold.png
+    - assets/icons/crown_silver.png
+    - assets/icons/crown_bronze.png
     - assets/icons/exit.png
     - assets/icons/mic_fill.png
     - assets/icons/mic_fill2.png
