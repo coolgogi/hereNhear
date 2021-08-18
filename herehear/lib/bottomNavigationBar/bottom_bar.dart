@@ -21,9 +21,9 @@ class BottomBar extends StatelessWidget {
         Get.put(BottomBarController(), permanent: false);
     return SafeArea(
         child: Scaffold(
-          bottomNavigationBar:
+      bottomNavigationBar:
           buildBottomNavigationMenu(context, bottomBarController),
-          body: Obx(() => IndexedStack(
+      body: Obx(() => IndexedStack(
             index: bottomBarController.tabIndex.value,
             children: [
               HomePage(),
@@ -33,16 +33,16 @@ class BottomBar extends StatelessWidget {
               MyPage(),
             ],
           )),
-          floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-              FloatingActionButtonLocation.centerDocked, 0, 15),
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              elevation: 0.0,
-              child: Image.asset(
-                'assets/icons/add.png',
-                width: 23.0.w,
-              ),
-              onPressed: () => {
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          elevation: 0.0,
+          child: Image.asset(
+            'assets/icons/add.png',
+            width: 23.0.w,
+          ),
+          onPressed: () => {
                 print(
                     '*******************************************************************************8'),
                 print(userController.myProfile.value.uid),
@@ -101,12 +101,14 @@ class BottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
+                    padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
                     child: GestureDetector(
-                      onTap: () => Get.back(),
-                      child: Icon(Icons.close, size: 25.w, color: Colors.white,)
-                    )
-                ),
+                        onTap: () => Get.back(),
+                        child: Icon(
+                          Icons.close,
+                          size: 25.w,
+                          color: Colors.white,
+                        ))),
               ],
             ),
             Row(

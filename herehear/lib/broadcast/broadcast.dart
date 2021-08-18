@@ -99,17 +99,24 @@ class BroadCastPage extends GetView<AgoraEventController> {
               // inviteDialog(context);
             },
             padding: EdgeInsets.all(0)),
+        // IconButton(
+        //     icon:
+        //         Image.asset('assets/icons/more.png', width: 24.0, height: 24.0),
+        //     iconSize: 4.0,
+        //     onPressed: () {
+        //       // inviteDialog(context);
+        //     },
+        //     padding: EdgeInsets.all(0)),
         IconButton(
-            icon: Image.asset('assets/icons/more_grey.png',
-                width: 24.0, height: 24.0),
-            iconSize: 4.0,
+            icon: Icon(Icons.more_vert, color: Colors.white),
+            // iconSize: 4.0,
             onPressed: () {
               // inviteDialog(context);
             },
             padding: EdgeInsets.all(0)),
       ],
-      toolbarOpacity: 0.0,
-      bottomOpacity: 0.0,
+      // toolbarOpacity: 0.0,
+      // bottomOpacity: 0.0,
     );
   }
 
