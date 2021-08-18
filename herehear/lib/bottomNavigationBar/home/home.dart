@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/set_location.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
+// import 'package:herehear/bottomNavigationBar/community/free_board/record_test22.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
@@ -183,7 +185,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Expanded(child: Container()),
                     IconButton(
-                        onPressed: () => Get.to(ParticipantProfilePage()), icon: Icon(Icons.arrow_forward_ios)),
+                        onPressed: () => Get.to(AudioRecorder(onStop: (String path) {  },)), icon: Icon(Icons.arrow_forward_ios)),
                   ],
                 ),
                 Padding(

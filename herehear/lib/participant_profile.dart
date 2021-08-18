@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/record_controller.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'groupCall/data/participantsProfile_controller.dart';
@@ -9,6 +10,7 @@ import 'groupCall/data/participantsProfile_controller.dart';
 
 class ParticipantProfilePage extends StatelessWidget {
   final profileController = Get.put(ParticipantProfileController());
+  final recorderController = Get.put(RecorderController());
   List<String> themeList = [
     '한동대',
     '유리한 녀석들',
@@ -189,7 +191,7 @@ class ParticipantProfilePage extends StatelessWidget {
                                   child: Row(
                                     children: [
                                       InkWell(
-                                          onTap: () => profileController.toggleBlur(),
+                                          onTap: () => recorderController.toggleBlur(),
                                           child: Container(
                                               padding: EdgeInsets.only(left:5.w),
                                               width: 50.w,
@@ -205,7 +207,7 @@ class ParticipantProfilePage extends StatelessWidget {
                                           ],
                                           durations: [35000, 19440, 10800, 6000],
                                           heightPercentages: [0.20, 0.23, 0.25, 0.30],
-                                          blur: profileController.blur.value,
+                                          blur: recorderController.blur.value,
                                         ),
                                         height: 44.h,
                                       ),

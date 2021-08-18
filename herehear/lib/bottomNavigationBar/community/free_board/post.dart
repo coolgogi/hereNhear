@@ -6,10 +6,14 @@ import 'package:herehear/bottomNavigationBar/community/free_board/record_test.da
 import 'package:herehear/bottomNavigationBar/community/record_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/record_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:record/record.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
+
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 final Record _audioRecorder = Record();
@@ -17,6 +21,7 @@ final Record _audioRecorder = Record();
 class PostPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
+  final recorderController = Get.put(RecorderController());
   TextEditingController comment = TextEditingController();
   FlutterTts f_tts = FlutterTts();
   ap.AudioSource? audioSource;
@@ -271,28 +276,48 @@ class PostPage extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          child: Row(
-            children: [
-              GestureDetector(
-                  onTap: null,
-                  child: Image.asset('assets/icons/play.png', width: 12.w)),
-            ],
-          ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(10.r)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(1, 4), // changes position of shadow
-              ),
-            ],
-          ),
-        ),
+        Obx(() => Container(
+            width: 302.w,
+            height: 44.h,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.all(Radius.circular(10.r)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 0,
+                  blurRadius: 8,
+                  offset: Offset(1, 4), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Center(child: Container(
+                child: Row(
+                  children: [
+                    InkWell(
+                        onTap: () => recorderController.toggleBlur(),
+                        child: Container(
+                            padding: EdgeInsets.only(left:5.w),
+                            width: 50.w,
+                            child: Center(child: Image.asset('assets/icons/playButton.png', height: 16.h)))),
+                    _buildCard(
+                      // backgroundColor: Theme.of(context).colorScheme.secondary,
+                      config: CustomConfig(
+                        colors: [
+                          Color(0xFF4BACEF).withOpacity(0.2),
+                          Color(0xFF4BACEF).withOpacity(0.1),
+                          Color(0xFF634CED).withOpacity(0.1),
+                          Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                        ],
+                        durations: [35000, 19440, 10800, 6000],
+                        heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                        blur: recorderController.blur.value,
+                      ),
+                      height: 44.h,
+                    ),
+                  ],
+                )
+            )))),
         Padding(
           padding: EdgeInsets.only(right: 19.0.w),
           child: Divider(
@@ -301,6 +326,35 @@ class PostPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  _buildCard({
+    Config? config,
+    Color backgroundColor = Colors.transparent,
+    DecorationImage? backgroundImage,
+    double height = 152.0,
+  }) {
+    return Container(
+      height: height,
+      width: 252.w,
+      child: Card(
+        elevation: 0.0,
+        margin: EdgeInsets.all(0),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(10.0),
+                bottomRight: Radius.circular(10.0)
+            )),
+        child: WaveWidget(
+          config: config!,
+          backgroundColor: backgroundColor,
+          backgroundImage: backgroundImage,
+          size: Size(double.infinity, double.infinity),
+          waveAmplitude: 0,
+        ),
+      ),
     );
   }
 
