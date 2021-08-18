@@ -26,22 +26,22 @@ class GroupCallPage extends StatelessWidget {
     controller.isGroupCallPageNow.value = true;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
-        ],
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/mountain.jpg'),
-              fit: BoxFit.cover,
-            )
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.h),
+        child: Padding(
+          padding: EdgeInsets.only(top: 15.0.h),
+          child: AppBar(
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Get.back()),
+            title: Text('HEAR CHAT', style: Theme.of(context).textTheme.headline1),
+            titleSpacing: 0.0,
+            actions: <Widget>[
+              IconButton(
+                  onPressed: null,
+                  icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
+              IconButton(
+                  onPressed: null,
+                  icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
+            ],
           ),
         ),
       ),
@@ -50,20 +50,13 @@ class GroupCallPage extends StatelessWidget {
         children: [
           Container(
             height: 288.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              color: Theme.of(context).colorScheme.background,
-            ),
             child: Padding(
               padding: EdgeInsets.only(left: 16.0.w, right: 21.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(top: 35.0.h),
+                    padding: EdgeInsets.only(top: 10.0.h),
                     child: Row(
                       children: [
                         Text(
@@ -154,6 +147,8 @@ class GroupCallPage extends StatelessWidget {
     );
   }
 
+  /// Helper function to get list of native views
+  //HARD
   void _getParticipantsImageList(BuildContext context) {
     controller.participantsList.value = [];
     if (controller.participants.length != participantNum || controller.speakingUser.value != lastSpeakingUser) {
@@ -167,7 +162,7 @@ class GroupCallPage extends StatelessWidget {
                 child: Stack(
                   children: [
                     GestureDetector(
-                      onTap: null,
+                      onTap: () => Get.to(ParticipantProfilePage()),
                       child: Container(
                         width: 83.h,
                         height: 83.h,

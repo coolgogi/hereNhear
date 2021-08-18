@@ -144,6 +144,7 @@ flutter:
     - assets/icons/mic_fill2.png
     - assets/icons/mic_off.png
     - assets/icons/report.png
+    - assets/icons/report_red.png
     - assets/icons/groupBlack.png
     - assets/icons/groupWhite.png
     - assets/icons/location.png

@@ -183,7 +183,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Expanded(child: Container()),
                     IconButton(
-                        onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
+                        onPressed: () => Get.to(ParticipantProfilePage()), icon: Icon(Icons.arrow_forward_ios)),
                   ],
                 ),
                 Padding(
