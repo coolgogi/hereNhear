@@ -73,6 +73,44 @@ class GroupCallModel extends Equatable {
   List<Object?> get props => throw UnimplementedError();
 }
 
+
+
+
+
+
+class GroupCallUserModel extends Equatable {
+  GroupCallUserModel({
+    this.nickname,
+    this.uid,
+    this.profileUrl,
+    this.isParticipate,
+  });
+
+  /// Creates room from a map (decoded JSON).
+  GroupCallUserModel.fromJson(Map<String, dynamic> json)
+      : nickname = json['nickname'] as String,
+        uid = json['uid'] as int,
+        profileUrl = json['profileUrl'] as String?,
+        isParticipate = json['isParticipate'] as bool?;
+
+  /// Converts room to the map representation, encodable to JSON.
+  Map<String, dynamic> toJson() => {
+    'nickname': nickname,
+    'uid': uid,
+    'profileUrl': profileUrl,
+    'isParticipate': isParticipate,
+  };
+
+  String? nickname;
+  int? uid;
+  String? profileUrl;
+  bool? isParticipate;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
 // class GroupCallModel {
 //   String? hostUid;
 //   String? title;

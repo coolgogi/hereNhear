@@ -49,7 +49,7 @@ ListView broadcastRoomList(
                         fit: BoxFit.fill,
                         image: AssetImage("assets/images/groupcall/fish.jpg")),
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderRadius: BorderRadius.all(Radius.circular(15.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
@@ -97,7 +97,7 @@ ListView broadcastRoomList(
                                     fontSize: 13.sp,
                                   ),
                         ),
-                        SizedBox(width: 8.sp),
+                        SizedBox(width: 8.w),
                         Icon(
                           Icons.favorite,
                           size: 14.w,

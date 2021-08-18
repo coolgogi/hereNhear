@@ -26,12 +26,6 @@ class LoginController extends GetxController {
       idFocus.value.requestFocus();
       return '유효하지 않은 이메일형식입니다.';
     }
-      
-    //6~12자인지 확인
-    if ((12 <= value.length) || (value.length <= 6) || validSpecial.hasMatch(value)) {
-      idFocus.value.requestFocus();
-      return '잘못된 아이디입니다.';
-    }
     return null;
   }
 
