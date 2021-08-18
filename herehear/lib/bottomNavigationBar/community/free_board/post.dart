@@ -1,13 +1,18 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
+import 'package:herehear/bottomNavigationBar/community/record_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:record/record.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+final Record _audioRecorder = Record();
 
 class PostPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
@@ -31,7 +36,7 @@ class PostPage extends StatelessWidget {
                 )),
         actions: <Widget>[
           IconButton(
-              onPressed: null,
+              onPressed: () => Get.to(recordingPage()),
               icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(
               onPressed: null,
@@ -156,7 +161,7 @@ class PostPage extends StatelessWidget {
                       suffixIcon: Padding(
                         padding: EdgeInsets.fromLTRB(0.w, 7.h, 0.w, 7.h),
                         child: GestureDetector(
-                          onTap: () => textToSpeach(comment.text),
+                          onTap: () => textToSpeech(comment.text),
                           child: Container(
                             width: 32.0.w,
                             height: 32.0.h,
@@ -188,6 +193,7 @@ class PostPage extends StatelessWidget {
               ],
             ),
           ),
+
           Padding(
             padding: EdgeInsets.only(left: 20.0.w, top: 31.0.h),
             child: commentList(context),
@@ -304,7 +310,7 @@ class PostPage extends StatelessWidget {
     locationController.getLocation().obs;
   }
 
-  void textToSpeach(String text) async {
+  void textToSpeech(String text) async {
     if (UserController.to.myProfile.value.platform == 'ios') {
       print("hello ios");
       await f_tts.setSharedInstance(true);
@@ -316,5 +322,11 @@ class PostPage extends StatelessWidget {
       ]);
     }
     await f_tts.speak(text);
+  }
+
+  void record_init() async {
+    bool permission = await _audioRecorder.hasPermission();
+    if (permission) {
+    } else {}
   }
 }
