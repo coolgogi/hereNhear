@@ -1,21 +1,12 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
-import 'package:herehear/bottomNavigationBar/community/record_controller.dart';
+import 'package:herehear/bottomNavigationBar/community/playground/selectedSong.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
-import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:herehear/record_controller.dart';
-import 'package:herehear/users/controller/user_controller.dart';
-import 'package:just_audio/just_audio.dart' as ap;
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:record/record.dart';
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -95,7 +86,7 @@ class KaraokePage extends StatelessWidget {
                       Text('실시간', style: Theme.of(context).textTheme.headline1),
                       Expanded(child: Container()),
                       IconButton(
-                          onPressed: null,
+                          onPressed: () => Get.to(SelectedSong()),
                           icon: Icon(Icons.arrow_forward_ios, size: 17.h)),
                     ],
                   ),

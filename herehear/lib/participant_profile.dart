@@ -438,19 +438,16 @@ class ParticipantProfilePage extends StatelessWidget {
                                 border: Border.all(color: profileController.reportReason.value == reportReasonList.etc? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface)
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5.0.h),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(0.w),
-                              horizontalTitleGap: 0.0.w,
-                              title: Text('권리침해 신고'),
-                              leading: Radio(
-                                value: reportReasonList.right,
-                                groupValue: profileController.reportReason.value,
-                                onChanged: (reportReasonList? value) {
-                                  profileController.reportReason.value = value;
-                                },
-                              ),
+                          ListTile(
+                            contentPadding: EdgeInsets.all(0.w),
+                            horizontalTitleGap: 0.0.w,
+                            title: Text('권리침해 신고'),
+                            leading: Radio(
+                              value: reportReasonList.right,
+                              groupValue: profileController.reportReason.value,
+                              onChanged: (reportReasonList? value) {
+                                profileController.reportReason.value = value;
+                              },
                             ),
                           ),
                           Padding(
