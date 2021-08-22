@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // GetX 등록
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    // FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.white,
+        statusBarColor: Colors.transparent,
       ),
       child: GetBuilder<ThemeController>(
           init: ThemeController(),

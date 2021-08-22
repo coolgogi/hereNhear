@@ -19,42 +19,39 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
         Get.put(BottomBarController(), permanent: false);
-    return SafeArea(
-
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          bottomNavigationBar:
-          buildBottomNavigationMenu(context, bottomBarController),
-          body: Obx(() => IndexedStack(
-            index: bottomBarController.tabIndex.value,
-            children: [
-              HomePage(),
-              SearchPage(),
-              Container(),
-              CommunityPage(),
-              MyPage(),
-            ],
-          )),
-          floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-              FloatingActionButtonLocation.centerDocked, 0, 15),
-          floatingActionButton: FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              elevation: 0.0,
-              child: Image.asset(
-                'assets/icons/add.png',
-                width: 23.0.w,
-              ),
-              onPressed: () => {
-                print(
-                    '*******************************************************************************8'),
-                print(userController.myProfile.value.uid),
-                print(
-                    '*******************************************************************************8'),
-                userController.myProfile.value.uid == 'Guest'
-                    ? _showMyDialog()
-                    : showCreateOption(context),
-              }),
-    ));
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: buildBottomNavigationMenu(context, bottomBarController),
+      body: Obx(() => IndexedStack(
+        index: bottomBarController.tabIndex.value,
+        children: [
+          HomePage(),
+          SearchPage(),
+          Container(),
+          CommunityPage(),
+          MyPage(),
+        ],
+      )),
+      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+          FloatingActionButtonLocation.centerDocked, 0, 15),
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          elevation: 0.0,
+          child: Image.asset(
+            'assets/icons/add.png',
+            width: 23.0.w,
+          ),
+          onPressed: () => {
+            print(
+                '*******************************************************************************8'),
+            print(userController.myProfile.value.uid),
+            print(
+                '*******************************************************************************8'),
+            userController.myProfile.value.uid == 'Guest'
+                ? _showMyDialog()
+                : showCreateOption(context),
+          }),
+    );
   }
 
   Future<void> _showMyDialog() async {
