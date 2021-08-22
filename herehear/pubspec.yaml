@@ -73,6 +73,7 @@ dependencies:
   flutter_statusbarcolor: ^0.2.3
   fluttertoast: ^8.0.8
   wave: ^0.2.0
+  keyboard_actions: "^3.3.1+1"
 
   #  just_audio: ^0.9.2
 
@@ -206,8 +207,11 @@ flutter:
     - assets/icons/camera.png
     - assets/icons/camera_blue.png
     - assets/icons/gallery.png
+    - assets/icons/call.png
     - assets/icons/expand_grey.png
     - assets/icons/expand_black.png
+    - assets/icons/micButton.png
+    - assets/icons/micButton_mute.png
     - assets/images/game.png
     - assets/images/IU.png
     - assets/images/gamer.png
@@ -220,6 +224,7 @@ flutter:
     - assets/images/dog.jpg
     - assets/images/hamster.jpg
     - assets/images/HGU.jpg
+    - assets/images/logo.png
     - assets/images/goldCrown.png
     - assets/images/silverCrown.png
     - assets/images/bronzeCrown.png

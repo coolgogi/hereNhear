@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:record/record.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+import  'package:keyboard_actions/keyboard_actions.dart';
 
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -25,6 +27,26 @@ class PostPage extends StatelessWidget {
   TextEditingController comment = TextEditingController();
   FlutterTts f_tts = FlutterTts();
   ap.AudioSource? audioSource;
+  String recordId =
+  (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+  late UploadTask _upload;
+  final FocusNode _nodeText = FocusNode();
+
+  List<String> nickName = [
+    '착한친구',
+    '나쁜녀석',
+    '멍멍이',
+    '야옹이',
+    '마자신있나'
+  ];
+  List<String> profile = [
+    'assets/images/IU.png',
+    'assets/images/he.jpg',
+    'assets/images/it.jpg',
+    'assets/images/she.jpg',
+    'assets/images/you2.jpg'
+  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,55 +172,63 @@ class PostPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: TextField(
-                    cursorColor: Theme.of(context).primaryColor,
-                    textInputAction: TextInputAction.newline,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 150,
-                    controller: comment,
-                    textAlign: TextAlign.left,
-                    decoration: InputDecoration(
-                      hintStyle: Theme.of(context).textTheme.headline6,
-                      // suffixStyle: ,
-                      hintText: '유리한 녀석들로 댓글달기',
-                      border: InputBorder.none,
-                      suffixText: '녹음 시작',
-                      suffixIcon: Padding(
-                        padding: EdgeInsets.fromLTRB(0.w, 7.h, 0.w, 7.h),
-                        child: GestureDetector(
-                          onTap: () => textToSpeech(comment.text),
-                          child: Container(
-                            width: 32.0.w,
-                            height: 32.0.h,
-                            child: Padding(
-                              padding: EdgeInsets.all(3.0.w),
-                              child: Image.asset(
-                                'assets/icons/record.png',
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.background,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 0,
-                                  blurRadius: 8,
-                                  offset: Offset(
-                                      0, 4), // changes position of shadow
-                                ),
-                              ],
-                            ),
+                  child: KeyboardActions(
+                    config: _buildConfig(context),
+                    child: Stack(
+                      alignment: AlignmentDirectional.topEnd,
+                      children: [
+                        TextField(
+                          cursorColor: Theme.of(context).primaryColor,
+                          textInputAction: TextInputAction.newline,
+                          keyboardType: TextInputType.multiline,
+                          focusNode: _nodeText,
+                          maxLines: 150,
+                          controller: comment,
+                          textAlign: TextAlign.left,
+                          decoration: InputDecoration(
+                            hintStyle: Theme.of(context).textTheme.headline6,
+                            // suffixStyle: ,
+                            hintText: '유리한 녀석들로 댓글달기',
+                            border: InputBorder.none,
+                            suffixText: '녹음 시작',
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.w, 3.h, 7.w, 7.h),
+                          child: GestureDetector(
+                            onTap: () => textToSpeech(comment.text),
+                            child: Container(
+                              width: 32.0.w,
+                              height: 32.0.h,
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0.w),
+                                child: Image.asset(
+                                  'assets/icons/record.png',
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.background,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0,
+                                    blurRadius: 8,
+                                    offset: Offset(
+                                        0, 4), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
           ),
-
           Padding(
             padding: EdgeInsets.only(left: 20.0.w, top: 31.0.h),
             child: commentList(context),
@@ -210,124 +240,311 @@ class PostPage extends StatelessWidget {
 
   Widget commentList(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        commentCard(context),
-        commentCard(context),
-        commentCard(context),
+      children: List.generate(
+          nickName.length,
+              (i) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 2.w, right: 23.w, bottom: 18.h),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          width: 27.0.w,
+                          height: 27.0.h,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(profile[i]),
+                              fit: BoxFit.cover,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        SizedBox(width: 11.w),
+                        Text(
+                          nickName[i],
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        Expanded(child: Container()),
+                        Container(
+                          width: 103.w,
+                          height: 21.h,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.onSecondary,
+                            borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              GestureDetector(
+                                onTap: null,
+                                child: Image.asset('assets/icons/heart_grey.png',
+                                    width: 14.w),
+                              ),
+                              Image.asset('assets/icons/line_short.png', height: 8.h),
+                              GestureDetector(
+                                onTap: null,
+                                child: Image.asset('assets/icons/chat_grey.png',
+                                    width: 14.w),
+                              ),
+                              Image.asset('assets/icons/line_short.png', height: 8.h),
+                              GestureDetector(
+                                onTap: null,
+                                child: Image.asset('assets/icons/more_grey.png',
+                                    height: 10.h),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Obx(() => Row(
+                    children: [
+                      Container(
+                          width: 50.w,
+                          height: 44.h,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.background,
+                            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.3),
+                                spreadRadius: 0,
+                                blurRadius: 4,
+                                offset: Offset(1, 4), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                  splashColor: Colors.transparent,
+                                  onTap: () => recorderController.toggleBlurList(i),
+                                  child: Container(
+                                      padding: EdgeInsets.only(left:5.w),
+                                      width: 50.w,
+                                      child: Center(child: Image.asset('assets/icons/playButton.png', height: 16.h)))),
+                            ],
+                          )),
+                      SizedBox(width: 8.w),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.background,
+                          borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 0,
+                              blurRadius: 4,
+                              offset: Offset(1, 4), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: _buildCard(
+                          // backgroundColor: Theme.of(context).colorScheme.secondary,
+                          config: CustomConfig(
+                            colors: [
+                              Color(0xFF4BACEF).withOpacity(0.2),
+                              Color(0xFF4BACEF).withOpacity(0.1),
+                              Color(0xFF634CED).withOpacity(0.1),
+                              Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                            ],
+                            durations: [35000, 19440, 10800, 6000],
+                            heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                            blur: recorderController.blurList[i],
+                          ),
+                          height: 44.h,
+                        ),
+                      )
+                    ],
+                  )),
+                  Padding(
+                    padding: EdgeInsets.only(top: 11.0.h, bottom: 5.h),
+                    child: Text('08/04 15:30', style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 19.0.w),
+                    child: Divider(
+                      thickness: 1,
+                      height: 30.h,
+                    ),
+                  ),
+                ],
+              )),
+    );
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: false,
+      actions: [
+        KeyboardActionsItem(focusNode: _nodeText, toolbarButtons: [
+              (node) {
+            return GestureDetector(
+              onTap: null,
+              child: Padding(
+                padding: EdgeInsets.all(6.0),
+                child: Container(
+                  width: 50.w,
+                  height: 30.h,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: Offset(1, 4), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: Center(
+                    child: Text('전송', style: Theme.of(context).textTheme.headline4!.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    )),
+                  ),
+                )
+              ),
+            );
+          }
+        ]),
       ],
     );
   }
 
-  Widget commentCard(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 2.w, right: 23.w, bottom: 18.h),
-          child: Row(
-            children: <Widget>[
-              Container(
-                width: 27.0.w,
-                height: 27.0.h,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/it.jpg'),
-                    fit: BoxFit.cover,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: 11.w),
-              Text(
-                '닉네임',
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Expanded(child: Container()),
-              Container(
-                width: 103.w,
-                height: 21.h,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSecondary,
-                  borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: null,
-                      child: Image.asset('assets/icons/heart_grey.png',
-                          width: 14.w),
-                    ),
-                    Image.asset('assets/icons/line_short.png', height: 8.h),
-                    GestureDetector(
-                      onTap: null,
-                      child: Image.asset('assets/icons/chat_grey.png',
-                          width: 14.w),
-                    ),
-                    Image.asset('assets/icons/line_short.png', height: 8.h),
-                    GestureDetector(
-                      onTap: null,
-                      child: Image.asset('assets/icons/more_grey.png',
-                          height: 10.h),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        Obx(() => Container(
-            width: 302.w,
-            height: 44.h,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.all(Radius.circular(10.r)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 0,
-                  blurRadius: 8,
-                  offset: Offset(1, 4), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Center(child: Container(
-                child: Row(
-                  children: [
-                    InkWell(
-                        onTap: () => recorderController.toggleBlur(),
-                        child: Container(
-                            padding: EdgeInsets.only(left:5.w),
-                            width: 50.w,
-                            child: Center(child: Image.asset('assets/icons/playButton.png', height: 16.h)))),
-                    _buildCard(
-                      // backgroundColor: Theme.of(context).colorScheme.secondary,
-                      config: CustomConfig(
-                        colors: [
-                          Color(0xFF4BACEF).withOpacity(0.2),
-                          Color(0xFF4BACEF).withOpacity(0.1),
-                          Color(0xFF634CED).withOpacity(0.1),
-                          Theme.of(context).colorScheme.primary.withOpacity(0.15),
-                        ],
-                        durations: [35000, 19440, 10800, 6000],
-                        heightPercentages: [0.20, 0.23, 0.25, 0.30],
-                        blur: recorderController.blur.value,
-                      ),
-                      height: 44.h,
-                    ),
-                  ],
-                )
-            )))),
-        Padding(
-          padding: EdgeInsets.only(right: 19.0.w),
-          child: Divider(
-            thickness: 1,
-            height: 30.h,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget commentCard(BuildContext context) {
+  //   return Column(
+  //     children: [
+  //       Padding(
+  //         padding: EdgeInsets.only(left: 2.w, right: 23.w, bottom: 18.h),
+  //         child: Row(
+  //           children: <Widget>[
+  //             Container(
+  //               width: 27.0.w,
+  //               height: 27.0.h,
+  //               decoration: BoxDecoration(
+  //                 image: DecorationImage(
+  //                   image: AssetImage('assets/images/it.jpg'),
+  //                   fit: BoxFit.cover,
+  //                 ),
+  //                 shape: BoxShape.circle,
+  //               ),
+  //             ),
+  //             SizedBox(width: 11.w),
+  //             Text(
+  //               '닉네임',
+  //               style: Theme.of(context).textTheme.headline4,
+  //             ),
+  //             Expanded(child: Container()),
+  //             Container(
+  //               width: 103.w,
+  //               height: 21.h,
+  //               decoration: BoxDecoration(
+  //                 color: Theme.of(context).colorScheme.onSecondary,
+  //                 borderRadius: BorderRadius.all(Radius.circular(5.r)),
+  //               ),
+  //               child: Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   GestureDetector(
+  //                     onTap: null,
+  //                     child: Image.asset('assets/icons/heart_grey.png',
+  //                         width: 14.w),
+  //                   ),
+  //                   Image.asset('assets/icons/line_short.png', height: 8.h),
+  //                   GestureDetector(
+  //                     onTap: null,
+  //                     child: Image.asset('assets/icons/chat_grey.png',
+  //                         width: 14.w),
+  //                   ),
+  //                   Image.asset('assets/icons/line_short.png', height: 8.h),
+  //                   GestureDetector(
+  //                     onTap: null,
+  //                     child: Image.asset('assets/icons/more_grey.png',
+  //                         height: 10.h),
+  //                   ),
+  //                 ],
+  //               ),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //       Obx(() => Row(
+  //         children: [
+  //           Container(
+  //               width: 50.w,
+  //               height: 44.h,
+  //               decoration: BoxDecoration(
+  //                 color: Theme.of(context).colorScheme.background,
+  //                 borderRadius: BorderRadius.all(Radius.circular(10.r)),
+  //                 boxShadow: [
+  //                   BoxShadow(
+  //                     color: Colors.grey.withOpacity(0.3),
+  //                     spreadRadius: 0,
+  //                     blurRadius: 4,
+  //                     offset: Offset(1, 4), // changes position of shadow
+  //                   ),
+  //                 ],
+  //               ),
+  //               child: Row(
+  //                 children: [
+  //                   InkWell(
+  //                       splashColor: Colors.transparent,
+  //                       onTap: () => recorderController.toggleBlur(),
+  //                       child: Container(
+  //                           padding: EdgeInsets.only(left:5.w),
+  //                           width: 50.w,
+  //                           child: Center(child: Image.asset('assets/icons/playButton.png', height: 16.h)))),
+  //                 ],
+  //               )),
+  //           SizedBox(width: 8.w),
+  //           Container(
+  //             decoration: BoxDecoration(
+  //               color: Theme.of(context).colorScheme.background,
+  //               borderRadius: BorderRadius.all(Radius.circular(10.r)),
+  //               boxShadow: [
+  //                 BoxShadow(
+  //                   color: Colors.grey.withOpacity(0.3),
+  //                   spreadRadius: 0,
+  //                   blurRadius: 4,
+  //                   offset: Offset(1, 4), // changes position of shadow
+  //                 ),
+  //               ],
+  //             ),
+  //             child: _buildCard(
+  //               // backgroundColor: Theme.of(context).colorScheme.secondary,
+  //               config: CustomConfig(
+  //                 colors: [
+  //                   Color(0xFF4BACEF).withOpacity(0.2),
+  //                   Color(0xFF4BACEF).withOpacity(0.1),
+  //                   Color(0xFF634CED).withOpacity(0.1),
+  //                   Theme.of(context).colorScheme.primary.withOpacity(0.15),
+  //                 ],
+  //                 durations: [35000, 19440, 10800, 6000],
+  //                 heightPercentages: [0.20, 0.23, 0.25, 0.30],
+  //                 blur: recorderController.blur.value,
+  //               ),
+  //               height: 44.h,
+  //             ),
+  //           )
+  //         ],
+  //       )),
+  //       Padding(
+  //         padding: EdgeInsets.only(right: 19.0.w),
+  //         child: Divider(
+  //           thickness: 1,
+  //           height: 30.h,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   _buildCard({
     Config? config,
@@ -343,10 +560,7 @@ class PostPage extends StatelessWidget {
         margin: EdgeInsets.all(0),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0)
-            )),
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: WaveWidget(
           config: config!,
           backgroundColor: backgroundColor,

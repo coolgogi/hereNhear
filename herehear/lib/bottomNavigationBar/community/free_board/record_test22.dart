@@ -1,10 +1,20 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:record/record.dart';
 import '../record.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+
+
+class Controller extends GetxController {
+  RxBool showPlayer = false.obs;
+  // Rx<> audioSource =
+}
+
+
+String? recordPath;
 
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
@@ -27,6 +37,8 @@ class _AudioRecorderState extends State<AudioRecorder> {
   late String docId;
   String recordId =
   (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+
+  // String? recordPath;
 
   @override
   void initState() {
@@ -177,11 +189,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
     final path = await _audioRecorder.stop();
     widget.onStop(path!);
 
-    File _file = File(path);
-    String recordPath = await uploadFile(_file);
-    print("=======recordPath=======");
-    print(recordPath);
-    print("========================");
+    // File _file = File(path);
+    // recordPath = await uploadFile(_file);
+    // print("=======recordPath=======");
+    // print(recordPath);
+    // print("========================");
     setState(() => _isRecording = false);
   }
 
@@ -198,6 +210,87 @@ class _AudioRecorderState extends State<AudioRecorder> {
     await _audioRecorder.resume();
 
     setState(() => _isPaused = false);
+  }
+
+  // Future<String> uploadFile(File file) async {
+  //   print("==========");
+  //   print('upload');
+  //   if (file == null) {
+  //     print("null file exception");
+  //     return '';
+  //   } else {
+  //     Reference storageRef = FirebaseStorage.instance
+  //         .ref()
+  //         .child('community')
+  //     // .child(docId)
+  //         .child('$recordId.m4a');
+  //
+  //     SettableMetadata metadata = SettableMetadata(
+  //       contentType: 'audio/m4a',
+  //       customMetadata: <String, String>{'file': 'audio'},
+  //     );
+  //
+  //     _upload = storageRef.putFile(file, metadata);
+  //     _upload.whenComplete(() => {print("Complete")});
+  //     String downloadPath = await _upload.snapshot.ref.getDownloadURL();
+  //     // String downloadPath = await storageRef.getDownloadURL();
+  //     print('??????????????: ${downloadPath}');
+  //     return downloadPath;
+  //   }
+  // }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _ampTimer?.cancel();
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
+      setState(() => _recordDuration++);
+    });
+
+    _ampTimer =
+        Timer.periodic(const Duration(milliseconds: 200), (Timer t) async {
+          _amplitude = await _audioRecorder.getAmplitude();
+          setState(() {});
+        });
+  }
+}
+
+class recordingPage extends StatelessWidget {
+  ap.AudioSource? audioSource;
+  String recordId =
+  (10000000000000 - DateTime.now().millisecondsSinceEpoch).toString();
+  late UploadTask _upload;
+
+  final controller = Get.put(Controller());
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Obx (() => Center(
+          child: controller.showPlayer.value
+              ? Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: AudioPlayer(
+              source: audioSource!,
+              onDelete: () {
+                controller.showPlayer.value = false;
+              },
+            ),
+          )
+              : AudioRecorder(
+            onStop: (path) async {
+              File _file = File(path);
+              recordPath = await uploadFile(_file);
+                print("=======recordPath=======");
+                print('@@@@@@@@@@@@@: ${recordPath}');
+                audioSource = ap.AudioSource.uri(Uri.parse(recordPath!));
+                controller.showPlayer.value = true;
+            },
+          ),
+        )),
+      ),
+    );
   }
 
   Future<String> uploadFile(File file) async {
@@ -219,71 +312,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
       );
 
       _upload = storageRef.putFile(file, metadata);
-      _upload.whenComplete(() => {print("Complete")});
-      return await storageRef.getDownloadURL();
+      await _upload.whenComplete(() => {print("Complete")});
+      String downloadPath = await storageRef.getDownloadURL();
+      // String downloadPath = await storageRef.getDownloadURL();
+      print('??????????????: ${downloadPath}');
+      return downloadPath;
     }
-  }
-
-  void _startTimer() {
-    _timer?.cancel();
-    _ampTimer?.cancel();
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) {
-      setState(() => _recordDuration++);
-    });
-
-    _ampTimer =
-        Timer.periodic(const Duration(milliseconds: 200), (Timer t) async {
-          _amplitude = await _audioRecorder.getAmplitude();
-          setState(() {});
-        });
-  }
-}
-
-class recordingPage extends StatefulWidget {
-  @override
-  _recordingPageState createState() => _recordingPageState();
-}
-
-class _recordingPageState extends State<recordingPage> {
-  bool showPlayer = false;
-  ap.AudioSource? audioSource;
-
-  @override
-  void initState() {
-    showPlayer = false;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          children: [
-            Center(
-              child: showPlayer
-                  ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-                child: AudioPlayer(
-                  source: audioSource!,
-                  onDelete: () {
-                    setState(() => showPlayer = false);
-                  },
-                ),
-              )
-                  : AudioRecorder(
-                onStop: (path) {
-                  setState(() {
-                    audioSource = ap.AudioSource.uri(Uri.parse(path));
-                    showPlayer = true;
-                  });
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/appBar/set_location.dart';
 import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
 // import 'package:herehear/bottomNavigationBar/community/free_board/record_test22.dart';
@@ -25,10 +26,13 @@ class HomePage extends StatelessWidget {
   final searchController = Get.put(SearchBarController());
   final UserController userController = Get.find();
   String current_uid = '';
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
+          key: _scaffoldKey,
+          endDrawer: DrawerWidget(),
           appBar: AppBar(
             titleSpacing: 22.5.w,
             title: GestureDetector(
@@ -56,7 +60,7 @@ class HomePage extends StatelessWidget {
                   onPressed: null,
                   icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
               IconButton(
-                  onPressed: null,
+                  onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
                   icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
             ],
           ),
