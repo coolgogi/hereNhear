@@ -31,7 +31,7 @@ class GroupCallPage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(top: 15.0.h),
           child: AppBar(
-            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Get.back()),
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: _onCallEnd),
             title: Text('HEAR CHAT', style: Theme.of(context).textTheme.headline1),
             titleSpacing: 0.0,
             actions: <Widget>[

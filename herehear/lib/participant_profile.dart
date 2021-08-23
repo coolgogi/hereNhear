@@ -195,7 +195,7 @@ class ParticipantProfilePage extends StatelessWidget {
                                           child: Container(
                                               padding: EdgeInsets.only(left:5.w),
                                               width: 50.w,
-                                              child: Center(child: Image.asset('assets/icons/playButton.png', height: 20.h)))),
+                                              child: Center(child: Image.asset(recorderController.isPlayAudio.value? 'assets/icons/pause.png' : 'assets/icons/playButton.png', height: 20.h)))),
                                       _buildCard(
                                         // backgroundColor: Theme.of(context).colorScheme.secondary,
                                         config: CustomConfig(
@@ -311,19 +311,20 @@ class ParticipantProfilePage extends StatelessWidget {
         Material(
           color: Colors.transparent,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 130.h),
               Container(
                 width: 330.w,
-                height: 370.h,
+                height: 400.h,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   borderRadius: BorderRadius.all(Radius.circular(10.r)),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(126.w, 16.63.h, 20.w, 12.h),
+                      padding: EdgeInsets.fromLTRB(126.w, 16.h, 20.w, 10.h),
                       child: Row(
                         children: [
                           Text('신고하기', style: Theme.of(context).textTheme.headline2),
@@ -350,10 +351,13 @@ class ParticipantProfilePage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     ListTile(
-                                      contentPadding: EdgeInsets.all(0.w),
+                                      dense: true,
+                                      minVerticalPadding: 0.0,
+                                      contentPadding: EdgeInsets.all(0),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('음란/선정성'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.sexual,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -362,10 +366,13 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
+                                      minVerticalPadding: 0.0,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('욕설/인신공격'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.insult,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -374,10 +381,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('기타'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.etc,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -394,10 +403,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('불법정보'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.illigal,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -406,10 +417,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('개인정보 노출'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.privacy,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -439,10 +452,12 @@ class ParticipantProfilePage extends StatelessWidget {
                             ),
                           ),
                           ListTile(
+                            dense: true,
                             contentPadding: EdgeInsets.all(0.w),
                             horizontalTitleGap: 0.0.w,
                             title: Text('권리침해 신고'),
                             leading: Radio(
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               value: reportReasonList.right,
                               groupValue: profileController.reportReason.value,
                               onChanged: (reportReasonList? value) {
@@ -451,15 +466,16 @@ class ParticipantProfilePage extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 30.w, bottom: 10.h),
+                            padding: EdgeInsets.only(left: 20.w, right: 30.w, bottom: 2.h),
                             child: Text('사생활 침해/명예훼손으로 피해를 받으신 경우 신고해 주세요.', style: Theme.of(context).textTheme.headline6,),
                           )
                         ],
                       )),
                     ),
-                    Divider(),
+                    Expanded(child: Container()),
+                    Divider(height: 10.h),
                     Padding(
-                      padding: EdgeInsets.only(top: 5.h),
+                      padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
                       child: IntrinsicHeight(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

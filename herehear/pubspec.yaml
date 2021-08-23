@@ -204,6 +204,9 @@ flutter:
     - assets/icons/facebook.png
     - assets/icons/google.png
     - assets/icons/apple.png
+    - assets/icons/trashbox.png
+    - assets/icons/record_white.png
+    - assets/icons/upload.png
     - assets/icons/camera.png
     - assets/icons/camera_blue.png
     - assets/icons/gallery.png
@@ -212,6 +215,7 @@ flutter:
     - assets/icons/expand_black.png
     - assets/icons/micButton.png
     - assets/icons/micButton_mute.png
+    - assets/icons/pause.png
     - assets/images/game.png
     - assets/images/IU.png
     - assets/images/gamer.png
