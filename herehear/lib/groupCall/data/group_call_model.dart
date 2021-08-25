@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:herehear/chatting/util.dart';
 import 'package:meta/meta.dart';
@@ -26,8 +27,12 @@ class GroupCallModel extends Equatable {
     this.location,
     this.createdTime,
     required this.type,
+
     this.listener,
     this.participants,
+
+    this.reservation,
+    this.private
   });
 
   /// Creates room from a map (decoded JSON).
@@ -41,7 +46,9 @@ class GroupCallModel extends Equatable {
         createdTime = json['createdTime'] as DateTime?,
         type = getMyGroupCallTypeFromString(json['type'] as String),
         listener = json['listener'].toList(),
-        participants = json['participants'].toList();
+        participants = json['participants'].toList(),
+  private = json['private'] as bool,
+  reservation = json['reservation'] as Timestamp;
 
   /// Converts room to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => {
@@ -55,6 +62,8 @@ class GroupCallModel extends Equatable {
         'type': type.toShortString(),
         'listener': listener,
         'participants': participants,
+    'private' : private,
+    'reservation' : reservation,
       };
 
   final String? hostUid;
@@ -67,6 +76,8 @@ class GroupCallModel extends Equatable {
   final List<dynamic>? listener;
   final List<dynamic>? participants;
   final MyGroupCallRoomType type;
+  final Timestamp? reservation;
+  final bool? private;
 
   @override
   // TODO: implement props
@@ -77,39 +88,6 @@ class GroupCallModel extends Equatable {
 
 
 
-
-class GroupCallUserModel extends Equatable {
-  GroupCallUserModel({
-    this.nickname,
-    this.uid,
-    this.profileUrl,
-    this.isParticipate,
-  });
-
-  /// Creates room from a map (decoded JSON).
-  GroupCallUserModel.fromJson(Map<String, dynamic> json)
-      : nickname = json['nickname'] as String,
-        uid = json['uid'] as int,
-        profileUrl = json['profileUrl'] as String?,
-        isParticipate = json['isParticipate'] as bool?;
-
-  /// Converts room to the map representation, encodable to JSON.
-  Map<String, dynamic> toJson() => {
-    'nickname': nickname,
-    'uid': uid,
-    'profileUrl': profileUrl,
-    'isParticipate': isParticipate,
-  };
-
-  String? nickname;
-  int? uid;
-  String? profileUrl;
-  bool? isParticipate;
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
-}
 
 // class GroupCallModel {
 //   String? hostUid;
