@@ -196,6 +196,9 @@ flutter:
     - assets/icons/clock_black.png
     - assets/icons/clock_white.png
     - assets/icons/clock_grey.png
+    - assets/icons/pause_white.png
+    - assets/icons/stop_white.png
+    - assets/icons/play_white.png
     - assets/icons/friends.png
     - assets/icons/addFriend.png
     - assets/icons/play.png

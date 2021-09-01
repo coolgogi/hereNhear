@@ -119,48 +119,66 @@ class MyPage extends StatelessWidget {
                       padding: EdgeInsets.only(top: 15.0.h, bottom: 32.h),
                       child: Row(
                         children: [
-                          Obx(() => Container(
-                              width: 260.w,
-                              height: 44.h,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.25),
-                                    spreadRadius: 0,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 0), // changes position of shadow
+                          Obx(() => Row(
+                            children: [
+                              Container(
+                                  width: 50.w,
+                                  height: 44.h,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.background,
+                                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 0,
+                                        blurRadius: 4,
+                                        offset: Offset(1, 4), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Center(child: Container(
                                   child: Row(
                                     children: [
                                       InkWell(
+                                          splashColor: Colors.transparent,
                                           onTap: () => recorderController.toggleBlur(),
                                           child: Container(
                                               padding: EdgeInsets.only(left:5.w),
                                               width: 50.w,
-                                              child: Center(child: Image.asset('assets/icons/playButton.png', height: 20.h)))),
-                                      _buildCard(
-                                        // backgroundColor: Theme.of(context).colorScheme.secondary,
-                                        config: CustomConfig(
-                                          colors: [
-                                            Color(0xFF4BACEF).withOpacity(0.2),
-                                            Color(0xFF4BACEF).withOpacity(0.1),
-                                            Color(0xFF634CED).withOpacity(0.1),
-                                            Theme.of(context).colorScheme.primary.withOpacity(0.15),
-                                          ],
-                                          durations: [35000, 19440, 10800, 6000],
-                                          heightPercentages: [0.20, 0.23, 0.25, 0.30],
-                                          blur: recorderController.blur.value,
-                                        ),
-                                        height: 44.h,
-                                      ),
+                                              child: Center(child: Image.asset(recorderController.isPlayAudio.value? 'assets/icons/pause.png' : 'assets/icons/playButton.png', height: 16.h)))),
                                     ],
-                                  )
-                              )))),
+                                  )),
+                              SizedBox(width: 8.w),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.background,
+                                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 0,
+                                      blurRadius: 4,
+                                      offset: Offset(1, 4), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: _buildCard(
+                                  // backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  config: CustomConfig(
+                                    colors: [
+                                      Color(0xFF4BACEF).withOpacity(0.2),
+                                      Color(0xFF4BACEF).withOpacity(0.1),
+                                      Color(0xFF634CED).withOpacity(0.1),
+                                      Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                                    ],
+                                    durations: [35000, 19440, 10800, 6000],
+                                    heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                                    blur: recorderController.blur.value,
+                                  ),
+                                  height: 44.h,
+                                ),
+                              )
+                            ],
+                          )),
                           SizedBox(width: 11.w),
                           Obx(() => Column(
                             children: [
@@ -226,16 +244,13 @@ class MyPage extends StatelessWidget {
   }) {
     return Container(
       height: height,
-      width: 210.w,
+      width: 216.w,
       child: Card(
         elevation: 0.0,
         margin: EdgeInsets.all(0),
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0)
-            )),
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
         child: WaveWidget(
           config: config!,
           backgroundColor: backgroundColor,

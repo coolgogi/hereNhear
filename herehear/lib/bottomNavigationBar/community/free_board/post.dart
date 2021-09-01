@@ -3,11 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/record_test22.dart';
 import 'package:herehear/bottomNavigationBar/community/record_controller.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/record_controller.dart';
+import 'package:herehear/record_dialog.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:just_audio/just_audio.dart' as ap;
 import 'package:flutter_tts/flutter_tts.dart';
@@ -205,7 +206,7 @@ class PostPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.w, 5.h, 7.w, 7.h),
                   child: GestureDetector(
-                    onTap: () => recordComment(context),
+                    onTap: () => RecordingPage().recordDialog(context),
                     child: Container(
                       width: 32.0.w,
                       height: 32.0.h,
@@ -487,69 +488,72 @@ class PostPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 35.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10.h),
-                        width: 64.w,
-                        height: 64.w,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.background,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 0,
-                              blurRadius: 8,
-                              offset: Offset(
-                                  0, 4), // changes position of shadow
+                  Obx(() =>
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(10.h),
+                            width: 64.w,
+                            height: 64.w,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 8,
+                                  offset: Offset(
+                                      0, 4), // changes position of shadow
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Image.asset('assets/icons/trashbox.png', width: 34.h, height: 34.h),
-                      ),
-                      SizedBox(width: 40.w),
-                      Container(
-                        width: 78.h,
-                        height: 78.h,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary ,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 0,
-                              blurRadius: 8,
-                              offset: Offset(
-                                  0, 4), // changes position of shadow
+                            child: Image.asset('assets/icons/trashbox.png', width: 34.h, height: 34.h),
+                          ),
+                          SizedBox(width: 40.w),
+                          Container(
+                            width: 78.h,
+                            height: 78.h,
+                            padding: EdgeInsets.all(10.h),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary ,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 8,
+                                  offset: Offset(
+                                      0, 4), // changes position of shadow
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Image.asset('assets/icons/record_white.png', width: 30.h, height: 30.h),
-                      ),
-                      SizedBox(width: 40.w),
-                      Container(
-                        width: 64.w,
-                        height: 64.w,
-                        padding: EdgeInsets.all(10.h),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.background,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 0,
-                              blurRadius: 8,
-                              offset: Offset(
-                                  0, 4), // changes position of shadow
+                            child: Image.asset('assets/icons/record_white.png', width: 30.h, height: 30.h),
+                          ),
+                          SizedBox(width: 40.w),
+                          Container(
+                            width: 64.w,
+                            height: 64.w,
+                            padding: EdgeInsets.all(10.h),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.3),
+                                  spreadRadius: 0,
+                                  blurRadius: 8,
+                                  offset: Offset(
+                                      0, 4), // changes position of shadow
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: Image.asset('assets/icons/upload.png', width: 34.h, height: 34.h),
-                      ),
-                    ],
+                            child: Image.asset('assets/icons/upload.png', width: 34.h, height: 34.h),
+                          ),
+                        ],
+                      )
+
                   )
                 ],
               ),
