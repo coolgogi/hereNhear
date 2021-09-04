@@ -172,7 +172,7 @@ class SearchPage extends StatelessWidget {
         ],
       ),
       child: InkWell(
-        onTap: () => Get.to(CategoryDetailPage(), arguments: category),
+        onTap: () => Get.to(CategoryDetailPage(category)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

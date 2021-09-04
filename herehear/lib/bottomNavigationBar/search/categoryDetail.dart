@@ -6,8 +6,9 @@ import 'package:herehear/chatting/my_firebase_chat.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
 
 class CategoryDetailPage extends StatelessWidget {
+  String title;
 
-  String caterory = Get.arguments;
+  CategoryDetailPage(this.title);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class CategoryDetailPage extends StatelessWidget {
       appBar: AppBar(
         titleSpacing: 25.0.w,
         centerTitle: true,
-        title: Text(caterory,
+        title: Text(title,
             style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
           IconButton(
