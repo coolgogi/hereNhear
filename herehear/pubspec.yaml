@@ -184,6 +184,8 @@ flutter:
     - assets/icons/heart_grey.png
     - assets/icons/heart_white.png
     - assets/icons/heart_fill.png
+    - assets/icons/heart_blue.png
+    - assets/icons/heart_stroke_blue.png
     - assets/icons/chat.png
     - assets/icons/chat_grey.png
     - assets/icons/chat_black.png

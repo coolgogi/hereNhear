@@ -9,6 +9,15 @@ import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+class CategoryController extends GetxController {
+  RxList<String> categoryList = <String>[].obs;
+}
+
+
+
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchPage extends StatelessWidget {
@@ -53,6 +62,8 @@ class SearchPage extends StatelessWidget {
     'assets/icons/book.png',
     'assets/images/mike2.png',
   ];
+
+  final categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -155,40 +166,56 @@ class SearchPage extends StatelessWidget {
   }
 
   Widget category_card(BuildContext context, String category, String categoryImage) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16, right: 16.0.w),
-      width: 156.0.w,
-      height: 69.0.w,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: () => Get.to(CategoryDetailPage(category)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 10.0.w),
-              child: Image.asset(categoryImage, width: 17.h, height: 17.h),
-            ),
-            Text(
-              category,
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 16, right: 16.0.w),
+          width: 156.0.w,
+          height: 69.0.w,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(0, 4), // changes position of shadow
               ),
+            ],
+          ),
+          child: InkWell(
+            onTap: () => Get.to(CategoryDetailPage(category)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 10.0.w),
+                  child: Image.asset(categoryImage, width: 17.h, height: 17.h),
+                ),
+                Text(
+                  category,
+                  style: Theme.of(context).textTheme.headline2!.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+        Obx(() => Positioned(
+          top: 50.w,
+          left: 133.w,
+          child: InkWell(
+            onTap: () {
+              if(categoryController.categoryList.contains(category))
+                categoryController.categoryList.remove(category);
+              else categoryController.categoryList.add(category);
+            },
+            child: Image.asset(categoryController.categoryList.contains(category)? 'assets/icons/heart_blue.png' : 'assets/icons/heart_stroke_blue.png', width: 10.h, height: 9.h,),
+          )
+        )),
+      ],
     );
   }
 
