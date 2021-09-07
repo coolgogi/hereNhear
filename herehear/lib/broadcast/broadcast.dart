@@ -57,9 +57,8 @@ class BroadCastPage extends GetView<AgoraEventController> {
               extendBodyBehindAppBar: true,
               body: broadcast_body(context),
               // body: ChatPage.withData(roomData),
-              // body: Image.asset('assets/suhyun.jpg'),
-
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.grey,
+              extendBody: true,
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -99,14 +98,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
               // inviteDialog(context);
             },
             padding: EdgeInsets.all(0)),
-        // IconButton(
-        //     icon:
-        //         Image.asset('assets/icons/more.png', width: 24.0, height: 24.0),
-        //     iconSize: 4.0,
-        //     onPressed: () {
-        //       // inviteDialog(context);
-        //     },
-        //     padding: EdgeInsets.all(0)),
         IconButton(
             icon: Icon(Icons.more_vert, color: Colors.white),
             // iconSize: 4.0,
@@ -117,6 +108,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
       ],
       // toolbarOpacity: 0.0,
       // bottomOpacity: 0.0,
+      // flexibleSpace:
     );
   }
 
