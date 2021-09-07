@@ -13,11 +13,12 @@ ListView broadcastRoomList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
   final _userData = UserController.to.myProfile.value;
   return ListView.builder(
+    scrollDirection: Axis.horizontal,
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
       return Padding(
-        padding: EdgeInsets.only(bottom: 16.0.h),
+        padding: EdgeInsets.only(right: 10.0.w),
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);

@@ -6,7 +6,7 @@ import 'package:herehear/app.dart';
 import 'package:herehear/theme/theme.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:overlay_support/overlay_support.dart';
-
+import 'package:flutter/services.dart';
 import 'appBar/notification/notification.dart';
 import 'bottomNavigationBar/home/home.dart';
 import 'bottomNavigationBar/myPage/mypage.dart';
@@ -25,58 +25,57 @@ class MyApp extends StatelessWidget {
   static ThemeController get to => Get.find();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     // GetX 등록
     // FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.white
+    ));
     return FutureBuilder(
       future: Init.instance.initialize(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return MaterialApp(home: Splash());
         else {
-          return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: SystemUiOverlayStyle.dark.copyWith(
-              statusBarColor: Colors.transparent,
-            ),
-            child: GetBuilder<ThemeController>(
-                init: ThemeController(),
-                builder: (value) {
-                  return ScreenUtilInit(
-                    designSize: Size(375, 667),
-                    builder: () => GetMaterialApp(
-                      theme: value.isDarkTheme.value ? darkTheme : lightTheme,
-                      debugShowCheckedModeBanner: false,
-                      initialBinding: BindingsBuilder(() {
-                        Get.lazyPut<UserController>(
-                                () => UserController()); //이 부분을 추가하면 된다.
-                      }),
-                      title: 'Here & Hear',
-                      home: App(),
-                      getPages: [
-                        GetPage(
-                          name: '/',
-                          page: () => HomePage(),
-                        ),
-                        GetPage(
-                          name: '/myPage',
-                          page: () => MyPage(),
-                        ),
-                        GetPage(
-                          name: '/login',
-                          page: () => LoginPage(),
-                        ),
-                        GetPage(
-                          name: '/notification',
-                          page: () => NotificationPage(),
-                        ),
-                        GetPage(
-                          name: '/search',
-                          page: () => SearchPage(),
-                        )
-                      ],
-                    ),
-                  );
-                }),
-          );
+          return GetBuilder<ThemeController>(
+              init: ThemeController(),
+              builder: (value) {
+                return ScreenUtilInit(
+                  designSize: Size(375, 667),
+                  builder: () => GetMaterialApp(
+                    theme: value.isDarkTheme.value ? darkTheme : lightTheme,
+                    debugShowCheckedModeBanner: false,
+                    initialBinding: BindingsBuilder(() {
+                      Get.lazyPut<UserController>(
+                              () => UserController()); //이 부분을 추가하면 된다.
+                    }),
+                    title: 'Here & Hear',
+                    home: App(),
+                    getPages: [
+                      GetPage(
+                        name: '/',
+                        page: () => HomePage(),
+                      ),
+                      GetPage(
+                        name: '/myPage',
+                        page: () => MyPage(),
+                      ),
+                      GetPage(
+                        name: '/login',
+                        page: () => LoginPage(),
+                      ),
+                      GetPage(
+                        name: '/notification',
+                        page: () => NotificationPage(),
+                      ),
+                      GetPage(
+                        name: '/search',
+                        page: () => SearchPage(),
+                      )
+                    ],
+                  ),
+                );
+              });
         }
       }
     );
@@ -101,6 +100,6 @@ class Init {
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 2));
   }
 }

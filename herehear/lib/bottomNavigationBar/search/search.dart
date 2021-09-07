@@ -107,7 +107,7 @@ class SearchPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 21.0.w, top: 11.0.h),
             child: Container(
-              height: 195.0.h,
+              height: 205.0.h,
               child: StreamBuilder<List<BroadcastModel>>(
                 stream: MyFirebaseChatCore.instance.rooms(),
                 builder: (context,snapshot) {
