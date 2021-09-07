@@ -31,7 +31,7 @@ class GroupCallPage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(top: 15.0.h),
           child: AppBar(
-            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: () => Get.back()),
+            leading: IconButton(icon: Icon(Icons.arrow_back_ios), onPressed: _onCallEnd),
             title: Text('HEAR CHAT', style: Theme.of(context).textTheme.headline1),
             titleSpacing: 0.0,
             actions: <Widget>[
@@ -178,7 +178,7 @@ class GroupCallPage extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      left: 65.0.w,
+                      left: 50.0.w,
                       right: 4.0.w,
                       top: 52.0.h,
                       bottom: 0.0.h,
@@ -187,16 +187,7 @@ class GroupCallPage extends StatelessWidget {
                           // if(uid == controller.currentUid) <-- 자기꺼 아니면 음소거 못하게 하기(호스트 경우엔 이 조건 없애기ㅇㅇ
                           controller.onToggleMute();
                         },
-                        child: Container(
-                          padding: EdgeInsets.only(left: controller.muted.value? 6.5.w : 7.7.w, right: controller.muted.value? 6.5.w : 7.7.w),
-                          width: 26.h,
-                          height: 26.h,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: controller.muted.value? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.primary,
-                          ),
-                          child: Image.asset(controller.muted.value? 'assets/icons/mic_off.png' : 'assets/icons/mic_fill2.png'),
-                        ),
+                        child: Image.asset(controller.muted.value? 'assets/icons/micButton_mute.png' : 'assets/icons/micButton.png', width: 26.w, height: 26.w),
                       ),
                     )
                   ],

@@ -2,11 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/record_controller.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 import 'groupCall/data/participantsProfile_controller.dart';
 
 
 class ParticipantProfilePage extends StatelessWidget {
   final profileController = Get.put(ParticipantProfileController());
+  final recorderController = Get.put(RecorderController());
   List<String> themeList = [
     '한동대',
     '유리한 녀석들',
@@ -23,7 +27,7 @@ class ParticipantProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.h),
+        preferredSize: Size.fromHeight(60.h),
         child: Padding(
           padding: EdgeInsets.only(top: 15.0.h),
           child: AppBar(
@@ -168,29 +172,73 @@ class ParticipantProfilePage extends StatelessWidget {
                       padding: EdgeInsets.only(top: 15.0.h, bottom: 32.h),
                       child: Row(
                         children: [
-                          Container(
-                              width: 247.w,
-                              height: 44.h,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.25),
-                                    spreadRadius: 0,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 0), // changes position of shadow
+                          Obx(() => Row(
+                            children: [
+                              Container(
+                                  width: 50.w,
+                                  height: 44.h,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.background,
+                                    borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 0,
+                                        blurRadius: 4,
+                                        offset: Offset(1, 4), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Center(child: Container())),
-                          SizedBox(width: 16.w),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                          splashColor: Colors.transparent,
+                                          onTap: () => recorderController.toggleBlur(),
+                                          child: Container(
+                                              padding: EdgeInsets.only(left:5.w),
+                                              width: 50.w,
+                                              child: Center(child: Image.asset(recorderController.isPlayAudio.value? 'assets/icons/pause.png' : 'assets/icons/playButton.png', height: 16.h)))),
+                                    ],
+                                  )),
+                              SizedBox(width: 8.w),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.background,
+                                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 0,
+                                      blurRadius: 4,
+                                      offset: Offset(1, 4), // changes position of shadow
+                                    ),
+                                  ],
+                                ),
+                                child: _buildCard(
+                                  // backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  config: CustomConfig(
+                                    colors: [
+                                      Color(0xFF4BACEF).withOpacity(0.2),
+                                      Color(0xFF4BACEF).withOpacity(0.1),
+                                      Color(0xFF634CED).withOpacity(0.1),
+                                      Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                                    ],
+                                    durations: [35000, 19440, 10800, 6000],
+                                    heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                                    blur: recorderController.blur.value,
+                                  ),
+                                  height: 44.h,
+                                ),
+                              )
+                            ],
+                          )),
+                          SizedBox(width: 9.w),
                           Obx(() => Column(
                             children: [
-                              InkWell(
+                              GestureDetector(
                                 onTap: () => toggleIsFavoriteVoice(),
                                   child: Image.asset(profileController.isfavoriteVoice.value? 'assets/icons/heart_fill.png' : 'assets/icons/heart.png', height: 22.h)),
-                              Text('105', style: Theme.of(context).textTheme.headline6,)
+                              Text('105', style: Theme.of(context).textTheme.headline6,),
                             ],
                           )),
                         ],
@@ -216,6 +264,32 @@ class ParticipantProfilePage extends StatelessWidget {
         ],
       ),
       bottomSheet: bottomBar(context),
+    );
+  }
+
+  _buildCard({
+    Config? config,
+    Color backgroundColor = Colors.transparent,
+    DecorationImage? backgroundImage,
+    double height = 152.0,
+  }) {
+    return Container(
+      height: height,
+      width: 205.w,
+      child: Card(
+        elevation: 0.0,
+        margin: EdgeInsets.all(0),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        child: WaveWidget(
+          config: config!,
+          backgroundColor: backgroundColor,
+          backgroundImage: backgroundImage,
+          size: Size(double.infinity, double.infinity),
+          waveAmplitude: 0,
+        ),
+      ),
     );
   }
 
@@ -252,25 +326,29 @@ class ParticipantProfilePage extends StatelessWidget {
         Material(
           color: Colors.transparent,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(height: 130.h),
               Container(
                 width: 330.w,
-                height: 370.h,
+                height: 400.h,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.background,
                   borderRadius: BorderRadius.all(Radius.circular(10.r)),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(126.w, 16.63.h, 20.w, 12.h),
+                      padding: EdgeInsets.fromLTRB(126.w, 16.h, 20.w, 10.h),
                       child: Row(
                         children: [
                           Text('신고하기', style: Theme.of(context).textTheme.headline2),
                           Expanded(child: Container()),
                           InkWell(
-                              onTap: () => Get.back(),
+                              onTap: () {
+                                profileController.onClose();
+                                Get.back();
+                              },
                               child: Icon(Icons.close)),
                         ],
                       ),
@@ -288,10 +366,13 @@ class ParticipantProfilePage extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     ListTile(
-                                      contentPadding: EdgeInsets.all(0.w),
+                                      dense: true,
+                                      minVerticalPadding: 0.0,
+                                      contentPadding: EdgeInsets.all(0),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('음란/선정성'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.sexual,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -300,10 +381,13 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
+                                      minVerticalPadding: 0.0,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('욕설/인신공격'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.insult,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -312,10 +396,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('기타'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.etc,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -332,10 +418,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('불법정보'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.illigal,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -344,10 +432,12 @@ class ParticipantProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     ListTile(
+                                      dense: true,
                                       contentPadding: EdgeInsets.all(0.w),
                                       horizontalTitleGap: 0.0.w,
                                       title: Text('개인정보 노출'),
                                       leading: Radio(
+                                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                         value: reportReasonList.privacy,
                                         groupValue: profileController.reportReason.value,
                                         onChanged: (reportReasonList? value) {
@@ -376,31 +466,31 @@ class ParticipantProfilePage extends StatelessWidget {
                                 border: Border.all(color: profileController.reportReason.value == reportReasonList.etc? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface)
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5.0.h),
-                            child: ListTile(
-                              contentPadding: EdgeInsets.all(0.w),
-                              horizontalTitleGap: 0.0.w,
-                              title: Text('권리침해 신고'),
-                              leading: Radio(
-                                value: reportReasonList.right,
-                                groupValue: profileController.reportReason.value,
-                                onChanged: (reportReasonList? value) {
-                                  profileController.reportReason.value = value;
-                                },
-                              ),
+                          ListTile(
+                            dense: true,
+                            contentPadding: EdgeInsets.all(0.w),
+                            horizontalTitleGap: 0.0.w,
+                            title: Text('권리침해 신고'),
+                            leading: Radio(
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              value: reportReasonList.right,
+                              groupValue: profileController.reportReason.value,
+                              onChanged: (reportReasonList? value) {
+                                profileController.reportReason.value = value;
+                              },
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: 20.w, right: 30.w, bottom: 10.h),
+                            padding: EdgeInsets.only(left: 20.w, right: 30.w, bottom: 2.h),
                             child: Text('사생활 침해/명예훼손으로 피해를 받으신 경우 신고해 주세요.', style: Theme.of(context).textTheme.headline6,),
                           )
                         ],
                       )),
                     ),
-                    Divider(),
+                    Expanded(child: Container()),
+                    Divider(height: 10.h),
                     Padding(
-                      padding: EdgeInsets.only(top: 5.h),
+                      padding: EdgeInsets.only(top: 5.h, bottom: 10.h),
                       child: IntrinsicHeight(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/community/playground/karaoke.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/location/controller/location_controller.dart';
@@ -280,7 +281,7 @@ class CommunityPage extends StatelessWidget {
               ],
             ),
             child: InkWell(
-              onTap: null,
+              onTap: () => Get.to(KaraokePage()),
               child: Row(
                 children: [
                   Padding(

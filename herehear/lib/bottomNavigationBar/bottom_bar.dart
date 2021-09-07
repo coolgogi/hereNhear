@@ -19,21 +19,20 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
         Get.put(BottomBarController(), permanent: false);
-    return SafeArea(
-        child: Scaffold(
+
+    return Scaffold(
       resizeToAvoidBottomInset: false,
-      bottomNavigationBar:
-          buildBottomNavigationMenu(context, bottomBarController),
+      bottomNavigationBar: buildBottomNavigationMenu(context, bottomBarController),
       body: Obx(() => IndexedStack(
-            index: bottomBarController.tabIndex.value,
-            children: [
-              HomePage(),
-              SearchPage(),
-              Container(),
-              CommunityPage(),
-              MyPage(),
-            ],
-          )),
+        index: bottomBarController.tabIndex.value,
+        children: [
+          HomePage(),
+          SearchPage(),
+          Container(),
+          CommunityPage(),
+          MyPage(),
+        ],
+      )),
       floatingActionButtonLocation: CustomFloatingActionButtonLocation(
           FloatingActionButtonLocation.centerDocked, 0, 15),
       floatingActionButton: FloatingActionButton(
@@ -53,7 +52,7 @@ class BottomBar extends StatelessWidget {
                     ? _showMyDialog()
                     : showCreateOption(context),
               }),
-    ));
+    );
   }
 
   Future<void> _showMyDialog() async {
