@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
