@@ -19,6 +19,7 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final BottomBarController bottomBarController =
         Get.put(BottomBarController(), permanent: false);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: buildBottomNavigationMenu(context, bottomBarController),
@@ -42,15 +43,15 @@ class BottomBar extends StatelessWidget {
             width: 23.0.w,
           ),
           onPressed: () => {
-            print(
-                '*******************************************************************************8'),
-            print(userController.myProfile.value.uid),
-            print(
-                '*******************************************************************************8'),
-            userController.myProfile.value.uid == 'Guest'
-                ? _showMyDialog()
-                : showCreateOption(context),
-          }),
+                print(
+                    '*******************************************************************************8'),
+                print(userController.myProfile.value.uid),
+                print(
+                    '*******************************************************************************8'),
+                userController.myProfile.value.uid == 'Guest'
+                    ? _showMyDialog()
+                    : showCreateOption(context),
+              }),
     );
   }
 
@@ -100,12 +101,14 @@ class BottomBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
+                    padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
                     child: GestureDetector(
-                      onTap: () => Get.back(),
-                      child: Icon(Icons.close, size: 25.w, color: Colors.white,)
-                    )
-                ),
+                        onTap: () => Get.back(),
+                        child: Icon(
+                          Icons.close,
+                          size: 25.w,
+                          color: Colors.white,
+                        ))),
               ],
             ),
             Row(
@@ -181,8 +184,10 @@ class BottomBar extends StatelessWidget {
                                   height: 57.h,
                                 ),
                               ),
-                              Image.asset('assets/images/liveImage.png',
-                                height: 62.h,),
+                              Image.asset(
+                                'assets/images/liveImage.png',
+                                height: 62.h,
+                              ),
                             ],
                           ),
                         )

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
@@ -17,7 +18,8 @@ class BroadCastPage extends GetView<AgoraEventController> {
   final buttonStyle = TextStyle(color: Colors.white, fontSize: 15);
   final fireStore = FirebaseFirestore.instance;
   //Map<String, dynamic> roomData = new Map();
-
+  //나중에 db에서 가져올 예정
+  String timer_title = 'timer';
   BroadCastPage(
       {
       //required this.channelName,
@@ -52,7 +54,11 @@ class BroadCastPage extends GetView<AgoraEventController> {
           if (snapshot.hasData) {
             return Scaffold(
               appBar: profileAppBar(context),
-              body: ChatPage.withData(roomData),
+              extendBodyBehindAppBar: true,
+              body: broadcast_body(context),
+              // body: ChatPage.withData(roomData),
+              backgroundColor: Colors.grey,
+              extendBody: true,
             );
           } else {
             return Center(child: CircularProgressIndicator());
@@ -60,45 +66,49 @@ class BroadCastPage extends GetView<AgoraEventController> {
         });
   }
 
+  Widget broadcast_body(BuildContext context) {
+    return Stack(children: [
+      ChatPage.withData(roomData),
+      Image.asset('assets/suhyun.jpg'),
+    ]);
+  }
+
   PreferredSizeWidget profileAppBar(BuildContext context) {
     return AppBar(
-      leading: Card(
-        margin: EdgeInsets.only(left: 0.0.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: 30,
-              height: 30,
-              child: Image.asset(roomData.hostInfo!.profile!),
-            ),
-          ],
-        ),
+      leading: IconButton(
+          onPressed: () {
+            _onCallEnd();
+          },
+          icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      title: Container(
+        margin: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(45)),
+        child:
+            Text("$timer_title", style: Theme.of(context).textTheme.subtitle1),
       ),
-      backgroundColor: Colors.white,
-      title: Text(roomData.roomInfo!.title,
-          style: Theme.of(context).textTheme.subtitle1),
-      // backgroundColor: black,
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.add, color: Colors.black),
-          onPressed: () {
-            inviteDialog(context);
-          },
-        ),
+            icon: Image.asset('assets/icons/bell.png'),
+            onPressed: () {
+              // inviteDialog(context);
+            },
+            padding: EdgeInsets.all(0)),
         IconButton(
-          icon: Image.asset('assets/icons/groupBlack.png',
-              width: 23.w, color: Colors.black),
-          onPressed: () {
-            peopleDialog(context);
-          },
-        ),
-        IconButton(
-          icon: Image.asset('assets/icons/exit.png',
-              width: 23.w, color: Colors.red),
-          onPressed: () => _onCallEnd(),
-        ),
+            icon: Icon(Icons.more_vert, color: Colors.white),
+            // iconSize: 4.0,
+            onPressed: () {
+              // inviteDialog(context);
+            },
+            padding: EdgeInsets.all(0)),
       ],
+      // toolbarOpacity: 0.0,
+      // bottomOpacity: 0.0,
+      // flexibleSpace:
     );
   }
 
@@ -144,26 +154,24 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
-    if (role == ClientRole.Broadcaster) {
+    if (roomData.hostInfo!.uid == UserController.to.myProfile.value.uid) {
       await changeState(roomData.channelName);
     }
     await fireStore.collection('broadcast').doc(roomData.channelName).update({
-      'userIds': FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
+      'userIds':
+          FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
     });
     controller.onClose();
     Get.back();
   }
 
   Future<void> changeState(String channelName) async {
-    var fields = await fireStore
+    var fields = await fireStore.collection('broadcast').doc(channelName).get();
+
+    fireStore.collection('closed').doc(channelName).set(fields.data()!);
+    FirebaseFirestore.instance
         .collection('broadcast')
         .doc(channelName)
-        .get();
-
-    fireStore
-        .collection('closed')
-        .doc(channelName)
-        .set(fields.data()!);
-    FirebaseFirestore.instance.collection('broadcast').doc(channelName).delete();
+        .delete();
   }
 }
