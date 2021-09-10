@@ -176,8 +176,6 @@ class HomePage extends StatelessWidget {
 
 
                         else{
-                          print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                          print(snapshot.data);
                           return broadcastRoomList(context, snapshot);
                         }
 
@@ -228,11 +226,8 @@ class HomePage extends StatelessWidget {
                               child: Center(child: Text('생성된 대화방이 없습니다.')),
                             ),
                           );
-                        else{
-                          print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-                          print(snapshot.data);
                           return groupcallRoomList(context, snapshot);
-                        }
+
 
                       }),
                 ),

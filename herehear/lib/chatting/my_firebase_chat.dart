@@ -139,53 +139,7 @@ class MyFirebaseChatCore {
 
   /// Creates a direct chat for 2 people. Add [metadata] for any additional
   /// custom data.
-  // Future<types.BroadcastModel> createRoom(
-  //     types.User otherUser, {
-  //       Map<String, dynamic>? metadata,
-  //     }) async {
-  //   if (firebaseUser == null) return Future.error('User does not exist');
-  //
-  //   final query = await FirebaseFirestore.instance
-  //       .collection('broadcast')
-  //     //  .where('userIds', arrayContains: firebaseUser!.uid)
-  //       .get();
-  //
-  //   final rooms = await processRoomsQuery(firebaseUser!, query);
-  //
-  //   try {
-  //     return rooms.firstWhere((room) {
-  //       if (room.type == types.MyRoomType.group) return false;
-  //
-  //       final userIds = room.users!.map((u) => u.id);
-  //       return userIds.contains(firebaseUser!.uid) &&
-  //           userIds.contains(otherUser.id);
-  //     });
-  //   } catch (e) {
-  //     // Do nothing if room does not exist
-  //     // Create a new room instead
-  //   }
-  //
-  //   final currentUser = await fetchUser(firebaseUser!.uid);
-  //   final users = [currentUser, otherUser];
-  //
-  //   final room = await FirebaseFirestore.instance.collection('broadcast').add({
-  //     'createdAt': FieldValue.serverTimestamp(),
-  //     'imageUrl': null,
-  //     'metadata': metadata,
-  //     'name': null,
-  //     'type': types.RoomType.direct.toShortString(),
-  //     'updatedAt': FieldValue.serverTimestamp(),
-  //     'userIds': null,
-  //     'userRoles': null,
-  //   });
-  //
-  //   return types.BroadcastModel(
-  //     id: room.id,
-  //     metadata: metadata,
-  //     type: types.MyRoomType.direct,
-  //     users: users,
-  //   );
-  // }
+
 
   /// Creates [types.User] in Firebase to store name and avatar used on
   /// rooms list
@@ -219,7 +173,7 @@ class MyFirebaseChatCore {
           [],
           (previousValue, element) {
             final data = element.data();
-            print(room.users);
+
             final author = room.users.firstWhere(
               (u) => u.id == data['authorId'],
               orElse: () => types.UserModel(id: data['authorId'] as String),

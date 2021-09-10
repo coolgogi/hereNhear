@@ -72,8 +72,7 @@ Future<types.BroadcastModel> processRoomDocument(
     type: types.getMyRoomTypeFromString(type),
     users: users,
   );
-  print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-  print(room);
+
 
   return room;
 }
@@ -138,10 +137,6 @@ Future<GroupCallModel> processGroupCallRoomDocument(
     // type: types.getMyRoomTypeFromString(type),
     // users: users,
   );
-  print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-  print(roomInfo.title);
-  print(room.roomInfo.notice);
-print(room.toJson().toString());
   return room;
 }
 
