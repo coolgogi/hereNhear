@@ -45,28 +45,28 @@ class AgoraCreateController extends GetxController {
     }
   }
 
-  Future<void> createGroupCallRoom(User? firebaseUser, String? title,
-      String? notice, String? docId, String? location) async {
-    if (firebaseUser != null) {
-      print("==============================");
-      print('create groucall room');
-      print("==============================");
-
-      // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
-      newGroupCallRoom.value = GroupCallModel(
-        hostUid: firebaseUser.uid,
-        title: title,
-        notice: notice,
-        thumbnail: 'assets/images/mic2.jpg',
-        channelName: docId,
-        location: location,
-        createdTime: DateTime.now(), type: MyGroupCallRoomType.group,
-      );
-
-      await AgoraRepository.groupCallToFirebase(newGroupCallRoom.value);
-    } else {
-      print("no user, please sign in");
-      Get.to(LoginPage());
-    }
-  }
+  // Future<void> createGroupCallRoom(User? firebaseUser, String? title,
+  //     String? notice, String? docId, String? location) async {
+  //   if (firebaseUser != null) {
+  //     print("==============================");
+  //     print('create groucall room');
+  //     print("==============================");
+  //
+  //     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
+  //     newGroupCallRoom.value = GroupCallModel(
+  //       hostInfo: ,
+  //       title: title,
+  //       notice: notice,
+  //       thumbnail: 'assets/images/mic2.jpg',
+  //       channelName: docId,
+  //       location: location,
+  //       createdTime: DateTime.now(), type: MyGroupCallRoomType.group,
+  //     );
+  //
+  //     await AgoraRepository.groupCallToFirebase(newGroupCallRoom.value);
+  //   } else {
+  //     print("no user, please sign in");
+  //     Get.to(LoginPage());
+  //   }
+  // }
 }

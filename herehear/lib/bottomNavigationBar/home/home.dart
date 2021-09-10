@@ -16,6 +16,7 @@ import 'package:herehear/login/signIn.dart';
 import 'package:herehear/participant_profile.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
+import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -172,8 +173,17 @@ class HomePage extends StatelessWidget {
                               child: Text('라이브중인 방송이 없습니다.'),
                             ),
                           );
-                        return broadcastRoomList(context, snapshot);
-                      },
+
+
+                        else{
+                          print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                          print(snapshot.data);
+                          return broadcastRoomList(context, snapshot);
+                        }
+
+
+
+                        },
                     ),
                   ),
                 ),
@@ -192,32 +202,38 @@ class HomePage extends StatelessWidget {
                         onPressed: () => Get.to(AudioRecorder(onStop: (String path) {  },)), icon: Icon(Icons.arrow_forward_ios)),
                   ],
                 ),
+
+
+
+
+
                 Padding(
                   padding: EdgeInsets.only(top: 16.0.h, bottom: 50.h),
-                  child: StreamBuilder<QuerySnapshot>(
-                      stream: firestore
-                          .collection("groupcall")
-                          .where('location',
-                              isEqualTo:
-                                  UserController.to.myProfile.value.location)
-                          .snapshots(),
+                  child: StreamBuilder<List<types.GroupCallModel>>(
+                      stream: MyFirebaseChatCore.instance.groupCallRoomsWithLocation(),
+                      initialData: const [],
                       builder: (context, snapshot) {
-                        if (!snapshot.hasData)
+                        if (!snapshot.hasData) {
                           return Center(
                               child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primary,
-                          ));
-                        if (snapshot.data!.docs.length == 0 &&
-                            UserController.to.myProfile.value.location != '')
+                                color: Theme.of(context).colorScheme.primary,
+                              ));
+                        }
+                        if (snapshot.data!
+                            .isEmpty && //snapshot.data!.docs.length == 0
+                            locationController.location.value != '')
                           return Padding(
                             padding: EdgeInsets.only(top: 50.0.h),
                             child: Container(
                               child: Center(child: Text('생성된 대화방이 없습니다.')),
                             ),
                           );
-                        return Column(
-                          children: groupcallRoomList(context, snapshot),
-                        );
+                        else{
+                          print("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+                          print(snapshot.data);
+                          return groupcallRoomList(context, snapshot);
+                        }
+
                       }),
                 ),
               ])),

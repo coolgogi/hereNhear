@@ -5,20 +5,25 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/participant_profile.dart';
 
+import 'data/group_call_model.dart' as types;
+
 
 
 class GroupCallPage extends StatelessWidget {
-  String? _title;
-  GroupCallPage(this._title);
-  final String channelName = Get.arguments;
   int participantNum = 0;
   int listenerNum = 0;
   List<int> lastSpeakingUser = [];
-
   bool alreadyJoin = false;
+  final types.GroupCallModel roomData;
 
   late final controller = Get.put(AgoraEventController.groupcall(
-      channelName: channelName, role: ClientRole.Broadcaster));
+      channelName: roomData.channelName, role: ClientRole.Broadcaster));
+
+  GroupCallPage(
+      {
+        //required this.channelName,
+        // required this.userData,
+        required this.roomData});
 
 
   @override
@@ -60,7 +65,7 @@ class GroupCallPage extends StatelessWidget {
                     child: Row(
                       children: [
                         Text(
-                          _title!,
+                          roomData.roomInfo.title,
                           style: Theme.of(context).textTheme.headline4!.copyWith(
                             color: Theme.of(context).colorScheme.primaryVariant,
                           ),

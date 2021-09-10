@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 import 'package:herehear/agora/agoraCreateController.dart';
-import 'package:herehear/broadcast/broadcast.dart';
-import 'package:herehear/broadcast/data/broadcast_model.dart' as types;
+
+import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
+import 'package:herehear/groupCall/group_call.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
@@ -118,7 +119,7 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
               privateOption(),
               SizedBox(height: 17.h),
 
-              timeReserveOption(),
+             // timeReserveOption(),
 
               titleAndNoticeInfo(),
 
@@ -616,15 +617,16 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     RoomInfoModel roomInfo = RoomInfoModel(
         hostInfo: UserController.to.myProfile.value,
         title: _title.text,
-        roomCategory: broadcastInfoController.selectedCategoryList,
+        roomCategory: groupCallController.selectedCategoryList,
         channelName: channelName,
         notice: _notice.text,
+        private:  groupCallController.isPrivate.value,
         thumbnail: 'assets/images/mic1.jpg');
     late List<UserModel> userList = [];
     userList.add(UserController.to.myProfile.value);
 
 
-    types.BroadcastModel roomData = await MyFirebaseChatCore.instance.createGroupRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
+    types.GroupCallModel roomData = await MyFirebaseChatCore.instance.createGroupCallRoom(roomInfo: roomInfo, hostInfo: UserController.to.myProfile.value);
 
     // agoraController.createBroadcastRoom(
     //   UserController.to.myProfile.value,
@@ -636,14 +638,16 @@ class _CreateGroupCallPageState extends State<CreateGroupCallPage> {
     //   locationController.location.value,
     // );
 
-    Get.off(
-          () => BroadCastPage.broadcaster(
-        //  channelName: _docId,
-        role: ClientRole.Broadcaster,
-        roomData : roomData,
-        //  userData: UserController.to.myProfile.value,
-      ),
-    );
+    Get.off(() => GroupCallPage(roomData: roomData),);
+
+    // Get.off(
+    //       () => BroadCastPage.broadcaster(
+    //     //  channelName: _docId,
+    //     role: ClientRole.Broadcaster,
+    //     roomData : roomData,
+    //     //  userData: UserController.to.myProfile.value,
+    //   ),
+    // );
   }
 
   Future<dynamic> showDialog() {
