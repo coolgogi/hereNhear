@@ -74,6 +74,7 @@ dependencies:
   fluttertoast: ^8.0.8
   wave: ^0.2.0
   keyboard_actions: "^3.3.1+1"
+  flutter_native_splash: ^1.2.1
 
   #  just_audio: ^0.9.2
 
@@ -183,6 +184,8 @@ flutter:
     - assets/icons/heart_grey.png
     - assets/icons/heart_white.png
     - assets/icons/heart_fill.png
+    - assets/icons/heart_blue.png
+    - assets/icons/heart_stroke_blue.png
     - assets/icons/chat.png
     - assets/icons/chat_grey.png
     - assets/icons/chat_black.png
@@ -196,6 +199,9 @@ flutter:
     - assets/icons/clock_black.png
     - assets/icons/clock_white.png
     - assets/icons/clock_grey.png
+    - assets/icons/pause_white.png
+    - assets/icons/stop_white.png
+    - assets/icons/play_white.png
     - assets/icons/friends.png
     - assets/icons/addFriend.png
     - assets/icons/play.png
@@ -204,6 +210,9 @@ flutter:
     - assets/icons/facebook.png
     - assets/icons/google.png
     - assets/icons/apple.png
+    - assets/icons/trashbox.png
+    - assets/icons/record_white.png
+    - assets/icons/upload.png
     - assets/icons/camera.png
     - assets/icons/camera_blue.png
     - assets/icons/gallery.png
@@ -212,6 +221,7 @@ flutter:
     - assets/icons/expand_black.png
     - assets/icons/micButton.png
     - assets/icons/micButton_mute.png
+    - assets/icons/pause.png
     - assets/images/game.png
     - assets/images/IU.png
     - assets/images/gamer.png
@@ -261,6 +271,8 @@ flutter:
     - assets/images/groupcall/talk.jpg
     - assets/images/groupcall/voice.jpg
     - assets/images/groupcall/fish.jpg
+    - assets/images/broadcast/rosegold.jpg
+    - assets/images/mainLogo.png
 
 
 
@@ -294,3 +306,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_native_splash:
+  image: assets/images/mainLogo.png
+  color: "42a5f5"

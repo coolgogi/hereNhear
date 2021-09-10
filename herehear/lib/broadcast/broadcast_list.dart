@@ -13,12 +13,11 @@ ListView broadcastRoomList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
   final _userData = UserController.to.myProfile.value;
   return ListView.builder(
-    scrollDirection: Axis.horizontal,
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
       return Padding(
-        padding: EdgeInsets.only(right: 16.0.w),
+        padding: EdgeInsets.only(bottom: 16.0.h),
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
@@ -39,11 +38,132 @@ ListView broadcastRoomList(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Container(
+                width: 314.0.w,
+                height: 151.0.h,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage("assets/images/groupcall/fish.jpg")),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(15.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 0,
+                      blurRadius: 8,
+                      offset: Offset(1, 4), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 110.0.h, bottom: 8.0.h),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 12.0.w, right: 10.0.w),
+                        child: Container(
+                          width: 40.0.w,
+                          height: 40.0.h,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/you2.jpg'),
+                                fit: BoxFit.fitWidth,
+                              )),
+                        ),
+                      ),
+                      Text('유리한 녀석들',
+                          style:
+                              Theme.of(context).textTheme.headline4!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 13.sp,
+                                  )),
+                      Expanded(child: Container()),
+                      Icon(
+                        Icons.people,
+                        size: 20.w,
+                        color: Colors.white,
+                      ),
+                      Text(
+                       ' ${room.users.length.toString()}',
+                        style:
+                            Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 13.sp,
+                                ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Icon(
+                        Icons.favorite,
+                        size: 16.w,
+                        color: Colors.white,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: 15.w),
+                        child: Text(
+                          ' ${room.like.toString()}',
+                          style:
+                              Theme.of(context).textTheme.subtitle1!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 13.sp,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                child: Text('같이 대화하면서 놀아요!',
+                    style: Theme.of(context).textTheme.headline4),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
+ListView broadcastRoomVerticalList(
+    BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
+  final _userData = UserController.to.myProfile.value;
+  return ListView.builder(
+    itemCount: snapshot.data!.length,
+    itemBuilder: (context, index) {
+      final room = snapshot.data![index];
+      return Padding(
+        padding: EdgeInsets.only(right: 16.0.w),
+        child: GestureDetector(
+          onTap: () async {
+            //room.users.add(UserController.to.myProfile.value);
+            await firestore.collection('broadcast').doc(room.channelName).update({
+              'userIds': FieldValue.arrayUnion([_userData.uid]),
+              'userNickName': FieldValue.arrayUnion([_userData.nickName]),
+              'userProfile': FieldValue.arrayUnion([_userData.profile]),
+            });
+
+            await Get.to(
+                  () => BroadCastPage.audience(
+                //   channelName: room.docId!,
+                // userData: _userData,
+                  role: ClientRole.Audience,
+                  roomData: room),
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Padding(
                 padding: EdgeInsets.only(left: 5.0.w),
                 child: Container(
-                  width: 250.0.w,
-                  height: 141.0.h,
+                  width: 314.0.w,
+                  height: 186.0.h,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fill,
@@ -79,10 +199,10 @@ ListView broadcastRoomList(
                         ),
                         Text('유리한 녀석들',
                             style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 13.sp,
-                                    )),
+                            Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Colors.white,
+                              fontSize: 13.sp,
+                            )),
                         Expanded(child: Container()),
                         Icon(
                           Icons.people,
@@ -90,12 +210,12 @@ ListView broadcastRoomList(
                           color: Colors.white,
                         ),
                         Text(
-                         ' ${room.users.length.toString()}',
+                          ' ${room.users.length.toString()}',
                           style:
-                              Theme.of(context).textTheme.subtitle1!.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 13.sp,
-                                  ),
+                          Theme.of(context).textTheme.subtitle1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 13.sp,
+                          ),
                         ),
                         SizedBox(width: 8.w),
                         Icon(
@@ -108,10 +228,10 @@ ListView broadcastRoomList(
                           child: Text(
                             ' ${room.like.toString()}',
                             style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                      color: Colors.white,
-                                      fontSize: 13.sp,
-                                    ),
+                            Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Colors.white,
+                              fontSize: 13.sp,
+                            ),
                           ),
                         ),
                       ],
@@ -121,7 +241,7 @@ ListView broadcastRoomList(
               ),
               Padding(
                 padding:
-                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
                 child: Text('같이 대화하면서 놀아요!',
                     style: Theme.of(context).textTheme.headline4),
               ),

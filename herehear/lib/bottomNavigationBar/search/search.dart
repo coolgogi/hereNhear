@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
 import 'package:herehear/broadcast/broadcast_list.dart';
@@ -8,6 +9,15 @@ import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+
+class CategoryController extends GetxController {
+  RxList<String> categoryList = <String>[].obs;
+}
+
+
+
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchPage extends StatelessWidget {
@@ -16,6 +26,44 @@ class SearchPage extends StatelessWidget {
   final searchController = Get.put(SearchBarController());
   String current_uid = '';
 
+  List<String> liveCategoryList = [
+    '고민상담',
+    '수다/챗',
+    '유머',
+    '홍보',
+    '판매',
+    '힐링',
+    '음악',
+    '일상',
+    '독서',
+    'asmr'
+  ];
+
+  List<String> chatCategoryList = [
+    '고민상담',
+    '수다/챗',
+    '유머',
+    '홍보',
+    '판매',
+    '힐링',
+    '음악',
+    '일상',
+  ];
+
+  List<String> categoryImageList = [
+    'assets/icons/eyes.png',
+    'assets/icons/talk.png',
+    'assets/icons/smile.png',
+    'assets/icons/advertise.png',
+    'assets/icons/healing.png',
+    'assets/icons/sale.png',
+    'assets/icons/music.png',
+    'assets/icons/tree.png',
+    'assets/icons/book.png',
+    'assets/images/mike2.png',
+  ];
+
+  final categoryController = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +98,6 @@ class SearchPage extends StatelessWidget {
                   child: Image.asset('assets/icons/live.png',
                       width: 43.w, height: 18.h),
                 ),
-
                 Expanded(child: Container()),
                 IconButton(
                     onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
@@ -99,86 +146,76 @@ class SearchPage extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: EdgeInsets.only(left: 24.0.w, top: 19.0.h),
+            padding: EdgeInsets.only(left: 24.0.w, top: 19.0.h, bottom: 36.h),
             child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    category_card(context),
-                    category_card(context),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    category_card(context),
-                    category_card(context),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    category_card(context),
-                    category_card(context),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    category_card(context),
-                    category_card(context),
-                  ],
-                ),
-              ],
+              children: List.generate(liveCategoryList.length, (i) {
+                if(i % 2 == 0)
+                  return Row(
+                    children: <Widget>[
+                      category_card(context, liveCategoryList[i], categoryImageList[i]),
+                      category_card(context, liveCategoryList[i+1], categoryImageList[i+1]),
+                    ],
+                  );
+                else return Container();
+              }),
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget category_card(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 16, right: 16.0.w),
-      width: 156.0.w,
-      height: 69.0.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 0,
-            blurRadius: 8,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: null,
-        child: Row(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 13.0.w, right: 20.0.w),
-              child: Container(
-                // margin: EdgeInsets.all(0.0.w),
-                width: 41.0.w,
-                height: 41.0.h,
-                // child: SizedBox(child: Image.asset(_roomData['image'])),
-                child: Container(
-                    decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage('assets/images/group.png'),
-                  ),
-                )),
+  Widget category_card(BuildContext context, String category, String categoryImage) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 16, right: 16.0.w),
+          width: 156.0.w,
+          height: 69.0.w,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 0,
+                blurRadius: 8,
+                offset: Offset(0, 4), // changes position of shadow
               ),
+            ],
+          ),
+          child: InkWell(
+            onTap: () => Get.to(CategoryDetailPage(category)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 10.0.w),
+                  child: Image.asset(categoryImage, width: 17.h, height: 17.h),
+                ),
+                Text(
+                  category,
+                  style: Theme.of(context).textTheme.headline2!.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '#친목도모',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
-      ),
+        Obx(() => Positioned(
+          top: 50.w,
+          left: 133.w,
+          child: InkWell(
+            onTap: () {
+              if(categoryController.categoryList.contains(category))
+                categoryController.categoryList.remove(category);
+              else categoryController.categoryList.add(category);
+            },
+            child: Image.asset(categoryController.categoryList.contains(category)? 'assets/icons/heart_blue.png' : 'assets/icons/heart_stroke_blue.png', width: 10.h, height: 9.h,),
+          )
+        )),
+      ],
     );
   }
 
