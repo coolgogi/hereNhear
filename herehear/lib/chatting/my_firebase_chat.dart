@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
-import 'package:herehear/groupCall/data/group_call_model.dart';
+import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
 import '../broadcast/data/broadcast_model.dart' as types;
@@ -58,6 +58,7 @@ class MyFirebaseChatCore {
       'hostUid': roomInfo.hostInfo.uid,
       'like': 0,
       'createdTime': FieldValue.serverTimestamp(),
+      'private' : roomInfo.private,
       //'createdAt': FieldValue.serverTimestamp(),
       // 'imageUrl': imageUrl,
       // 'name': name,
@@ -81,6 +82,57 @@ class MyFirebaseChatCore {
       title: roomInfo.title,
       notice: roomInfo.notice,
       type: types.MyRoomType.group,
+      users: roomUsers,
+    );
+  }
+
+  Future<types.GroupCallModel> createGroupCallRoom({
+    required RoomInfoModel roomInfo,
+    required UserModel hostInfo,
+  }) async {
+    if (firebaseUser == null) return Future.error('User does not exist');
+
+    final currentUser = await fetchUser(hostInfo.uid!);
+    final roomUsers = [currentUser];
+
+    final room = await FirebaseFirestore.instance
+        .collection('groupcall')
+        .doc(roomInfo.channelName)
+        .set({
+      'title': roomInfo.title,
+      'notice': roomInfo.notice,
+      'channelName': roomInfo.channelName,
+      'roomCategory': roomInfo.roomCategory,
+      'thumbnail': roomInfo.thumbnail,
+      'location': roomInfo.hostInfo.location,
+      'hostNickname': roomInfo.hostInfo.nickName,
+      'hostProfile': roomInfo.hostInfo.profile,
+      'hostUid': roomInfo.hostInfo.uid,
+      'like': 0,
+      'createdTime': FieldValue.serverTimestamp(),
+      'private' : roomInfo.private,
+      //'createdAt': FieldValue.serverTimestamp(),
+      // 'imageUrl': imageUrl,
+      // 'name': name,
+      'type': types.RoomType.group.toShortString(),
+      'updatedAt': FieldValue.serverTimestamp(),
+      'userIds': roomUsers.map((u) => u.id).toList(),
+      'userRoles': roomUsers.fold<Map<String, String?>>(
+        {},
+            (previousValue, element) => {
+          ...previousValue,
+          element.id!: element.role.toString().split('.').last,
+        },
+      ),
+    });
+
+    return types.GroupCallModel(
+      roomInfo: roomInfo,
+      channelName: roomInfo.channelName,
+      hostInfo: roomInfo.hostInfo,
+      title: roomInfo.title,
+      notice: roomInfo.notice,
+      type: types.MyGroupCallRoomType.group,
       users: roomUsers,
     );
   }
@@ -224,7 +276,7 @@ class MyFirebaseChatCore {
         .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
   }
 
-  Stream<List<GroupCallModel>> groupCallRoomsWithLocation(
+  Stream<List<types.GroupCallModel>> groupCallRoomsWithLocation(
       {bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {
       return const Stream.empty();

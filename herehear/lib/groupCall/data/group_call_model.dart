@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/chatting/util.dart';
+import 'package:herehear/users/data/user_model.dart';
 import 'package:meta/meta.dart';
 
 
@@ -18,34 +21,50 @@ extension MyRoomTypeToShortString on MyGroupCallRoomType {
 @immutable
 class GroupCallModel extends Equatable {
   const GroupCallModel({
-    this.hostUid,
+    required this.users,
+    required this.roomInfo,
+    this.hostInfo,
     this.title,
     this.notice,
-    this.channelName,
+    required this.channelName,
     this.thumbnail,
     this.location,
     this.createdTime,
     required this.type,
+
     this.listener,
     this.participants,
+
+    this.reservation,
+    this.password,
+    this.private
   });
 
   /// Creates room from a map (decoded JSON).
   GroupCallModel.fromJson(Map<String, dynamic> json)
-      : hostUid = json['hostUid'] as String,
+      : users = (json['users'] as List<Map<String, dynamic>>)
+      .map((e) => UserModel.fromJson(e))
+      .toList(),
+        roomInfo = RoomInfoModel.fromJson(json['roomInfo'] as Map<String, dynamic>),
+        hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
         title = json['title'] as String,
         notice = json['notice'] as String?,
-        channelName = json['channelName'] as String?,
+        channelName = json['channelName'] as String,
         thumbnail = json['thumbnail'] as String?,
         location = json['location'] as String,
         createdTime = json['createdTime'] as DateTime?,
         type = getMyGroupCallTypeFromString(json['type'] as String),
         listener = json['listener'].toList(),
-        participants = json['participants'].toList();
+        participants = json['participants'].toList(),
+  private = json['private'] as bool,
+  password = json['password'] as String,
+  reservation = json['reservation'] as Timestamp;
 
   /// Converts room to the map representation, encodable to JSON.
   Map<String, dynamic> toJson() => {
-        'hostUid': hostUid,
+    'users' : users,
+    'roomInfo' : roomInfo,
+    'hostInfo' : hostInfo,
         'title': title,
         'notice': notice,
         'channelName': channelName,
@@ -55,28 +74,36 @@ class GroupCallModel extends Equatable {
         'type': type.toShortString(),
         'listener': listener,
         'participants': participants,
+    'private' : private,
+    'reservation' : reservation,
       };
 
-  final String? hostUid;
+  final RoomInfoModel roomInfo;
+  final UserModel? hostInfo; //hostUid, hostNickname, hostProfile
+
   final String? title;
   final String? notice;
-  final String? channelName;
+  final String channelName;
   final String? thumbnail;
   final String? location;
   final DateTime? createdTime;
   final List<dynamic>? listener;
   final List<dynamic>? participants;
   final MyGroupCallRoomType type;
+  final Timestamp? reservation;
+  final bool? private;
+  final String? password;
+  final List<UserModel> users; //userNickname, userProfile
 
+  /// Equatable props
   @override
-  // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [
+
+    type,
+
+    //
+  ];
 }
-
-
-
-
-
 
 class GroupCallUserModel extends Equatable {
   GroupCallUserModel({
@@ -110,6 +137,12 @@ class GroupCallUserModel extends Equatable {
   // TODO: implement props
   List<Object?> get props => throw UnimplementedError();
 }
+
+
+
+
+
+
 
 // class GroupCallModel {
 //   String? hostUid;
@@ -160,3 +193,5 @@ class GroupCallUserModel extends Equatable {
 //         image = json['image'] as String,
 //         createdTime = json['createdTime'].toDate();
 // }
+
+

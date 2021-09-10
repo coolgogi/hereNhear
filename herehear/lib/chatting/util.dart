@@ -48,5 +48,5 @@ MyGroupCallRoomType getMyGroupCallTypeFromString(String stringRoomType) {
     }
   }
 
-  return MyGroupCallRoomType.unsupported;
+  return MyGroupCallRoomType.group;
 }
