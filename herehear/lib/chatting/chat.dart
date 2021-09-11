@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
@@ -18,6 +20,7 @@ import 'src/widgets/my_chat.dart';
 import 'package:herehear/chatting/src/class/my_file_message.dart' as types;
 import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({Key? key}) : super(key: key);
@@ -43,31 +46,186 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder<types.BroadcastModel>(
-          initialData: widget.room,
-          stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return StreamBuilder<List<types.MyMessage>>(
-                  initialData: const [],
-                  stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
-                  builder: (context, snapshot) {
-                    return MyChat(
-                      isAttachmentUploading: _isAttachmentUploading,
-                      messages: snapshot.data ?? [],
-                      onAttachmentPressed: _handleAtachmentPressed,
-                      onMessageTap: _handleMessageTap,
-                      onPreviewDataFetched: _handlePreviewDataFetched,
-                      onSendPressed: _handleSendPressed,
-                      user: types.UserModel(
-                        id: MyFirebaseChatCore.instance.firebaseUser?.uid ?? '',
+      body: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          image: DecorationImage(
+            fit: BoxFit.contain,
+            image: AssetImage('assets/suhyun.jpg'), // <-- 이미지 넣기!!
+          ),
+        ),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(26.w, 70.h, 24.w, 8.h),
+              child: Container(
+                height: 53.h,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.4)),
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10.w),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.h, right: 10.0.w),
+                        child: Container(
+                          width: 38.w,
+                          height: 38.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Theme.of(context).colorScheme.primary),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/me.jpg'), // <-- 호스트 프로필 사진
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       ),
-                    );
-                  });
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text('호스트 NickName', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                              SizedBox(width: 6.w),
+                              Padding(
+                                padding: EdgeInsets.only(top: 3.5.h),
+                                child: Image.asset('assets/images/rive_red.png', width: 43.w, height: 16.w,),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 4.h),
+                          Text('팔로우 숫자', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                        ],
+                      ),
+                      Expanded(child: Container()),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.people,
+                                size: 17.w,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                ' ${widget.room.users.length.toString()}',
+                                style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                              SizedBox(width: 12.w),
+                              Icon(
+                                Icons.favorite,
+                                size: 14.w,
+                                color: Colors.white,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(right: 15.w),
+                                child: Text(
+                                  ' ${widget.room.like.toString()}',
+                                  style:
+                                  Theme.of(context).textTheme.subtitle1!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(26.w, 5.h, 24.w, 5.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 37.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15.0.w, 10.h, 15.w, 10.h) ,
+                      child: Text('방 제목(대화하고 놀아요!)', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                    ),
+                  ),
+                  Container(
+                    height: 37.h,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                      borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(15.0.w, 10.h, 15.w, 10.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              '공지 사항 목록',
+                              maxLines: 5,
+                              textAlign: TextAlign.justify,
+                              overflow: TextOverflow.ellipsis,
+                              // softWrap: true,
+                              // overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                          Image.asset('assets/icons/notice.png', width: 20.w, height: 20.w)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Container(
+                  color: Colors.transparent,
+                  child: StreamBuilder<types.BroadcastModel>(
+                      initialData: widget.room,
+                      stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return StreamBuilder<List<types.MyMessage>>(
+                              initialData: const [],
+                              stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
+                              builder: (context, snapshot) {
+                                return MyChat(
+                                    isAttachmentUploading: _isAttachmentUploading,
+                                    messages: snapshot.data ?? [],
+                                    onAttachmentPressed: _handleAtachmentPressed,
+                                    onMessageTap: _handleMessageTap,
+                                    onPreviewDataFetched: _handlePreviewDataFetched,
+                                    onSendPressed: _handleSendPressed,
+                                    user: types.UserModel(
+                                      id: MyFirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                                    ),
+                                  );
+                              });
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

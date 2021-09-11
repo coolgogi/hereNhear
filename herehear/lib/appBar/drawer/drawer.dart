@@ -15,7 +15,7 @@ class DrawerWidget extends StatelessWidget {
       child: Container(
         color: Theme.of(context).colorScheme.background,
         child: Padding(
-          padding: EdgeInsets.only(top: 70.h, right: 15.0.w),
+          padding: EdgeInsets.only(top: 80.h, right: 15.0.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -23,7 +23,6 @@ class DrawerWidget extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(15.w, 0.0.h, 17.w, 30.h),
                 child: Image.asset('assets/images/logo.png', width: 600.w),
               ),
-              searchBarWidget(context),
               Padding(
                 padding: EdgeInsets.fromLTRB(22.w, 0.h, 25.w, 15.0.h),
                 child: InkWell(

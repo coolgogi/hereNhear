@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
@@ -62,6 +63,7 @@ class SearchPage extends StatelessWidget {
   ];
 
   final categoryController = Get.put(CategoryController());
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,7 @@ class SearchPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 21.0.w, top: 11.0.h),
             child: Container(
-              height: 195.0.h,
+              height: 205.0.h,
               child: StreamBuilder<List<BroadcastModel>>(
                 stream: MyFirebaseChatCore.instance.rooms(),
                 builder: (context, snapshot) {
