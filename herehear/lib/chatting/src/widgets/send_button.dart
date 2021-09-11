@@ -7,10 +7,12 @@ class SendButton extends StatelessWidget {
   /// Creates send button widget
   const SendButton({
     Key? key,
+    required this.isSendButtonActive,
     required this.onPressed,
   }) : super(key: key);
 
   /// Callback for send button tap event
+  final isSendButtonActive;
   final void Function() onPressed;
 
   @override
@@ -24,10 +26,13 @@ class SendButton extends StatelessWidget {
             ? InheritedChatTheme.of(context).theme.sendButtonIcon!
             : Image.asset(
                 'assets/icon-send.png',
-                color: InheritedChatTheme.of(context).theme.inputTextColor,
+                color: isSendButtonActive? InheritedChatTheme.of(context).theme.inputTextColor : InheritedChatTheme.of(context)
+                    .theme
+                    .inputTextColor
+                    .withOpacity(0.5),
                 package: 'flutter_chat_ui',
               ),
-        onPressed: onPressed,
+        onPressed: isSendButtonActive? onPressed : null,
         padding: EdgeInsets.zero,
         tooltip: InheritedL10n.of(context).l10n.sendButtonAccessibilityLabel,
       ),

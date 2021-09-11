@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import '../util.dart';
@@ -15,7 +16,7 @@ import '../class/my_message.dart' as types;
 
 import 'image_message.dart';
 import 'text_message.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 
@@ -204,12 +205,13 @@ class MyMessage extends StatelessWidget {
     final _currentUserIsAuthor = _user.id == message.author.id;
 
     return Container(
-      alignment: _user.id == message.author.id
-          ? Alignment.centerRight
-          : Alignment.centerLeft,
-      margin: const EdgeInsets.only(
-        bottom: 4,
-        left: 20,
+      alignment: Alignment.centerLeft,
+      // alignment: _user.id == message.author.id
+      //     ? Alignment.centerRight
+      //     : Alignment.centerLeft,
+      margin: EdgeInsets.only(
+        bottom: 10.w,
+        left: 25.w,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -223,22 +225,47 @@ class MyMessage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onLongPress: () => onMessageLongPress?.call(message),
-                  onTap: () => onMessageTap?.call(message),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: _borderRadius,
-                      color: !_currentUserIsAuthor ||
-                              message.type == types.MyMessageType.image
-                          ? InheritedChatTheme.of(context).theme.secondaryColor
-                          : InheritedChatTheme.of(context).theme.primaryColor,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 25.w,
+                      height: 25.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/you.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    child: ClipRRect(
-                      borderRadius: _borderRadius,
-                      child: _buildMessage(),
+                    SizedBox(width: 7.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('NickName', style: Theme.of(context).textTheme.subtitle2!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                        SizedBox(height: 5.h),
+                        GestureDetector(
+                          onLongPress: () => onMessageLongPress?.call(message),
+                          onTap: () => onMessageTap?.call(message),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(8)),
+                              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                              // color: !_currentUserIsAuthor ||
+                              //         message.type == types.MyMessageType.image
+                              //     ? Theme.of(context).colorScheme.onBackground.withOpacity(0.5)
+                              //     : Theme.of(context).colorScheme.primary,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: _borderRadius,
+                              child: _buildMessage(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
