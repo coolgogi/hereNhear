@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
     // GetX 등록
     // FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: Brightness.light,
     ));
     return FutureBuilder(
       future: Init.instance.initialize(),
@@ -87,7 +88,7 @@ class Splash extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(child: Image.asset('assets/images/mainLogo.png', width: 144.h,)),
+      body: Center(child: Image.asset('assets/images/mainLogo.png', width: 144)),
     );
   }
 }

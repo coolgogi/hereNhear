@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
@@ -64,10 +65,13 @@ class SearchPage extends StatelessWidget {
   ];
 
   final categoryController = Get.put(CategoryController());
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title:
@@ -77,7 +81,7 @@ class SearchPage extends StatelessWidget {
               onPressed: null,
               icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
           IconButton(
-              onPressed: null,
+              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
               icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
