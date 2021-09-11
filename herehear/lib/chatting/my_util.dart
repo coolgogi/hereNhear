@@ -73,6 +73,7 @@ Future<types.BroadcastModel> processRoomDocument(
     users: users,
   );
 
+
   return room;
 }
 
@@ -104,10 +105,12 @@ Future<GroupCallModel> processGroupCallRoomDocument(
   final like = doc.data()?['like'] as int?;
   final hostInfo = await fetchUser(doc.data()?['hostUid']);
   final title = doc.data()!['title'] as String;
+  final notice = doc.data()!['notice'] as String;
   final List roomCategory = doc.data()!['roomCategory'] as List;
   final roomInfo = RoomInfoModel(
       hostInfo: hostInfo,
       title: title,
+      notice: notice,
       roomCategory: roomCategory,
       channelName: channelName);
 
@@ -123,17 +126,17 @@ Future<GroupCallModel> processGroupCallRoomDocument(
 
   final room = GroupCallModel(
     type: types.getMyGroupCallTypeFromString(type),
-    // hostInfo: hostInfo,
-    // roomInfo: roomInfo,
+    users: users,
+    hostInfo: hostInfo,
+    roomInfo: roomInfo,
     // like: like,
-    // channelName: channelName,
+    channelName: channelName,
     // imageUrl: imageUrl,
     // metadata: metadata,
-    // location: locationController.location.value,
+     location: locationController.location.value,
     // type: types.getMyRoomTypeFromString(type),
     // users: users,
   );
-
   return room;
 }
 

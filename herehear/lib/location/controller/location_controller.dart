@@ -49,8 +49,6 @@ getCurrentPosition이 permission denied일 경우에는 error throw하기 때문
       print("detail address : ${first.addressLine}");
       // print("needed address data : ${first.locality} ${first.subLocality}");
       location = '${first.locality} ${first.subLocality}'.obs;
-      print('location: $location');
-      print(location.value);
       return location.value;
     } catch (e) {
       return "포항시 북구";

@@ -1,5 +1,6 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:herehear/users/data/user_model.dart';
 
 class RoomInfoModel {
@@ -9,6 +10,8 @@ class RoomInfoModel {
   String channelName;
   String? notice;
   String? thumbnail;
+  bool? private;
+  Timestamp? reservation;
 
 
   RoomInfoModel({
@@ -18,10 +21,13 @@ class RoomInfoModel {
     required this.channelName,
     this.notice,
     this.thumbnail,
+    this.private,
+    this.reservation,
+
   });
 
   // UserModel을 map으로 바꿔주는 함수.
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'hostInfo': this.hostInfo,
       'title': this.title,
@@ -29,6 +35,8 @@ class RoomInfoModel {
       'channelName': this.channelName,
       'notice': this.notice,
       'thumbnail': this.thumbnail,
+      'private' : this.private,
+      'reservation' : this.reservation,
     };
   }
   //
@@ -38,17 +46,8 @@ class RoomInfoModel {
         roomCategory = json['roomCategory'] as List<String>,
         channelName = json['channelName'] as String,
         notice = json['notice'] as String,
+        private = json['private'] as bool,
+        reservation = json['reservation'] as Timestamp,
         thumbnail = json['thumbnail'] as String;
 }
 
-// Map<String, dynamic> toJson() => {
-//   'hostUid': createdAt,
-//   'title': id,
-//   'notice': imageUrl,
-//   'channelName': lastMessages?.map((e) => e.toJson()).toList(),
-//   'docId': metadata,
-//   'image': name,
-//   'createdTime': type.toShortString(),
-//   'category': updatedAt,
-//   'like': users.map((e) => e.toJson()).toList(),
-// };

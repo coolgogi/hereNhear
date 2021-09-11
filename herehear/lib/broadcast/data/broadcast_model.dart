@@ -87,6 +87,7 @@ class BroadcastModel extends Equatable {
     'type': type.toShortString(),
     'updatedAt': updatedAt,
     //
+    'roomInfo' : roomInfo!.toJson(),
     'hostInfo' : hostInfo!.toJson(),
     'title' : title,
     'notice' : notice,
