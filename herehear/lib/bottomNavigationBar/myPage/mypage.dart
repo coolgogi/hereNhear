@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/groupCall/data/participantsProfile_controller.dart';
 import 'package:herehear/record_controller.dart';
 import 'package:wave/config.dart';
@@ -11,6 +12,7 @@ import 'package:herehear/appBar/drawer/drawer.dart';
 class MyPage extends StatelessWidget {
   final profileController = Get.put(ParticipantProfileController());
   final recorderController = Get.put(RecorderController());
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<String> themeList = [
     '한동대',
     '유리한 녀석들',
@@ -22,18 +24,13 @@ class MyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title: Text('NickName',
             style: Theme.of(context).appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-        ],
+        actions: action_widget(_scaffoldKey),
       ),
       backgroundColor: Colors.white,
       body: ListView(

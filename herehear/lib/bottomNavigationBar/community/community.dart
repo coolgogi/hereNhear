@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/bottomNavigationBar/community/playground/karaoke.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
@@ -17,22 +18,18 @@ class CommunityPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
   final searchController = Get.put(SearchBarController());
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title: Text('COMMUNITY',
             style: Theme.of(context).appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-        ],
+        actions: action_widget(_scaffoldKey),
       ),
       body: ListView(
         children: <Widget>[

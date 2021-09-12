@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
@@ -10,8 +11,6 @@ import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:herehear/appBar/drawer/drawer.dart';
 
 class CategoryController extends GetxController {
   RxList<String> categoryList = <String>[].obs;
@@ -24,7 +23,6 @@ class SearchPage extends StatelessWidget {
   final locationController = Get.put(LocationController());
   final searchController = Get.put(SearchBarController());
   String current_uid = '';
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<String> liveCategoryList = [
     '고민상담',
     '수다/챗',
@@ -74,14 +72,7 @@ class SearchPage extends StatelessWidget {
         titleSpacing: 25.0.w,
         title:
             Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-          IconButton(
-              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-        ],
+        actions: action_widget(_scaffoldKey),
       ),
       body: ListView(
         children: <Widget>[
