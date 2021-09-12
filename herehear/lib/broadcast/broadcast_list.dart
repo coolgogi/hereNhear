@@ -135,6 +135,7 @@ ListView broadcastRoomVerticalList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
   final _userData = UserController.to.myProfile.value;
   return ListView.builder(
+    shrinkWrap: true,
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
@@ -181,7 +182,7 @@ ListView broadcastRoomVerticalList(
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: 110.0.h, bottom: 8.0.h),
+                    padding: EdgeInsets.only(top: 140.0.h, bottom: 8.0.h),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [

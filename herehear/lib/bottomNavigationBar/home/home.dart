@@ -18,6 +18,8 @@ import 'package:herehear/users/controller/user_controller.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 
+import 'broadcastDetail.dart';
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class HomePage extends StatelessWidget {
@@ -31,6 +33,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _scrollController.onInit();
     return Obx(() => Scaffold(
           key: _scaffoldKey,
           endDrawer: DrawerWidget(),
@@ -75,9 +78,9 @@ class HomePage extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.only(
                           left: 25.0.w,
-                          top: 23.0.h,
+                          top: 20.0.h,
                           right: 26.0.w,
-                          bottom: 38.h),
+                          bottom: 20.h),
                       child: Row(
                         children: [
                           Column(
@@ -143,8 +146,8 @@ class HomePage extends StatelessWidget {
                         ),
                         Expanded(child: Container()),
                         IconButton(
-                            onPressed: () => Get.to(LoginPage()),
-                            icon: Icon(Icons.arrow_forward_ios)),
+                            onPressed: () => Get.to(BroadcastDetailPage()),
+                            icon: Icon(Icons.arrow_forward_ios, color: Theme.of(context).colorScheme.onSurface, size: 22.w)),
                       ],
                     ),
                   ),
@@ -152,7 +155,7 @@ class HomePage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 21.0.w, top: 16.0.h),
                   child: Container(
-                    height: 195.0.h,
+                    height: 200.0.h,
                     child: StreamBuilder<List<types.BroadcastModel>>(
                       stream: MyFirebaseChatCore.instance.broadcastRoomsWithLocation(),
                       initialData: const [],
@@ -197,7 +200,8 @@ class HomePage extends StatelessWidget {
                     ),
                     Expanded(child: Container()),
                     IconButton(
-                        onPressed: () => Get.to(AudioRecorder(onStop: (String path) {  },)), icon: Icon(Icons.arrow_forward_ios)),
+                        onPressed: () => Get.to(AudioRecorder(onStop: (String path) {  },)),
+                        icon: Icon(Icons.arrow_forward_ios, color: Theme.of(context).colorScheme.onSurface, size: 22.w)),
                   ],
                 ),
 
@@ -231,6 +235,7 @@ class HomePage extends StatelessWidget {
 
                       }),
                 ),
+                SizedBox(height: 100.h),
               ])),
         ));
   }
