@@ -95,7 +95,20 @@ class _SetLocationPageState extends State<SetLocationPage> {
             } else {
               print(
                   'searchController.textController.value??????????????? : ${searchController.text.value}');
-              return Container(child: Center(child: Text('SomeThing..!!')));
+              return Column(
+                children: List.generate(
+                    3,
+                      (i) => Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(36.w, 10.h, 36.w, 10.h),
+                          child: Text('경북 포항시 북구', style: Theme.of(context).textTheme.headline2,),
+                        ),
+                        Divider(),
+                      ],
+                    )),
+              );
             }
           })
         ],

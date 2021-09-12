@@ -116,11 +116,38 @@ ListView broadcastRoomList(
                   ),
                 ),
               ),
-              Padding(
-                padding:
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
                     EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-                child: Text('같이 대화하면서 놀아요!',
-                    style: Theme.of(context).textTheme.headline4),
+                    child: Text('같이 대화하면서 놀아요!',
+                        style: Theme.of(context).textTheme.headline4),
+                  ),
+                  SizedBox(width: 10.w),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                      border: Border.all(
+                          width: 1.5.w,
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    child: Center(child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                          SizedBox(width: 2.w),
+                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 11.sp,
+                              color: Theme.of(context).colorScheme.primary),)
+                        ],
+                      ),
+                    ),),
+                  ),
+                  SizedBox(width: 8.w),
+                ],
               ),
             ],
           ),
@@ -241,11 +268,37 @@ ListView broadcastRoomVerticalList(
                   ),
                 ),
               ),
-              Padding(
-                padding:
-                EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-                child: Text('같이 대화하면서 놀아요!',
-                    style: Theme.of(context).textTheme.headline4),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                    child: Text('같이 대화하면서 놀아요!',
+                        style: Theme.of(context).textTheme.headline4),
+                  ),
+                  Expanded(child: Container()),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                      border: Border.all(
+                          width: 1.5.w,
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    child: Center(child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                          SizedBox(width: 2.w),
+                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                              fontSize: 11.sp,
+                              color: Theme.of(context).colorScheme.primary),)
+                        ],
+                      ),
+                    ),),
+                  ),
+                  SizedBox(width: 8.w),
+                ],
               ),
             ],
           ),

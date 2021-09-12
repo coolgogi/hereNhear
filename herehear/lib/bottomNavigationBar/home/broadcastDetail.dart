@@ -7,7 +7,7 @@ import 'package:herehear/chatting/my_firebase_chat.dart';
 import '../../broadcast/data/broadcast_model.dart' as types;
 
 class BroadcastDetailPage extends StatelessWidget {
-  final _scrollController = Get.put(ScrollOpacityController());
+  final _scrollController = Get.put(DetailPagesScrollerController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,9 @@ class BroadcastDetailPage extends StatelessWidget {
       appBar: AppBar(
         titleSpacing: 0.0.w,
         // centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new, color: Theme.of(context).colorScheme.onSurface, size: 22.w), onPressed: () => Get.back()),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new, color: Theme.of(context).colorScheme.onSurface, size: 22.w),
+            onPressed: () => Get.back()),
         title: Row(
           children: [
             Text('HERE 라이브',
@@ -38,46 +40,45 @@ class BroadcastDetailPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Obx(() => AnimatedOpacity(
-              // key: widgetKey,
-                duration: Duration(milliseconds: 1),
-                opacity: _scrollController.opacity.value,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 25.0.w,
-                      top: 20.0.h,
-                      right: 26.0.w,
-                      bottom: 20.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          Text('원하는 카테고리의 ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3),
-                          Text(
-                              'HERE 라이브',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1),
-                          Text(
-                              '를',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline3),
-                        ],
-                      ),
-                      Text('찾아보세요.',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline3),
-                    ],
-                  ),
-                ))),
-            SizedBox(height: 300.h,),
+            // Obx(() => AnimatedOpacity(
+            //   // key: widgetKey,
+            //     duration: Duration(milliseconds: 1),
+            //     opacity: _scrollController.opacity.value,
+            //     child: Padding(
+            //       padding: EdgeInsets.only(
+            //           left: 25.0.w,
+            //           top: 20.0.h,
+            //           right: 26.0.w,
+            //           bottom: 20.h),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: <Widget>[
+            //           Row(
+            //             children: [
+            //               Text('원하는 카테고리의 ',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headline3),
+            //               Text(
+            //                   'HERE 라이브',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headline1),
+            //               Text(
+            //                   '를',
+            //                   style: Theme.of(context)
+            //                       .textTheme
+            //                       .headline3),
+            //             ],
+            //           ),
+            //           Text('찾아보세요.',
+            //               style: Theme.of(context)
+            //                   .textTheme
+            //                   .headline3),
+            //         ],
+            //       ),
+            //     ))),
             Padding(
               padding: EdgeInsets.only(left: 26.0.w, top: 20.0.h, right: 28.w, bottom: 30.h),
               child: StreamBuilder<List<types.BroadcastModel>>(
