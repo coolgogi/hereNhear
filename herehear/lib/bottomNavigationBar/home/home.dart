@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
+import 'package:herehear/appBar/notification/notification.dart';
 import 'package:herehear/appBar/set_location.dart';
 import 'package:herehear/bottomNavigationBar/community/free_board/record_test.dart';
 // import 'package:herehear/bottomNavigationBar/community/free_board/record_test22.dart';
@@ -62,7 +63,7 @@ class HomePage extends StatelessWidget {
             ),
             actions: <Widget>[
               IconButton(
-                  onPressed: null,
+                  onPressed: () => Get.to(() => NotificationPage()),
                   icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
               IconButton(
                   onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),

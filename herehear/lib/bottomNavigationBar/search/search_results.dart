@@ -8,6 +8,8 @@ import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'foundedResult.dart';
+
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class SearchResultsPage extends StatefulWidget {
@@ -72,7 +74,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
               return searchHistory();
             } else {
               print('searchController.textController.value??????????????? : ${searchController.text.value}');
-              return Container(child: Center(child: Text('SomeThing..!!')));
+              return FoundedResult();
             }
           })
         ],

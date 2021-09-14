@@ -80,7 +80,7 @@ class SearchPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
               onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
           IconButton(
               onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
               icon: Image.asset('assets/icons/more.png', height: 17.0.h)),

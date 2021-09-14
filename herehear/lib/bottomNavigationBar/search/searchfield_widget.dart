@@ -30,6 +30,14 @@ class _SearchTextFieldState extends State<SearchTextField> {
             searchController.text.value = value;
             searchController.textController.value.selection = TextSelection.fromPosition(TextPosition(offset: searchController.text.value.length));
           },
+
+          onEditingComplete: () {
+            FocusScope.of(context).unfocus();
+            searchController.history.insert(0, searchController.textController.value.text);
+            searchController.saveHistory(widget.category);
+            searchController.textController.value.clear();
+            searchController.text.value = '';
+          },
           autofocus: true,
           style: Theme.of(context).textTheme.headline6!.copyWith(
             color: Theme.of(context).colorScheme.onBackground,
@@ -61,8 +69,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
                   child: searchController.text.isEmpty? Image.asset('assets/icons/search.png')
                       : Icon(Icons.close, color: Theme.of(context).colorScheme.primaryVariant.withOpacity(0.5), size: 20.w),
                   onTap: (){
-                    searchController.history.insert(0, searchController.textController.value.text);
-                    searchController.saveHistory(widget.category);
+                    FocusScope.of(context).unfocus();
                     searchController.textController.value.clear();
                     searchController.text.value = '';
                   })),
