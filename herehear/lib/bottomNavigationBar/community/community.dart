@@ -26,7 +26,7 @@ class CommunityPage extends StatelessWidget {
         titleSpacing: 25.0.w,
         title: Text('COMMUNITY', style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: <Widget>[
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
           IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
