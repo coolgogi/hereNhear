@@ -138,7 +138,7 @@ class GroupCallPage extends StatelessWidget {
                   children: <Widget>[
                     Obx(() {
                       _getListenersImageList(context);
-                      print('users : ${controller.users.value}');
+
                       return _viewRows(controller.listenersList.value);
                     }),
                   ],
@@ -226,7 +226,9 @@ class GroupCallPage extends StatelessWidget {
     controller.listenersList.value = [];
     print('!@#@@!@#@!@#@!@#!@#@!@#@!@#@!@#@!@#@# controller.users.length: ${controller.users.length}');
     if (controller.users.length != listenerNum) {
-      controller.users.forEach((uid) {
+      controller.users.forEach((uid)
+    //  controller.followers.forEach((profile)
+      {
         controller.listenersList.add(Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -371,7 +373,7 @@ class GroupCallPage extends StatelessWidget {
                   ),
                   onTap: (() {
                     if (alreadyJoin == false)
-                      controller.moveWatcherToParticipant();
+                      controller.moveWatcherToParticipant(roomData.channelName);
 
                     alreadyJoin = true;
                   }),

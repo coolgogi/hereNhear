@@ -32,7 +32,7 @@ class GroupCallModel extends Equatable {
     this.createdTime,
     required this.type,
 
-    this.listener,
+    this.listeners,
     this.participants,
 
     this.reservation,
@@ -54,7 +54,7 @@ class GroupCallModel extends Equatable {
         location = json['location'] as String,
         createdTime = json['createdTime'] as DateTime?,
         type = getMyGroupCallTypeFromString(json['type'] as String),
-        listener = json['listener'].toList(),
+        listeners = json['listeners'].toList(),
         participants = json['participants'].toList(),
   private = json['private'] as bool,
   password = json['password'] as String,
@@ -72,7 +72,7 @@ class GroupCallModel extends Equatable {
         'location': location,
         'createdTime': createdTime,
         'type': type.toShortString(),
-        'listener': listener,
+        'listeners': listeners,
         'participants': participants,
     'private' : private,
     'reservation' : reservation,
@@ -87,7 +87,7 @@ class GroupCallModel extends Equatable {
   final String? thumbnail;
   final String? location;
   final DateTime? createdTime;
-  final List<dynamic>? listener;
+  final List<dynamic>? listeners;
   final List<dynamic>? participants;
   final MyGroupCallRoomType type;
   final Timestamp? reservation;
