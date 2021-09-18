@@ -7,6 +7,8 @@ import 'package:herehear/record_controller.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import 'edit_profile.dart';
+
 
 class MyPage extends StatelessWidget {
   final profileController = Get.put(ParticipantProfileController());
@@ -93,7 +95,7 @@ class MyPage extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
                       child: InkWell(
-                        onTap: null,
+                        onTap: () => Get.to(() => EditMyPage()),
                         child: Container(
                             width: 252.w,
                             height: 36.h,
