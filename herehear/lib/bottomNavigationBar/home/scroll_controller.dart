@@ -6,10 +6,6 @@ class ScrollOpacityController extends GetxController {
   var opacity = 1.0.obs;
   var _currentPosition = 1.0.obs;
 
-  Rx<ScrollController> chatScrollController = ScrollController().obs;
-  var chatOpacity = 1.0.obs;
-  var _currentChatPosition = 1.0.obs;
-
   @override
   void onInit() {
     super.onInit();
@@ -17,12 +13,18 @@ class ScrollOpacityController extends GetxController {
       _scrollListener();
       print('offset = ${scrollController.value.offset}');
     });
+    init();
   }
 
   @override
   void onClose() {
     scrollController.value.dispose();
     super.onClose();
+  }
+
+  void init() {
+    opacity.value = 1.0;
+    _currentPosition.value = 1.0;
   }
 
   _scrollListener() {
@@ -32,59 +34,59 @@ class ScrollOpacityController extends GetxController {
 
     if(95 <= _currentPosition.value) {
       opacity.value = 1;
-    } else if(_currentPosition < 65) {
+    } else if(_currentPosition < 75) {
         opacity.value = 0;
+    } else if(82 <= _currentPosition.value) {
+      opacity.value = (_currentPosition - scrollController.value.offset*1.3) / 100;
     } else {
-        opacity.value = (_currentPosition - scrollController.value.offset*1.8) / 100;
+        opacity.value = (_currentPosition - scrollController.value.offset*2.5) / 100;
     }
     print("opacity is: $opacity");
   }
 }
 
 
-class ChatScrollerController extends GetxController {
-  Rx<ScrollController> chatScrollController = ScrollController().obs;
-  var chatOpacity = 1.0.obs;
-  var _currentChatPosition = 1.0.obs;
+class DetailPagesScrollerController extends GetxController {
+  Rx<ScrollController> scrollController = ScrollController().obs;
+  var opacity = 1.0.obs;
+  var _currentPosition = 1.0.obs;
 
   @override
   void onInit() {
     super.onInit();
-    chatScrollController.value.addListener(() {
-      _chatScrollListener();
-      print('offset = ${chatScrollController.value.offset}');
+    scrollController.value.addListener(() {
+      _scrollListener();
+      print('offset = ${scrollController.value.offset}');
     });
+    init();
   }
 
   @override
   void onClose() {
-    chatScrollController.value.dispose();
+    scrollController.value.dispose();
     super.onClose();
   }
 
-  _chatScrollListener() {
-    _currentChatPosition.value = 100 - chatScrollController.value.offset;
+  void init() {
+    opacity.value = 1.0;
+    _currentPosition.value = 1.0;
+  }
 
-    print("widget position: $_currentChatPosition against: 100");
+  _scrollListener() {
+    _currentPosition.value = 100 - scrollController.value.offset;
 
-    if(30 <= _currentChatPosition.value) {
-      chatOpacity.value = 1;
-    } else if(_currentChatPosition < 20) {
-      chatOpacity.value = 0;
+    print("widget position: $_currentPosition against: 100");
+
+    if(95 <= _currentPosition.value) {
+      opacity.value = 1;
+    } else if(_currentPosition < 75) {
+      opacity.value = 0;
+    } else if(82 <= _currentPosition.value) {
+      opacity.value = (_currentPosition - scrollController.value.offset*1.3) / 100;
     } else {
-      chatOpacity.value = (_currentChatPosition - chatScrollController.value.offset*1.8) / 100;
+      opacity.value = (_currentPosition - scrollController.value.offset*2.5) / 100;
     }
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
-    print("opacity is: $chatOpacity");
+    print("opacity is: $opacity");
   }
 }
 

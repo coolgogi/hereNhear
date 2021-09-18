@@ -27,7 +27,7 @@ class CategoryDetailPage extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.only(left: 31.0.w, top: 20.0.h, right: 30.w, bottom: 30.h),
+        padding: EdgeInsets.only(left: 25.0.w, top: 20.0.h, right: 25.w, bottom: 30.h),
         child: StreamBuilder<List<types.BroadcastModel>>(
           stream: MyFirebaseChatCore.instance.broadcastRoomsWithLocation(),
           initialData: const [],
@@ -45,7 +45,7 @@ class CategoryDetailPage extends StatelessWidget {
                   child: Text('라이브중인 방송이 없습니다.'),
                 ),
               );
-            return broadcastRoomList(context, snapshot);
+            return broadcastRoomVerticalList(context, snapshot);
           },
         ),
       ),
