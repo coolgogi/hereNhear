@@ -275,6 +275,8 @@ flutter:
     - assets/images/groupcall/fish.jpg
     - assets/images/broadcast/rosegold.jpg
     - assets/images/mainLogo.png
+    - assets/logo/logo-round.png
+    - assets/logo/logo-square.png
 
 
 
