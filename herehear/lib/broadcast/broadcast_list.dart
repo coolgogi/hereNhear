@@ -13,11 +13,12 @@ ListView broadcastRoomList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
   final _userData = UserController.to.myProfile.value;
   return ListView.builder(
+    scrollDirection: Axis.horizontal,
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
       return Padding(
-        padding: EdgeInsets.only(bottom: 16.0.h),
+        padding: EdgeInsets.only(right: 10.0.w),
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
@@ -69,12 +70,12 @@ ListView broadcastRoomList(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('assets/images/you2.jpg'),
+                                image: AssetImage(room.roomInfo.hostInfo.profile!),
                                 fit: BoxFit.fitWidth,
                               )),
                         ),
                       ),
-                      Text('유리한 녀석들',
+                      Text(room.roomInfo.hostInfo.nickName!,
                           style:
                               Theme.of(context).textTheme.headline4!.copyWith(
                                     color: Colors.white,
@@ -115,11 +116,38 @@ ListView broadcastRoomList(
                   ),
                 ),
               ),
-              Padding(
-                padding:
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding:
                     EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-                child: Text('같이 대화하면서 놀아요!',
-                    style: Theme.of(context).textTheme.headline4),
+                    child: Text(room.roomInfo.title,
+                        style: Theme.of(context).textTheme.headline4),
+                  ),
+                  SizedBox(width: 10.w),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                      border: Border.all(
+                          width: 1.5.w,
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    child: Center(child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                          SizedBox(width: 2.w),
+                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 11.sp,
+                              color: Theme.of(context).colorScheme.primary),)
+                        ],
+                      ),
+                    ),),
+                  ),
+                  SizedBox(width: 8.w),
+                ],
               ),
             ],
           ),
@@ -134,6 +162,7 @@ ListView broadcastRoomVerticalList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
   final _userData = UserController.to.myProfile.value;
   return ListView.builder(
+    shrinkWrap: true,
     itemCount: snapshot.data!.length,
     itemBuilder: (context, index) {
       final room = snapshot.data![index];
@@ -180,7 +209,7 @@ ListView broadcastRoomVerticalList(
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: 110.0.h, bottom: 8.0.h),
+                    padding: EdgeInsets.only(top: 140.0.h, bottom: 8.0.h),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -239,11 +268,37 @@ ListView broadcastRoomVerticalList(
                   ),
                 ),
               ),
-              Padding(
-                padding:
-                EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-                child: Text('같이 대화하면서 놀아요!',
-                    style: Theme.of(context).textTheme.headline4),
+              Row(
+                children: [
+                  Padding(
+                    padding:
+                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                    child: Text('같이 대화하면서 놀아요!',
+                        style: Theme.of(context).textTheme.headline4),
+                  ),
+                  Expanded(child: Container()),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                      border: Border.all(
+                          width: 1.5.w,
+                          color: Theme.of(context).colorScheme.primary),
+                    ),
+                    child: Center(child: Padding(
+                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                          SizedBox(width: 2.w),
+                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                              fontSize: 11.sp,
+                              color: Theme.of(context).colorScheme.primary),)
+                        ],
+                      ),
+                    ),),
+                  ),
+                  SizedBox(width: 8.w),
+                ],
               ),
             ],
           ),

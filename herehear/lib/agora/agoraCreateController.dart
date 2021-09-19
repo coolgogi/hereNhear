@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import '../broadcast/data/broadcast_model.dart';
 import '../groupCall/data/group_call_model.dart';
 import 'package:herehear/login/signIn.dart';
@@ -18,6 +19,7 @@ class AgoraCreateController extends GetxController {
       UserModel userData,
       String title,
       String notice,
+      RoomInfoModel roomInfo,
       List<String> category,
       String channelName,
       List<String> uNickname,
@@ -27,9 +29,7 @@ class AgoraCreateController extends GetxController {
 
       newBroadcastRoom.value = BroadcastModel(
         users: users ,
-        hostInfo: userData,
-        title: title,
-        notice: notice,
+        roomInfo: roomInfo,
         channelName: channelName,
         thumbnail: 'assets/images/mic1.jpg',
         location: location,

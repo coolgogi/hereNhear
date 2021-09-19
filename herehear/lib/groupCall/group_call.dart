@@ -21,8 +21,6 @@ class GroupCallPage extends StatelessWidget {
 
   GroupCallPage(
       {
-        //required this.channelName,
-        // required this.userData,
         required this.roomData});
 
 

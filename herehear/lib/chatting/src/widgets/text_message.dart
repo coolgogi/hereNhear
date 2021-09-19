@@ -7,6 +7,7 @@ import 'inherited_chat_theme.dart';
 import 'inherited_user.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
 import 'package:herehear/chatting/src/class/my_text_message.dart' as types;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// A class that represents text message widget with optional link preview
 class TextMessage extends StatelessWidget {
@@ -100,19 +101,14 @@ class TextMessage extends StatelessWidget {
               name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: InheritedChatTheme.of(context)
-                  .theme
-                  .userNameTextStyle
-                  .copyWith(color: color),
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).colorScheme.surface),
             ),
           ),
         SelectableText(
           message.text,
           style: user.id == message.author.id
-              ? InheritedChatTheme.of(context).theme.sentMessageBodyTextStyle
-              : InheritedChatTheme.of(context)
-                  .theme
-                  .receivedMessageBodyTextStyle,
+              ? Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)
+              : Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface),
           textWidthBasis: TextWidthBasis.longestLine,
         ),
       ],
@@ -132,9 +128,9 @@ class TextMessage extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 24,
-        vertical: 16,
+      margin: EdgeInsets.symmetric(
+        horizontal: 8.w,
+        vertical: 8.w,
       ),
       child: _textWidget(_user, context),
     );

@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/agora/agoraCreateController.dart';
+import 'package:herehear/bottomNavigationBar/community/free_board/createPost.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:herehear/broadcast/data/broadcast_model.dart' as types;
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
@@ -9,6 +12,7 @@ import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/users/data/user_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -32,6 +36,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   String channelName = '';
+  final _picker = ImagePicker();
 
   //unused variable
   bool _validateError = false;
@@ -63,6 +68,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   final broadcastInfoController = Get.put(BroadcastInfoController());
   final agoraController = Get.put(AgoraCreateController());
   final locationController = Get.put(LocationController());
+  final postController = Get.put(PostController());
 
   @override
   void dispose() {
@@ -210,6 +216,52 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 22.h,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 18.h),
+                    child: Text(
+                      '썸네일 이미지',
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Theme.of(context).colorScheme.background,
+                      border: Border.all(color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    child: Obx(() => Column(
+                      children: [
+                        loadImage(),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0.h, bottom: 21.h),
+                          child: Container(
+                            width: 90.w,
+                            height: 25.h,
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
+                                  padding: MaterialStateProperty.all(EdgeInsets.only(left: 0.w, right: 0.w)),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(6.0.r),
+                                          side: BorderSide(color: Theme.of(context).colorScheme.primary,)
+                                      )
+                                  )
+                              ),
+                              onPressed: showDialog,
+                              child: Text(postController.isDefaultImage.value? '이미지 업로드' : '이미지 변경', style: Theme.of(context).textTheme.headline6!.copyWith(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              )),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
                   ),
                   SizedBox(
                     height: 32.0.h,
@@ -383,6 +435,137 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       ],
     );
   }
+
+  Widget loadImage() {
+    if(postController.isDefaultImage.value)
+      return Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 21.0.h, bottom: 11.2.h),
+            child: Image.asset('assets/icons/camera.png', width: 33.5.w),
+          ),
+          Text('사진을 업로드 해주세요.', style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          )),
+          Text('미 업로드시 자동 이미지가 적용됩니다.', style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          )),
+        ],
+      );
+    else
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 10.0.h, bottom: 8.0.h),
+            child: Image.file(
+              postController.imageFile.value,
+              height: 210.w,
+            ),
+          ),
+        ],
+      );
+  }
+
+  Future<dynamic> showDialog() {
+    return Get.dialog(
+      Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
+                    child: GestureDetector(
+                        onTap: () => Get.back(),
+                        child: Icon(Icons.close, size: 25.w, color: Colors.white,)
+                    )
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 14.0.w),
+                  child: GestureDetector(
+                    onTap: () {
+                      pickAnImageFromCamera();
+                      Get.back();
+                      print('??: ${postController.imageFile.value.path}');
+                    },
+                    child: Container(
+                      width: 161.w,
+                      height: 129.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 22.0.h, bottom: 21.h),
+                            child: Text('사진 촬영',
+                                style: Theme.of(context).textTheme.headline4),
+                          ),
+                          Image.asset('assets/icons/camera_blue.png',
+                              width: 50.w),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    pickAnImageFromGallery();
+                    Get.back();
+                  },
+                  child: Container(
+                    width: 161.w,
+                    height: 129.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20.r)),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 22.0.h, bottom: 21.h),
+                          child: Text('앨범에서 가져오기',
+                              style: Theme.of(context).textTheme.headline4),
+                        ),
+                        Image.asset('assets/icons/gallery.png',
+                            width: 50.w),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 13.h)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<String> pickAnImageFromGallery() async {
+    var image = await _picker.getImage(source: ImageSource.gallery);
+    postController.imageFile.value = File(image!.path);
+    postController.isDefaultImage.value = false;
+    return image.path;
+  }
+
+  Future pickAnImageFromCamera() async {
+    var image = await _picker.getImage(source: ImageSource.camera);
+
+    postController.imageFile.value = File(image!.path);
+    postController.isDefaultImage.value = false;
+    // uploadToFirebase(_imageFile);
+  }
+
 
   Future<void> onJoin() async {
     setState(() {

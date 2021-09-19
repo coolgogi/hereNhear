@@ -16,13 +16,10 @@ import 'package:herehear/bottomNavigationBar/home/home.dart';
 
 
 
-ListView groupcallRoomList(
+Column groupcallRoomList(
     BuildContext context, AsyncSnapshot<List<GroupCallModel>> snapshot) {
-  return ListView.builder(
-    shrinkWrap: true,
-    scrollDirection: Axis.vertical,
-    itemCount: snapshot.data!.length,
-    itemBuilder: (context, index) {
+  return Column(
+    children: List.generate(snapshot.data!.length, (index) {
       final room = snapshot.data![index];
       return
         Column(
@@ -89,39 +86,63 @@ ListView groupcallRoomList(
                                   image: DecorationImage(
                                     image: AssetImage('assets/images/she2.jpeg'),
                                     fit: BoxFit.contain,
+                                    ),
+                                    shape: BoxShape.circle,
                                   ),
-                                  shape: BoxShape.circle,
-                                ),
-                                // child: Image.asset('assets/images/she2.jpeg'),
-                              ))
-                        ],
+                                  // child: Image.asset('assets/images/she2.jpeg'),
+                                ))
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        room.roomInfo.title,
-                        style: Theme.of(context).textTheme.headline4,
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          room.roomInfo.title,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        SizedBox(
+                          height: 7.0.h,
+                        ),
+                        Text(
+                          room.roomInfo.notice!,
+                          style: Theme.of(context).textTheme.headline6,
+                        )
+                      ],
+                    ),
+                    Expanded(child: Container()),
+                    Container(
+                      height: 20.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                        border: Border.all(
+                            width: 1.5.w,
+                            color: Theme.of(context).colorScheme.primary),
                       ),
-                      SizedBox(
-                        height: 7.0.h,
-                      ),
-                      Text(
-                        room.roomInfo.notice!,
-                        style: Theme.of(context).textTheme.headline6,
-                      )
-                    ],
-                  )
-                ],
+                      child: Center(child: Padding(
+                        padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                            SizedBox(width: 2.w),
+                            Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                                fontSize: 11.sp,
+                                color: Theme.of(context).colorScheme.primary),)
+                          ],
+                        ),
+                      ),),
+                    ),
+                    SizedBox(width: 8.w),
+                  ],
+                ),
               ),
             ),
-          ),
-       ],
-     );
+          ],
+        );
     },
+    ),
   );
 }
 

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/drawer/drawer.dart';
+import 'package:herehear/bottomNavigationBar/home/broadcastDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
@@ -64,10 +66,13 @@ class SearchPage extends StatelessWidget {
   ];
 
   final categoryController = Get.put(CategoryController());
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
         title:
@@ -75,9 +80,9 @@ class SearchPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
               onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 17.0.h)),
+              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
           IconButton(
-              onPressed: null,
+              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
               icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
         ],
       ),
@@ -100,14 +105,15 @@ class SearchPage extends StatelessWidget {
                 ),
                 Expanded(child: Container()),
                 IconButton(
-                    onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
+                    onPressed: () => Get.to(BroadcastDetailPage()),
+                    icon: Icon(Icons.arrow_forward_ios)),
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 21.0.w, top: 11.0.h),
             child: Container(
-              height: 195.0.h,
+              height: 205.0.h,
               child: StreamBuilder<List<BroadcastModel>>(
                 stream: MyFirebaseChatCore.instance.rooms(),
                 builder: (context,snapshot) {
@@ -131,19 +137,12 @@ class SearchPage extends StatelessWidget {
               ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 25.0.w),
-                child: Text(
-                  '카테고리',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ),
-              Expanded(child: Container()),
-              IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
-            ],
+          Padding(
+            padding: EdgeInsets.only(left: 25.0.w),
+            child: Text(
+              '카테고리',
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(left: 24.0.w, top: 19.0.h, bottom: 36.h),
