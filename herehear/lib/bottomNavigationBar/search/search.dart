@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/bottomNavigationBar/home/broadcastDetail.dart';
 import 'package:herehear/bottomNavigationBar/search/categoryDetail.dart';
@@ -11,14 +12,10 @@ import '../../broadcast/data/broadcast_model.dart';
 import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
   RxList<String> categoryList = <String>[].obs;
 }
-
-
-
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -27,7 +24,6 @@ class SearchPage extends StatelessWidget {
   final locationController = Get.put(LocationController());
   final searchController = Get.put(SearchBarController());
   String current_uid = '';
-
   List<String> liveCategoryList = [
     '고민상담',
     '수다/챗',
@@ -77,14 +73,7 @@ class SearchPage extends StatelessWidget {
         titleSpacing: 25.0.w,
         title:
             Text('SEARCH', style: Theme.of(context).appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-          IconButton(
-              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-              icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-        ],
+        actions: action_widget(_scaffoldKey),
       ),
       body: ListView(
         children: <Widget>[
@@ -116,15 +105,15 @@ class SearchPage extends StatelessWidget {
               height: 205.0.h,
               child: StreamBuilder<List<BroadcastModel>>(
                 stream: MyFirebaseChatCore.instance.rooms(),
-                builder: (context,snapshot) {
+                builder: (context, snapshot) {
                   print('done!!');
                   if (!snapshot.hasData)
                     return Center(
                         child: CircularProgressIndicator(
                       color: Theme.of(context).colorScheme.primary,
                     ));
-                  if (snapshot.data!
-                      .isEmpty && //snapshot.data!.docs.length == 0
+                  if (snapshot
+                          .data!.isEmpty && //snapshot.data!.docs.length == 0
                       locationController.location.value != '')
                     return Padding(
                       padding: EdgeInsets.only(top: 50.0.h),
@@ -148,14 +137,17 @@ class SearchPage extends StatelessWidget {
             padding: EdgeInsets.only(left: 24.0.w, top: 19.0.h, bottom: 36.h),
             child: Column(
               children: List.generate(liveCategoryList.length, (i) {
-                if(i % 2 == 0)
+                if (i % 2 == 0)
                   return Row(
                     children: <Widget>[
-                      category_card(context, liveCategoryList[i], categoryImageList[i]),
-                      category_card(context, liveCategoryList[i+1], categoryImageList[i+1]),
+                      category_card(
+                          context, liveCategoryList[i], categoryImageList[i]),
+                      category_card(context, liveCategoryList[i + 1],
+                          categoryImageList[i + 1]),
                     ],
                   );
-                else return Container();
+                else
+                  return Container();
               }),
             ),
           ),
@@ -164,7 +156,8 @@ class SearchPage extends StatelessWidget {
     );
   }
 
-  Widget category_card(BuildContext context, String category, String categoryImage) {
+  Widget category_card(
+      BuildContext context, String category, String categoryImage) {
     return Stack(
       children: [
         Container(
@@ -195,25 +188,31 @@ class SearchPage extends StatelessWidget {
                 Text(
                   category,
                   style: Theme.of(context).textTheme.headline2!.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                 ),
               ],
             ),
           ),
         ),
         Obx(() => Positioned(
-          top: 50.w,
-          left: 133.w,
-          child: InkWell(
-            onTap: () {
-              if(categoryController.categoryList.contains(category))
-                categoryController.categoryList.remove(category);
-              else categoryController.categoryList.add(category);
-            },
-            child: Image.asset(categoryController.categoryList.contains(category)? 'assets/icons/heart_blue.png' : 'assets/icons/heart_stroke_blue.png', width: 10.h, height: 9.h,),
-          )
-        )),
+            top: 50.w,
+            left: 133.w,
+            child: InkWell(
+              onTap: () {
+                if (categoryController.categoryList.contains(category))
+                  categoryController.categoryList.remove(category);
+                else
+                  categoryController.categoryList.add(category);
+              },
+              child: Image.asset(
+                categoryController.categoryList.contains(category)
+                    ? 'assets/icons/heart_blue.png'
+                    : 'assets/icons/heart_stroke_blue.png',
+                width: 10.h,
+                height: 9.h,
+              ),
+            ))),
       ],
     );
   }
