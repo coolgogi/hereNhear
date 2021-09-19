@@ -143,6 +143,7 @@ flutter:
     - assets/icons/add.png
     - assets/icons/search.png
     - assets/icons/search2.png
+    - assets/icons/addButton_blue.png
     - assets/icons/notification.png
     - assets/icons/crown_gold.png
     - assets/icons/crown_silver.png
@@ -275,6 +276,8 @@ flutter:
     - assets/images/groupcall/fish.jpg
     - assets/images/broadcast/rosegold.jpg
     - assets/images/mainLogo.png
+    - assets/logo/logo-round.png
+    - assets/logo/logo-square.png
 
 
 

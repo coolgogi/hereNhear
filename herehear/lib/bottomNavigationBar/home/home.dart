@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/appBar/notification/notification.dart';
 import 'package:herehear/appBar/set_location.dart';
@@ -61,14 +62,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () => Get.to(() => NotificationPage()),
-                  icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-              IconButton(
-                  onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-                  icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-            ],
+            actions: action_widget(_scaffoldKey),
           ),
           body: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (overScroll) {
@@ -114,7 +108,8 @@ class HomePage extends StatelessWidget {
                                             .textTheme
                                             .headline3),
                                     Image(
-                                      image: AssetImage('assets/icons/leaf.png'),
+                                      image:
+                                          AssetImage('assets/icons/leaf.png'),
                                       width: 20.0.w,
                                     ),
                                   ],
@@ -132,7 +127,8 @@ class HomePage extends StatelessWidget {
                       ))),
                   Container(
                     decoration: BoxDecoration(
-                        border: Border.all(width: 1.0.w, color: Colors.transparent),
+                        border:
+                            Border.all(width: 1.0.w, color: Colors.transparent),
                         //color is transparent so that it does not blend with the actual color specified
                         color: Colors
                             .transparent // Specifies the background color and the opacity
@@ -154,7 +150,10 @@ class HomePage extends StatelessWidget {
                           Expanded(child: Container()),
                           IconButton(
                               onPressed: () => Get.to(BroadcastDetailPage()),
-                              icon: Icon(Icons.arrow_forward_ios, color: Theme.of(context).colorScheme.onSurface, size: 22.w)),
+                              icon: Icon(Icons.arrow_forward_ios,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                  size: 22.w)),
                         ],
                       ),
                     ),
@@ -164,7 +163,8 @@ class HomePage extends StatelessWidget {
                     child: Container(
                       height: 200.0.h,
                       child: StreamBuilder<List<types.BroadcastModel>>(
-                        stream: MyFirebaseChatCore.instance.broadcastRoomsWithLocation(),
+                        stream: MyFirebaseChatCore.instance
+                            .broadcastRoomsWithLocation(),
                         initialData: const [],
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
@@ -183,15 +183,10 @@ class HomePage extends StatelessWidget {
                                 child: Text('라이브중인 방송이 없습니다.'),
                               ),
                             );
-
-
-                          else{
+                          else {
                             return broadcastRoomList(context, snapshot);
                           }
-
-
-
-                          },
+                        },
                       ),
                     ),
                   ),
@@ -208,28 +203,26 @@ class HomePage extends StatelessWidget {
                       Expanded(child: Container()),
                       IconButton(
                           onPressed: () => Get.to(GroupCallDetailPage()),
-                          icon: Icon(Icons.arrow_forward_ios, color: Theme.of(context).colorScheme.onSurface, size: 22.w)),
+                          icon: Icon(Icons.arrow_forward_ios,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              size: 22.w)),
                     ],
                   ),
-
-
-
-
-
                   Padding(
                     padding: EdgeInsets.only(top: 16.0.h, bottom: 50.h),
                     child: StreamBuilder<List<types.GroupCallModel>>(
-                        stream: MyFirebaseChatCore.instance.groupCallRoomsWithLocation(),
+                        stream: MyFirebaseChatCore.instance
+                            .groupCallRoomsWithLocation(),
                         initialData: const [],
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return Center(
                                 child: CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ));
+                              color: Theme.of(context).colorScheme.primary,
+                            ));
                           }
                           if (snapshot.data!
-                              .isEmpty && //snapshot.data!.docs.length == 0
+                                  .isEmpty && //snapshot.data!.docs.length == 0
                               locationController.location.value != '')
                             return Padding(
                               padding: EdgeInsets.only(top: 50.0.h),
@@ -237,14 +230,13 @@ class HomePage extends StatelessWidget {
                                 child: Center(child: Text('생성된 대화방이 없습니다.')),
                               ),
                             );
-                            return NotificationListener<OverscrollIndicatorNotification>(
-                                onNotification: (overScroll) {
-                                  overScroll.disallowGlow();
-                                  return true;
-                                },
-                                child: groupcallRoomList(context, snapshot));
-
-
+                          return NotificationListener<
+                                  OverscrollIndicatorNotification>(
+                              onNotification: (overScroll) {
+                                overScroll.disallowGlow();
+                                return true;
+                              },
+                              child: groupcallRoomList(context, snapshot));
                         }),
                   ),
                   SizedBox(height: 100.h),
