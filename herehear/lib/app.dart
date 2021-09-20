@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
 
 class App extends GetView<UserController> {
   final locationController = Get.put(LocationController());
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -72,6 +74,7 @@ class App extends GetView<UserController> {
             child: Text('Firebase load fail'), // 에러 대응
           );
         }
+
         if (snapshot.connectionState == ConnectionState.done) {
           return StreamBuilder<User?>(
             stream: FirebaseAuth.instance
@@ -80,6 +83,8 @@ class App extends GetView<UserController> {
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
+                String _uid = snapshot.data!.uid;
+
                 UserController.to.authStateChanges(snapshot.data);
                 return FutureBuilder(
                     future: locationController.getLocation(),
@@ -102,5 +107,10 @@ class App extends GetView<UserController> {
         }
       },
     );
+  }
+
+  Future<void> getDoc(String _url) async {
+    var _stream =
+        FirebaseFirestore.instance.collection('users').doc(_url).snapshots();
   }
 }

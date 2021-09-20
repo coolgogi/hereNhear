@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/bottomNavigationBar/community/playground/karaoke.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_results.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'free_board/free_board.dart';
 import 'free_board/post.dart';
-
+import 'package:herehear/appBar/drawer/drawer.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -17,18 +18,18 @@ class CommunityPage extends StatelessWidget {
   var refreshKey = GlobalKey<RefreshIndicatorState>();
   final locationController = Get.put(LocationController());
   final searchController = Get.put(SearchBarController());
-
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
-        title: Text('COMMUNITY', style: Theme.of(context).appBarTheme.titleTextStyle),
-        actions: <Widget>[
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/bell.png', height: 18.0.h)),
-          IconButton(onPressed: null, icon: Image.asset('assets/icons/more.png', height: 17.0.h)),
-        ],
+        title: Text('COMMUNITY',
+            style: Theme.of(context).appBarTheme.titleTextStyle),
+        actions: action_widget(_scaffoldKey),
       ),
       body: ListView(
         children: <Widget>[
@@ -49,44 +50,43 @@ class CommunityPage extends StatelessWidget {
             ),
           ),
           Obx(() => Padding(
-            padding: EdgeInsets.only(
-                left: 21.0.w, top: 19.0.h),
-            child: Container(
-              height: 177.0.h,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: firestore
-                    .collection("broadcast")
-                    .where('location',
-                    isEqualTo: UserController.to.myProfile.value.location)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  print('done!!');
-                  if (!snapshot.hasData)
-                    return Center(
-                        child: CircularProgressIndicator(
+                padding: EdgeInsets.only(left: 21.0.w, top: 19.0.h),
+                child: Container(
+                  height: 177.0.h,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: firestore
+                        .collection("broadcast")
+                        .where('location',
+                            isEqualTo:
+                                UserController.to.myProfile.value.location)
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      print('done!!');
+                      if (!snapshot.hasData)
+                        return Center(
+                            child: CircularProgressIndicator(
                           color: Theme.of(context).colorScheme.primary,
                         ));
-                  if (snapshot.data!.docs.length == 0 &&
-                      UserController.to.myProfile.value.location != '')
-                    return Padding(
-                      padding: EdgeInsets.only(top: 50.0.h),
-                      child: Container(
-                        child: Text('아직 게시글이 없습니다.'),
-                      ),
-                    );
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      postCard(context),
-                      postCard(context),
-                      postCard(context),
-                    ]
-                  );
-                },
-              ),
-            ),
-          )),
+                      if (snapshot.data!.docs.length == 0 &&
+                          UserController.to.myProfile.value.location != '')
+                        return Padding(
+                          padding: EdgeInsets.only(top: 50.0.h),
+                          child: Container(
+                            child: Text('아직 게시글이 없습니다.'),
+                          ),
+                        );
+                      return ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            postCard(context),
+                            postCard(context),
+                            postCard(context),
+                          ]);
+                    },
+                  ),
+                ),
+              )),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -98,9 +98,7 @@ class CommunityPage extends StatelessWidget {
                 ),
               ),
               Expanded(child: Container()),
-              IconButton(
-                  onPressed: null,
-                  icon: Icon(Icons.arrow_forward_ios)),
+              IconButton(onPressed: null, icon: Icon(Icons.arrow_forward_ios)),
             ],
           ),
           Padding(
@@ -116,15 +114,10 @@ class CommunityPage extends StatelessWidget {
     );
   }
 
-  
   Widget searchBarWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
-          left: 25.0.w,
-          top: 10.h,
-          right: 22.0.w,
-          bottom: 20.h
-      ),
+      padding:
+          EdgeInsets.only(left: 25.0.w, top: 10.h, right: 22.0.w, bottom: 20.h),
       child: GestureDetector(
         onTap: () {
           searchController.isRoomSearch.value = false;
@@ -145,7 +138,10 @@ class CommunityPage extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Image.asset('assets/icons/search.png', width: 20.w,),
+                Image.asset(
+                  'assets/icons/search.png',
+                  width: 20.w,
+                ),
               ],
             ),
           ),
@@ -171,9 +167,7 @@ class CommunityPage extends StatelessWidget {
               ],
             ),
             image: DecorationImage(
-                image: AssetImage('assets/images/sora.jpg'),
-                fit: BoxFit.cover
-            ),
+                image: AssetImage('assets/images/sora.jpg'), fit: BoxFit.cover),
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
@@ -208,11 +202,12 @@ class CommunityPage extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 51.0.h),
-                    child: Center(child: Text(
-                        '연애 상담 해드려요.',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Colors.white,
-                        ))),
+                    child: Center(
+                        child: Text('연애 상담 해드려요.',
+                            style:
+                                Theme.of(context).textTheme.headline4!.copyWith(
+                                      color: Colors.white,
+                                    ))),
                   ),
                   Expanded(child: Container()),
                   Padding(
@@ -226,14 +221,14 @@ class CommunityPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          // _roomData['currentListener'] == null
-                          //     ? ' 0'
-                          //     : ' ${_roomData['currentListener'].length.toString()}',
+                            // _roomData['currentListener'] == null
+                            //     ? ' 0'
+                            //     : ' ${_roomData['currentListener'].length.toString()}',
                             ' 26',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                              color: Colors.white
-                            )
-                        ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white)),
                         SizedBox(width: 8.0.w),
                         Icon(
                           Icons.favorite,
@@ -241,12 +236,12 @@ class CommunityPage extends StatelessWidget {
                           color: Colors.white,
                         ),
                         Text(
-                          // ' ${_roomData['like'].toString()}',
+                            // ' ${_roomData['like'].toString()}',
                             ' 35',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(
-                                color: Colors.white
-                            )
-                        ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: Colors.white)),
                       ],
                     ),
                   ),
@@ -285,7 +280,10 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 5.0.w, right: 11.0.w,),
+                    padding: EdgeInsets.only(
+                      left: 5.0.w,
+                      right: 11.0.w,
+                    ),
                     child: Image.asset('assets/images/sing.png'),
                   ),
                   Column(
@@ -295,17 +293,23 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                            Text('노래방', style: Theme.of(context).textTheme.headline4),
+                            Text('노래방',
+                                style: Theme.of(context).textTheme.headline4),
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
-                              child: Image.asset('assets/images/mike.png', width: 12.0.w,),
+                              child: Image.asset(
+                                'assets/images/mike.png',
+                                width: 12.0.w,
+                              ),
                             )
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('당신의 실력을 맘껏 뽐내보세요.', style: Theme.of(context).textTheme.headline6)),
+                        child: Center(
+                            child: Text('당신의 실력을 맘껏 뽐내보세요.',
+                                style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),
@@ -334,8 +338,12 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 14.0.w, right: 30.0.w, top: 8.h),
-                    child: Image.asset('assets/images/voiceCopy.png', height: 87.0.h,),
+                    padding:
+                        EdgeInsets.only(left: 14.0.w, right: 30.0.w, top: 8.h),
+                    child: Image.asset(
+                      'assets/images/voiceCopy.png',
+                      height: 87.0.h,
+                    ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,17 +352,23 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                          Text('성대모사', style: Theme.of(context).textTheme.headline4),
-                          Padding(
-                            padding: EdgeInsets.only(left: 4.0.w),
-                            child: Image.asset('assets/images/mike2.png', width: 13.0.w,),
-                          )
+                            Text('성대모사',
+                                style: Theme.of(context).textTheme.headline4),
+                            Padding(
+                              padding: EdgeInsets.only(left: 4.0.w),
+                              child: Image.asset(
+                                'assets/images/mike2.png',
+                                width: 13.0.w,
+                              ),
+                            )
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('1번 테이블에 봉골레 파스타 하나.', style: Theme.of(context).textTheme.headline6)),
+                        child: Center(
+                            child: Text('1번 테이블에 봉골레 파스타 하나.',
+                                style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),
@@ -383,7 +397,10 @@ class CommunityPage extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 7.0.w, right: 31.0.w,),
+                    padding: EdgeInsets.only(
+                      left: 7.0.w,
+                      right: 31.0.w,
+                    ),
                     child: Image.asset('assets/images/gamer.png'),
                   ),
                   Column(
@@ -393,17 +410,23 @@ class CommunityPage extends StatelessWidget {
                         padding: EdgeInsets.only(top: 27.0.h),
                         child: Row(
                           children: [
-                            Text('레크레이션', style: Theme.of(context).textTheme.headline4),
+                            Text('레크레이션',
+                                style: Theme.of(context).textTheme.headline4),
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
-                              child: Image.asset('assets/images/game.png', width: 13.0.w,),
+                              child: Image.asset(
+                                'assets/images/game.png',
+                                width: 13.0.w,
+                              ),
                             )
                           ],
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.only(top: 8.0.h),
-                        child: Center(child: Text('다양한 게임을 즐겨보아요.', style: Theme.of(context).textTheme.headline6)),
+                        child: Center(
+                            child: Text('다양한 게임을 즐겨보아요.',
+                                style: Theme.of(context).textTheme.headline6)),
                       ),
                     ],
                   ),

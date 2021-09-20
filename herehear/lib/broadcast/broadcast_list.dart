@@ -70,12 +70,12 @@ ListView broadcastRoomList(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage('assets/images/you2.jpg'),
+                                image: AssetImage(room.roomInfo.hostInfo.profile!),
                                 fit: BoxFit.fitWidth,
                               )),
                         ),
                       ),
-                      Text('유리한 녀석들',
+                      Text(room.roomInfo.hostInfo.nickName!,
                           style:
                               Theme.of(context).textTheme.headline4!.copyWith(
                                     color: Colors.white,
@@ -122,7 +122,7 @@ ListView broadcastRoomList(
                   Padding(
                     padding:
                     EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
-                    child: Text('같이 대화하면서 놀아요!',
+                    child: Text(room.roomInfo.title,
                         style: Theme.of(context).textTheme.headline4),
                   ),
                   SizedBox(width: 10.w),

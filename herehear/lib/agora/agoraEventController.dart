@@ -1,8 +1,11 @@
 import 'dart:core';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/groupCall/data/group_call_model.dart';
+import 'package:herehear/users/controller/user_controller.dart';
+import 'package:herehear/users/data/user_model.dart';
 import 'package:herehear/utils/AppID.dart';
 import 'dart:math';
 
@@ -25,6 +28,8 @@ extension RoomTypeToShortString on RoomType {
 class AgoraEventController extends GetxController {
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
+  var listener = <UserModel>[].obs;
+  var followers = <UserModel>[].obs;
   RxBool muted = false.obs;
   RxBool isChatActive = false.obs;
   var speakingUser = <int?>[].obs;
@@ -137,6 +142,7 @@ class AgoraEventController extends GetxController {
         print('infoStrings: ${infoStrings}');
         print('infoStrings: ${infoStrings}');
 
+        followers.add(UserController.to.myProfile.value);
         users.add(uid);
 
         userExample.uid = currentUid;
@@ -151,9 +157,6 @@ class AgoraEventController extends GetxController {
         final info = 'userJoined: $uid';
         infoStrings.add(info);
         users.add(uid);
-
-        print('uid: ${uid}');
-        print('uid: ${uid}');
       },
       userOffline: (uid, reason) {
         final info = 'userOffline: $uid , reason: $reason';
@@ -181,10 +184,14 @@ class AgoraEventController extends GetxController {
     ));
   }
 
-  Future<void> moveWatcherToParticipant() async {
+  Future<void> moveWatcherToParticipant(String channelName) async {
     print('currentUid???: ${currentUid}');
     users.removeWhere((element) => element == currentUid);
-    participants.add(currentUid);
+    DocumentReference groupCall =  FirebaseFirestore.instance.collection('groupcall').doc(channelName);
+    groupCall.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
+    groupCall.update({
+      'listeners': FieldValue.arrayRemove([UserController.to.myProfile.value.uid])
+    });
     isParticipate.value = true;
 
     await _engine.enableLocalAudio(true);

@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
+import 'package:herehear/login/nickname.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'community/community.dart';
 import 'create/create_broadcast.dart';
@@ -14,45 +15,49 @@ import 'home/home.dart';
 
 class BottomBar extends StatelessWidget {
   final UserController userController = Get.put(UserController());
+  final BottomBarController bottomBarController =
+      Get.put(BottomBarController(), permanent: false);
 
   @override
   Widget build(BuildContext context) {
-    final BottomBarController bottomBarController =
-        Get.put(BottomBarController(), permanent: false);
-
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      bottomNavigationBar: buildBottomNavigationMenu(context, bottomBarController),
-      body: Obx(() => IndexedStack(
-        index: bottomBarController.tabIndex.value,
-        children: [
-          HomePage(),
-          SearchPage(),
-          Container(),
-          CommunityPage(),
-          MyPage(),
-        ],
-      )),
-      floatingActionButtonLocation: CustomFloatingActionButtonLocation(
-          FloatingActionButtonLocation.centerDocked, 0, 15),
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          elevation: 0.0,
-          child: Image.asset(
-            'assets/icons/add.png',
-            width: 23.0.w,
-          ),
-          onPressed: () => {
-                print(
-                    '*******************************************************************************8'),
-                print(userController.myProfile.value.uid),
-                print(
-                    '*******************************************************************************8'),
-                userController.myProfile.value.uid == 'Guest'
-                    ? _showMyDialog()
-                    : showCreateOption(context),
-              }),
-    );
+    if (UserController.to.myProfile.value.nickName == 'Nickname') {
+      return NicknamePage();
+    } else {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        bottomNavigationBar:
+            buildBottomNavigationMenu(context, bottomBarController),
+        body: Obx(() => IndexedStack(
+              index: bottomBarController.tabIndex.value,
+              children: [
+                HomePage(),
+                SearchPage(),
+                Container(),
+                CommunityPage(),
+                MyPage(),
+              ],
+            )),
+        floatingActionButtonLocation: CustomFloatingActionButtonLocation(
+            FloatingActionButtonLocation.centerDocked, 0, 15),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            elevation: 0.0,
+            child: Image.asset(
+              'assets/icons/add.png',
+              width: 23.0.w,
+            ),
+            onPressed: () => {
+                  print(
+                      '*******************************************************************************8'),
+                  print(userController.myProfile.value.uid),
+                  print(
+                      '*******************************************************************************8'),
+                  userController.myProfile.value.uid == 'Guest'
+                      ? _showMyDialog()
+                      : showCreateOption(context),
+                }),
+      );
+    }
   }
 
   Future<void> _showMyDialog() async {
@@ -72,24 +77,6 @@ class BottomBar extends StatelessWidget {
       ),
     );
   }
-
-  // Future<void> _showMyDialog2() async {
-  //   return Get.defaultDialog(
-  //     title: '정보를 불러오고 있습니다!',
-  //     content: SingleChildScrollView(
-  //       child: Column(
-  //         children: <Widget>[
-  //           TextButton(
-  //               child: Text(
-  //                 '확인',
-  //                 style: TextStyle(fontSize: 18.sp, color: Colors.black87),
-  //               ),
-  //               onPressed: () => Get.back()),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Future<dynamic> showCreateOption(BuildContext context) async {
     return Get.dialog(
@@ -203,72 +190,6 @@ class BottomBar extends StatelessWidget {
       ),
     );
   }
-
-  // Future<dynamic> showCreateOption(BuildContext context) async {
-  //   return showModalBottomSheet(
-  //       context: context,
-  //       builder: (context) {
-  //         return Column(
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             SizedBox(
-  //               height: 35.h,
-  //             ),
-  //             Row(
-  //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //               children: <Widget>[
-  //                 InkWell(
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: <Widget>[
-  //                       Icon(
-  //                         Icons.record_voice_over,
-  //                         size: 50.w,
-  //                         color: Theme.of(context).colorScheme.primary,
-  //                       ),
-  //                       SizedBox(
-  //                         height: 20.h,
-  //                       ),
-  //                       // podcasts
-  //                       Text('개인 라이브',
-  //                           style: TextStyle(
-  //                               fontSize: 18.sp,
-  //                               color: Colors.black87,
-  //                               fontWeight: FontWeight.bold)),
-  //                     ],
-  //                   ),
-  //                   onTap: () => Get.off(() => CreateBroadcastPage()),
-  //                 ),
-  //                 InkWell(
-  //                   child: Column(
-  //                     mainAxisAlignment: MainAxisAlignment.center,
-  //                     children: <Widget>[
-  //                       Icon(
-  //                         Icons.connect_without_contact,
-  //                         size: 50.w,
-  //                         color: Theme.of(context).colorScheme.primary,
-  //                       ),
-  //                       SizedBox(
-  //                         height: 20.h,
-  //                       ),
-  //                       Text('그룹 대화',
-  //                           style: TextStyle(
-  //                               fontSize: 18.sp,
-  //                               color: Colors.black87,
-  //                               fontWeight: FontWeight.bold)),
-  //                     ],
-  //                   ),
-  //                   onTap: () => Get.off(() => CreateGroupCallPage()),
-  //                 ),
-  //               ],
-  //             ),
-  //             SizedBox(
-  //               height: 35.h,
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
 
   final TextStyle unselectedLabelStyle = TextStyle(
       color: Colors.white.withOpacity(0.5),

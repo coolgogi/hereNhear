@@ -23,24 +23,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatPage extends StatefulWidget {
-  ChatPage({Key? key}) : super(key: key);
-
   late final docId;
 
   //late final roomData;
   late final room;
 
   // late final Map<String, dynamic> roomData;
-  ChatPage.withData(types.BroadcastModel roomD) {
-    //  roomData = data;
-    room = roomD;
-  }
+  ChatPage(this.room);
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatPageState createState() => _ChatPageState(room);
 }
 
 class _ChatPageState extends State<ChatPage> {
+  late types.BroadcastModel room;
+  _ChatPageState(this.room);
+
   bool _isAttachmentUploading = false;
   bool noticeActive = true;
 
@@ -94,13 +92,13 @@ class _ChatPageState extends State<ChatPage> {
                             children: [
                               Row(
                                 children: [
-                                  Text('호스트 NickName', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                                  Text(room.roomInfo.hostInfo.nickName!, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
                                   SizedBox(width: 6.w),
                                   Padding(
                                     padding: EdgeInsets.only(top: 3.5.h),
                                     child: Image.asset('assets/images/rive_red.png', width: 43.w, height: 16.w,),
                                   ),
-                                ],
+                                ]
                               ),
                               SizedBox(height: 4.h),
                               Text('팔로우 숫자', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
@@ -154,21 +152,21 @@ class _ChatPageState extends State<ChatPage> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(26.w, 5.h, 24.w, 5.h),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: 37.h,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
-                          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
-                          borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 37.h,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(15.0.w, 9.h, 15.w, 0.h) ,
+                            child: Text(room.roomInfo.title, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                          ),
                         ),
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(15.0.w, 9.h, 15.w, 0.h) ,
-                          child: Text('방 제목(대화하고 놀아요!)', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                        ),
-                      ),
-                    ],
+                      ]
                   ),
                 ),
                 Expanded(
@@ -199,8 +197,8 @@ class _ChatPageState extends State<ChatPage> {
                               return Center(child: CircularProgressIndicator());
                             }
                           }),
-                  ),
-                ),
+              ),
+            ),
               ],
             ),
             Positioned(
@@ -222,13 +220,13 @@ class _ChatPageState extends State<ChatPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              '공지 사항 목록',
+                              '공지',
                               maxLines: 5,
                               textAlign: TextAlign.justify,
                               overflow: TextOverflow.ellipsis,
                               // softWrap: true,
                               // overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.primary)),
                           Expanded(child: Container()),
                           InkWell(
                               onTap: (() {
@@ -239,25 +237,9 @@ class _ChatPageState extends State<ChatPage> {
                               child: Image.asset('assets/icons/notice.png', width: 20.w, height: 20.w)),
                         ],
                       ),
+                      SizedBox(height: 4.h),
                       Text(
-                          '1.도배 금지!!',
-                          maxLines: 5,
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.ellipsis,
-                          // softWrap: true,
-                          // overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                      Text(
-                          '2. 존댓말 사용해주세요!',
-                          maxLines: 5,
-                          textAlign: TextAlign.justify,
-                          overflow: TextOverflow.ellipsis,
-                          // softWrap: true,
-                          // overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-
-                      Text(
-                          '3. 음담패설/욕설 시 바로 강퇴',
+                          room.roomInfo.notice!,
                           maxLines: 5,
                           textAlign: TextAlign.justify,
                           overflow: TextOverflow.ellipsis,
