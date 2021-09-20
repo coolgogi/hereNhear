@@ -221,11 +221,6 @@ class _ChatPageState extends State<ChatPage> {
                         children: [
                           Text(
                               '공지',
-                              maxLines: 5,
-                              textAlign: TextAlign.justify,
-                              overflow: TextOverflow.ellipsis,
-                              // softWrap: true,
-                              // overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.primary)),
                           Expanded(child: Container()),
                           InkWell(
@@ -240,7 +235,7 @@ class _ChatPageState extends State<ChatPage> {
                       SizedBox(height: 4.h),
                       Text(
                           room.roomInfo.notice!,
-                          maxLines: 5,
+                          maxLines: 15,
                           textAlign: TextAlign.justify,
                           overflow: TextOverflow.ellipsis,
                           // softWrap: true,
