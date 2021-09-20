@@ -215,23 +215,12 @@ class MyPage extends StatelessWidget {
                                 ],
                               )),
                           SizedBox(width: 11.w),
-                          Obx(() => Column(
-                                children: [
-                                  GestureDetector(
-                                      onTap: () => toggleIsFavoriteVoice(),
-                                      child: Image.asset(
-                                          profileController
-                                                  .isfavoriteVoice.value
-                                              ? 'assets/icons/heart_fill.png'
-                                              : 'assets/icons/heart.png',
-                                          height: 22.h)),
-                                  Text(
-                                    '105',
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                ],
-                              )),
+                          Column(
+                            children: [
+                              Image.asset('assets/icons/heart_fill.png', height: 22.h),
+                              Text('105', style: Theme.of(context).textTheme.headline6,),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -332,10 +321,5 @@ class MyPage extends StatelessWidget {
                 ),
               ),
             ));
-  }
-
-  void toggleIsFavoriteVoice() {
-    profileController.isfavoriteVoice.value =
-        !profileController.isfavoriteVoice.value;
   }
 }

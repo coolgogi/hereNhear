@@ -43,6 +43,8 @@ class AgoraEventController extends GetxController {
   final ClientRole role;
   late final String type;
 
+  RxBool noticeActive = true.obs;
+
   //////// temp data for distinguish each users//////////
   int randomNumber = Random().nextInt(5);
   int memberCount = 1;

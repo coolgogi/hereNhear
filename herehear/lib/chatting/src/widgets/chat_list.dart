@@ -222,35 +222,35 @@ class _ChatListState extends State<MyChatList>
                     _buildNewMessage(index, animation),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.only(
-                top: 16,
-              ),
-              sliver: SliverToBoxAdapter(
-                child: SizeTransition(
-                  axisAlignment: 1,
-                  sizeFactor: _animation,
-                  child: Center(
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: 32,
-                      width: 32,
-                      child: SizedBox(
-                        height: 16,
-                        width: 16,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.transparent,
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            InheritedChatTheme.of(context).theme.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // SliverPadding(
+            //   padding: const EdgeInsets.only(
+            //     top: 16,
+            //   ),
+            //   sliver: SliverToBoxAdapter(
+            //     child: SizeTransition(
+            //       axisAlignment: 1,
+            //       sizeFactor: _animation,
+            //       child: Center(
+            //         child: Container(
+            //           alignment: Alignment.center,
+            //           height: 32,
+            //           width: 32,
+            //           child: SizedBox(
+            //             height: 16,
+            //             width: 16,
+            //             child: CircularProgressIndicator(
+            //               backgroundColor: Colors.transparent,
+            //               strokeWidth: 2,
+            //               valueColor: AlwaysStoppedAnimation<Color>(
+            //                 InheritedChatTheme.of(context).theme.primaryColor,
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

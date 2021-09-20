@@ -383,7 +383,7 @@ class _ChatState extends State<MyChat> {
                         : Column(
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(26.w, 12.h, 17.w, 12.h),
+                          padding: EdgeInsets.fromLTRB(15.w, 12.h, 17.w, 12.h),
                           child: Row(
                             children: [
                               GestureDetector(
@@ -403,6 +403,19 @@ class _ChatState extends State<MyChat> {
                                   child: Center(child: Image.asset('assets/icons/mic_fill2.png', width: 20.h, height: 20.h)),
                                 ),
                               ),
+                              SizedBox(width: 10.w,),
+                              GestureDetector(
+                                onTap: null,
+                                child: Container(
+                                  width: 30.h,
+                                  height: 30.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).colorScheme.background,
+                                  ),
+                                  child: Center(child: Image.asset('assets/icons/mic_fill_black.png', width: 20.h, height: 20.h)),
+                                ),
+                              ),
                               SizedBox(width: 15.w),
                               GestureDetector(
                                 onTap: (() {
@@ -419,26 +432,6 @@ class _ChatState extends State<MyChat> {
                                   ),
                                   child: Center(child: Image.asset('assets/icons/chat_black.png', width: 20.h, height: 20.h)),
                                 ),
-                              ),
-                              SizedBox(width: 15.w),
-                              Container(
-                                height: 30.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(18.r)),
-                                  color: Theme.of(context).colorScheme.background,
-                                ),
-                                child: Center(child: Padding(
-                                  padding: EdgeInsets.only(left: 8.0.w, right: 8.w),
-                                  child: Row(
-                                    children: [
-                                      Image.asset('assets/icons/chat_black.png', width: 15.h, height: 15.h),
-                                      SizedBox(width: 5.w,),
-                                      Text('대화하기', style: Theme.of(context).textTheme.headline6!.copyWith(
-                                        color: Theme.of(context).colorScheme.onBackground,
-                                      ),),
-                                    ],
-                                  ),
-                                )),
                               ),
                               Expanded(child: Container()),
                               InkWell(

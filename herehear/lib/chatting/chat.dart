@@ -40,6 +40,7 @@ class _ChatPageState extends State<ChatPage> {
   _ChatPageState(this.room);
 
   bool _isAttachmentUploading = false;
+  bool noticeActive = true;
 
   @override
   Widget build(BuildContext context) {
@@ -52,175 +53,215 @@ class _ChatPageState extends State<ChatPage> {
             image: AssetImage('assets/suhyun.jpg'), // <-- 이미지 넣기!!
           ),
         ),
-        child: Column(
+        child: Stack(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(26.w, 70.h, 24.w, 8.h),
-              child: Container(
-                height: 53.h,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.4)),
-                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
-                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.w),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 2.h, right: 10.0.w),
-                        child: Container(
-                          width: 38.w,
-                          height: 38.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Theme.of(context).colorScheme.primary),
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/me.jpg'), // <-- 호스트 프로필 사진
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(room.roomInfo.hostInfo.nickName!, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                              SizedBox(width: 6.w),
-                              Padding(
-                                padding: EdgeInsets.only(top: 3.5.h),
-                                child: Image.asset('assets/images/rive_red.png', width: 43.w, height: 16.w,),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4.h),
-                          Text('팔로우 숫자', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                        ],
-                      ),
-                      Expanded(child: Container()),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.people,
-                                size: 17.w,
-                                color: Colors.white,
-                              ),
-                              Text(
-                                ' ${widget.room.users.length.toString()}',
-                                style:
-                                Theme.of(context).textTheme.subtitle1!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                              SizedBox(width: 12.w),
-                              Icon(
-                                Icons.favorite,
-                                size: 14.w,
-                                color: Colors.white,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 15.w),
-                                child: Text(
-                                  ' ${room.like.toString()}',
-                                  style:
-                                  Theme.of(context).textTheme.subtitle1!.copyWith(
-                                    color: Colors.white,
-                                    fontSize: 12.sp,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(26.w, 5.h, 24.w, 5.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 37.h,
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(26.w, 70.h, 24.w, 8.h),
+                  child: Container(
+                    height: 53.h,
                     decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
-                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
-                      borderRadius: BorderRadius.all(Radius.circular(5.r)),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(15.0.w, 10.h, 15.w, 10.h) ,
-                      child: Text(room.roomInfo.title, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                    ),
-                  ),
-                  Container(
-                    height: 37.h,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                      border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.4)),
                       color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                       borderRadius: BorderRadius.all(Radius.circular(10.r)),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.fromLTRB(15.0.w, 10.h, 15.w, 10.h),
+                      padding: EdgeInsets.only(left: 10.w),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(
-                              room.roomInfo.notice!,
-                              maxLines: 5,
-                              textAlign: TextAlign.justify,
-                              overflow: TextOverflow.ellipsis,
-                              // softWrap: true,
-                              // overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-                          Image.asset('assets/icons/notice.png', width: 20.w, height: 20.w)
+                          Padding(
+                            padding: EdgeInsets.only(top: 2.h, right: 10.0.w),
+                            child: Container(
+                              width: 38.w,
+                              height: 38.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Theme.of(context).colorScheme.primary),
+                                image: DecorationImage(
+                                  image: AssetImage('assets/images/me.jpg'), // <-- 호스트 프로필 사진
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(room.roomInfo.hostInfo.nickName!, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                                  SizedBox(width: 6.w),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 3.5.h),
+                                    child: Image.asset('assets/images/rive_red.png', width: 43.w, height: 16.w,),
+                                  ),
+                                ]
+                              ),
+                              SizedBox(height: 4.h),
+                              Text('팔로우 숫자', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                            ],
+                          ),
+                          Expanded(child: Container()),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.people,
+                                    size: 17.w,
+                                    color: Colors.white,
+                                  ),
+                                  Text(
+                                    ' ${widget.room.users.length.toString()}',
+                                    style:
+                                    Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Icon(
+                                    Icons.favorite,
+                                    size: 14.w,
+                                    color: Colors.white,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 15.w),
+                                    child: Text(
+                                      ' ${widget.room.like.toString()}',
+                                      style:
+                                      Theme.of(context).textTheme.subtitle1!.copyWith(
+                                        color: Colors.white,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
                         ],
                       ),
                     ),
                   ),
-                ],
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(26.w, 5.h, 24.w, 5.h),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          height: 37.h,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                            color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                            borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(15.0.w, 9.h, 15.w, 0.h) ,
+                            child: Text(room.roomInfo.title, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                          ),
+                        ),
+                      ]
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                      color: Colors.transparent,
+                      child: StreamBuilder<types.BroadcastModel>(
+                          initialData: widget.room,
+                          stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return StreamBuilder<List<types.MyMessage>>(
+                                  initialData: const [],
+                                  stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
+                                  builder: (context, snapshot) {
+                                    return MyChat(
+                                        isAttachmentUploading: _isAttachmentUploading,
+                                        messages: snapshot.data ?? [],
+                                        onAttachmentPressed: _handleAtachmentPressed,
+                                        onMessageTap: _handleMessageTap,
+                                        onPreviewDataFetched: _handlePreviewDataFetched,
+                                        onSendPressed: _handleSendPressed,
+                                        user: types.UserModel(
+                                          id: MyFirebaseChatCore.instance.firebaseUser?.uid ?? '',
+                                        ),
+                                      );
+                                  });
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          }),
               ),
             ),
-            Expanded(
-              child: Container(
-                  color: Colors.transparent,
-                  child: StreamBuilder<types.BroadcastModel>(
-                      initialData: widget.room,
-                      stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return StreamBuilder<List<types.MyMessage>>(
-                              initialData: const [],
-                              stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
-                              builder: (context, snapshot) {
-                                return MyChat(
-                                    isAttachmentUploading: _isAttachmentUploading,
-                                    messages: snapshot.data ?? [],
-                                    onAttachmentPressed: _handleAtachmentPressed,
-                                    onMessageTap: _handleMessageTap,
-                                    onPreviewDataFetched: _handlePreviewDataFetched,
-                                    onSendPressed: _handleSendPressed,
-                                    user: types.UserModel(
-                                      id: MyFirebaseChatCore.instance.firebaseUser?.uid ?? '',
-                                    ),
-                                  );
-                              });
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      }),
-              ),
+              ],
             ),
+            Positioned(
+              left: noticeActive? 220.w : 321.5.w,
+              top: noticeActive? 130.h : 133.3.h,
+              child: noticeActive? Container(
+                width: 140.w,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
+                  borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15.0.w, 9.h, 10.w, 9.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              '공지',
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.primary)),
+                          Expanded(child: Container()),
+                          InkWell(
+                              onTap: (() {
+                                setState(() {
+                                  noticeActive = !noticeActive;
+                                });
+                              }),
+                              child: Image.asset('assets/icons/notice.png', width: 20.w, height: 20.w)),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                          room.roomInfo.notice!,
+                          maxLines: 15,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.ellipsis,
+                          // softWrap: true,
+                          // overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                    ],
+                  ),
+                ),
+              ) : GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    noticeActive = !noticeActive;
+                  });
+                }),
+                child: Container(
+                  width: 30.h,
+                  height: 30.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
+                  child: Center(child: Image.asset('assets/icons/notice.png', width: 20.w, height: 20.w),),
+                ),
+              ),
+            )
           ],
         ),
       ),
