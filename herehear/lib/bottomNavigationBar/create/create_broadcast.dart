@@ -152,9 +152,10 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                   Container(
                     height: 104.h,
                     child: TextFormField(
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.multiline,
                       controller: _notice,
-                      maxLines: 15,
+                      textInputAction: TextInputAction.newline,
+                      maxLines: 20,
                       textAlign: TextAlign.left,
                       decoration: InputDecoration(
                         hintText: '공지를 입력해주세요(100자 이내)',

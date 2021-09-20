@@ -91,27 +91,33 @@ class TextMessage extends StatelessWidget {
         InheritedChatTheme.of(context).theme.userAvatarNameColors);
     final name = getUserName(message.author);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (showName)
-          Padding(
-            padding: const EdgeInsets.only(bottom: 6.0),
-            child: Text(
-              name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).colorScheme.surface),
+    return Container(
+      constraints: BoxConstraints(maxWidth: 180.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (showName)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6.0),
+              child: Text(
+                name,
+                maxLines: 10,
+                textAlign: TextAlign.justify,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(color: Theme.of(context).colorScheme.surface),
+              ),
             ),
+          Text(
+            message.text,
+            maxLines: 10,
+            overflow: TextOverflow.ellipsis,
+            style: user.id == message.author.id
+                ? Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)
+                : Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface),
+            // textWidthBasis: TextWidthBasis.longestLine,
           ),
-        SelectableText(
-          message.text,
-          style: user.id == message.author.id
-              ? Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)
-              : Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface),
-          textWidthBasis: TextWidthBasis.longestLine,
-        ),
-      ],
+        ],
+      ),
     );
   }
 

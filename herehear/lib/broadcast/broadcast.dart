@@ -159,34 +159,37 @@ class BroadCastPage extends GetView<AgoraEventController> {
   // }
 
   PreferredSizeWidget profileAppBar(BuildContext context) {
-    return AppBar(
-      leading: IconButton(
-          onPressed: () {
-            _onCallEnd();
-          },
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
-      backgroundColor: Colors.transparent,
-      centerTitle: true,
-      title: Container(
-        margin: const EdgeInsets.all(8.0),
-        padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
-        decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).colorScheme.background),
-            borderRadius: BorderRadius.circular(12.r)),
-        child:
-            Text(" $timer_title ", style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.background)),
+    return PreferredSize(
+      preferredSize: Size.fromHeight(45.0.h),
+      child: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              _onCallEnd();
+            },
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Container(
+          margin: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
+          decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).colorScheme.background),
+              borderRadius: BorderRadius.circular(12.r)),
+          child:
+              Text(" $timer_title ", style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.background)),
+        ),
+        actions: <Widget>[
+          IconButton(
+              onPressed: null,
+              icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
+          IconButton(
+              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
+              icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
+        ],
+        // toolbarOpacity: 0.0,
+        // bottomOpacity: 0.0,
+        // flexibleSpace:
       ),
-      actions: <Widget>[
-        IconButton(
-            onPressed: null,
-            icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
-        IconButton(
-            onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-            icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
-      ],
-      // toolbarOpacity: 0.0,
-      // bottomOpacity: 0.0,
-      // flexibleSpace:
     );
   }
 

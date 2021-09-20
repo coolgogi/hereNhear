@@ -224,6 +224,9 @@ flutter:
     - assets/icons/micButton_mute.png
     - assets/icons/pause.png
     - assets/icons/notice.png
+    - assets/icons/reload_blue.png
+    - assets/icons/edit.png
+    - assets/icons/mic_fill_black.png
     - assets/images/game.png
     - assets/images/IU.png
     - assets/images/rive_red.png
