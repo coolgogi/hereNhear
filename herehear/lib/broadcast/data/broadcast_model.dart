@@ -22,7 +22,7 @@ extension MyRoomTypeToShortString on MyRoomType {
 class BroadcastModel extends Equatable {
   /// Creates a [BroadcastModel]
   const BroadcastModel({
-    this.roomInfo,
+    required this.roomInfo,
     this.createdAt,
     this.imageUrl,
     this.lastMessages,
@@ -31,10 +31,6 @@ class BroadcastModel extends Equatable {
     required this.type,
     this.updatedAt,
     required this.users,
-
-    this.hostInfo,
-    this.title,
-    this.notice,
     required this.channelName,
     this.thumbnail,
     this.location,
@@ -62,9 +58,6 @@ class BroadcastModel extends Equatable {
 
 //
         roomInfo = RoomInfoModel.fromJson(json['roomInfo'] as Map<String, dynamic>),
-        hostInfo = UserModel.fromJson(json['hostInfo'] as Map<String, dynamic>),
-        title = json['title'] as String,
-        notice = json['notice'] as String,
         thumbnail =json['thumbnail'] as String,
         location = json['location'] as String,
         createdTime = json['createdTime'].toDate(),
@@ -87,10 +80,7 @@ class BroadcastModel extends Equatable {
     'type': type.toShortString(),
     'updatedAt': updatedAt,
     //
-    'roomInfo' : roomInfo!.toJson(),
-    'hostInfo' : hostInfo!.toJson(),
-    'title' : title,
-    'notice' : notice,
+    'roomInfo' : roomInfo.toJson(),
     'channelName': channelName,
     'thumbnail' : thumbnail,
     'location' : location,
@@ -146,10 +136,7 @@ class BroadcastModel extends Equatable {
     //
   ];
 
-  final RoomInfoModel? roomInfo;
-  final UserModel? hostInfo; //hostUid, hostNickname, hostProfile
-  final String? title;
-  final String? notice;
+  final RoomInfoModel roomInfo;
   final String channelName;
   final String? thumbnail; //image
   final String? location;

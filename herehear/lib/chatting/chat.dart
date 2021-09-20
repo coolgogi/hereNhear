@@ -23,24 +23,22 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatPage extends StatefulWidget {
-  ChatPage({Key? key}) : super(key: key);
-
   late final docId;
 
   //late final roomData;
   late final room;
 
   // late final Map<String, dynamic> roomData;
-  ChatPage.withData(types.BroadcastModel roomD) {
-    //  roomData = data;
-    room = roomD;
-  }
+  ChatPage(this.room);
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  _ChatPageState createState() => _ChatPageState(room);
 }
 
 class _ChatPageState extends State<ChatPage> {
+  late types.BroadcastModel room;
+  _ChatPageState(this.room);
+
   bool _isAttachmentUploading = false;
 
   @override
@@ -91,7 +89,7 @@ class _ChatPageState extends State<ChatPage> {
                         children: [
                           Row(
                             children: [
-                              Text('호스트 NickName', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                              Text(room.roomInfo.hostInfo.nickName!, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
                               SizedBox(width: 6.w),
                               Padding(
                                 padding: EdgeInsets.only(top: 3.5.h),
@@ -131,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
                               Padding(
                                 padding: EdgeInsets.only(right: 15.w),
                                 child: Text(
-                                  ' ${widget.room.like.toString()}',
+                                  ' ${room.like.toString()}',
                                   style:
                                   Theme.of(context).textTheme.subtitle1!.copyWith(
                                     color: Colors.white,
@@ -162,7 +160,7 @@ class _ChatPageState extends State<ChatPage> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(15.0.w, 10.h, 15.w, 10.h) ,
-                      child: Text('방 제목(대화하고 놀아요!)', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
+                      child: Text(room.roomInfo.title, style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
                     ),
                   ),
                   Container(
@@ -178,7 +176,7 @@ class _ChatPageState extends State<ChatPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                              '공지 사항 목록',
+                              room.roomInfo.notice!,
                               maxLines: 5,
                               textAlign: TextAlign.justify,
                               overflow: TextOverflow.ellipsis,

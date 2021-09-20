@@ -77,10 +77,7 @@ class MyFirebaseChatCore {
     return types.BroadcastModel(
       roomInfo: roomInfo,
       channelName: roomInfo.channelName,
-      hostInfo: roomInfo.hostInfo,
       roomCategory: roomInfo.roomCategory,
-      title: roomInfo.title,
-      notice: roomInfo.notice,
       type: types.MyRoomType.group,
       users: roomUsers,
     );

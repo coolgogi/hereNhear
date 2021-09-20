@@ -60,7 +60,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
               endDrawer: DrawerWidget(),
               appBar: profileAppBar(context),
               extendBodyBehindAppBar: true,
-              body: ChatPage.withData(roomData),
+              body: ChatPage(roomData),
               // body: ChatPage.withData(roomData),
               backgroundColor: Colors.transparent,
               extendBody: true,
@@ -232,7 +232,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
-    if (roomData.hostInfo!.uid == UserController.to.myProfile.value.uid) {
+    if (roomData.roomInfo.hostInfo.uid == UserController.to.myProfile.value.uid) {
       await changeState(roomData.channelName);
     }
     await fireStore.collection('broadcast').doc(roomData.channelName).update({
