@@ -12,12 +12,12 @@ import 'package:herehear/login/signUp_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-class CertificationPage extends StatefulWidget {
+class setProfilePage extends StatefulWidget {
   @override
-  _CertificationPageState createState() => _CertificationPageState();
+  _setProfilePageState createState() => _setProfilePageState();
 }
 
-class _CertificationPageState extends State<CertificationPage> {
+class _setProfilePageState extends State<setProfilePage> {
   final _picker = ImagePicker();
   final nameController = TextEditingController();
   final nickNameController = TextEditingController();
@@ -45,16 +45,17 @@ class _CertificationPageState extends State<CertificationPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Obx(() => Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(25.w, 0.h, 30.w, 20.h),
-          child: Column(
-            children: [
-              Container(
-                height: 130.h,
-                child: Center(
-                    child: Obx(() => Stack(
+      body: Form(
+          key: _formKey,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(25.w, 0.h, 30.w, 20.h),
+            child: Column(
+              children: [
+                Container(
+                  height: 130.h,
+                  child: Center(
+                      child: Obx(
+                    () => Stack(
                       children: [
                         loadImage(context),
                         Positioned(
@@ -67,153 +68,170 @@ class _CertificationPageState extends State<CertificationPage> {
                                 height: 26.w,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage('assets/icons/addButton_blue.png'),
-                                        fit: BoxFit.cover
-                                    )
-                                ),
+                                        image: AssetImage(
+                                            'assets/icons/addButton_blue.png'),
+                                        fit: BoxFit.cover)),
                               ),
                             ))
                       ],
-                    ),)
+                    ),
+                  )),
                 ),
-              ),
-              Divider(thickness: 1.5.w),
-              SizedBox(height: 20.h),
-              Row(
-                children: [
-                  Text(
-                      '이름',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: nameController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '이름',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
+                Divider(thickness: 1.5.w),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Text('이름', style: Theme.of(context).textTheme.headline2),
+                    Expanded(child: Container()),
+                    Container(
+                      width: 220.w,
+                      child: TextFormField(
+                        controller: nameController,
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return '제목을 입력해주세요.';
+                        //   }
+                        //   return null;
+                        // },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
+                            ),
+                            contentPadding:
+                                EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                            hintText: '이름',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface)),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                      '닉네임',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: nickNameController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '어플에서 사용할 닉네임',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                      '소개',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: introduceController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '소개글',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 44.h,
-                ///////////////////////////////////////////////////////////////////////////
-                width: MediaQuery.of(context).size.width,
-                //이게 왜??? 진짜 절대 모르겠어;;;;
-                ///////////////////////////////////////////////////////////////////////////
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(0),
-                    backgroundColor: (nameController.text.isEmpty ||
-                        nickNameController.text.isEmpty)
-                        ? MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.onSecondary)
-                        : MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.primary),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Get.to(AgreementTOSPage());
-                    }
-                  },
-                  child: Text('다음',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Theme.of(context).colorScheme.background)),
+                  ],
                 ),
-              )
-            ],
-          ),
-        )),
-      ));
+                Row(
+                  children: [
+                    Text('닉네임', style: Theme.of(context).textTheme.headline2),
+                    Expanded(child: Container()),
+                    Container(
+                      width: 220.w,
+                      child: TextFormField(
+                        controller: nickNameController,
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return '제목을 입력해주세요.';
+                        //   }
+                        //   return null;
+                        // },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
+                            ),
+                            contentPadding:
+                                EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                            hintText: '어플에서 사용할 닉네임',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface)),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text('소개', style: Theme.of(context).textTheme.headline2),
+                    Expanded(child: Container()),
+                    Container(
+                      width: 220.w,
+                      child: TextFormField(
+                        controller: introduceController,
+                        // validator: (value) {
+                        //   if (value!.trim().isEmpty) {
+                        //     return '제목을 입력해주세요.';
+                        //   }
+                        //   return null;
+                        // },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                            ),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground),
+                            ),
+                            contentPadding:
+                                EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                            hintText: '소개글',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .headline2!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurface)),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 44.h,
+                  ///////////////////////////////////////////////////////////////////////////
+                  width: MediaQuery.of(context).size.width,
+                  //이게 왜??? 진짜 절대 모르겠어;;;;
+                  ///////////////////////////////////////////////////////////////////////////
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      backgroundColor: (nameController.text.isEmpty ||
+                              nickNameController.text.isEmpty)
+                          ? MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.onSecondary)
+                          : MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.primary),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Get.to(AgreementTOSPage());
+                      }
+                    },
+                    child: Text('다음',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Theme.of(context).colorScheme.background)),
+                  ),
+                )
+              ],
+            ),
+          )),
+    );
   }
 
   Future<String> pickAnImageFromGallery() async {
@@ -244,9 +262,11 @@ class _CertificationPageState extends State<CertificationPage> {
                     padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
                     child: GestureDetector(
                         onTap: () => Get.back(),
-                        child: Icon(Icons.close, size: 25.w, color: Colors.white,)
-                    )
-                ),
+                        child: Icon(
+                          Icons.close,
+                          size: 25.w,
+                          color: Colors.white,
+                        ))),
               ],
             ),
             Row(
@@ -300,8 +320,7 @@ class _CertificationPageState extends State<CertificationPage> {
                           child: Text('앨범에서 가져오기',
                               style: Theme.of(context).textTheme.headline4),
                         ),
-                        Image.asset('assets/icons/gallery.png',
-                            width: 50.w),
+                        Image.asset('assets/icons/gallery.png', width: 50.w),
                       ],
                     ),
                   ),
@@ -316,17 +335,14 @@ class _CertificationPageState extends State<CertificationPage> {
   }
 
   Widget loadImage(BuildContext context) {
-    if(profileController.isDefaultImage.value)
+    if (profileController.isDefaultImage.value)
       return Container(
         width: 80.w,
         height: 78.w,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: AssetImage('assets/images/you.png'),
-                fit: BoxFit.cover
-            )
-        ),
+                image: AssetImage('assets/images/you.png'), fit: BoxFit.cover)),
       );
     else
       return Container(
@@ -336,9 +352,7 @@ class _CertificationPageState extends State<CertificationPage> {
             shape: BoxShape.circle,
             image: DecorationImage(
                 image: FileImage(profileController.imageFile.value),
-                fit: BoxFit.cover
-            )
-        ),
+                fit: BoxFit.cover)),
       );
   }
 }
