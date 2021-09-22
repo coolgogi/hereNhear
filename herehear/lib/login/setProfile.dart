@@ -1,8 +1,7 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +22,7 @@ class _setProfilePageState extends State<setProfilePage> {
   final nickNameController = TextEditingController();
   final introduceController = TextEditingController();
   final profileController = Get.put(ProfileController());
+  final _uid = FirebaseAuth.instance.currentUser!.uid;
 
   final registerController = Get.put(RegisterController());
 
@@ -42,7 +42,6 @@ class _setProfilePageState extends State<setProfilePage> {
   Widget build(BuildContext context) {
     registerController.isPhoneNumActive.value = false;
     registerController.isCertificationNumActive.value = false;
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Form(
@@ -79,47 +78,41 @@ class _setProfilePageState extends State<setProfilePage> {
                 ),
                 Divider(thickness: 1.5.w),
                 SizedBox(height: 20.h),
-                Row(
-                  children: [
-                    Text('이름', style: Theme.of(context).textTheme.headline2),
-                    Expanded(child: Container()),
-                    Container(
-                      width: 220.w,
-                      child: TextFormField(
-                        controller: nameController,
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return '제목을 입력해주세요.';
-                        //   }
-                        //   return null;
-                        // },
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground),
-                            ),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                            hintText: '이름',
-                            hintStyle: Theme.of(context)
-                                .textTheme
-                                .headline2!
-                                .copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface)),
-                      ),
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     Text('이름', style: Theme.of(context).textTheme.headline2),
+                //     Expanded(child: Container()),
+                //     Container(
+                //       width: 220.w,
+                //       child: TextFormField(
+                //         controller: nameController,
+                //         keyboardType: TextInputType.text,
+                //         decoration: InputDecoration(
+                //             enabledBorder: UnderlineInputBorder(
+                //               borderSide: BorderSide(
+                //                   color:
+                //                       Theme.of(context).colorScheme.onSurface),
+                //             ),
+                //             focusedBorder: UnderlineInputBorder(
+                //               borderSide: BorderSide(
+                //                   color: Theme.of(context)
+                //                       .colorScheme
+                //                       .onBackground),
+                //             ),
+                //             contentPadding:
+                //                 EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                //             hintText: '이름',
+                //             hintStyle: Theme.of(context)
+                //                 .textTheme
+                //                 .headline2!
+                //                 .copyWith(
+                //                     color: Theme.of(context)
+                //                         .colorScheme
+                //                         .onSurface)),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Row(
                   children: [
                     Text('닉네임', style: Theme.of(context).textTheme.headline2),
@@ -128,12 +121,6 @@ class _setProfilePageState extends State<setProfilePage> {
                       width: 220.w,
                       child: TextFormField(
                         controller: nickNameController,
-                        // validator: (value) {
-                        //   if (value!.trim().isEmpty) {
-                        //     return '제목을 입력해주세요.';
-                        //   }
-                        //   return null;
-                        // },
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
@@ -219,6 +206,11 @@ class _setProfilePageState extends State<setProfilePage> {
                               Theme.of(context).colorScheme.primary),
                     ),
                     onPressed: () {
+                      Map<String, dynamic> _data = new Map();
+                      _data['nickName'] = nickNameController.text;
+                      _data['profile'] = '';
+                      _data['subscribe'] = introduceController.text;
+                      updateData(_uid, _data);
                       if (_formKey.currentState!.validate()) {
                         Get.to(AgreementTOSPage());
                       }
@@ -354,5 +346,12 @@ class _setProfilePageState extends State<setProfilePage> {
                 image: FileImage(profileController.imageFile.value),
                 fit: BoxFit.cover)),
       );
+  }
+
+  Future<void> updateData(String _uid, Map<String, dynamic> data) async {
+    CollectionReference _firebase =
+        FirebaseFirestore.instance.collection('users');
+
+    _firebase.doc(_uid).update(data);
   }
 }

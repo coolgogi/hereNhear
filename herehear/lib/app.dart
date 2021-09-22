@@ -83,8 +83,6 @@ class App extends GetView<UserController> {
               if (!snapshot.hasData) {
                 return LoginPage(); //data가 없으면 로그인으로
               } else {
-                String _uid = snapshot.data!.uid;
-
                 UserController.to.authStateChanges(snapshot.data);
                 return FutureBuilder(
                     future: locationController.getLocation(),
@@ -107,10 +105,5 @@ class App extends GetView<UserController> {
         }
       },
     );
-  }
-
-  Future<void> getDoc(String _url) async {
-    var _stream =
-        FirebaseFirestore.instance.collection('users').doc(_url).snapshots();
   }
 }

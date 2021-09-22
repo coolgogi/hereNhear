@@ -22,7 +22,8 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (UserController.to.myProfile.value.nickName == 'Nickname') {
-      return setProfilePage();
+      // return setProfilePage();
+      return Container();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,
