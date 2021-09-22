@@ -87,14 +87,13 @@ class App extends GetView<UserController> {
                 return FutureBuilder(
                     future: locationController.getLocation(),
                     builder: (context, snapshot) {
-                      locationController.locationPermission();
                       if (snapshot.hasData) {
                         print(snapshot.data.toString());
                         return BottomBar();
                       } else {
                         return Center(child: CircularProgressIndicator());
                       }
-                    }); // data가 있으면 MainPage로
+                    });// data가 있으면 MainPage로
               }
             },
           );

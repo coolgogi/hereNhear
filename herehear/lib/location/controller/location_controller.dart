@@ -10,6 +10,7 @@ class LocationController extends GetxController {
   //yr controller
   bool check = true;
   int count = 1;
+  RxBool getLocationComplete = false.obs;
 
   void read() {
     check = false;
@@ -38,6 +39,7 @@ getCurrentPosition이 permission denied일 경우에는 error throw하기 때문
  */
   Future<String> getLocation() async {
     try {
+      await locationPermission();
       Position? position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       debugPrint('location: $position');
@@ -49,6 +51,7 @@ getCurrentPosition이 permission denied일 경우에는 error throw하기 때문
       print("detail address : ${first.addressLine}");
       // print("needed address data : ${first.locality} ${first.subLocality}");
       location = '${first.locality} ${first.subLocality}'.obs;
+      getLocationComplete.value = true;
       return location.value;
     } catch (e) {
       return "포항시 북구";
