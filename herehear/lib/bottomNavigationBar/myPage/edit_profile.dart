@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:herehear/login/setProfile.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
@@ -94,14 +95,18 @@ class EditMyPage extends StatelessWidget {
                     ),)
                   ),
                 ),
-                Divider(thickness: 1.5.w),
+                Divider(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    thickness: 1.w),
                 Padding(
-                  padding: EdgeInsets.only(top: 5.h, right: 5.0.w, bottom: 8.h),
+                  padding: EdgeInsets.only(left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
                   child: textInputList(context),
                 ),
-                Divider(thickness: 1.5.w),
+                Divider(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    thickness: 1.w),
                 SizedBox(height: 20.h),
-                Text('보이스 프로필', style: Theme.of(context).textTheme.headline2,),
+                Text('보이스 프로필', style: Theme.of(context).textTheme.headline4,),
                 Padding(
                   padding: EdgeInsets.only(top: 15.0.h, bottom: 32.h),
                   child: Row(
@@ -205,7 +210,7 @@ class EditMyPage extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('팔로잉 카테고리', style: Theme.of(context).textTheme.headline2,),
+                    Text('팔로잉 카테고리', style: Theme.of(context).textTheme.headline4,),
                     SizedBox(width: 11.w),
                     Container(
                         width: 52.w,
@@ -224,7 +229,7 @@ class EditMyPage extends StatelessWidget {
                         ),
                         child: InkWell(
                             splashColor: Colors.transparent,
-                            onTap: null,
+                            onTap: () => Get.to(() => CertificationPage()),
                             child: Center(child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -263,43 +268,8 @@ class EditMyPage extends StatelessWidget {
         Row(
           children: [
             Text(
-                '이름',
-                style: Theme.of(context).textTheme.headline2
-            ),
-            Expanded(child: Container()),
-            Container(
-              width: 220.w,
-              child: TextFormField(
-                controller: nameController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                    ),
-                    contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                    hintText: '이름',
-                    hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                    )
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text(
                 '닉네임',
-                style: Theme.of(context).textTheme.headline2
+                style: Theme.of(context).textTheme.headline4
             ),
             Expanded(child: Container()),
             Container(
@@ -322,7 +292,7 @@ class EditMyPage extends StatelessWidget {
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '어플에서 사용할 닉네임',
-                    hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
                         color: Theme.of(context).colorScheme.onSurface
                     )
                 ),
@@ -334,7 +304,7 @@ class EditMyPage extends StatelessWidget {
           children: [
             Text(
                 '소개',
-                style: Theme.of(context).textTheme.headline2
+                style: Theme.of(context).textTheme.headline4
             ),
             Expanded(child: Container()),
             Container(
@@ -353,7 +323,7 @@ class EditMyPage extends StatelessWidget {
                     focusedBorder: InputBorder.none,
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '소개글',
-                    hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
                         color: Theme.of(context).colorScheme.onSurface
                     )
                 ),

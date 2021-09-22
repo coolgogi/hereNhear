@@ -45,145 +45,51 @@ class _CertificationPageState extends State<CertificationPage> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Obx(() => Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(25.w, 0.h, 30.w, 20.h),
+      body: Form(
+          key: _formKey,
           child: Column(
             children: [
-              Container(
-                height: 130.h,
-                child: Center(
-                    child: Obx(() => Stack(
-                      children: [
-                        loadImage(context),
-                        Positioned(
-                            left: 50.w,
-                            top: 50.w,
-                            child: InkWell(
-                              onTap: () => showDialog(context),
-                              child: Container(
-                                width: 26.w,
-                                height: 26.w,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage('assets/icons/addButton_blue.png'),
-                                        fit: BoxFit.cover
-                                    )
-                                ),
-                              ),
-                            ))
-                      ],
-                    ),)
+              Padding(
+                padding: EdgeInsets.fromLTRB(25.w, 60.h, 30.w, 20.h),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 130.h,
+                      child: Center(
+                          child: Obx(() => Stack(
+                            children: [
+                              loadImage(context),
+                              Positioned(
+                                  left: 50.w,
+                                  top: 50.w,
+                                  child: InkWell(
+                                    onTap: () => showDialog(context),
+                                    child: Container(
+                                      width: 26.w,
+                                      height: 26.w,
+                                      decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage('assets/icons/addButton_blue.png'),
+                                              fit: BoxFit.cover
+                                          )
+                                      ),
+                                    ),
+                                  ))
+                            ],
+                          ),)
+                      ),
+                    ),
+                    Divider(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        thickness: 1.w),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
+                      child: textInputList(context),
+                    ),
+                  ],
                 ),
               ),
-              Divider(thickness: 1.5.w),
-              SizedBox(height: 20.h),
-              Row(
-                children: [
-                  Text(
-                      '이름',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: nameController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '이름',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                      '닉네임',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: nickNameController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '어플에서 사용할 닉네임',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Text(
-                      '소개',
-                      style: Theme.of(context).textTheme.headline2
-                  ),
-                  Expanded(child: Container()),
-                  Container(
-                    width: 220.w,
-                    child: TextFormField(
-                      controller: introduceController,
-                      // validator: (value) {
-                      //   if (value!.trim().isEmpty) {
-                      //     return '제목을 입력해주세요.';
-                      //   }
-                      //   return null;
-                      // },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
-                          ),
-                          contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                          hintText: '소개글',
-                          hintStyle: Theme.of(context).textTheme.headline2!.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface
-                          )
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              Expanded(child: Container()),
               SizedBox(
                 height: 44.h,
                 ///////////////////////////////////////////////////////////////////////////
@@ -211,9 +117,84 @@ class _CertificationPageState extends State<CertificationPage> {
                 ),
               )
             ],
-          ),
-        )),
-      ));
+          )));
+  }
+
+  Widget textInputList(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+                '닉네임',
+                style: Theme.of(context).textTheme.headline4
+            ),
+            Expanded(child: Container()),
+            Container(
+              width: 220.w,
+              child: TextFormField(
+                controller: nickNameController,
+                // validator: (value) {
+                //   if (value!.trim().isEmpty) {
+                //     return '제목을 입력해주세요.';
+                //   }
+                //   return null;
+                // },
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                    hintText: '어플에서 사용할 닉네임',
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface
+                    )
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text(
+                '소개',
+                style: Theme.of(context).textTheme.headline4
+            ),
+            Expanded(child: Container()),
+            Container(
+              width: 220.w,
+              child: TextFormField(
+                controller: introduceController,
+                // validator: (value) {
+                //   if (value!.trim().isEmpty) {
+                //     return '제목을 입력해주세요.';
+                //   }
+                //   return null;
+                // },
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                    hintText: '소개글',
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface
+                    )
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   Future<String> pickAnImageFromGallery() async {
