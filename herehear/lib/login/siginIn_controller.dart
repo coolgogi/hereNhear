@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,7 +23,7 @@ class LoginController extends GetxController {
       idFocus.value.requestFocus();
       return '아이디를 입력해주세요.';
     }
-    if(!(value.isEmail)) {
+    if (!(value.isEmail)) {
       idFocus.value.requestFocus();
       return '유효하지 않은 이메일형식입니다.';
     }
@@ -35,7 +36,10 @@ class LoginController extends GetxController {
       return '비밀번호를 입력해주세요.';
     }
     //8~21자인지 확인
-    if ((12 <= value.length) || (value.length <= 8) || !validSpecial.hasMatch(value) || !validAlphabet.hasMatch(value) ||
+    if ((12 <= value.length) ||
+        (value.length <= 8) ||
+        !validSpecial.hasMatch(value) ||
+        !validAlphabet.hasMatch(value) ||
         !validNumbers.hasMatch(value)) {
       pwdFocus.value.requestFocus();
       return '잘못된 비밀번호입니다.';
@@ -68,6 +72,16 @@ class LoginController extends GetxController {
       print(e);
       //throw (e);
     }
+  }
+
+  Future<void> loginWithButton(String email, String password) async {
+    UserCredential rt;
+    try {
+      var _auth = FirebaseAuth.instance;
+
+      rt = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } catch (e) {}
   }
 
   Future<void> logoutGoogle() async {

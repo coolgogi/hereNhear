@@ -107,6 +107,11 @@ class _setProfilePageState extends State<setProfilePage> {
                               Theme.of(context).colorScheme.primary),
                     ),
                     onPressed: () {
+                      Map<String, dynamic> _data = new Map();
+                      _data['nickName'] = nickNameController.text;
+                      _data['des'] = introduceController.text;
+
+                      updateData(_uid, _data);
                       if (_formKey.currentState!.validate()) {
                         Get.to(AgreementTOSPage());
                       }
@@ -131,12 +136,6 @@ class _setProfilePageState extends State<setProfilePage> {
               width: 220.w,
               child: TextFormField(
                 controller: nickNameController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
@@ -163,12 +162,6 @@ class _setProfilePageState extends State<setProfilePage> {
               width: 220.w,
               child: TextFormField(
                 controller: introduceController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
@@ -317,6 +310,8 @@ class _setProfilePageState extends State<setProfilePage> {
     CollectionReference _firebase =
         FirebaseFirestore.instance.collection('users');
 
-    _firebase.doc(_uid).update(data);
+    _firebase.doc(_uid).update(data).whenComplete(() => null
+        //usercontroller 정보 바꾸기
+        );
   }
 }
