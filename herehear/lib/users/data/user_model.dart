@@ -127,7 +127,7 @@ class UserModel extends Equatable {
 
   String? token;
   final String? uid;
-  late final String? nickName;
+  String? nickName;
   final String? name;
   final String? location;
   final String? profile;

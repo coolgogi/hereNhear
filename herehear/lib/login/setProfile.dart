@@ -25,7 +25,6 @@ class _setProfilePageState extends State<setProfilePage> {
   final pwdController = TextEditingController();
   final profileController = Get.put(ProfileController());
   final _user = FirebaseAuth.instance.currentUser!;
-  final UserController userController = Get.put(UserController());
 
   final registerController = Get.put(RegisterController());
 
@@ -339,12 +338,14 @@ class _setProfilePageState extends State<setProfilePage> {
   Future<void> updateData(String _uid, Map<String, dynamic> data) async {
     CollectionReference _firebase =
         FirebaseFirestore.instance.collection('users');
-    print("=======set data=======");
+    print("=======setProfile line 341=======");
     print(data['nickName']);
     print("======================");
 
     _firebase.doc(_uid).update(data);
     UserController.to.myProfile.value.nickName = data['nickName'];
+    print("====setProfile line 347====");
+    print(UserController.to.myProfile.value.nickName);
   }
 
   Future<void> updatePwd(String pwd) async {
