@@ -81,7 +81,13 @@ class LoginController extends GetxController {
 
       rt = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-    } catch (e) {}
+
+      return;
+    } catch (e) {
+      print("error in signIn_controller.dart in line 87");
+      print(e);
+      return;
+    }
   }
 
   Future<void> logoutGoogle() async {

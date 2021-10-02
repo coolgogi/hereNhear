@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/myPage/edit_profile.dart';
 import 'package:herehear/login/agreeToS.dart';
 import 'package:herehear/login/signUp_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
@@ -21,8 +22,10 @@ class _setProfilePageState extends State<setProfilePage> {
   final nameController = TextEditingController();
   final nickNameController = TextEditingController();
   final introduceController = TextEditingController();
+  final pwdController = TextEditingController();
   final profileController = Get.put(ProfileController());
-  final _uid = FirebaseAuth.instance.currentUser!.uid;
+  final _user = FirebaseAuth.instance.currentUser!;
+  final UserController userController = Get.put(UserController());
 
   final registerController = Get.put(RegisterController());
 
@@ -107,11 +110,12 @@ class _setProfilePageState extends State<setProfilePage> {
                               Theme.of(context).colorScheme.primary),
                     ),
                     onPressed: () {
+                      //닉네임, 비밀번호가 비어있지 않게 확인하기
                       Map<String, dynamic> _data = new Map();
                       _data['nickName'] = nickNameController.text;
                       _data['des'] = introduceController.text;
-
-                      updateData(_uid, _data);
+                      updatePwd(pwdController.text);
+                      updateData(_user.uid, _data);
                       if (_formKey.currentState!.validate()) {
                         Get.to(AgreementTOSPage());
                       }
@@ -148,6 +152,32 @@ class _setProfilePageState extends State<setProfilePage> {
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '어플에서 사용할 닉네임',
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface)),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text('비밀번호', style: Theme.of(context).textTheme.headline4),
+            Expanded(child: Container()),
+            Container(
+              width: 220.w,
+              child: TextFormField(
+                controller: pwdController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onBackground),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                    hintText: '비밀번호',
                     hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
                         color: Theme.of(context).colorScheme.onSurface)),
               ),
@@ -310,8 +340,11 @@ class _setProfilePageState extends State<setProfilePage> {
     CollectionReference _firebase =
         FirebaseFirestore.instance.collection('users');
 
-    _firebase.doc(_uid).update(data).whenComplete(() => null
-        //usercontroller 정보 바꾸기
-        );
+    _firebase.doc(_uid).update(data).whenComplete(
+        () => UserController.to.myProfile.value.nickName = data['nickName']);
+  }
+
+  Future<void> updatePwd(String pwd) async {
+    await _user.updatePassword(pwd);
   }
 }
