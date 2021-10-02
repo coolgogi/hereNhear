@@ -339,9 +339,12 @@ class _setProfilePageState extends State<setProfilePage> {
   Future<void> updateData(String _uid, Map<String, dynamic> data) async {
     CollectionReference _firebase =
         FirebaseFirestore.instance.collection('users');
+    print("=======set data=======");
+    print(data['nickName']);
+    print("======================");
 
-    _firebase.doc(_uid).update(data).whenComplete(
-        () => UserController.to.myProfile.value.nickName = data['nickName']);
+    _firebase.doc(_uid).update(data);
+    UserController.to.myProfile.value.nickName = data['nickName'];
   }
 
   Future<void> updatePwd(String pwd) async {

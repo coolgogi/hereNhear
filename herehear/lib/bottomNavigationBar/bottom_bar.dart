@@ -21,6 +21,8 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("===========nickname===========");
+    print(UserController.to.myProfile.value.nickName);
     if (UserController.to.myProfile.value.nickName == '') {
       return setProfilePage();
       // return Container();

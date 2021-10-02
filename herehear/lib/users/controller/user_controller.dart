@@ -28,6 +28,7 @@ class UserController extends GetxController {
 
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
+      print("state : null");
       myProfile.value = UserModel(
         platform: await _checkPlatform(),
         id: firebaseUser.uid,
