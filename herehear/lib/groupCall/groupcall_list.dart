@@ -106,33 +106,55 @@ Column groupcallRoomList(
                         SizedBox(
                           height: 7.0.h,
                         ),
-                        Text(
-                          room.roomInfo.notice!,
-                          style: Theme.of(context).textTheme.headline6,
+                        // Text(
+                        //   room.roomInfo.notice!,
+                        //   style: Theme.of(context).textTheme.headline6,
+                        // )
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.people,
+                              size: 15.w,
+                              color: Theme.of(context).colorScheme.primaryVariant,
+                            ),
+                            Text(
+                              ' ${room.users.length.toString()}',
+                              style:
+                              Theme.of(context).textTheme.subtitle1!.copyWith(
+                                color: Theme.of(context).colorScheme.primaryVariant,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
                     Expanded(child: Container()),
-                    Container(
-                      height: 20.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(13.r)),
-                        border: Border.all(
-                            width: 1.5.w,
-                            color: Theme.of(context).colorScheme.primary),
-                      ),
-                      child: Center(child: Padding(
-                        padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
-                            SizedBox(width: 2.w),
-                            Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
-                                fontSize: 11.sp,
-                                color: Theme.of(context).colorScheme.primary),)
-                          ],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 20.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(13.r)),
+                            border: Border.all(
+                                width: 1.5.w,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          child: Center(child: Padding(
+                            padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                            child: Row(
+                              children: [
+                                Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
+                                SizedBox(width: 2.w),
+                                Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
+                                    fontSize: 11.sp,
+                                    color: Theme.of(context).colorScheme.primary),)
+                              ],
+                            ),
+                          )),
                         ),
-                      ),),
+                      ],
                     ),
                     SizedBox(width: 8.w),
                   ],
