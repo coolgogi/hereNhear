@@ -28,12 +28,13 @@ class UserController extends GetxController {
 
     // firebaseUserData가 null이면 firebase database에 등록이 안된 유저
     if (firebaseUserdata == null) {
+      print("state : null");
       myProfile.value = UserModel(
         platform: await _checkPlatform(),
-        id:firebaseUser.uid,
+        id: firebaseUser.uid,
         token: await _token(),
-        nickName: 'Nickname',
-        profile: 'assets/suhyun.jpg',
+        nickName: '',
+        profile: 'assets/logo/logo-round.png',
         uid: firebaseUser.uid,
         name: firebaseUser.displayName,
         location: '포항시 북구',
@@ -42,38 +43,37 @@ class UserController extends GetxController {
     } else {
       // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
       myProfile.value = firebaseUserdata;
+      print("==========");
+      print(firebaseUserdata.nickName);
+      print(firebaseUserdata.uid);
+      print("==========");
       token = await _token();
       platform = await _checkPlatform();
-      if(token != myProfile.value.token){
+      if (token != myProfile.value.token) {
         await FirebaseUserRepository.tokenUpdate(myProfile.value.uid!, token);
-       myProfile.value.token = token;
+        myProfile.value.token = token;
       }
 
-      if(platform != myProfile.value.platform){
-        await FirebaseUserRepository.platformUpdate(myProfile.value.uid!,platform);
+      if (platform != myProfile.value.platform) {
+        await FirebaseUserRepository.platformUpdate(
+            myProfile.value.uid!, platform);
         myProfile.value.platform = platform;
       }
     }
   }
 
   Future<String?> _checkPlatform() async {
-    if (Platform.isAndroid){
+    if (Platform.isAndroid) {
       return 'android';
-    }
-    else if(Platform.isIOS){
+    } else if (Platform.isIOS) {
       return 'ios';
-    }
-    else{
+    } else {
       return 'not supported platform';
     }
-
   }
-
-
 
   Future<String?> _token() async {
     return FirebaseMessaging.instance.getToken();
-
   }
 
   void forAnonymous(User? firebaseUser) async {

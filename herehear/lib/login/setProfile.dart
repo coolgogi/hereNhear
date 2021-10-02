@@ -1,28 +1,31 @@
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/myPage/edit_profile.dart';
 import 'package:herehear/login/agreeToS.dart';
 import 'package:herehear/login/signUp_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-class CertificationPage extends StatefulWidget {
+class setProfilePage extends StatefulWidget {
   @override
-  _CertificationPageState createState() => _CertificationPageState();
+  _setProfilePageState createState() => _setProfilePageState();
 }
 
-class _CertificationPageState extends State<CertificationPage> {
+class _setProfilePageState extends State<setProfilePage> {
   final _picker = ImagePicker();
   final nameController = TextEditingController();
   final nickNameController = TextEditingController();
   final introduceController = TextEditingController();
+  final pwdController = TextEditingController();
   final profileController = Get.put(ProfileController());
+  final _user = FirebaseAuth.instance.currentUser!;
+  final UserController userController = Get.put(UserController());
 
   final registerController = Get.put(RegisterController());
 
@@ -42,21 +45,21 @@ class _CertificationPageState extends State<CertificationPage> {
   Widget build(BuildContext context) {
     registerController.isPhoneNumActive.value = false;
     registerController.isCertificationNumActive.value = false;
-
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(25.w, 60.h, 30.w, 20.h),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 130.h,
-                      child: Center(
-                          child: Obx(() => Stack(
+        resizeToAvoidBottomInset: false,
+        body: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(25.w, 60.h, 30.w, 20.h),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 130.h,
+                        child: Center(
+                            child: Obx(
+                          () => Stack(
                             children: [
                               loadImage(context),
                               Positioned(
@@ -69,55 +72,61 @@ class _CertificationPageState extends State<CertificationPage> {
                                       height: 26.w,
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                              image: AssetImage('assets/icons/addButton_blue.png'),
-                                              fit: BoxFit.cover
-                                          )
-                                      ),
+                                              image: AssetImage(
+                                                  'assets/icons/addButton_blue.png'),
+                                              fit: BoxFit.cover)),
                                     ),
                                   ))
                             ],
-                          ),)
+                          ),
+                        )),
                       ),
-                    ),
-                    Divider(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        thickness: 1.w),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
-                      child: textInputList(context),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(child: Container()),
-              SizedBox(
-                height: 44.h,
-                ///////////////////////////////////////////////////////////////////////////
-                width: MediaQuery.of(context).size.width,
-                //이게 왜??? 진짜 절대 모르겠어;;;;
-                ///////////////////////////////////////////////////////////////////////////
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    elevation: MaterialStateProperty.all(0),
-                    backgroundColor: (nameController.text.isEmpty ||
-                        nickNameController.text.isEmpty)
-                        ? MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.onSecondary)
-                        : MaterialStateProperty.all(
-                        Theme.of(context).colorScheme.primary),
+                      Divider(
+                          color: Theme.of(context).colorScheme.onSurface,
+                          thickness: 1.w),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
+                        child: textInputList(context),
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Get.to(AgreementTOSPage());
-                    }
-                  },
-                  child: Text('다음',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Theme.of(context).colorScheme.background)),
                 ),
-              )
-            ],
-          )));
+                Expanded(child: Container()),
+                SizedBox(
+                  height: 44.h,
+                  ///////////////////////////////////////////////////////////////////////////
+                  width: MediaQuery.of(context).size.width,
+                  //이게 왜??? 진짜 절대 모르겠어;;;;
+                  ///////////////////////////////////////////////////////////////////////////
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      elevation: MaterialStateProperty.all(0),
+                      backgroundColor: (nameController.text.isEmpty ||
+                              nickNameController.text.isEmpty)
+                          ? MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.onSecondary)
+                          : MaterialStateProperty.all(
+                              Theme.of(context).colorScheme.primary),
+                    ),
+                    onPressed: () {
+                      //닉네임, 비밀번호가 비어있지 않게 확인하기
+                      Map<String, dynamic> _data = new Map();
+                      _data['nickName'] = nickNameController.text;
+                      _data['des'] = introduceController.text;
+                      updatePwd(pwdController.text);
+                      updateData(_user.uid, _data);
+                      if (_formKey.currentState!.validate()) {
+                        Get.to(AgreementTOSPage());
+                      }
+                    },
+                    child: Text('다음',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Theme.of(context).colorScheme.background)),
+                  ),
+                )
+              ],
+            )));
   }
 
   Widget textInputList(BuildContext context) {
@@ -125,70 +134,78 @@ class _CertificationPageState extends State<CertificationPage> {
       children: [
         Row(
           children: [
-            Text(
-                '닉네임',
-                style: Theme.of(context).textTheme.headline4
-            ),
+            Text('닉네임', style: Theme.of(context).textTheme.headline4),
             Expanded(child: Container()),
             Container(
               width: 220.w,
               child: TextFormField(
                 controller: nickNameController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onBackground),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '어플에서 사용할 닉네임',
                     hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                    )
-                ),
+                        color: Theme.of(context).colorScheme.onSurface)),
               ),
             ),
           ],
         ),
         Row(
           children: [
-            Text(
-                '소개',
-                style: Theme.of(context).textTheme.headline4
+            Text('비밀번호', style: Theme.of(context).textTheme.headline4),
+            Expanded(child: Container()),
+            Container(
+              width: 220.w,
+              child: TextFormField(
+                controller: pwdController,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onBackground),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
+                    hintText: '비밀번호',
+                    hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface)),
+              ),
             ),
+          ],
+        ),
+        Row(
+          children: [
+            Text('소개', style: Theme.of(context).textTheme.headline4),
             Expanded(child: Container()),
             Container(
               width: 220.w,
               child: TextFormField(
                 controller: introduceController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onBackground),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '소개글',
                     hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                    )
-                ),
+                        color: Theme.of(context).colorScheme.onSurface)),
               ),
             ),
           ],
@@ -225,9 +242,11 @@ class _CertificationPageState extends State<CertificationPage> {
                     padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
                     child: GestureDetector(
                         onTap: () => Get.back(),
-                        child: Icon(Icons.close, size: 25.w, color: Colors.white,)
-                    )
-                ),
+                        child: Icon(
+                          Icons.close,
+                          size: 25.w,
+                          color: Colors.white,
+                        ))),
               ],
             ),
             Row(
@@ -281,8 +300,7 @@ class _CertificationPageState extends State<CertificationPage> {
                           child: Text('앨범에서 가져오기',
                               style: Theme.of(context).textTheme.headline4),
                         ),
-                        Image.asset('assets/icons/gallery.png',
-                            width: 50.w),
+                        Image.asset('assets/icons/gallery.png', width: 50.w),
                       ],
                     ),
                   ),
@@ -297,17 +315,14 @@ class _CertificationPageState extends State<CertificationPage> {
   }
 
   Widget loadImage(BuildContext context) {
-    if(profileController.isDefaultImage.value)
+    if (profileController.isDefaultImage.value)
       return Container(
         width: 80.w,
         height: 78.w,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: AssetImage('assets/images/you.png'),
-                fit: BoxFit.cover
-            )
-        ),
+                image: AssetImage('assets/images/you.png'), fit: BoxFit.cover)),
       );
     else
       return Container(
@@ -317,9 +332,22 @@ class _CertificationPageState extends State<CertificationPage> {
             shape: BoxShape.circle,
             image: DecorationImage(
                 image: FileImage(profileController.imageFile.value),
-                fit: BoxFit.cover
-            )
-        ),
+                fit: BoxFit.cover)),
       );
+  }
+
+  Future<void> updateData(String _uid, Map<String, dynamic> data) async {
+    CollectionReference _firebase =
+        FirebaseFirestore.instance.collection('users');
+    print("=======set data=======");
+    print(data['nickName']);
+    print("======================");
+
+    _firebase.doc(_uid).update(data);
+    UserController.to.myProfile.value.nickName = data['nickName'];
+  }
+
+  Future<void> updatePwd(String pwd) async {
+    await _user.updatePassword(pwd);
   }
 }

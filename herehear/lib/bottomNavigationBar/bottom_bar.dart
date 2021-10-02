@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
-import 'package:herehear/login/nickname.dart';
+import 'package:herehear/login/setProfile.dart';
+
 import 'package:herehear/users/controller/user_controller.dart';
 import 'community/community.dart';
 import 'create/create_broadcast.dart';
@@ -20,8 +21,11 @@ class BottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (UserController.to.myProfile.value.nickName == 'Nickname') {
-      return NicknamePage();
+    print("===========nickname===========");
+    print(UserController.to.myProfile.value.nickName);
+    if (UserController.to.myProfile.value.nickName == '') {
+      return setProfilePage();
+      // return Container();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,
