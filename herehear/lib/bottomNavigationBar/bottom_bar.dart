@@ -15,17 +15,15 @@ import 'floating_action_button_location.dart';
 import 'home/home.dart';
 
 class BottomBar extends StatelessWidget {
-  final UserController userController = Get.put(UserController());
   final BottomBarController bottomBarController =
       Get.put(BottomBarController(), permanent: false);
 
   @override
   Widget build(BuildContext context) {
-    print("===========nickname===========");
+    print("===========bottom bar line 23===========");
     print(UserController.to.myProfile.value.nickName);
     if (UserController.to.myProfile.value.nickName == '') {
       return setProfilePage();
-      // return Container();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -53,10 +51,10 @@ class BottomBar extends StatelessWidget {
             onPressed: () => {
                   print(
                       '*******************************************************************************8'),
-                  print(userController.myProfile.value.uid),
+                  print(UserController.to.myProfile.value.uid),
                   print(
                       '*******************************************************************************8'),
-                  userController.myProfile.value.uid == 'Guest'
+                  UserController.to.myProfile.value.uid == 'Guest'
                       ? _showMyDialog()
                       : showCreateOption(context),
                 }),

@@ -43,10 +43,9 @@ class UserController extends GetxController {
     } else {
       // 기존 firebaseUserdata에 정보가 담겨져 있으니 이를 myProfile에 넣어줘야함.
       myProfile.value = firebaseUserdata;
-      print("==========");
+      print("user_controller.dart line 46");
       print(firebaseUserdata.nickName);
       print(firebaseUserdata.uid);
-      print("==========");
       token = await _token();
       platform = await _checkPlatform();
       if (token != myProfile.value.token) {
