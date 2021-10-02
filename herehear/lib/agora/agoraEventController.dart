@@ -61,7 +61,6 @@ class AgoraEventController extends GetxController {
   GroupCallUserModel userExample = GroupCallUserModel();
 ///////////////////////////////////////////////////////
 
-
   RxList<Widget> participantsList = <Widget>[].obs;
   RxList<Widget> listenersList = <Widget>[].obs;
 
@@ -134,6 +133,7 @@ class AgoraEventController extends GetxController {
         infoStrings.add(info);
       },
       joinChannelSuccess: (channel, uid, elapsed) {
+        print('채널 들어감!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
         final info = 'onJoinChannel: $channel, uid: $uid';
         currentUid = uid;
         print('currentUid???: ${currentUid}');
@@ -154,6 +154,8 @@ class AgoraEventController extends GetxController {
         NotGoOutRoom.value = false;
       },
       userJoined: (uid, elapsed) {
+
+        print('사용자!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
         final info = 'userJoined: $uid';
         infoStrings.add(info);
         users.add(uid);
