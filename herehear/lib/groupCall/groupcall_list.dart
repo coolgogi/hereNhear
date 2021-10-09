@@ -95,39 +95,45 @@ Column groupcallRoomList(
                         ),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          room.roomInfo.title,
-                          style: Theme.of(context).textTheme.headline4,
-                        ),
-                        SizedBox(
-                          height: 7.0.h,
-                        ),
-                        // Text(
-                        //   room.roomInfo.notice!,
-                        //   style: Theme.of(context).textTheme.headline6,
-                        // )
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.people,
-                              size: 15.w,
-                              color: Theme.of(context).colorScheme.primaryVariant,
-                            ),
-                            Text(
-                              ' ${room.users.length.toString()}',
-                              style:
-                              Theme.of(context).textTheme.subtitle1!.copyWith(
+                    Container(
+                      width: 170.w,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 7.h),
+                          Text(
+                            room.roomInfo.title,
+                            maxLines: 2,
+                            textAlign: TextAlign.justify,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          Expanded(child: Container()),
+                          // Text(
+                          //   room.roomInfo.notice!,
+                          //   style: Theme.of(context).textTheme.headline6,
+                          // )
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.people,
+                                size: 15.w,
                                 color: Theme.of(context).colorScheme.primaryVariant,
-                                fontSize: 12.sp,
                               ),
-                            ),
-                          ],
-                        )
-                      ],
+                              Text(
+                                ' ${room.users.length.toString()}',
+                                style:
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                  color: Theme.of(context).colorScheme.primaryVariant,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 7.h),
+                        ],
+                      ),
                     ),
                     Expanded(child: Container()),
                     Column(

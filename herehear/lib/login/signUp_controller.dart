@@ -9,6 +9,7 @@ class RegisterController extends GetxController {
   // 위 4개는 인증번호가 맞는지 여부, 아이디&닉네임&폰넘버가 이미 존재하는 건 아닌지 검사한 결과들로 사용될 것
 
   RxBool isObscureText = true.obs;
+  RxBool isObscureConfirmText = true.obs;
 
   RxBool isNicknameActive = false.obs;
   RxBool isIdActive = false.obs;

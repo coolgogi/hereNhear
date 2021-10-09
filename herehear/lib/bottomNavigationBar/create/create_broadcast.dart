@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:math';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +36,18 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   TextEditingController _title = TextEditingController();
   TextEditingController _notice = TextEditingController();
   String channelName = '';
+  late int randomNum;
   final _picker = ImagePicker();
+
+  List<String> defaultImgURL = [
+    'assets/images/broadcast/asmr.jpg',
+    'assets/images/broadcast/bread.jpg',
+    'assets/images/broadcast/food.jpg',
+    'assets/images/broadcast/piano.png',
+    'assets/images/broadcast/sea.jpg',
+    'assets/images/broadcast/talk.jpg',
+    'assets/images/broadcast/gs.png',
+  ];
 
   //unused variable
   bool _validateError = false;
@@ -438,22 +449,38 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
   }
 
   Widget loadImage() {
-    if(postController.isDefaultImage.value)
+    if(postController.isDefaultImage.value) {
+      randomNum = Random().nextInt(7);
+      print('defaultImgURL[$randomNum]: ${defaultImgURL[randomNum]}');
       return Column(
         children: [
           Padding(
             padding: EdgeInsets.only(top: 21.0.h, bottom: 11.2.h),
             child: Image.asset('assets/icons/camera.png', width: 33.5.w),
           ),
-          Text('사진을 업로드 해주세요.', style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+          Text('사진을 업로드 해주세요.', style: Theme
+              .of(context)
+              .textTheme
+              .bodyText1!
+              .copyWith(
+            color: Theme
+                .of(context)
+                .colorScheme
+                .onSurface,
           )),
-          Text('미 업로드시 자동 이미지가 적용됩니다.', style: Theme.of(context).textTheme.bodyText1!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
+          Text('미 업로드시 자동 이미지가 적용됩니다.', style: Theme
+              .of(context)
+              .textTheme
+              .bodyText1!
+              .copyWith(
+            color: Theme
+                .of(context)
+                .colorScheme
+                .onSurface,
           )),
         ],
       );
-    else
+    } else
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -551,6 +578,8 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
       ),
     );
   }
+
+
 
   Future<String> pickAnImageFromGallery() async {
     var image = await _picker.getImage(source: ImageSource.gallery);

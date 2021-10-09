@@ -171,7 +171,7 @@ class RegisterPage extends StatelessWidget {
                             padding: EdgeInsets.only(top: 0.5.h),
                             child: IconButton(
                               onPressed: () => registerController.isObscureText.value = !(registerController.isObscureText.value),
-                              icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
+                              icon: Image.asset(registerController.isObscureText.value? 'assets/icons/bigEye.png' : 'assets/icons/eye-off.png', width: 30.w,),
                             ),
                           ),
                         ),
@@ -219,7 +219,7 @@ class RegisterPage extends StatelessWidget {
                       child: TextFormField(
                         controller: confirmPwdController,
                         focusNode: registerController.confirmPwdFocus.value,
-                        obscureText: registerController.isObscureText.value,
+                        obscureText: registerController.isObscureConfirmText.value,
                         decoration: InputDecoration(
                           errorStyle: Theme.of(context).textTheme.headline6!.copyWith(
                             color: Theme.of(context).colorScheme.error,
@@ -230,8 +230,8 @@ class RegisterPage extends StatelessWidget {
                           suffixIcon: Padding(
                             padding: EdgeInsets.only(top: 0.5.h),
                             child: IconButton(
-                              onPressed: () => registerController.isObscureText.value = !(registerController.isObscureText.value),
-                              icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
+                              onPressed: () => registerController.isObscureConfirmText.value = !(registerController.isObscureConfirmText.value),
+                              icon: Image.asset(registerController.isObscureConfirmText.value? 'assets/icons/bigEye.png' : 'assets/icons/eye-off.png', width: 30.w,),
                             ),
                           ),
                         ),
