@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/broadcast/data/broadcast_room_info.dart';
 import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 import 'package:herehear/users/controller/user_controller.dart';
@@ -16,6 +18,8 @@ import 'package:herehear/chatting/src/class/my_file_message.dart' as types;
 /// Provides access to Firebase chat data. Singleton, use
 /// FirebaseChatCore.instance to aceess methods.
 class MyFirebaseChatCore {
+  final searchController = Get.put(SearchBarController());
+
   MyFirebaseChatCore._privateConstructor() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       firebaseUser = user;
@@ -227,6 +231,19 @@ class MyFirebaseChatCore {
         .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
   }
 
+  Stream<List<types.BroadcastModel>> broadcastRoomsForSearchResult(
+      {bool orderByUpdatedAt = false}) {
+    if (firebaseUser == null) {
+      return const Stream.empty();
+    }
+    final collection = FirebaseFirestore.instance.collection('broadcast').where(
+        'title', isGreaterThanOrEqualTo: searchController.text.value);
+
+    return collection
+        .snapshots()
+        .asyncMap((query) => processRoomsQuery(firebaseUser!, query));
+  }
+
   Stream<List<types.GroupCallModel>> groupCallRoomsWithLocation(
       {bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {
@@ -240,6 +257,38 @@ class MyFirebaseChatCore {
         .snapshots()
         .asyncMap((query) => processGroupCallRoomsQuery(firebaseUser!, query));
   }
+
+  Stream<List<types.GroupCallModel>> groupCallRoomsForSearchResult(
+      {bool orderByUpdatedAt = false}) {
+    if (firebaseUser == null) {
+      return const Stream.empty();
+    }
+    final collection = FirebaseFirestore.instance.collection('groupcall').where(
+        'title', isGreaterThanOrEqualTo: searchController.text.value);
+
+    return collection
+        .snapshots()
+        .asyncMap((query) => processGroupCallRoomsQuery(firebaseUser!, query));
+  }
+
+  Stream<List<types.GroupCallModel>> communityPostsForSearchResult(
+      {bool orderByUpdatedAt = false}) {
+    if (firebaseUser == null) {
+      return const Stream.empty();
+    }
+    final collection = FirebaseFirestore.instance.collection('community')
+        .where('location', isEqualTo: UserController.to.myProfile.value.location)
+        .where('title', isGreaterThanOrEqualTo: searchController.text.value);
+
+
+    //////////////////////// 커뮤니티 모델 만들어져야 함 /////////////////////////////////
+    return collection
+        .snapshots()
+        .asyncMap((query) => processGroupCallRoomsQuery(firebaseUser!, query));
+    ///////////////////////////////////////////////////////////////////////////////////
+
+  }
+
 
   Stream<List<types.BroadcastModel>> rooms({bool orderByUpdatedAt = false}) {
     if (firebaseUser == null) {

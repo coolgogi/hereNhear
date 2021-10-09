@@ -7,6 +7,7 @@ class SearchBarController extends GetxController {
   var searchBarFocusNode = FocusNode().obs;
   RxString text = ''.obs;
   RxList<String> history = [''].obs;
+  RxBool isSearchComplete = false.obs;
 
   RxBool isLocationSearch = false.obs;
   RxBool isRoomSearch = false.obs;

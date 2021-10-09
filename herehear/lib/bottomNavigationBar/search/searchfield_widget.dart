@@ -27,6 +27,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
           controller: searchController.textController.value,
           focusNode: searchController.searchBarFocusNode.value,
           onChanged: (value) {
+            searchController.isSearchComplete.value = false;
             searchController.text.value = value;
             searchController.textController.value.selection = TextSelection.fromPosition(TextPosition(offset: searchController.text.value.length));
           },
@@ -37,6 +38,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             searchController.saveHistory(widget.category);
             searchController.textController.value.clear();
             searchController.text.value = '';
+
           },
           autofocus: true,
           style: Theme.of(context).textTheme.headline6!.copyWith(

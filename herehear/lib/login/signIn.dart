@@ -91,7 +91,7 @@ class LoginPage extends StatelessWidget {
                           padding: EdgeInsets.only(top: 1.h),
                           child: IconButton(
                             onPressed: () => loginController.isObscureText.value = !(loginController.isObscureText.value),
-                            icon: Image.asset('assets/icons/bigEye.png', width: 30.w,),
+                            icon: Image.asset(loginController.isObscureText.value? 'assets/icons/bigEye.png' : 'assets/icons/eye-off.png', width: 30.w,),
                           ),
                         ),
                       ),
