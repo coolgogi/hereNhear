@@ -26,6 +26,7 @@ extension RoomTypeToShortString on RoomType {
 }
 
 class AgoraEventController extends GetxController {
+  CollectionReference groupCall =  FirebaseFirestore.instance.collection('groupcall')
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   var listener = <UserModel>[].obs;
@@ -144,7 +145,7 @@ class AgoraEventController extends GetxController {
 
         followers.add(UserController.to.myProfile.value);
         users.add(uid);
-
+UserController.to.myProfile.value.roomUid = uid;
         userExample.uid = currentUid;
       },
       leaveChannel: (stats) {
@@ -189,9 +190,9 @@ class AgoraEventController extends GetxController {
   Future<void> moveWatcherToParticipant(String channelName) async {
     print('currentUid???: ${currentUid}');
     users.removeWhere((element) => element == currentUid);
-    DocumentReference groupCall =  FirebaseFirestore.instance.collection('groupcall').doc(channelName);
-    groupCall.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
-    groupCall.update({
+    DocumentReference groupCallDoc =  groupCall.doc(channelName);
+    groupCallDoc.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
+    groupCallDoc.update({
       'listeners': FieldValue.arrayRemove([UserController.to.myProfile.value.uid])
     });
     isParticipate.value = true;

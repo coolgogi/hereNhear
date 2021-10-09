@@ -27,6 +27,7 @@ class UserModel extends Equatable {
       this.role,
       this.updatedAt,
       //
+        this.roomUid,
       this.platform,
       this.token,
       this.uid,
@@ -46,6 +47,7 @@ class UserModel extends Equatable {
         role = getMyRoleFromString(json['role'] as String?),
         updatedAt = json['updatedAt'] as int?,
         //
+  roomUid = json['roomUid'] as int?,
         platform = json['platform'] as String,
         token = json['token'] as String,
         uid = json['uid'] as String,
@@ -67,6 +69,7 @@ class UserModel extends Equatable {
         'role': role?.toShortString(),
         'updatedAt': updatedAt,
         //
+    'roomUid' : this.roomUid,
         'platform': this.platform,
         'token': this.token,
         'uid': this.uid,
@@ -125,6 +128,7 @@ class UserModel extends Equatable {
 //   String? number;
 //   List<dynamic>? subscribe;
 
+  int? roomUid;
   String? token;
   final String? uid;
   String? nickName;
