@@ -11,7 +11,6 @@ import 'package:wave/wave.dart';
 import '../../record_controller.dart';
 
 class ProfileController extends GetxController {
-
   RxBool isDefaultImage = true.obs;
   var imageFile = File('').obs;
 }
@@ -32,7 +31,6 @@ class EditMyPage extends StatelessWidget {
     '간바레마쇼',
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,23 +39,26 @@ class EditMyPage extends StatelessWidget {
           padding: EdgeInsets.only(left: 25.w, top: 13.h),
           child: InkWell(
             onTap: () => Get.back(),
-            child: Text('취소', style: Theme.of(context).textTheme.headline4!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            )),
+            child: Text('취소',
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    )),
           ),
         ),
         centerTitle: true,
-        title: Text('프로필 편집', style: Theme.of(context).textTheme.headline1!.copyWith(
-          color: Theme.of(context).colorScheme.onBackground,
-        )),
+        title: Text('프로필 편집',
+            style: Theme.of(context).textTheme.headline1!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                )),
         actions: [
           Padding(
             padding: EdgeInsets.only(top: 13.h, right: 25.w),
             child: InkWell(
               onTap: null,
-              child: Text('완료', style: Theme.of(context).textTheme.headline4!.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              )),
+              child: Text('완료',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      )),
             ),
           ),
         ],
@@ -72,7 +73,8 @@ class EditMyPage extends StatelessWidget {
                 Container(
                   height: 130.h,
                   child: Center(
-                    child: Obx(() => Stack(
+                      child: Obx(
+                    () => Stack(
                       children: [
                         loadImage(context),
                         Positioned(
@@ -85,105 +87,128 @@ class EditMyPage extends StatelessWidget {
                                 height: 26.w,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: AssetImage('assets/icons/addButton_blue.png'),
-                                        fit: BoxFit.cover
-                                    )
-                                ),
+                                        image: AssetImage(
+                                            'assets/icons/addButton_blue.png'),
+                                        fit: BoxFit.cover)),
                               ),
                             ))
                       ],
-                    ),)
-                  ),
+                    ),
+                  )),
                 ),
                 Divider(
                     color: Theme.of(context).colorScheme.onSurface,
                     thickness: 1.w),
                 Padding(
-                  padding: EdgeInsets.only(left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
+                  padding: EdgeInsets.only(
+                      left: 10.w, top: 5.h, right: 5.0.w, bottom: 8.h),
                   child: textInputList(context),
                 ),
                 Divider(
                     color: Theme.of(context).colorScheme.onSurface,
                     thickness: 1.w),
                 SizedBox(height: 20.h),
-                Text('보이스 프로필', style: Theme.of(context).textTheme.headline4,),
+                Text(
+                  '보이스 프로필',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 15.0.h, bottom: 32.h),
                   child: Row(
                     children: [
                       Obx(() => Row(
-                        children: [
-                          Container(
-                              width: 47.w,
-                              height: 42.h,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.background,
-                                borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 0,
-                                    blurRadius: 4,
-                                    offset: Offset(1, 4), // changes position of shadow
+                            children: [
+                              Container(
+                                  width: 47.w,
+                                  height: 42.h,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .background,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.r)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.3),
+                                        spreadRadius: 0,
+                                        blurRadius: 4,
+                                        offset: Offset(
+                                            1, 4), // changes position of shadow
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              child: Row(
-                                children: [
-                                  InkWell(
-                                      splashColor: Colors.transparent,
-                                      onTap: () => recorderController.toggleBlur(),
-                                      child: Container(
-                                          padding: EdgeInsets.only(left:5.w),
-                                          width: 45.w,
-                                          child: Center(child: Image.asset(recorderController.isPlayAudio.value? 'assets/icons/pause.png' : 'assets/icons/playButton.png', height: 16.h)))),
-                                ],
-                              )),
-                          SizedBox(width: 5.w),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.background,
-                              borderRadius: BorderRadius.all(Radius.circular(10.r)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  spreadRadius: 0,
-                                  blurRadius: 4,
-                                  offset: Offset(1, 4), // changes position of shadow
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                          splashColor: Colors.transparent,
+                                          onTap: () =>
+                                              recorderController.toggleBlur(),
+                                          child: Container(
+                                              padding:
+                                                  EdgeInsets.only(left: 5.w),
+                                              width: 45.w,
+                                              child: Center(
+                                                  child: Image.asset(
+                                                      recorderController
+                                                              .isPlayAudio.value
+                                                          ? 'assets/icons/pause.png'
+                                                          : 'assets/icons/playButton.png',
+                                                      height: 16.h)))),
+                                    ],
+                                  )),
+                              SizedBox(width: 5.w),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.r)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 0,
+                                      blurRadius: 4,
+                                      offset: Offset(
+                                          1, 4), // changes position of shadow
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            child: _buildCard(
-                              // backgroundColor: Theme.of(context).colorScheme.secondary,
-                              config: CustomConfig(
-                                colors: [
-                                  Color(0xFF4BACEF).withOpacity(0.2),
-                                  Color(0xFF4BACEF).withOpacity(0.1),
-                                  Color(0xFF634CED).withOpacity(0.1),
-                                  Theme.of(context).colorScheme.primary.withOpacity(0.15),
-                                ],
-                                durations: [35000, 19440, 10800, 6000],
-                                heightPercentages: [0.20, 0.23, 0.25, 0.30],
-                                blur: recorderController.blur.value,
+                                child: _buildCard(
+                                  // backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  config: CustomConfig(
+                                    colors: [
+                                      Color(0xFF4BACEF).withOpacity(0.2),
+                                      Color(0xFF4BACEF).withOpacity(0.1),
+                                      Color(0xFF634CED).withOpacity(0.1),
+                                      Theme.of(context)
+                                          .colorScheme
+                                          .primary
+                                          .withOpacity(0.15),
+                                    ],
+                                    durations: [35000, 19440, 10800, 6000],
+                                    heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                                    blur: recorderController.blur.value,
+                                  ),
+                                  height: 42.h,
+                                ),
                               ),
-                              height: 42.h,
-                            ),
-                          ),
-                        ],
-                      )),
+                            ],
+                          )),
                       SizedBox(width: 8.w),
                       Container(
                           width: 47.w,
                           height: 42.h,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background,
-                            borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.r)),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.withOpacity(0.3),
                                 spreadRadius: 0,
                                 blurRadius: 4,
-                                offset: Offset(1, 4), // changes position of shadow
+                                offset:
+                                    Offset(1, 4), // changes position of shadow
                               ),
                             ],
                           ),
@@ -196,21 +221,31 @@ class EditMyPage extends StatelessWidget {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.only(bottom: 3.0.h),
-                                    child: Center(child: Image.asset('assets/icons/reload_blue.png', height: 16.h)),
+                                    child: Center(
+                                        child: Image.asset(
+                                            'assets/icons/reload_blue.png',
+                                            height: 16.h)),
                                   ),
-                                  Text('재등록', style: Theme.of(context).textTheme.headline6!.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
-                                  )),
+                                  Text('재등록',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
+                                          )),
                                 ],
-                              )
-                          )
-                      ),
+                              ))),
                     ],
                   ),
                 ),
                 Row(
                   children: [
-                    Text('팔로잉 카테고리', style: Theme.of(context).textTheme.headline4,),
+                    Text(
+                      '팔로잉 카테고리',
+                      style: Theme.of(context).textTheme.headline4,
+                    ),
                     SizedBox(width: 11.w),
                     Container(
                         width: 52.w,
@@ -223,25 +258,31 @@ class EditMyPage extends StatelessWidget {
                               color: Colors.grey.withOpacity(0.3),
                               spreadRadius: 0,
                               blurRadius: 4,
-                              offset: Offset(1, 4), // changes position of shadow
+                              offset:
+                                  Offset(1, 4), // changes position of shadow
                             ),
                           ],
                         ),
                         child: InkWell(
                             splashColor: Colors.transparent,
-                            onTap: () => Get.to(() => CertificationPage()),
-                            child: Center(child: Row(
+                            onTap: () => Get.to(() => setProfilePage()),
+                            child: Center(
+                                child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Image.asset('assets/icons/edit.png', height: 12.h),
+                                Image.asset('assets/icons/edit.png',
+                                    height: 12.h),
                                 SizedBox(width: 4.w),
-                                Text('편집', style: Theme.of(context).textTheme.headline6!.copyWith(
-                                  color: Theme.of(context).colorScheme.primary
-                                )),
+                                Text('편집',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline6!
+                                        .copyWith(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary)),
                               ],
-                            ))
-                        )
-                    ),
+                            )))),
                   ],
                 ),
               ],
@@ -267,10 +308,7 @@ class EditMyPage extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-                '닉네임',
-                style: Theme.of(context).textTheme.headline4
-            ),
+            Text('닉네임', style: Theme.of(context).textTheme.headline4),
             Expanded(child: Container()),
             Container(
               width: 220.w,
@@ -285,27 +323,24 @@ class EditMyPage extends StatelessWidget {
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onSurface),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onSurface),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide:  BorderSide(color: Theme.of(context).colorScheme.onBackground),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.onBackground),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '어플에서 사용할 닉네임',
                     hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                    )
-                ),
+                        color: Theme.of(context).colorScheme.onSurface)),
               ),
             ),
           ],
         ),
         Row(
           children: [
-            Text(
-                '소개',
-                style: Theme.of(context).textTheme.headline4
-            ),
+            Text('소개', style: Theme.of(context).textTheme.headline4),
             Expanded(child: Container()),
             Container(
               width: 220.w,
@@ -324,9 +359,7 @@ class EditMyPage extends StatelessWidget {
                     contentPadding: EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
                     hintText: '소개글',
                     hintStyle: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface
-                    )
-                ),
+                        color: Theme.of(context).colorScheme.onSurface)),
               ),
             ),
           ],
@@ -363,9 +396,11 @@ class EditMyPage extends StatelessWidget {
                     padding: EdgeInsets.only(right: 17.0.w, bottom: 10.h),
                     child: GestureDetector(
                         onTap: () => Get.back(),
-                        child: Icon(Icons.close, size: 25.w, color: Colors.white,)
-                    )
-                ),
+                        child: Icon(
+                          Icons.close,
+                          size: 25.w,
+                          color: Colors.white,
+                        ))),
               ],
             ),
             Row(
@@ -419,8 +454,7 @@ class EditMyPage extends StatelessWidget {
                           child: Text('앨범에서 가져오기',
                               style: Theme.of(context).textTheme.headline4),
                         ),
-                        Image.asset('assets/icons/gallery.png',
-                            width: 50.w),
+                        Image.asset('assets/icons/gallery.png', width: 50.w),
                       ],
                     ),
                   ),
@@ -435,17 +469,14 @@ class EditMyPage extends StatelessWidget {
   }
 
   Widget loadImage(BuildContext context) {
-    if(profileController.isDefaultImage.value)
+    if (profileController.isDefaultImage.value)
       return Container(
         width: 80.w,
         height: 78.w,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
             image: DecorationImage(
-                image: AssetImage('assets/images/you.png'),
-                fit: BoxFit.cover
-            )
-        ),
+                image: AssetImage('assets/images/you.png'), fit: BoxFit.cover)),
       );
     else
       return Container(
@@ -455,9 +486,7 @@ class EditMyPage extends StatelessWidget {
             shape: BoxShape.circle,
             image: DecorationImage(
                 image: FileImage(profileController.imageFile.value),
-                fit: BoxFit.cover
-            )
-        ),
+                fit: BoxFit.cover)),
       );
   }
 
@@ -490,20 +519,22 @@ class EditMyPage extends StatelessWidget {
   List<Widget> followingThemeList(BuildContext context) {
     return List.generate(
         themeList.length,
-            (i) => Padding(
-          padding: EdgeInsets.only(right: 6.0.w),
-          child: Container(
-            padding: EdgeInsets.only(left: 7.w, right: 7.0.w),
-            child: Center(
-                child: Text('#${themeList[i]}', style: Theme.of(context).textTheme.headline4!.copyWith(
-                    color: Theme.of(context).colorScheme.primary
-                ))),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              border: Border.all(width: 1.5.w, color: Theme.of(context).colorScheme.primary),
-              borderRadius: BorderRadius.all(Radius.circular(13.5)),
-            ),
-          ),
-        ));
+        (i) => Padding(
+              padding: EdgeInsets.only(right: 6.0.w),
+              child: Container(
+                padding: EdgeInsets.only(left: 7.w, right: 7.0.w),
+                child: Center(
+                    child: Text('#${themeList[i]}',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                            color: Theme.of(context).colorScheme.primary))),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background,
+                  border: Border.all(
+                      width: 1.5.w,
+                      color: Theme.of(context).colorScheme.primary),
+                  borderRadius: BorderRadius.all(Radius.circular(13.5)),
+                ),
+              ),
+            ));
   }
 }

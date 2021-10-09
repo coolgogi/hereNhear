@@ -4,8 +4,6 @@ import 'package:herehear/login/siginIn_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/login/signUp.dart';
 
-
-
 class LoginPage extends StatelessWidget {
   final loginController = Get.put(LoginController());
   final idController = TextEditingController();
@@ -16,7 +14,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
           Form(
@@ -30,17 +28,19 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       "반갑습니다.",
                       style: Theme.of(context).textTheme.caption!.copyWith(
-                        color: Theme.of(context).colorScheme.onBackground,
-                      ),
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
                     ),
                   ),
                   Obx(() => Text(
-                    "아이디",
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color: loginController.isIdActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )),
+                        "아이디",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: loginController.isIdActive.value
+                                  ? Theme.of(context).colorScheme.onBackground
+                                  : Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      )),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0.h, bottom: 43.0.h),
                     child: TextFormField(
@@ -53,22 +53,27 @@ class LoginPage extends StatelessWidget {
                       validator: (value) => loginController.checkId(value!),
                       decoration: InputDecoration(
                         hintText: "아이디를 입력하세요.",
-                        errorStyle: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
+                        errorStyle:
+                            Theme.of(context).textTheme.headline6!.copyWith(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                         errorBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
+                          borderSide: BorderSide(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
                         ),
                       ),
                     ),
                   ),
                   Obx(() => Text(
-                    "패스워드",
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      color: loginController.isPwdActive.value? Theme.of(context).colorScheme.onBackground : Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  )),
+                        "패스워드",
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: loginController.isPwdActive.value
+                                  ? Theme.of(context).colorScheme.onBackground
+                                  : Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      )),
                   Obx(() => Padding(
                     padding: EdgeInsets.only(top: 10.0.h, bottom: 17.h),
                     child: TextFormField(
@@ -92,11 +97,11 @@ class LoginPage extends StatelessWidget {
                           child: IconButton(
                             onPressed: () => loginController.isObscureText.value = !(loginController.isObscureText.value),
                             icon: Image.asset(loginController.isObscureText.value? 'assets/icons/bigEye.png' : 'assets/icons/eye-off.png', width: 30.w,),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )),
+                      )),
                   Padding(
                     padding: EdgeInsets.only(bottom: 55.0.h),
                     child: Row(
@@ -104,9 +109,14 @@ class LoginPage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: null,
-                          child: Text('비밀번호를 잊으셨나요?', style: Theme.of(context).textTheme.headline6!.copyWith(
-                           color: Theme.of(context).colorScheme.onSurface,
-                          )),
+                          child: Text('비밀번호를 잊으셨나요?',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  )),
                         )
                       ],
                     ),
@@ -114,28 +124,32 @@ class LoginPage extends StatelessWidget {
                   Container(
                     height: 44.h,
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                    ),
+                    decoration: BoxDecoration(),
                     child: ElevatedButton(
                       onPressed: () {
-                        if(_loginformKey.currentState!.validate())
-                          loginController.loginWithGoogle();
+                        if (_loginformKey.currentState!.validate())
+                          loginController.loginWithButton(
+                              idController.text, pwdController.text);
                       },
-                      child: Text(
-                        '로그인',
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary
-                        )),
+                      child: Text('로그인',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary)),
                       style: ButtonStyle(
-                        elevation: MaterialStateProperty.all(0),
-                        backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.primary),
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.0),
-                                  side: BorderSide(color: Theme.of(context).colorScheme.primary)
-                              )
-                          )
-                      ),
+                          elevation: MaterialStateProperty.all(0),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Theme.of(context).colorScheme.primary),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14.0),
+                                      side: BorderSide(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary)))),
                     ),
                   ),
                   Padding(
@@ -145,9 +159,14 @@ class LoginPage extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: () => Get.to(RegisterPage()),
-                          child: Text('계정 생성', style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
-                          )),
+                          child: Text('계정 생성',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
+                                  )),
                         ),
                       ],
                     ),
@@ -158,12 +177,15 @@ class LoginPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(left: 100.0.w, right: 100.w, bottom: 15.h),
-            child: Divider(thickness: 0.6.h,),
+            child: Divider(
+              thickness: 0.6.h,
+            ),
           ),
           Center(
-            child: Text('또는 다른 서비스 계정으로 로그인', style: Theme.of(context).textTheme.headline6!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-            )),
+            child: Text('또는 다른 서비스 계정으로 로그인',
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    )),
           ),
           Padding(
             padding: EdgeInsets.only(top: 27.h, bottom: 20.h),

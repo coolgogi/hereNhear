@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search.dart';
 import 'package:herehear/bottomNavigationBar/myPage/mypage.dart';
-import 'package:herehear/login/nickname.dart';
+import 'package:herehear/login/setProfile.dart';
+
 import 'package:herehear/users/controller/user_controller.dart';
 import 'community/community.dart';
 import 'create/create_broadcast.dart';
@@ -14,14 +15,15 @@ import 'floating_action_button_location.dart';
 import 'home/home.dart';
 
 class BottomBar extends StatelessWidget {
-  final UserController userController = Get.put(UserController());
   final BottomBarController bottomBarController =
       Get.put(BottomBarController(), permanent: false);
 
   @override
   Widget build(BuildContext context) {
-    if (UserController.to.myProfile.value.nickName == 'Nickname') {
-      return NicknamePage();
+    print("===========bottom bar line 23===========");
+    print(UserController.to.myProfile.value.nickName);
+    if (UserController.to.myProfile.value.nickName == '') {
+      return setProfilePage();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -49,10 +51,10 @@ class BottomBar extends StatelessWidget {
             onPressed: () => {
                   print(
                       '*******************************************************************************8'),
-                  print(userController.myProfile.value.uid),
+                  print(UserController.to.myProfile.value.uid),
                   print(
                       '*******************************************************************************8'),
-                  userController.myProfile.value.uid == 'Guest'
+                  UserController.to.myProfile.value.uid == 'Guest'
                       ? _showMyDialog()
                       : showCreateOption(context),
                 }),
