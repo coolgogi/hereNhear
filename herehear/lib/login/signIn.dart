@@ -75,39 +75,28 @@ class LoginPage extends StatelessWidget {
                             ),
                       )),
                   Obx(() => Padding(
-                        padding: EdgeInsets.only(top: 10.0.h, bottom: 17.h),
-                        child: TextFormField(
-                          controller: pwdController,
-                          obscureText: loginController.isObscureText.value,
-                          onTap: () {
-                            loginController.isPwdActive.value = true;
-                            loginController.isIdActive.value = false;
-                          },
-                          validator: (value) =>
-                              loginController.checkPassword(value!),
-                          decoration: InputDecoration(
-                            hintText: "비밀번호를 입력하세요.",
-                            errorStyle: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
-                                  color: Theme.of(context).colorScheme.error,
-                                ),
-                            errorBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).colorScheme.error,
-                              ),
-                            ),
-                            suffixIcon: Padding(
-                              padding: EdgeInsets.only(top: 1.h),
-                              child: IconButton(
-                                onPressed: () =>
-                                    loginController.isObscureText.value =
-                                        !(loginController.isObscureText.value),
-                                icon: Image.asset(
-                                  'assets/icons/bigEye.png',
-                                  width: 30.w,
-                                ),
+                    padding: EdgeInsets.only(top: 10.0.h, bottom: 17.h),
+                    child: TextFormField(
+                      controller: pwdController,
+                      obscureText: loginController.isObscureText.value,
+                      onTap: () {
+                        loginController.isPwdActive.value = true;
+                        loginController.isIdActive.value = false;
+                      },
+                      validator: (value) => loginController.checkPassword(value!),
+                      decoration: InputDecoration(
+                        hintText: "비밀번호를 입력하세요.",
+                        errorStyle: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                        errorBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Theme.of(context).colorScheme.error,),
+                        ),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.only(top: 1.h),
+                          child: IconButton(
+                            onPressed: () => loginController.isObscureText.value = !(loginController.isObscureText.value),
+                            icon: Image.asset(loginController.isObscureText.value? 'assets/icons/bigEye.png' : 'assets/icons/eye-off.png', width: 30.w,),
                               ),
                             ),
                           ),
