@@ -126,39 +126,39 @@ class UserModel extends Equatable {
 //   List<dynamic>? subscribe;
 
   String? token;
-  final String? uid;
+  String? uid;
   String? nickName;
-  final String? name;
-  final String? location;
-  final String? profile;
-  final List<dynamic>? subscribe;
+  String? name;
+  String? location;
+  String? profile;
+  List<dynamic>? subscribe;
 
   String? platform;
 
   /// Created user timestamp, in ms
-  final int? createdAt;
+  int? createdAt;
 
   /// First name of the user
 
   /// Unique ID of the user
-  final String? id;
+  String? id;
 
   /// Remote image URL representing user's avatar
-  final String? imageUrl;
+  String? imageUrl;
 
   /// Last name of the user
 
   /// Timestamp when user was last visible, in ms
-  final int? lastSeen;
+  int? lastSeen;
 
   /// Additional custom metadata or attributes related to the user
-  final Map<String, dynamic>? metadata;
+  Map<String, dynamic>? metadata;
 
   /// User [Role]
-  final MyRole? role;
+  MyRole? role;
 
   /// Updated user timestamp, in ms
-  final int? updatedAt;
+  int? updatedAt;
 }
 
 //

@@ -265,7 +265,8 @@ class EditMyPage extends StatelessWidget {
                         ),
                         child: InkWell(
                             splashColor: Colors.transparent,
-                            onTap: () => Get.to(() => setProfilePage()),
+                            // onTap: () => Get.to(() => setProfilePage()),
+                            onTap: () => null,
                             child: Center(
                                 child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
