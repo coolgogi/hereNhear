@@ -33,18 +33,14 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.channelName, role: role));
   }
 
-  BroadCastPage.broadcaster(
-      { //required this.channelName,
-      required this.role,
-      // required this.userData,
-      required this.roomData}) {
+  BroadCastPage.broadcaster({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName, role: role));
+        channelName: roomData.channelName, role: ClientRole.Broadcaster));
   }
 
   BroadCastPage.audience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName, role: role));
+        channelName: roomData.channelName, role: ClientRole.Audience));
   }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
@@ -61,7 +57,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
               appBar: profileAppBar(context),
               extendBodyBehindAppBar: true,
               body: ChatPage(roomData),
-              // body: ChatPage.withData(roomData),
               backgroundColor: Colors.transparent,
               extendBody: true,
             );
@@ -70,93 +65,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
           }
         });
   }
-
-  // Widget broadcast_body(BuildContext context) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       image: DecorationImage(
-  //         fit: BoxFit.cover,
-  //         image: AssetImage('assets/suhyun.jpg'),
-  //       ),
-  //     ),
-  //     child: Column(
-  //       children: [
-  //         Padding(
-  //           padding: EdgeInsets.fromLTRB(26.w, 75.h, 24.w, 8.h),
-  //           child: Container(
-  //             height: 53.h,
-  //             decoration: BoxDecoration(
-  //               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
-  //               borderRadius: BorderRadius.all(Radius.circular(10.r)),
-  //             ),
-  //             child: Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [
-  //                 Padding(
-  //                   padding: EdgeInsets.only(right: 8.0.w),
-  //                   child: Container(
-  //                     width: 35.w,
-  //                     height: 35.w,
-  //                     decoration: BoxDecoration(
-  //                       shape: BoxShape.circle,
-  //                       image: DecorationImage(
-  //                         image: AssetImage('assets/images/me.jpg'),
-  //                         fit: BoxFit.cover,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 ),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Row(
-  //                       children: [
-  //                         Text('호스트 NickName', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
-  //                         SizedBox(width: 7.w),
-  //                         Image.asset('assets/images/rive_red.png', width: 43.5.w, height: 18.w,),
-  //                       ],
-  //                     ),
-  //                     SizedBox(height: 4.h),
-  //                     Text('팔로우 숫자', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: EdgeInsets.fromLTRB(26.w, 5.h, 24.w, 8.h),
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //             children: [
-  //               Container(
-  //                 height: 37.h,
-  //                 decoration: BoxDecoration(
-  //                   color: Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
-  //                   borderRadius: BorderRadius.all(Radius.circular(10.r)),
-  //                 ),
-  //                 child: Text('방 제목(대화하고 놀아요!)', style: Theme.of(context).textTheme.headline4!.copyWith(color: Theme.of(context).colorScheme.surface)),
-  //               ),
-  //               Container(
-  //                 height: 37.h,
-  //                 decoration: BoxDecoration(
-  //                   color: Theme.of(context).colorScheme.onBackground.withOpacity(0.4),
-  //                   borderRadius: BorderRadius.all(Radius.circular(10.r)),
-  //                 ),
-  //                 child: Text('공지 사항 목록', style: Theme.of(context).textTheme.headline6!.copyWith(color: Theme.of(context).colorScheme.surface)),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         Expanded(
-  //           child: Container(
-  //             color: Colors.transparent,
-  //               child: ChatPage.withData(roomData)),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   PreferredSizeWidget profileAppBar(BuildContext context) {
     return PreferredSize(
@@ -173,10 +81,14 @@ class BroadCastPage extends GetView<AgoraEventController> {
           margin: const EdgeInsets.all(8.0),
           padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
           decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).colorScheme.background),
+              border:
+                  Border.all(color: Theme.of(context).colorScheme.background),
               borderRadius: BorderRadius.circular(12.r)),
-          child:
-              Text(" $timer_title ", style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.background)),
+          child: Text(" $timer_title ",
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: Theme.of(context).colorScheme.background)),
         ),
         actions: <Widget>[
           IconButton(
@@ -235,15 +147,16 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
-    if (roomData.roomInfo.hostInfo.uid == UserController.to.myProfile.value.uid) {
-      await changeState(roomData.channelName);
-    }
     await fireStore.collection('broadcast').doc(roomData.channelName).update({
       'userIds':
           FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
     });
     controller.onClose();
     Get.back();
+    if (roomData.roomInfo.hostInfo.uid ==
+        UserController.to.myProfile.value.uid) {
+      await changeState(roomData.channelName);
+    }
   }
 
   Future<void> changeState(String channelName) async {
