@@ -127,7 +127,7 @@ class GroupCallPage extends StatelessWidget {
                   height: 50,
                 ),
                 Text(
-                  'Followers',
+                  'Listeners',
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                     color: Theme.of(context).colorScheme.primaryVariant,
                   ),
@@ -162,40 +162,40 @@ class GroupCallPage extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(top: 17.0.h),
-                child: Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Get.to(ParticipantProfilePage()),
-                      child: Container(
-                        width: 83.h,
-                        height: 83.h,
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: AssetImage('assets/images/you.png'),
-                        ),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          // border: Border.all(width: 3, color: controller.speakingUser.contains(0)? Theme.of(context).colorScheme.primary : Colors.transparent),
-                          border: Border.all(width: 3, color: controller.speakingUser.contains(uid)? Theme.of(context).colorScheme.primary : Colors.transparent),
-                        ),
+              child: Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () => Get.to(ParticipantProfilePage()),
+                    child: Container(
+                      width: 83.h,
+                      height: 83.h,
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: AssetImage('assets/images/you.png'),
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        // border: Border.all(width: 3, color: controller.speakingUser.contains(0)? Theme.of(context).colorScheme.primary : Colors.transparent),
+                        border: Border.all(width: 3, color: controller.speakingUser.contains(uid)? Theme.of(context).colorScheme.primary : Colors.transparent),
                       ),
                     ),
-                    Positioned(
-                      left: 50.0.w,
-                      right: 4.0.w,
-                      top: 52.0.h,
-                      bottom: 0.0.h,
-                      child: GestureDetector(
-                        onTap: () {
-                          // if(uid == controller.currentUid) <-- 자기꺼 아니면 음소거 못하게 하기(호스트 경우엔 이 조건 없애기ㅇㅇ
-                          controller.onToggleMute();
-                        },
-                        child: Image.asset(controller.muted.value? 'assets/icons/micButton_mute.png' : 'assets/icons/micButton.png', width: 26.w, height: 26.w),
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  Positioned(
+                    left: 50.0.w,
+                    right: 4.0.w,
+                    top: 52.0.h,
+                    bottom: 0.0.h,
+                    child: GestureDetector(
+                      onTap: () {
+                        // if(uid == controller.currentUid) <-- 자기꺼 아니면 음소거 못하게 하기(호스트 경우엔 이 조건 없애기ㅇㅇ
+                        controller.onToggleMute();
+                      },
+                      child: Image.asset(controller.muted.value? 'assets/icons/micButton_mute.png' : 'assets/icons/micButton.png', width: 26.w, height: 26.w),
+                    ),
+                  )
+                ],
               ),
+            ),
             Padding(
               padding: EdgeInsets.only(top: 8.0),
               child: Row(
@@ -222,10 +222,10 @@ class GroupCallPage extends StatelessWidget {
   //HARD
   void _getListenersImageList(BuildContext context) {
     controller.listenersList.value = [];
-    print('!@#@@!@#@!@#@!@#!@#@!@#@!@#@!@#@!@#@# controller.users.length: ${controller.users.length}');
-    if (controller.users.length != listenerNum) {
-      controller.users.forEach((uid)
-    //  controller.followers.forEach((profile)
+  //  print('!@#@@!@#@!@#@!@#!@#@!@#@!@#@!@#@!@#@# controller.users.length: ${controller.users.length}');
+    if (controller.listener.length != listenerNum) {
+      controller.listener.forEach((user)
+    //  controller.listener.forEach((profile)
       {
         controller.listenersList.add(Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,7 +237,7 @@ class GroupCallPage extends StatelessWidget {
                 height: 68.h,
                 child: CircleAvatar(
                   radius: 30,
-                  backgroundImage: AssetImage('assets/images/you.png'),
+                  backgroundImage: AssetImage(user.profile!),
                 ),
               ),
             ),
@@ -248,7 +248,7 @@ class GroupCallPage extends StatelessWidget {
                 children: [
                   Text(
                     // 'NickName',
-                    uid.toString(),
+                    user.nickName!,
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: Theme.of(context).colorScheme.primaryVariant,
                       fontWeight: FontWeight.w700,
@@ -260,8 +260,8 @@ class GroupCallPage extends StatelessWidget {
           ],
         ));
       });
-      listenerNum = controller.users.length;
-      print('controller.users.obs: ${controller.users.obs}');
+      listenerNum = controller.listener.length;
+     // print('controller.users.obs: ${controller.users.obs}');
     }
 
   }

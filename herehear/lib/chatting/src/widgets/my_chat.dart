@@ -35,9 +35,11 @@ class ChatController extends GetxController {
 
 /// Entry widget, represents the complete chat
 class MyChat extends StatefulWidget {
+
   /// Creates a chat widget
   const MyChat({
     Key? key,
+    this.channelName,
     this.buildCustomMessage,
     this.customDateHeaderText,
     this.dateFormat,
@@ -62,6 +64,9 @@ class MyChat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
+
+
+  final String? channelName;
 
   /// See [Message.buildCustomMessage]
   final Widget Function(types.MyMessage)? buildCustomMessage;
@@ -429,6 +434,20 @@ class _ChatState extends State<MyChat> {
                                   setState(() {
                                     chatController.isFavoriteRoom.value = !(chatController.isFavoriteRoom.value);
                                     print('CheckChatKeyBoard().isFavoriteRoom: ${chatController.isFavoriteRoom.value}');
+
+
+
+                                    //
+                                    // if(product['likePeople'] == null  || product['likePeople'].contains(auth.currentUser.uid) == false ){
+                                    //   snapshot.reference.update({
+                                    //     'like': FieldValue.increment(1),
+                                    //     'likePeople': FieldValue.arrayUnion(
+                                    //         [auth.currentUser.uid])
+                                    //   });
+                                    //
+                                    //
+                                    // }
+                                    //
                                   });
                                 }),
                                 child: Container(
