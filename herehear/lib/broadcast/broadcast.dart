@@ -33,18 +33,16 @@ class BroadCastPage extends GetView<AgoraEventController> {
         channelName: roomData.roomInfo.channelName, role: role));
   }
 
-  BroadCastPage.broadcaster(
-      { //required this.channelName,
-      required this.role,
-      // required this.userData,
-      required this.roomData}) {
+  BroadCastPage.broadcaster({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.roomInfo.channelName, role: role));
+        channelName: roomData.roomInfo.channelName, role: ClientRole.Broadcaster));
+
   }
 
   BroadCastPage.audience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.roomInfo.channelName, role: role));
+        channelName: roomData.roomInfo.channelName, role: ClientRole.Audience));
+
   }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
@@ -61,7 +59,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
               appBar: profileAppBar(context),
               extendBodyBehindAppBar: true,
               body: ChatPage(roomData),
-              // body: ChatPage.withData(roomData),
               backgroundColor: Colors.transparent,
               extendBody: true,
             );
@@ -87,10 +84,14 @@ class BroadCastPage extends GetView<AgoraEventController> {
           margin: const EdgeInsets.all(8.0),
           padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
           decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).colorScheme.background),
+              border:
+                  Border.all(color: Theme.of(context).colorScheme.background),
               borderRadius: BorderRadius.circular(12.r)),
-          child:
-              Text(" $timer_title ", style: Theme.of(context).textTheme.subtitle1!.copyWith(color: Theme.of(context).colorScheme.background)),
+          child: Text(" $timer_title ",
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1!
+                  .copyWith(color: Theme.of(context).colorScheme.background)),
         ),
         actions: <Widget>[
           IconButton(
@@ -158,6 +159,10 @@ class BroadCastPage extends GetView<AgoraEventController> {
     });
     controller.onClose();
     Get.back();
+    if (roomData.roomInfo.hostInfo.uid ==
+        UserController.to.myProfile.value.uid) {
+      await changeState(roomData.roomInfo.channelName);
+    }
   }
 
   Future<void> changeState(String channelName) async {

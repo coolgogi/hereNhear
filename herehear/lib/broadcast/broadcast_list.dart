@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'data/broadcast_model.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'package:herehear/bottomNavigationBar/home/home.dart';
@@ -22,12 +23,17 @@ ListView broadcastRoomList(
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
-            await firestore.collection('broadcast').doc(room.roomInfo.channelName).update({
+
+            await firestore
+                .collection('broadcast')
+                .doc(room.roomInfo.channelName)
+                .update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),
             });
 
+            await _handleCameraAndMic(Permission.microphone);
             await Get.to(
               () => BroadCastPage.audience(
                   //   channelName: room.docId!,
@@ -70,7 +76,8 @@ ListView broadcastRoomList(
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                image: AssetImage(room.roomInfo.hostInfo.profile!),
+                                image:
+                                    AssetImage(room.roomInfo.hostInfo.profile!),
                                 fit: BoxFit.fitWidth,
                               )),
                         ),
@@ -88,12 +95,11 @@ ListView broadcastRoomList(
                         color: Colors.white,
                       ),
                       Text(
-                       ' ${room.users.length.toString()}',
-                        style:
-                            Theme.of(context).textTheme.subtitle1!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 13.sp,
-                                ),
+                        ' ${room.users.length.toString()}',
+                        style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                              color: Colors.white,
+                              fontSize: 13.sp,
+                            ),
                       ),
                       SizedBox(width: 12.w),
                       Icon(
@@ -120,8 +126,8 @@ ListView broadcastRoomList(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding:
-                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                    padding: EdgeInsets.only(
+                        left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
                     child: Text(room.roomInfo.title,
                         style: Theme.of(context).textTheme.headline4),
                   ),
@@ -133,18 +139,29 @@ ListView broadcastRoomList(
                           width: 1.5.w,
                           color: Theme.of(context).colorScheme.primary),
                     ),
-                    child: Center(child: Padding(
-                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
-                          SizedBox(width: 2.w),
-                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontSize: 11.sp,
-                              color: Theme.of(context).colorScheme.primary),)
-                        ],
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/icons/book.png',
+                                width: 10.w, height: 10.w),
+                            SizedBox(width: 2.w),
+                            Text(
+                              '독서',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                      fontSize: 11.sp,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                            )
+                          ],
+                        ),
                       ),
-                    ),),
+                    ),
                   ),
                   SizedBox(width: 8.w),
                 ],
@@ -156,7 +173,6 @@ ListView broadcastRoomList(
     },
   );
 }
-
 
 ListView broadcastRoomVerticalList(
     BuildContext context, AsyncSnapshot<List<BroadcastModel>> snapshot) {
@@ -171,16 +187,20 @@ ListView broadcastRoomVerticalList(
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
-            await firestore.collection('broadcast').doc(room.roomInfo.channelName).update({
+
+            await firestore
+                .collection('broadcast')
+                .doc(room.roomInfo.channelName)
+                .update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),
             });
 
             await Get.to(
-                  () => BroadCastPage.audience(
-                //   channelName: room.docId!,
-                // userData: _userData,
+              () => BroadCastPage.audience(
+                  //   channelName: room.docId!,
+                  // userData: _userData,
                   role: ClientRole.Audience,
                   roomData: room),
             );
@@ -228,10 +248,10 @@ ListView broadcastRoomVerticalList(
                         ),
                         Text('유리한 녀석들',
                             style:
-                            Theme.of(context).textTheme.subtitle1!.copyWith(
-                              color: Colors.white,
-                              fontSize: 13.sp,
-                            )),
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 13.sp,
+                                    )),
                         Expanded(child: Container()),
                         Icon(
                           Icons.people,
@@ -241,10 +261,10 @@ ListView broadcastRoomVerticalList(
                         Text(
                           ' ${room.users.length.toString()}',
                           style:
-                          Theme.of(context).textTheme.subtitle1!.copyWith(
-                            color: Colors.white,
-                            fontSize: 13.sp,
-                          ),
+                              Theme.of(context).textTheme.subtitle1!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 13.sp,
+                                  ),
                         ),
                         SizedBox(width: 8.w),
                         Icon(
@@ -257,10 +277,10 @@ ListView broadcastRoomVerticalList(
                           child: Text(
                             ' ${room.like.toString()}',
                             style:
-                            Theme.of(context).textTheme.subtitle1!.copyWith(
-                              color: Colors.white,
-                              fontSize: 13.sp,
-                            ),
+                                Theme.of(context).textTheme.subtitle1!.copyWith(
+                                      color: Colors.white,
+                                      fontSize: 13.sp,
+                                    ),
                           ),
                         ),
                       ],
@@ -271,8 +291,8 @@ ListView broadcastRoomVerticalList(
               Row(
                 children: [
                   Padding(
-                    padding:
-                    EdgeInsets.only(left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
+                    padding: EdgeInsets.only(
+                        left: 5.0.w, top: 10.0.h, bottom: 16.0.h),
                     child: Text('같이 대화하면서 놀아요!',
                         style: Theme.of(context).textTheme.headline4),
                   ),
@@ -284,18 +304,29 @@ ListView broadcastRoomVerticalList(
                           width: 1.5.w,
                           color: Theme.of(context).colorScheme.primary),
                     ),
-                    child: Center(child: Padding(
-                      padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/book.png', width: 10.w, height: 10.w),
-                          SizedBox(width: 2.w),
-                          Text('독서', style: Theme.of(context).textTheme.headline4!.copyWith(
-                              fontSize: 11.sp,
-                              color: Theme.of(context).colorScheme.primary),)
-                        ],
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
+                        child: Row(
+                          children: [
+                            Image.asset('assets/icons/book.png',
+                                width: 10.w, height: 10.w),
+                            SizedBox(width: 2.w),
+                            Text(
+                              '독서',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                      fontSize: 11.sp,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                            )
+                          ],
+                        ),
                       ),
-                    ),),
+                    ),
                   ),
                   SizedBox(width: 8.w),
                 ],
@@ -306,4 +337,8 @@ ListView broadcastRoomVerticalList(
       );
     },
   );
+}
+
+Future<void> _handleCameraAndMic(Permission permission) async {
+  final status = await permission.request();
 }

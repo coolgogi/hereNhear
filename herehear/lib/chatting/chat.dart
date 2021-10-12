@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class ChatPage extends StatefulWidget {
 
   //late final roomData;
   late final room;
+  late final ClientRole role;
 
   // late final Map<String, dynamic> roomData;
   ChatPage(this.room);
@@ -41,6 +43,7 @@ class _ChatPageState extends State<ChatPage> {
 
   bool _isAttachmentUploading = false;
   bool noticeActive = true;
+  late dynamic agoraController;
 
   @override
   Widget build(BuildContext context) {

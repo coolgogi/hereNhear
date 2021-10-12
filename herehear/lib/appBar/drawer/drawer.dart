@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:herehear/login/setProfile.dart';
 
 import 'QnA.dart';
 
@@ -27,13 +28,18 @@ class DrawerWidget extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(22.w, 0.h, 25.w, 15.0.h),
                 child: InkWell(
                   onTap: null,
+                  // onTap: Get.to(setProfilePage()),
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('내 정보', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('내 정보',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -44,11 +50,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: null,
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('개인정보 처리방침', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('개인정보 처리방침',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -59,11 +69,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: null,
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('이용약관', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('이용약관',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -74,11 +88,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: null,
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('앱 정보', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('앱 정보',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -89,11 +107,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: null,
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('오픈소스 라이선스', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('오픈소스 라이선스',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -104,11 +126,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: null,
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('FAQ', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('FAQ',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -119,11 +145,15 @@ class DrawerWidget extends StatelessWidget {
                   onTap: () => Get.to(QnAPage()),
                   child: Row(
                     children: [
-                      Icon(Icons.chevron_left, size: 25.w, color: Theme.of(context).colorScheme.onSurface),
+                      Icon(Icons.chevron_left,
+                          size: 25.w,
+                          color: Theme.of(context).colorScheme.onSurface),
                       Expanded(child: Container()),
-                      Text('문의하기', style: Theme.of(context).textTheme.headline5!.copyWith(
-                        color: Colors.black,
-                      )),
+                      Text('문의하기',
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    color: Colors.black,
+                                  )),
                     ],
                   ),
                 ),
@@ -136,9 +166,9 @@ class DrawerWidget extends StatelessWidget {
                 onTap: () => FirebaseAuth.instance.signOut(),
                 child: Padding(
                   padding: EdgeInsets.only(top: 10.h, right: 25.0.w),
-                  child: Text('로그아웃', style: Theme.of(context).textTheme.headline5!.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface
-                  )),
+                  child: Text('로그아웃',
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface)),
                 ),
               ),
             ],
@@ -151,7 +181,7 @@ class DrawerWidget extends StatelessWidget {
   Widget searchBarWidget(BuildContext context) {
     return Padding(
       padding:
-      EdgeInsets.only(left: 25.0.w, top: 0.h, right: 22.0.w, bottom: 30.h),
+          EdgeInsets.only(left: 25.0.w, top: 0.h, right: 22.0.w, bottom: 30.h),
       child: GestureDetector(
         onTap: () {
           // searchController.isRoomSearch.value = true;

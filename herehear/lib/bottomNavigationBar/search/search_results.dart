@@ -4,11 +4,14 @@ import 'package:get/get.dart';
 import 'package:herehear/bottomNavigationBar/search/searchBar_controller.dart';
 import 'package:herehear/bottomNavigationBar/search/search_history_model.dart';
 import 'package:herehear/bottomNavigationBar/search/searchfield_widget.dart';
+import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/location/controller/location_controller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'foundedResult.dart';
+import '../../broadcast/data/broadcast_model.dart' as types;
+import 'package:herehear/groupCall/data/group_call_model.dart' as types;
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -72,9 +75,11 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
           Obx(() {
             if (searchController.text.isEmpty) {
               return searchHistory();
+            } else if(searchController.isCommunitySearch.value) {
+              return communitySearchResult();
             } else {
               print('searchController.textController.value??????????????? : ${searchController.text.value}');
-              return FoundedResult();
+              return roomSearchResult();
             }
           })
         ],
@@ -82,88 +87,149 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
     );
   }
 
+  Widget roomSearchResult() {
+    return StreamBuilder<List<types.BroadcastModel>>(
+        stream: MyFirebaseChatCore.instance.broadcastRoomsForSearchResult(),
+        builder: (context, snapshot1) {
+          if (!snapshot1.hasData || !searchController.isSearchComplete.value) {
+            Future.delayed(Duration(milliseconds: 1000));
+            searchController.isSearchComplete.value = true;
+            return Padding(
+              padding: EdgeInsets.only(top: 30.h),
+              child: Column(
+                children: [
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("'${searchController.text.value}' 검색중"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return StreamBuilder<List<types.GroupCallModel>>(
+              stream: MyFirebaseChatCore.instance.groupCallRoomsForSearchResult(),
+              builder: (context, snapshot2) {
+                if (!snapshot2.hasData || !searchController.isSearchComplete.value) {
+                  Future.delayed(Duration(milliseconds: 1000));
+                  searchController.isSearchComplete.value = true;
+                  return Padding(
+                    padding: EdgeInsets.only(top: 30.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("'${searchController.text.value}' 검색중"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                Future.delayed(Duration(milliseconds: 1000));
+                // searchController.isSearchComplete.value = true;
+                print('?!: ${searchController.text.value}');
+                // print('LIVE검색결과: ${snapshot1.data!.first.roomInfo.title}');
+                // print('Call검색결과: ${snapshot2.data!.first.roomInfo.title}');
+                return (snapshot1.data!.isNotEmpty || snapshot2.data!.isNotEmpty)?
+                FoundedResult(broadcastData: snapshot1, groupcallData: snapshot2)
+                    : Padding(
+                  padding: EdgeInsets.only(top: 50.0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text('검색 결과가 없습니다.', style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        )),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        });
+  }
+
+  Widget communitySearchResult() {
+    return StreamBuilder<List<types.BroadcastModel>>(
+        stream: MyFirebaseChatCore.instance.broadcastRoomsForSearchResult(),
+        builder: (context, snapshot1) {
+          if (!snapshot1.hasData) {
+            return Padding(
+              padding: EdgeInsets.only(left: 25.0.w, top: 30.h),
+              child: Column(
+                children: [
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // CircularProgressIndicator(),
+                        // SizedBox(width: 10.w),
+                        Text("'${searchController.text.value}' 검색중"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+          return StreamBuilder<List<types.GroupCallModel>>(
+              stream: MyFirebaseChatCore.instance.groupCallRoomsForSearchResult(),
+              builder: (context, snapshot2) {
+                if (!snapshot2.hasData) {
+                  return Padding(
+                    padding: EdgeInsets.only(left: 25.0.w, top: 20.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: Row(
+                            children: [
+                              // CircularProgressIndicator(),
+                              SizedBox(width: 10.w),
+                              Text("'${searchController.text.value}' 검색중"),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                // searchController.isSearchComplete.value = true;
+                print('?!: ${searchController.text.value}');
+                // print('LIVE검색결과: ${snapshot1.data!.first.roomInfo.title}');
+                // print('Call검색결과: ${snapshot2.data!.first.roomInfo.title}');
+                return (snapshot1.data!.isNotEmpty || snapshot2.data!.isNotEmpty)?
+                FoundedResult(broadcastData: snapshot1, groupcallData: snapshot2)
+                    : Padding(
+                  padding: EdgeInsets.only(top: 50.0.h),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        child: Text('검색 결과가 없습니다.', style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        )),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        });
+  }
+
+
   Widget searchHistory() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: 25.0.w, right: 13.0.w),
-          child: Row(
-            children: <Widget>[
-              Text(
-                '최근 본 HEAR',
-                // style: Theme.of(context).textTheme.headline1,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              Expanded(child: Container()),
-              IconButton(onPressed: null, icon: Icon(Icons.clear, size: 15.w)),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 25.0.w,
-            right: 13.0.w,
-            bottom: 5.0.h,
-          ),
-          child: Container(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: firestore
-                  .collection("broadcast")
-                  // .where('location',
-                  // isEqualTo: locationController.location.value)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                print('done!!');
-                if (!snapshot.hasData)
-                  return Center(
-                      child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.primary,
-                  ));
-                if (snapshot.data!.docs.length == 0 &&
-                    locationController.location.value != '')
-                  return Container(
-                    child: Text('최근 본 HEAR가 없습니다.'),
-                  );
-                return Row(children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(right: 6.0.w),
-                    child: Image.asset(
-                      'assets/icons/history.png',
-                      width: 20.w,
-                      height: 17.h,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 2.0.h),
-                    child: Text('같이 대화하면서 놀아요!',
-                        style: Theme.of(context).textTheme.headline6),
-                  ),
-                  Expanded(child: Container()),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 3.0.h),
-                    child: Text('HERO 정보',
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                            color: Theme.of(context).colorScheme.primary)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 2.0.h),
-                    child: IconButton(
-                        onPressed: null,
-                        icon: Icon(Icons.navigate_next, size: 18.w)),
-                  )
-                ]);
-              },
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(25.0.w, 0.h, 30.w, 0.h),
-          child: Divider(
-            thickness: 1,
-          ),
-        ),
         Padding(
           padding: EdgeInsets.fromLTRB(25.0.w, 10.h, 30.w, 15.h),
           child: Text(

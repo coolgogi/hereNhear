@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
+import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
 import 'package:herehear/chatting/src/conditional/conditional.dart';
 import 'package:herehear/chatting/src/models/date_header.dart';
@@ -28,6 +29,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatController extends GetxController {
   RxBool isKeyBoardActive = false.obs;
+  RxBool isHostAudioActive = true.obs;
   RxBool isFavoriteRoom = false.obs;
 }
 
@@ -168,6 +170,7 @@ class _ChatState extends State<MyChat> {
   int _imageViewIndex = 0;
   bool _isImageViewVisible = false;
   final chatController = Get.put(ChatController());
+  // final chatController = Get.put(AgoraEventController.broadcast(channelName: channelName, role: role)));
 
 
   @override
@@ -394,7 +397,8 @@ class _ChatState extends State<MyChat> {
                               GestureDetector(
                                 onTap: (() {
                                   setState(() {
-                                    chatController.isKeyBoardActive.value = true;
+                                    chatController.isHostAudioActive.value = !(chatController.isHostAudioActive.value);
+
                                   });
                                 }),
                                 child: Container(
@@ -402,23 +406,9 @@ class _ChatState extends State<MyChat> {
                                   height: 30.h,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    border: Border.all(color: Theme.of(context).colorScheme.surface.withOpacity(0.3)),
-                                    color: Theme.of(context).colorScheme.onBackground,
+                                    color: chatController.isHostAudioActive.value? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.primaryVariant,
                                   ),
-                                  child: Center(child: Image.asset('assets/icons/mic_fill2.png', width: 20.h, height: 20.h)),
-                                ),
-                              ),
-                              SizedBox(width: 10.w,),
-                              GestureDetector(
-                                onTap: null,
-                                child: Container(
-                                  width: 30.h,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).colorScheme.background,
-                                  ),
-                                  child: Center(child: Image.asset('assets/icons/mic_fill_black.png', width: 20.h, height: 20.h)),
+                                  child: Center(child: Image.asset(chatController.isHostAudioActive.value? 'assets/icons/mic_fill_black.png' : 'assets/icons/mic-off.png', width: 20.h, height: 20.h)),
                                 ),
                               ),
                               SizedBox(width: 15.w),
