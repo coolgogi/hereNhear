@@ -22,7 +22,7 @@ ListView broadcastRoomList(
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
-            await firestore.collection('broadcast').doc(room.channelName).update({
+            await firestore.collection('broadcast').doc(room.roomInfo.channelName).update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),
@@ -171,7 +171,7 @@ ListView broadcastRoomVerticalList(
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
-            await firestore.collection('broadcast').doc(room.channelName).update({
+            await firestore.collection('broadcast').doc(room.roomInfo.channelName).update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),

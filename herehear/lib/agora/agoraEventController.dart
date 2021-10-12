@@ -26,7 +26,7 @@ extension RoomTypeToShortString on RoomType {
 }
 
 class AgoraEventController extends GetxController {
-  CollectionReference groupCall =  FirebaseFirestore.instance.collection('groupcall')
+  CollectionReference groupCall =  FirebaseFirestore.instance.collection('groupcall');
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   var listener = <UserModel>[].obs;

@@ -76,10 +76,10 @@ class MyFirebaseChatCore {
 
     return types.BroadcastModel(
       roomInfo: roomInfo,
-      channelName: roomInfo.channelName,
       roomCategory: roomInfo.roomCategory,
       type: types.MyRoomType.group,
       users: roomUsers,
+      like: 0,
     );
   }
 
@@ -161,7 +161,7 @@ class MyFirebaseChatCore {
   /// Returns a stream of messages from Firebase for a given room
   Stream<List<types.MyMessage>> messages(types.BroadcastModel room) {
     return FirebaseFirestore.instance
-        .collection('broadcast/${room.channelName}/messages')
+        .collection('broadcast/${room.roomInfo.channelName}/messages')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(

@@ -174,7 +174,7 @@ class _ChatPageState extends State<ChatPage> {
                       color: Colors.transparent,
                       child: StreamBuilder<types.BroadcastModel>(
                           initialData: widget.room,
-                          stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
+                          stream: MyFirebaseChatCore.instance.room(widget.room.roomInfo.channelName),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return StreamBuilder<List<types.MyMessage>>(
@@ -182,6 +182,7 @@ class _ChatPageState extends State<ChatPage> {
                                   stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
                                   builder: (context, snapshot) {
                                     return MyChat(
+                                      channelName: widget.room.roomInfo.channelName,
                                         isAttachmentUploading: _isAttachmentUploading,
                                         messages: snapshot.data ?? [],
                                         onAttachmentPressed: _handleAtachmentPressed,

@@ -30,7 +30,6 @@ class AgoraCreateController extends GetxController {
       newBroadcastRoom.value = BroadcastModel(
         users: users ,
         roomInfo: roomInfo,
-        channelName: channelName,
         thumbnail: 'assets/images/mic1.jpg',
         location: location,
         createdTime: DateTime.now(),

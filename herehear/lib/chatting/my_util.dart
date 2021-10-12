@@ -66,7 +66,6 @@ Future<types.BroadcastModel> processRoomDocument(
   final room = types.BroadcastModel(
     roomInfo: roomInfo,
     like: like,
-    channelName: channelName,
     imageUrl: imageUrl,
     metadata: metadata,
     location: locationController.location.value,
