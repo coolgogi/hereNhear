@@ -29,7 +29,6 @@ import 'package:herehear/chatting/src/widgets/input.dart' as myInput;
 import '../chat_theme.dart' as chatTheme;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class ChatController extends GetxController {
   RxBool isKeyBoardActive = false.obs;
   RxBool isHostAudioActive = true.obs;
@@ -38,7 +37,6 @@ class ChatController extends GetxController {
 
 /// Entry widget, represents the complete chat
 class MyChat extends StatefulWidget {
-
   /// Creates a chat widget
   const MyChat({
     Key? key,
@@ -67,7 +65,6 @@ class MyChat extends StatefulWidget {
     this.usePreviewData = true,
     required this.user,
   }) : super(key: key);
-
 
   final BroadcastModel roomData;
 
@@ -173,8 +170,8 @@ class _ChatState extends State<MyChat> {
   int _imageViewIndex = 0;
   bool _isImageViewVisible = false;
   final chatController = Get.put(ChatController());
-  // final chatController = Get.put(AgoraEventController.broadcast(channelName: channelName, role: role)));
 
+  // final chatController = Get.put(AgoraEventController.broadcast(channelName: channelName, role: role)));
 
   @override
   void initState() {
@@ -249,7 +246,7 @@ class _ChatState extends State<MyChat> {
     //     ),
     //   );
     // } else
-      if (object is MessageSpacer) {
+    if (object is MessageSpacer) {
       return SizedBox(
         height: object.height,
       );
@@ -332,7 +329,6 @@ class _ChatState extends State<MyChat> {
     widget.onPreviewDataFetched?.call(message, previewData);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return InheritedUser(
@@ -364,8 +360,8 @@ class _ChatState extends State<MyChat> {
                               ),
                             )
                           : GestureDetector(
-                              onTap: () => FocusManager.instance.primaryFocus
-                                  ?.unfocus(),
+                              onTap: () =>
+                                  FocusManager.instance.primaryFocus?.unfocus(),
                               child: MyChatList(
                                 isLastPage: widget.isLastPage,
                                 itemBuilder: (item, index) =>
@@ -373,104 +369,158 @@ class _ChatState extends State<MyChat> {
                                 items: _chatMessages,
                                 onEndReached: widget.onEndReached,
                                 onEndReachedThreshold:
-                                widget.onEndReachedThreshold,
-                              )
-                            ),
+                                    widget.onEndReachedThreshold,
+                              )),
                     ),
-                    Obx(() => chatController.isKeyBoardActive.value?
-                    WillPopScope(
-                        child: myInput.Input(
-                          isAttachmentUploading: widget.isAttachmentUploading,
-                          onAttachmentPressed: widget.onAttachmentPressed,
-                          onSendPressed: widget.onSendPressed,
-                          onTextChanged: widget.onTextChanged,
-                        ),
-                        onWillPop: () {
-                          setState(() {
-                            chatController.isKeyBoardActive.value = false;
-                          });
-                          return Future(() => false);
-                        })
-                        : Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(15.w, 12.h, 17.w, 12.h),
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                onTap: (() {
-                                  setState(() {
-                                    chatController.isHostAudioActive.value = !(chatController.isHostAudioActive.value);
-
-                                  });
-                                }),
-                                child: Container(
-                                  width: 30.h,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: chatController.isHostAudioActive.value? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.primaryVariant,
-                                  ),
-                                  child: Center(child: Image.asset(chatController.isHostAudioActive.value? 'assets/icons/mic_fill_black.png' : 'assets/icons/mic_off.png', width: 20.h, height: 20.h)),
-                                ),
+                    Obx(
+                      () => chatController.isKeyBoardActive.value
+                          ? WillPopScope(
+                              child: myInput.Input(
+                                isAttachmentUploading:
+                                    widget.isAttachmentUploading,
+                                onAttachmentPressed: widget.onAttachmentPressed,
+                                onSendPressed: widget.onSendPressed,
+                                onTextChanged: widget.onTextChanged,
                               ),
-                              SizedBox(width: 15.w),
-                              GestureDetector(
-                                onTap: (() {
-                                  setState(() {
-                                    chatController.isKeyBoardActive.value = true;
-                                  });
-                                }),
-                                child: Container(
-                                  width: 30.h,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).colorScheme.background,
+                              onWillPop: () {
+                                setState(() {
+                                  chatController.isKeyBoardActive.value = false;
+                                });
+                                return Future(() => false);
+                              })
+                          : Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      15.w, 12.h, 17.w, 12.h),
+                                  child: Row(
+                                    children: [
+
+                                      widget.roomData.roomInfo.hostInfo.uid == UserController.to.myProfile.value.uid
+                                          ?
+                                      GestureDetector(
+                                        onTap: (() {
+                                          setState(() {
+                                            chatController
+                                                    .isHostAudioActive.value =
+                                                !(chatController
+                                                    .isHostAudioActive.value);
+                                          });
+                                        }),
+                                        child: Container(
+                                          width: 30.h,
+                                          height: 30.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: chatController
+                                                    .isHostAudioActive.value
+                                                ? Theme.of(context)
+                                                    .colorScheme
+                                                    .background
+                                                : Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryVariant,
+                                          ),
+                                          child: Center(
+                                              child: Image.asset(
+                                                  chatController
+                                                          .isHostAudioActive
+                                                          .value
+                                                      ? 'assets/icons/mic_fill_black.png'
+                                                      : 'assets/icons/mic_off.png',
+                                                  width: 20.h,
+                                                  height: 20.h)),
+                                        ),
+                                      )
+                                      : SizedBox.shrink (),
+
+
+                                      SizedBox(width: 15.w),
+                                      GestureDetector(
+                                        onTap: (() {
+                                          setState(() {
+                                            chatController
+                                                .isKeyBoardActive.value = true;
+                                          });
+                                        }),
+                                        child: Container(
+                                          width: 30.h,
+                                          height: 30.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .background,
+                                          ),
+                                          child: Center(
+                                              child: Image.asset(
+                                                  'assets/icons/chat_black.png',
+                                                  width: 20.h,
+                                                  height: 20.h)),
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      InkWell(
+                                        onTap: (() {
+                                          setState(() {
+                                            chatController
+                                                    .isFavoriteRoom.value =
+                                                !(chatController
+                                                    .isFavoriteRoom.value);
+                                            print(
+                                                'CheckChatKeyBoard().isFavoriteRoom: ${chatController.isFavoriteRoom.value}');
+
+                                            //if(widget.roomData.likedPeople == null  || widget.roomData.likedPeople!.contains(UserController.to.myProfile.value.uid) == false ){
+                                            if (chatController
+                                                    .isFavoriteRoom.value ==
+                                                true) {
+                                              //    widget.roomData.likedPeople!.add(UserController.to.myProfile.value.uid!);
+                                              widget.roomData.like++;
+                                              MyFirebaseChatCore.instance
+                                                  .updateLike(
+                                                      widget.roomData.roomInfo
+                                                          .channelName,
+                                                      chatController
+                                                          .isFavoriteRoom
+                                                          .value);
+                                            } else {
+                                              //   widget.roomData.likedPeople!.remove(UserController.to.myProfile.value.uid!);
+                                              widget.roomData.like--;
+                                              MyFirebaseChatCore.instance
+                                                  .updateLike(
+                                                      widget.roomData.roomInfo
+                                                          .channelName,
+                                                      chatController
+                                                          .isFavoriteRoom
+                                                          .value);
+                                            }
+                                          });
+                                        }),
+                                        child: Container(
+                                          width: 30.h,
+                                          height: 30.h,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .background,
+                                          ),
+                                          child: Center(
+                                              child: Image.asset(
+                                                  chatController
+                                                          .isFavoriteRoom.value
+                                                      ? 'assets/icons/heart_fill.png'
+                                                      : 'assets/icons/heart.png',
+                                                  width: 20.h,
+                                                  height: 20.h)),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  child: Center(child: Image.asset('assets/icons/chat_black.png', width: 20.h, height: 20.h)),
                                 ),
-                              ),
-                              Expanded(child: Container()),
-                              InkWell(
-                                onTap: (() {
-                                  setState(() {
-                                    chatController.isFavoriteRoom.value = !(chatController.isFavoriteRoom.value);
-                                    print('CheckChatKeyBoard().isFavoriteRoom: ${chatController.isFavoriteRoom.value}');
-
-
-
-
-                                    //if(widget.roomData.likedPeople == null  || widget.roomData.likedPeople!.contains(UserController.to.myProfile.value.uid) == false ){
-                                    if(chatController.isFavoriteRoom.value == true){
-                                  //    widget.roomData.likedPeople!.add(UserController.to.myProfile.value.uid!);
-                                      widget.roomData.like++;
-                                      MyFirebaseChatCore.instance.updateLike(widget.roomData.roomInfo.channelName,chatController.isFavoriteRoom.value);
-                                    }
-                                    else{
-                                   //   widget.roomData.likedPeople!.remove(UserController.to.myProfile.value.uid!);
-                                      widget.roomData.like--;
-                                      MyFirebaseChatCore.instance.updateLike(widget.roomData.roomInfo.channelName,chatController.isFavoriteRoom.value);
-                                    }
-
-                                  });
-                                }),
-                                child: Container(
-                                  width: 30.h,
-                                  height: 30.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Theme.of(context).colorScheme.background,
-                                  ),
-                                  child: Center(child: Image.asset(
-                                      chatController.isFavoriteRoom.value? 'assets/icons/heart_fill.png' : 'assets/icons/heart.png', width: 20.h, height: 20.h)),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),)
+                              ],
+                            ),
+                    )
                   ],
                 ),
               ),
