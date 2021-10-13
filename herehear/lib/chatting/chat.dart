@@ -119,7 +119,7 @@ class _ChatPageState extends State<ChatPage> {
                                     color: Colors.white,
                                   ),
                                   Text(
-                                    ' ${widget.room.users.length.toString()}',
+                                    ' ${room.users.length.toString()}',
                                     style:
                                     Theme.of(context).textTheme.subtitle1!.copyWith(
                                       color: Colors.white,
@@ -135,7 +135,7 @@ class _ChatPageState extends State<ChatPage> {
                                   Padding(
                                     padding: EdgeInsets.only(right: 15.w),
                                     child: Text(
-                                      ' ${widget.room.like.toString()}',
+                                      ' ${room.like.toString()}',
                                       style:
                                       Theme.of(context).textTheme.subtitle1!.copyWith(
                                         color: Colors.white,
@@ -176,8 +176,8 @@ class _ChatPageState extends State<ChatPage> {
                   child: Container(
                       color: Colors.transparent,
                       child: StreamBuilder<types.BroadcastModel>(
-                          initialData: widget.room,
-                          stream: MyFirebaseChatCore.instance.room(widget.room.channelName),
+                          initialData: room,
+                          stream: MyFirebaseChatCore.instance.room(room.roomInfo.channelName),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               return StreamBuilder<List<types.MyMessage>>(
@@ -185,6 +185,7 @@ class _ChatPageState extends State<ChatPage> {
                                   stream: MyFirebaseChatCore.instance.messages(snapshot.data!),
                                   builder: (context, snapshot) {
                                     return MyChat(
+                                      roomData: room,
                                         isAttachmentUploading: _isAttachmentUploading,
                                         messages: snapshot.data ?? [],
                                         onAttachmentPressed: _handleAtachmentPressed,
@@ -340,7 +341,7 @@ class _ChatPageState extends State<ChatPage> {
           uri: uri,
         );
 
-        MyFirebaseChatCore.instance.sendMessage(message, widget.room.id);
+        MyFirebaseChatCore.instance.sendMessage(message, room.roomInfo.channelName);
         _setAttachmentUploading(false);
       } on FirebaseException catch (e) {
         _setAttachmentUploading(false);
@@ -385,7 +386,7 @@ class _ChatPageState extends State<ChatPage> {
 
         MyFirebaseChatCore.instance.sendMessage(
           message,
-          widget.room.id,
+          room.roomInfo.channelName,
         );
         _setAttachmentUploading(false);
       } on FirebaseException catch (e) {
@@ -422,14 +423,14 @@ class _ChatPageState extends State<ChatPage> {
   ) {
     final updatedMessage = message.copyWith(previewData: previewData);
 
-    MyFirebaseChatCore.instance.updateMessage(updatedMessage, widget.room.id);
+    MyFirebaseChatCore.instance.updateMessage(updatedMessage, room.roomInfo.channelName);
   }
 
   void _handleSendPressed(types.PartialText message) {
     print('send');
     MyFirebaseChatCore.instance.sendMessage(
       message,
-      widget.room.channelName,
+      room.roomInfo.channelName,
     );
     print('complete!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
   }

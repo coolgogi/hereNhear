@@ -30,17 +30,19 @@ class BroadCastPage extends GetView<AgoraEventController> {
       required this.role,
       required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName, role: role));
+        channelName: roomData.roomInfo.channelName, role: role));
   }
 
   BroadCastPage.broadcaster({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName, role: ClientRole.Broadcaster));
+        channelName: roomData.roomInfo.channelName, role: ClientRole.Broadcaster));
+
   }
 
   BroadCastPage.audience({required this.role, required this.roomData}) {
     agoraController = Get.put(AgoraEventController.broadcast(
-        channelName: roomData.channelName, role: ClientRole.Audience));
+        channelName: roomData.roomInfo.channelName, role: ClientRole.Audience));
+
   }
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
@@ -48,7 +50,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: documentStream.doc(roomData.channelName).snapshots(),
+        stream: documentStream.doc(roomData.roomInfo.channelName).snapshots(),
         builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData) {
             return Scaffold(
@@ -65,6 +67,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
           }
         });
   }
+
 
   PreferredSizeWidget profileAppBar(BuildContext context) {
     return PreferredSize(
@@ -147,16 +150,15 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   // Future<void> _showMyDialog()
   void _onCallEnd() async {
-    await fireStore.collection('broadcast').doc(roomData.channelName).update({
+    if (roomData.roomInfo.hostInfo.uid == UserController.to.myProfile.value.uid) {
+      await changeState(roomData.roomInfo.channelName);
+    }
+    await fireStore.collection('broadcast').doc(roomData.roomInfo.channelName).update({
       'userIds':
           FieldValue.arrayRemove([UserController.to.myProfile.value.uid]),
     });
     controller.onClose();
     Get.back();
-    if (roomData.roomInfo.hostInfo.uid ==
-        UserController.to.myProfile.value.uid) {
-      await changeState(roomData.channelName);
-    }
   }
 
   Future<void> changeState(String channelName) async {

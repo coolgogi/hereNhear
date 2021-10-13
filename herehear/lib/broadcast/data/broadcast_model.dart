@@ -21,7 +21,7 @@ extension MyRoomTypeToShortString on MyRoomType {
 @immutable
 class BroadcastModel extends Equatable {
   /// Creates a [BroadcastModel]
-  const BroadcastModel({
+   BroadcastModel({
     required this.roomInfo,
     this.createdAt,
     this.imageUrl,
@@ -31,12 +31,12 @@ class BroadcastModel extends Equatable {
     required this.type,
     this.updatedAt,
     required this.users,
-    required this.channelName,
     this.thumbnail,
     this.location,
     this.createdTime,
     this.roomCategory,
-    this.like,
+    required this.like,
+    this.likedPeople,
 
 
 
@@ -45,8 +45,6 @@ class BroadcastModel extends Equatable {
   /// Creates room from a map (decoded JSON).
   BroadcastModel.fromJson(Map<String, dynamic> json)
       : createdAt = json['createdAt'] as int?,
-
-        channelName = json['channelName'] as String,
         imageUrl = json['imageUrl'] as String?,
         lastMessages = (json['lastMessages'] as List<Map<String, dynamic>>?)
             ?.map((e) => Message.fromJson(e))
@@ -63,6 +61,7 @@ class BroadcastModel extends Equatable {
         createdTime = json['createdTime'].toDate(),
         roomCategory = json['roomCategory'].toList(),
         like =json['like'] as int,
+  likedPeople =json['liePeople'].toList,
         users = (json['users'] as List<Map<String, dynamic>>)
             .map((e) => UserModel.fromJson(e))
             .toList()
@@ -81,12 +80,12 @@ class BroadcastModel extends Equatable {
     'updatedAt': updatedAt,
     //
     'roomInfo' : roomInfo.toJson(),
-    'channelName': channelName,
     'thumbnail' : thumbnail,
     'location' : location,
     'createdTime' : createdTime,
     'roomCategory' : roomCategory,
     'like' : like,
+    'likePeople': likedPeople,
     'users' : users.map((e)=>e.toJson()).toList(),
 
 
@@ -137,13 +136,14 @@ class BroadcastModel extends Equatable {
   ];
 
   final RoomInfoModel roomInfo;
-  final String channelName;
+
   final String? thumbnail; //image
   final String? location;
   final DateTime? createdTime;
   final List<dynamic>? roomCategory; //category
-  final int? like;
+   int like = 0;
   final List<UserModel> users; //userNickname, userProfile
+  List<String>? likedPeople;
 
 
   /// Created room timestamp, in ms
@@ -196,90 +196,3 @@ class BroadcastModel extends Equatable {
 
 
 
-
-
-// class BroadcastModel {
-//   //using both side.
-//   String? hostUid;
-//   String? title;
-//   String? notice;
-//   String? channelName;
-//   String? docId;
-//   String? image;
-//   String? location;
-//   DateTime? createdTime;
-//   List<String>? currentListener;
-//   //only broadcast
-//   String? category;
-//   int? like;
-//   String? hostProfile;
-//   List<String>? userProfile;
-//   String? hostNickname;
-//   List<String>? userNickname;
-//
-//   BroadcastModel({
-//     this.hostUid,
-//     this.title,
-//     this.notice,
-//     this.channelName,
-//     this.docId,
-//     this.image,
-//     this.location,
-//     this.createdTime,
-//     this.currentListener,
-//     //only broadcast
-//     this.category,
-//     this.like,
-//     this.hostProfile,
-//     this.userProfile,
-//     this.hostNickname,
-//     this.userNickname,
-//   });
-//
-//   // UserModel을 map으로 바꿔주는 함수.
-//   Map<String, dynamic> toMap() {
-//     return {
-//       'hostUid': this.hostUid,
-//       'title': this.title,
-//       'notice': this.notice,
-//       'channelName': this.channelName,
-//       'docId': this.docId,
-//       'image': this.image,
-//       'location': this.location,
-//       'createdTime': this.createdTime,
-//       'currentListener': this.currentListener,
-//       //only broadcast
-//       'category': this.category,
-//       'like': this.like,
-//       'hostProfile': this.hostProfile,
-//       'hostNickName': this.hostNickname,
-//       'userProfile': this.userProfile,
-//       'userNickName': this.userNickname,
-//     };
-//   }
-//
-//   BroadcastModel.fromJson(Map<String, dynamic> json, String hostUid)
-//       : hostUid = json['uid'] as String,
-//         title = json['title'] as String,
-//         notice = json['notice'] as String,
-//         channelName = json['channelName'] as String,
-//         docId = json['docId'] as String,
-//         image = json['image'] as String,
-//         createdTime = json['createdTime'].toDate(),
-//         //only broadcast
-//         category = json['category'] as String,
-//         like = json['like'] as int;
-// }
-//
-// // Map<String, dynamic> toJson() => {
-// //   'hostUid': createdAt,
-// //   'title': id,
-// //   'notice': imageUrl,
-// //   'channelName': lastMessages?.map((e) => e.toJson()).toList(),
-// //   'docId': metadata,
-// //   'image': name,
-// //   'createdTime': type.toShortString(),
-// //   'category': updatedAt,
-// //   'like': users.map((e) => e.toJson()).toList(),
-// // };
-//

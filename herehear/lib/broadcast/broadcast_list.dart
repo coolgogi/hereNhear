@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:herehear/bottomNavigationBar/myPage/edit_profile.dart';
 import 'package:herehear/broadcast/broadcast.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -22,12 +23,13 @@ ListView broadcastRoomList(
         padding: EdgeInsets.only(right: 10.0.w),
         child: GestureDetector(
           onTap: () async {
-            //room.users.add(UserController.to.myProfile.value);
+            room.users.add(UserController.to.myProfile.value);
+
             await firestore
                 .collection('broadcast')
-                .doc(room.channelName)
+                .doc(room.roomInfo.channelName)
                 .update({
-              'userIds': FieldValue.arrayUnion([_userData.uid]),
+              'userIds': FieldValue.arrayUnion([UserController.to.myProfile.value.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),
             });
@@ -186,9 +188,10 @@ ListView broadcastRoomVerticalList(
         child: GestureDetector(
           onTap: () async {
             //room.users.add(UserController.to.myProfile.value);
+
             await firestore
                 .collection('broadcast')
-                .doc(room.channelName)
+                .doc(room.roomInfo.channelName)
                 .update({
               'userIds': FieldValue.arrayUnion([_userData.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),

@@ -80,10 +80,10 @@ class MyFirebaseChatCore {
 
     return types.BroadcastModel(
       roomInfo: roomInfo,
-      channelName: roomInfo.channelName,
       roomCategory: roomInfo.roomCategory,
       type: types.MyRoomType.group,
       users: roomUsers,
+      like: 0,
     );
   }
 
@@ -165,7 +165,7 @@ class MyFirebaseChatCore {
   /// Returns a stream of messages from Firebase for a given room
   Stream<List<types.MyMessage>> messages(types.BroadcastModel room) {
     return FirebaseFirestore.instance
-        .collection('broadcast/${room.channelName}/messages')
+        .collection('broadcast/${room.roomInfo.channelName}/messages')
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
@@ -376,5 +376,28 @@ class MyFirebaseChatCore {
             },
           ),
         );
+  }
+
+  void updateLike(String channelName, bool isFavoriteRoom) async {
+    if (firebaseUser == null) return;
+
+    final document = FirebaseFirestore.instance.collection('broadcast').doc(channelName);
+    if(isFavoriteRoom){
+      await document
+          .update({
+        'like': FieldValue.increment(1),
+        'likedPeople': FieldValue.arrayUnion(
+            [firebaseUser!.uid])
+      });
+    }
+    else{
+      await document
+          .update({
+        'like': FieldValue.increment(-1),
+        'likedPeople': FieldValue.arrayRemove(
+            [firebaseUser!.uid])
+      });
+    }
+
   }
 }

@@ -26,6 +26,7 @@ extension RoomTypeToShortString on RoomType {
 }
 
 class AgoraEventController extends GetxController {
+  CollectionReference groupCall =  FirebaseFirestore.instance.collection('groupcall');
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   var listener = <UserModel>[].obs;
@@ -60,7 +61,6 @@ class AgoraEventController extends GetxController {
 
   GroupCallUserModel userExample = GroupCallUserModel();
 ///////////////////////////////////////////////////////
-
 
   RxList<Widget> participantsList = <Widget>[].obs;
   RxList<Widget> listenersList = <Widget>[].obs;
@@ -134,6 +134,7 @@ class AgoraEventController extends GetxController {
         infoStrings.add(info);
       },
       joinChannelSuccess: (channel, uid, elapsed) {
+        print('채널 들어감!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
         final info = 'onJoinChannel: $channel, uid: $uid';
         currentUid = uid;
         print('currentUid???: ${currentUid}');
@@ -144,7 +145,7 @@ class AgoraEventController extends GetxController {
 
         followers.add(UserController.to.myProfile.value);
         users.add(uid);
-
+UserController.to.myProfile.value.roomUid = uid;
         userExample.uid = currentUid;
       },
       leaveChannel: (stats) {
@@ -154,6 +155,8 @@ class AgoraEventController extends GetxController {
         NotGoOutRoom.value = false;
       },
       userJoined: (uid, elapsed) {
+
+        print('사용자!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
         final info = 'userJoined: $uid';
         infoStrings.add(info);
         users.add(uid);
@@ -187,9 +190,9 @@ class AgoraEventController extends GetxController {
   Future<void> moveWatcherToParticipant(String channelName) async {
     print('currentUid???: ${currentUid}');
     users.removeWhere((element) => element == currentUid);
-    DocumentReference groupCall =  FirebaseFirestore.instance.collection('groupcall').doc(channelName);
-    groupCall.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
-    groupCall.update({
+    DocumentReference groupCallDoc =  groupCall.doc(channelName);
+    groupCallDoc.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
+    groupCallDoc.update({
       'listeners': FieldValue.arrayRemove([UserController.to.myProfile.value.uid])
     });
     isParticipate.value = true;
