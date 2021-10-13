@@ -42,7 +42,7 @@ Future<types.BroadcastModel> processRoomDocument(
   final channelName = doc.data()!['channelName'] as String;
   final userIds = doc.data()!['userIds'] as List<dynamic>;
   final userRoles = doc.data()?['userRoles'] as Map<String, dynamic>?;
-  final like = doc.data()?['like'] as int?;
+  final like = doc.data()?['like'] as int;
   final hostInfo = await fetchUser(doc.data()?['hostUid']);
   final title = doc.data()!['title'] as String;
   final notice = doc.data()!['notice'] as String;

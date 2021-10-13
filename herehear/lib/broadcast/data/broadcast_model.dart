@@ -35,8 +35,8 @@ class BroadcastModel extends Equatable {
     this.location,
     this.createdTime,
     this.roomCategory,
-    this.like,
-    this.likePeople,
+    required this.like,
+    this.likedPeople,
 
 
 
@@ -61,7 +61,7 @@ class BroadcastModel extends Equatable {
         createdTime = json['createdTime'].toDate(),
         roomCategory = json['roomCategory'].toList(),
         like =json['like'] as int,
-  likePeople =json['liePeople'].toList,
+  likedPeople =json['liePeople'].toList,
         users = (json['users'] as List<Map<String, dynamic>>)
             .map((e) => UserModel.fromJson(e))
             .toList()
@@ -85,7 +85,7 @@ class BroadcastModel extends Equatable {
     'createdTime' : createdTime,
     'roomCategory' : roomCategory,
     'like' : like,
-    'likePeople': likePeople,
+    'likePeople': likedPeople,
     'users' : users.map((e)=>e.toJson()).toList(),
 
 
@@ -141,9 +141,9 @@ class BroadcastModel extends Equatable {
   final String? location;
   final DateTime? createdTime;
   final List<dynamic>? roomCategory; //category
-  final int? like;
+   int like = 0;
   final List<UserModel> users; //userNickname, userProfile
-  List<String>? likePeople;
+  List<String>? likedPeople;
 
 
   /// Created room timestamp, in ms
