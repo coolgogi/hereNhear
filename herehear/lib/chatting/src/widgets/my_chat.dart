@@ -432,7 +432,7 @@ class _ChatState extends State<MyChat> {
                                                   height: 20.h)),
                                         ),
                                       )
-                                      : SizedBox.shrink (),
+                                      : SizedBox.shrink(),
 
 
                                       SizedBox(width: 15.w),
