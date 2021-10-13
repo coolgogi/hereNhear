@@ -6,6 +6,8 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/bottomNavigationBar/home/scroll_controller.dart';
+import 'package:herehear/broadcast/data/broadcast_model.dart';
+import 'package:herehear/chatting/my_firebase_chat.dart';
 import 'package:herehear/chatting/src/conditional/conditional.dart';
 import 'package:herehear/chatting/src/models/date_header.dart';
 import 'package:herehear/chatting/src/models/message_spacer.dart';
@@ -16,6 +18,7 @@ import 'package:herehear/chatting/src/widgets/inherited_chat_theme.dart';
 import 'package:herehear/chatting/src/widgets/inherited_l10n.dart';
 import 'package:herehear/chatting/src/widgets/inherited_user.dart';
 import 'package:herehear/chatting/src/widgets/message.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:herehear/users/data/user_model.dart' as types;
@@ -39,7 +42,7 @@ class MyChat extends StatefulWidget {
   /// Creates a chat widget
   const MyChat({
     Key? key,
-    this.channelName,
+    required this.roomData,
     this.buildCustomMessage,
     this.customDateHeaderText,
     this.dateFormat,
@@ -66,7 +69,7 @@ class MyChat extends StatefulWidget {
   }) : super(key: key);
 
 
-  final String? channelName;
+  final BroadcastModel roomData;
 
   /// See [Message.buildCustomMessage]
   final Widget Function(types.MyMessage)? buildCustomMessage;
@@ -408,7 +411,7 @@ class _ChatState extends State<MyChat> {
                                     shape: BoxShape.circle,
                                     color: chatController.isHostAudioActive.value? Theme.of(context).colorScheme.background : Theme.of(context).colorScheme.primaryVariant,
                                   ),
-                                  child: Center(child: Image.asset(chatController.isHostAudioActive.value? 'assets/icons/mic_fill_black.png' : 'assets/icons/mic-off.png', width: 20.h, height: 20.h)),
+                                  child: Center(child: Image.asset(chatController.isHostAudioActive.value? 'assets/icons/mic_fill_black.png' : 'assets/icons/mic_off.png', width: 20.h, height: 20.h)),
                                 ),
                               ),
                               SizedBox(width: 15.w),
@@ -437,17 +440,19 @@ class _ChatState extends State<MyChat> {
 
 
 
-                                    //
-                                    // if(product['likePeople'] == null  || product['likePeople'].contains(auth.currentUser.uid) == false ){
-                                    //   snapshot.reference.update({
-                                    //     'like': FieldValue.increment(1),
-                                    //     'likePeople': FieldValue.arrayUnion(
-                                    //         [auth.currentUser.uid])
-                                    //   });
-                                    //
-                                    //
-                                    // }
-                                    //
+
+                                    //if(widget.roomData.likedPeople == null  || widget.roomData.likedPeople!.contains(UserController.to.myProfile.value.uid) == false ){
+                                    if(chatController.isFavoriteRoom.value == true){
+                                  //    widget.roomData.likedPeople!.add(UserController.to.myProfile.value.uid!);
+                                      widget.roomData.like++;
+                                      MyFirebaseChatCore.instance.updateLike(widget.roomData.roomInfo.channelName,chatController.isFavoriteRoom.value);
+                                    }
+                                    else{
+                                   //   widget.roomData.likedPeople!.remove(UserController.to.myProfile.value.uid!);
+                                      widget.roomData.like--;
+                                      MyFirebaseChatCore.instance.updateLike(widget.roomData.roomInfo.channelName,chatController.isFavoriteRoom.value);
+                                    }
+
                                   });
                                 }),
                                 child: Container(

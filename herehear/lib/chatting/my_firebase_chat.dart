@@ -377,4 +377,27 @@ class MyFirebaseChatCore {
           ),
         );
   }
+
+  void updateLike(String channelName, bool isFavoriteRoom) async {
+    if (firebaseUser == null) return;
+
+    final document = FirebaseFirestore.instance.collection('broadcast').doc(channelName);
+    if(isFavoriteRoom){
+      await document
+          .update({
+        'like': FieldValue.increment(1),
+        'likedPeople': FieldValue.arrayUnion(
+            [firebaseUser!.uid])
+      });
+    }
+    else{
+      await document
+          .update({
+        'like': FieldValue.increment(-1),
+        'likedPeople': FieldValue.arrayRemove(
+            [firebaseUser!.uid])
+      });
+    }
+
+  }
 }

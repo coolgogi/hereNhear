@@ -159,10 +159,6 @@ class BroadCastPage extends GetView<AgoraEventController> {
     });
     controller.onClose();
     Get.back();
-    if (roomData.roomInfo.hostInfo.uid ==
-        UserController.to.myProfile.value.uid) {
-      await changeState(roomData.roomInfo.channelName);
-    }
   }
 
   Future<void> changeState(String channelName) async {
