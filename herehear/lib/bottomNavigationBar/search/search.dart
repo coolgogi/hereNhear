@@ -49,16 +49,16 @@ class SearchPage extends StatelessWidget {
   ];
 
   List<String> categoryImageList = [
-    'assets/icons/eyes.png',
-    'assets/icons/talk.png',
-    'assets/icons/smile.png',
-    'assets/icons/advertise.png',
-    'assets/icons/healing.png',
-    'assets/icons/sale.png',
-    'assets/icons/music.png',
-    'assets/icons/tree.png',
-    'assets/icons/book.png',
-    'assets/images/mike2.png',
+    'assets/icons/categoryIcon/eyes.png',
+    'assets/icons/categoryIcon/talk.png',
+    'assets/icons/categoryIcon/smile.png',
+    'assets/icons/categoryIcon/advertise.png',
+    'assets/icons/categoryIcon/healing.png',
+    'assets/icons/categoryIcon/sale.png',
+    'assets/icons/categoryIcon/music.png',
+    'assets/icons/categoryIcon/tree.png',
+    'assets/icons/categoryIcon/book.png',
+    'assets/images/categoryIcon/mike2.png',
   ];
 
   final categoryController = Get.put(CategoryController());
