@@ -6,13 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:herehear/agora/agoraEventController.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
 import 'package:herehear/bottomNavigationBar/bottom_bar.dart';
+import 'package:herehear/broadcast/timer_controller.dart';
 import 'package:herehear/users/controller/user_controller.dart';
 import 'data/broadcast_model.dart' as types;
 import 'package:herehear/chatting/chat.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:async';
 
 class BroadCastPage extends GetView<AgoraEventController> {
+  //for timer
+
+  final timerController = Get.put(TimerContorller());
+
+  //
+
   final ClientRole role;
   final types.BroadcastModel roomData;
   late final agoraController;
@@ -47,6 +55,7 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
   final documentStream = FirebaseFirestore.instance.collection('broadcast');
 
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
@@ -70,41 +79,49 @@ class BroadCastPage extends GetView<AgoraEventController> {
 
 
   PreferredSizeWidget profileAppBar(BuildContext context) {
+
     return PreferredSize(
       preferredSize: Size.fromHeight(45.0.h),
       child: AppBar(
-        leading: IconButton(
-            onPressed: () {
-              _onCallEnd();
-            },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        title: Container(
-          margin: const EdgeInsets.all(8.0),
-          padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
-          decoration: BoxDecoration(
-              border:
-                  Border.all(color: Theme.of(context).colorScheme.background),
-              borderRadius: BorderRadius.circular(12.r)),
-          child: Text(" $timer_title ",
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1!
-                  .copyWith(color: Theme.of(context).colorScheme.background)),
+          leading: IconButton(
+              onPressed: () {
+                _onCallEnd();
+              },
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white)),
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Obx(() => Container(
+            margin: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.fromLTRB(7.w, 2.w, 7.w, 3.w),
+            decoration: BoxDecoration(
+                border:
+                Border.all(color: Theme.of(context).colorScheme.background),
+                borderRadius: BorderRadius.circular(12.r)),
+            child: Text('${((timerController.time.value / (60 * 60)) % 60)
+                .floor()
+                .toString()
+                .padLeft(2, '0')} : ${((timerController.time.value / 60) % 60)
+                .floor()
+                .toString()
+                .padLeft(2, '0')} : ${(timerController.time.value % 60).floor().toString().padLeft(2, '0')}',
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1!
+                    .copyWith(color: Theme.of(context).colorScheme.background)),
+          ),),
+          actions: <Widget>[
+            IconButton(
+                onPressed: null,
+                icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
+            IconButton(
+                onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
+                icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
+          ],
+          // toolbarOpacity: 0.0,
+          // bottomOpacity: 0.0,
+          // flexibleSpace:
         ),
-        actions: <Widget>[
-          IconButton(
-              onPressed: null,
-              icon: Image.asset('assets/icons/bell_white.png', height: 18.0.h)),
-          IconButton(
-              onPressed: () => _scaffoldKey.currentState!.openEndDrawer(),
-              icon: Image.asset('assets/icons/more_white.png', height: 17.0.h)),
-        ],
-        // toolbarOpacity: 0.0,
-        // bottomOpacity: 0.0,
-        // flexibleSpace:
-      ),
+
     );
   }
 
