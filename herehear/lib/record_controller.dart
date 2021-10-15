@@ -37,7 +37,7 @@ class RecorderController extends GetxController {
 
   late File _file;
 
-  final audioPlayer = ap.AudioPlayer();
+  var audioPlayer = ap.AudioPlayer();
 
   late StreamSubscription<ap.PlayerState> _playerStateChangedSubscription;
   late StreamSubscription<Duration?> _durationChangedSubscription;

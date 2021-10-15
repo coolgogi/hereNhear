@@ -119,6 +119,7 @@ class RecordingPage {
                               SizedBox(width: 8.w),
                               GestureDetector(
                                 onTap: () {
+                                  print('recordController.audioPlayer.playerState???: ${recordController.audioPlayer.playerState}');
                                   if (recordController.audioPlayer.playerState.playing) {
                                     recordController.pause().whenComplete(() => print('@@@'));
                                   } else {
