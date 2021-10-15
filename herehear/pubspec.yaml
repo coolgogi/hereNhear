@@ -126,7 +126,6 @@ flutter:
     - assets/images/sing.png
     - assets/images/voiceCopy.png
     - assets/images/mike.png
-    - assets/images/mike2.png
     - assets/messages.json
     - assets/messages2.json
     - assets/icons/home_stroke.png
@@ -141,6 +140,7 @@ flutter:
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
     - assets/icons/profile_black.png
+    - assets/icons/categoryIcon/mike2.png
     - assets/icons/add.png
     - assets/icons/search.png
     - assets/icons/search2.png
@@ -171,15 +171,15 @@ flutter:
     - assets/icons/live.png
     - assets/icons/history.png
     - assets/icons/reload.png
-    - assets/icons/tree.png
-    - assets/icons/smile.png
-    - assets/icons/healing.png
-    - assets/icons/talk.png
-    - assets/icons/eyes.png
-    - assets/icons/book.png
-    - assets/icons/music.png
-    - assets/icons/sale.png
-    - assets/icons/advertise.png
+    - assets/icons/categoryIcon/tree.png
+    - assets/icons/categoryIcon/smile.png
+    - assets/icons/categoryIcon/healing.png
+    - assets/icons/categoryIcon/talk.png
+    - assets/icons/categoryIcon/eyes.png
+    - assets/icons/categoryIcon/book.png
+    - assets/icons/categoryIcon/music.png
+    - assets/icons/categoryIcon/sale.png
+    - assets/icons/categoryIcon/advertise.png
     - assets/icons/pen.png
     - assets/icons/bigEye.png
     - assets/icons/eye-off.png
