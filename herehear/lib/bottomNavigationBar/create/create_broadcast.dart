@@ -64,16 +64,16 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     '일상'
   ];
   List<String> categoryIconList = [
-    'assets/icons/book.png',
-    'assets/icons/eyes.png',
-    'assets/icons/talk.png',
-    'assets/icons/smile.png',
-    'assets/icons/advertise.png',
-    'assets/icons/sale.png',
-    'assets/icons/music.png',
-    'assets/icons/healing.png',
-    'assets/images/mike2.png',
-    'assets/icons/tree.png',
+    'assets/icons/categoryIcon/book.png',
+    'assets/icons/categoryIcon/eyes.png',
+    'assets/icons/categoryIcon/talk.png',
+    'assets/icons/categoryIcon/smile.png',
+    'assets/icons/categoryIcon/advertise.png',
+    'assets/icons/categoryIcon/sale.png',
+    'assets/icons/categoryIcon/music.png',
+    'assets/icons/categoryIcon/healing.png',
+    'assets/images/categoryIcon/mike2.png',
+    'assets/icons/categoryIcon/tree.png',
   ];
 
   final broadcastInfoController = Get.put(BroadcastInfoController());
