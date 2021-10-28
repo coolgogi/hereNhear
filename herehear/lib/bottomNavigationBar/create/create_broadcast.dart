@@ -72,7 +72,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
     'assets/icons/categoryIcon/sale.png',
     'assets/icons/categoryIcon/music.png',
     'assets/icons/categoryIcon/healing.png',
-    'assets/images/categoryIcon/mike2.png',
+    'assets/icons/categoryIcon/mike2.png',
     'assets/icons/categoryIcon/tree.png',
   ];
 
