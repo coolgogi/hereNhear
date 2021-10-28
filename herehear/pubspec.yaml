@@ -140,7 +140,6 @@ flutter:
     - assets/icons/profile_stroke.png
     - assets/icons/profile_active.png
     - assets/icons/profile_black.png
-    - assets/icons/categoryIcon/mike2.png
     - assets/icons/add.png
     - assets/icons/search.png
     - assets/icons/search2.png
@@ -180,6 +179,7 @@ flutter:
     - assets/icons/categoryIcon/music.png
     - assets/icons/categoryIcon/sale.png
     - assets/icons/categoryIcon/advertise.png
+    - assets/icons/categoryIcon/mike2.png
     - assets/icons/pen.png
     - assets/icons/bigEye.png
     - assets/icons/eye-off.png
