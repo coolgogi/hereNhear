@@ -29,7 +29,8 @@ ListView broadcastRoomList(
                 .collection('broadcast')
                 .doc(room.roomInfo.channelName)
                 .update({
-              'userIds': FieldValue.arrayUnion([UserController.to.myProfile.value.uid]),
+              'userIds': FieldValue.arrayUnion(
+                  [UserController.to.myProfile.value.uid]),
               'userNickName': FieldValue.arrayUnion([_userData.nickName]),
               'userProfile': FieldValue.arrayUnion([_userData.profile]),
             });
@@ -145,7 +146,7 @@ ListView broadcastRoomList(
                         padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
                         child: Row(
                           children: [
-                            Image.asset('assets/icons/book.png',
+                            Image.asset('assets/icons/categoryIcon/book.png',
                                 width: 10.w, height: 10.w),
                             SizedBox(width: 2.w),
                             Text(
@@ -310,7 +311,7 @@ ListView broadcastRoomVerticalList(
                         padding: EdgeInsets.fromLTRB(4.w, 1.h, 4.w, 1.h),
                         child: Row(
                           children: [
-                            Image.asset('assets/icons/book.png',
+                            Image.asset('assets/icons/categoryIcon/book.png',
                                 width: 10.w, height: 10.w),
                             SizedBox(width: 2.w),
                             Text(

@@ -13,6 +13,7 @@ import 'create/create_broadcast.dart';
 import 'create/create_groupcall.dart';
 import 'floating_action_button_location.dart';
 import 'home/home.dart';
+import 'myPage/edit_profile.dart';
 
 class BottomBar extends StatelessWidget {
   final BottomBarController bottomBarController =
@@ -23,7 +24,7 @@ class BottomBar extends StatelessWidget {
     print("===========bottom bar line 23===========");
     print(UserController.to.myProfile.value.nickName);
     if (UserController.to.myProfile.value.nickName == '') {
-      return setProfilePage();
+      return EditMyPage();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:herehear/appBar/action_widget.dart';
 import 'package:herehear/groupCall/data/participantsProfile_controller.dart';
+import 'package:herehear/login/nickname_controller.dart';
 import 'package:herehear/record_controller.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 import 'package:herehear/appBar/drawer/drawer.dart';
@@ -29,7 +31,7 @@ class MyPage extends StatelessWidget {
       endDrawer: DrawerWidget(),
       appBar: AppBar(
         titleSpacing: 25.0.w,
-        title: Text('NickName',
+        title: Text(UserController.to.myProfile.value.nickName!,
             style: Theme.of(context).appBarTheme.titleTextStyle),
         actions: action_widget(_scaffoldKey),
       ),
@@ -217,8 +219,12 @@ class MyPage extends StatelessWidget {
                           SizedBox(width: 11.w),
                           Column(
                             children: [
-                              Image.asset('assets/icons/heart_fill.png', height: 22.h),
-                              Text('105', style: Theme.of(context).textTheme.headline6,),
+                              Image.asset('assets/icons/heart_fill.png',
+                                  height: 22.h),
+                              Text(
+                                '105',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
                             ],
                           ),
                         ],

@@ -1,13 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:herehear/login/setProfile.dart';
+import 'package:herehear/users/controller/user_controller.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../../record_controller.dart';
 
 class ProfileController extends GetxController {
@@ -22,6 +24,7 @@ class EditMyPage extends StatelessWidget {
   final introduceController = TextEditingController();
   final profileController = Get.put(ProfileController());
   final recorderController = Get.put(RecorderController());
+  final _user = FirebaseAuth.instance.currentUser!;
 
   List<String> themeList = [
     '한동대',
@@ -54,7 +57,16 @@ class EditMyPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 13.h, right: 25.w),
             child: InkWell(
-              onTap: null,
+              onTap: () {
+                Map<String, dynamic> _data = new Map();
+
+                _data['nickName'] = nickNameController.text;
+                _data['des'] = introduceController.text;
+                uploadStorage();
+                _data['profile'] = profileController.imageFile;
+                updateData(_user.uid, _data);
+                Get.back();
+              },
               child: Text('완료',
                   style: Theme.of(context).textTheme.headline4!.copyWith(
                         color: Theme.of(context).colorScheme.primary,
@@ -315,12 +327,6 @@ class EditMyPage extends StatelessWidget {
               width: 220.w,
               child: TextFormField(
                 controller: nickNameController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
@@ -347,12 +353,6 @@ class EditMyPage extends StatelessWidget {
               width: 220.w,
               child: TextFormField(
                 controller: introduceController,
-                // validator: (value) {
-                //   if (value!.trim().isEmpty) {
-                //     return '제목을 입력해주세요.';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     enabledBorder: InputBorder.none,
@@ -537,5 +537,44 @@ class EditMyPage extends StatelessWidget {
                 ),
               ),
             ));
+  }
+
+  Future<void> updateData(String _uid, Map<String, dynamic> data) async {
+    CollectionReference _firebase =
+        FirebaseFirestore.instance.collection('users');
+    print("====edit_profile.dart line 545====");
+    print(data['nickName']);
+
+    _firebase.doc(_uid).update(data);
+    UserController.to.myProfile.value.nickName = data['nickName'];
+    print("====edit_profile line 550===");
+    print(UserController.to.myProfile.value.nickName);
+  }
+
+  // Future<void> updateData(String _uid, Map<String, dynamic> data) async {
+  //   CollectionReference _firebase =
+  //   FirebaseFirestore.instance.collection('users');
+
+  //
+  //   _firebase.doc(_uid).update(data);
+  //   UserController.to.myProfile.value.nickName = data['nickName'];
+  // }
+
+  Future<void> uploadStorage() async {
+    print("edit_profile line 554");
+    print(profileController.imageFile);
+    String _path = _user.uid;
+    try {
+      final storageRef = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('profile')
+          .child(_path);
+      storageRef.putFile(profileController.imageFile.value);
+      print("edit_profile function uploadStorage download URL");
+      print(storageRef.getDownloadURL());
+    } catch (e) {
+      print("edit_profile function uploadStorage error line");
+      print(e);
+    }
   }
 }

@@ -26,7 +26,8 @@ extension RoomTypeToShortString on RoomType {
 }
 
 class AgoraEventController extends GetxController {
-  CollectionReference groupCall =  FirebaseFirestore.instance.collection('groupcall');
+  CollectionReference groupCall =
+      FirebaseFirestore.instance.collection('groupcall');
   var infoStrings = <String>[].obs;
   var users = <int>[].obs;
   var listener = <UserModel>[].obs;
@@ -65,7 +66,6 @@ class AgoraEventController extends GetxController {
   RxList<Widget> participantsList = <Widget>[].obs;
   RxList<Widget> listenersList = <Widget>[].obs;
 
-
   RxBool isGroupCallPageNow = false.obs;
 
   AgoraEventController.groupcall(
@@ -76,6 +76,7 @@ class AgoraEventController extends GetxController {
   AgoraEventController.broadcast(
       {required this.channelName, required this.role}) {
     this.type = RoomType.broadcast.toShortString();
+    // this._engine.enableAudio();
   }
   //
 
@@ -145,7 +146,7 @@ class AgoraEventController extends GetxController {
 
         followers.add(UserController.to.myProfile.value);
         users.add(uid);
-UserController.to.myProfile.value.roomUid = uid;
+        UserController.to.myProfile.value.roomUid = uid;
         userExample.uid = currentUid;
       },
       leaveChannel: (stats) {
@@ -155,7 +156,6 @@ UserController.to.myProfile.value.roomUid = uid;
         NotGoOutRoom.value = false;
       },
       userJoined: (uid, elapsed) {
-
         print('사용자!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ');
         final info = 'userJoined: $uid';
         infoStrings.add(info);
@@ -182,7 +182,8 @@ UserController.to.myProfile.value.roomUid = uid;
         speakingUser.clear();
         speakingUser
             .addAll(speakers.obs.map((element) => element.uid).toList());
-        print('current Speakers: ${speakingUser.length}, uid: ${speakingUser.first}, ${speakingUser.value.last}');
+        print(
+            'current Speakers: ${speakingUser.length}, uid: ${speakingUser.first}, ${speakingUser.value.last}');
       },
     ));
   }
@@ -190,10 +191,14 @@ UserController.to.myProfile.value.roomUid = uid;
   Future<void> moveWatcherToParticipant(String channelName) async {
     print('currentUid???: ${currentUid}');
     users.removeWhere((element) => element == currentUid);
-    DocumentReference groupCallDoc =  groupCall.doc(channelName);
-    groupCallDoc.update({'participants':FieldValue.arrayUnion([UserController.to.myProfile.value.uid])});
+    DocumentReference groupCallDoc = groupCall.doc(channelName);
     groupCallDoc.update({
-      'listeners': FieldValue.arrayRemove([UserController.to.myProfile.value.uid])
+      'participants':
+          FieldValue.arrayUnion([UserController.to.myProfile.value.uid])
+    });
+    groupCallDoc.update({
+      'listeners':
+          FieldValue.arrayRemove([UserController.to.myProfile.value.uid])
     });
     isParticipate.value = true;
 
