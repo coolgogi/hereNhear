@@ -357,7 +357,7 @@ class CommunityPage extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(left: 4.0.w),
                               child: Image.asset(
-                                'assets/images/mike2.png',
+                                'assets/icons/categoryIcon/mike2.png',
                                 width: 13.0.w,
                               ),
                             )

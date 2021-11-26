@@ -58,7 +58,7 @@ class SearchPage extends StatelessWidget {
     'assets/icons/categoryIcon/music.png',
     'assets/icons/categoryIcon/tree.png',
     'assets/icons/categoryIcon/book.png',
-    'assets/images/categoryIcon/mike2.png',
+    'assets/icons/categoryIcon/mike2.png',
   ];
 
   final categoryController = Get.put(CategoryController());

@@ -76,7 +76,7 @@ class AgoraEventController extends GetxController {
   AgoraEventController.broadcast(
       {required this.channelName, required this.role}) {
     this.type = RoomType.broadcast.toShortString();
-    this._engine.enableAudio();
+    // this._engine.enableAudio();
   }
   //
 
