@@ -129,34 +129,7 @@ class _CreateBroadcastPageState extends State<CreateBroadcastPage> {
                             style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
-                        TextFormField(
-                          controller: _title,
-                          validator: (value) {
-                            if (value!.trim().isEmpty) {
-                              return '제목을 입력해주세요.';
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.onSurface),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground),
-                            ),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(10.w, 6.h, 0.w, 6.h),
-                            hintText: '제목을 입력해주세요(15자 이내)',
-                          ),
-                        ),
+
                         SizedBox(
                           height: 20.h,
                         ),
